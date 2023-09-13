@@ -1,0 +1,877 @@
+@media screen and (min-device-width: 100px) and (max-device-width: 320px) {
+  .mobile-menu {
+    display: inline-block;
+  }
+  #user-login .col-sm-5 {
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background: white;
+    height: 100vh;
+  }
+  #user-login .card-body {
+    margin-top: 20%;
+    border-radius: 0.5rem;
+    padding: 3rem 2rem 4rem 2rem;
+  }
+  #user-login .login-logo img {
+    display: none;
+  }
+  .navbar-brand {
+    width: 70%;
+  }
+  #header .header-logo {
+    width: 100%;
+  }
+  #header .navbar-brand {
+    width: 50%;
+  }
+  #new-patient,
+  #smp-footer,
+  #smp-dashboard,
+  #smp-content {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #fefcfb;
+    border: 0px;
+  }
+  nav#navbar {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #e3f2fd;
+    border: 0px;
+  }
+  .sidebar-collapse .main-sidebar,
+  .sidebar-collapse .main-sidebar::before {
+    margin-left: -270px;
+  }
+  nav#navbar {
+    flex-direction: row-reverse;
+    padding-right: 1.5rem;
+  }
+  ul#header-icons {
+    margin-right: 4rem;
+  }
+  #smp-content .content-title {
+    font-size: 1.2rem;
+  }
+  #smp-content .breadcrumb {
+    font-size: 0.7rem;
+  }
+  #smp-footer {
+    font-size: 0.6rem;
+    text-align: center;
+  }
+  #smp-footer a {
+    font-size: 0.6rem;
+  }
+  #smp-dashboard,
+  #smp-content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  #smp-content .card-body {
+    padding: 2rem 1rem;
+  }
+  #smp-form select,
+  #smp-form input {
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  #smp-content .smp-button-clear,
+  #smp-content .smp-button {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 0.8rem;
+    margin-left: 25px;
+  }
+  .col-12.col-sm-6.col-md-6.col-lg-3.mt-2 {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  #smp-content .col-auto.mbm-30 {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  div#example2_wrapper {
+    margin-top: 1.5rem;
+  }
+  table#example2 {
+    margin-top: 1.5rem;
+  }
+  #example2 thead th {
+    line-height: 1rem;
+    font-size: 0.7rem;
+  }
+  #example2 tbody tr {
+    line-height: 1.5rem;
+  }
+  #example2 tbody tr td {
+    font-size: 0.8rem;
+  }
+  .dropdown-menu.show {
+    font-size: 0.8rem;
+  }
+  #smp-content div#page_info {
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 300;
+  }
+  ul.ngx-pagination {
+    padding-left: 0px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1rem;
+    margin-top: 1.5rem;
+  }
+  #smp-form label {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+  #example2 thead th {
+    white-space: nowrap;
+  }
+  #menu a.nav-link {
+    display: block;
+  }
+  #banner ul.button-reg-bot {
+    flex-direction: column;
+  }
+  #banner a.color-3 {
+    background-color: var(--newprimary);
+    color: white;
+  }
+  #banner a.color-3:hover {
+    background-color: var(--naccent1);
+    color: white;
+  }
+  #content .heading-minister {
+    padding: 0px 15px 27px 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: -1px;
+  }
+  #page-header h6 {
+    font-size: 0.8rem;
+  }
+  #page-header h1 {
+    font-size: 1.3rem;
+  }
+  #page-header ul.bread_crumb.text-center {
+    padding-left: 0rem;
+  }
+  #sidebar .active {
+    margin-left: 0px;
+  }
+  #header button.mobile-menu {
+    display: block !important;
+  }
+  #header .theme_btn.tp_two {
+    margin-left: 0px;
+  }
+  div#myDIV {
+    height: 100vh;
+    margin-top: 2rem;
+  }
+  /* .navbar-expand-lg .navbar-nav .nav-item.drop_down .nav-link.link_hd,
+.navbar-expand-lg .navbar-nav .nav-link, .navbar-nav .nav-link{
+    padding: 15px 20px;
+    background-color: #e3f2fd;
+    border-bottom: 1px solid white;
+} */
+  #header-icons .dropdown-menu {
+    width: fit-content;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 0.8rem;
+    color: #212529;
+    text-align: center;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px 1px 20px solid #74747415;
+    border-radius: 0.25rem;
+  }
+  a.theme_btn.tp_two.logo-button-website {
+    margin-top: 2rem;
+  }
+  a#verify {
+    min-width: 100%;
+    padding: 15px 17vw;
+  }
+  #registration {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  #registration button {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  #registration button .color-3 {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+  }
+  #data-stats .stat-value {
+    font-size: 1rem;
+  }
+  #data-stats .stat-title {
+    font-size: 0.65rem;
+  }
+  #data-stats .data-card-bottom span {
+    font-size: 0.8rem;
+    line-height: 12px;
+  }
+  #data-stats .data-card-bottom img {
+    width: 12px;
+  }
+  #graph-stats .stats-title {
+    font-size: 0.65rem;
+  }
+  #graph-stats .chart-key {
+    font-size: 0.6rem;
+  }
+  #data-stats .stats-icon {
+    width: 1.5rem;
+  }
+  #smp-dashboard .content-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (min-device-width: 321px) and (max-device-width: 480px) {
+  .mobile-menu {
+    display: inline-block;
+  }
+  #user-login .col-sm-5 {
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background: white;
+    height: 100vh;
+  }
+  #user-login .card-body {
+    margin-top: 20%;
+    border-radius: 0.5rem;
+    padding: 3rem 2rem 4rem 2rem;
+  }
+  .navbar-brand {
+    width: 70%;
+  }
+  #header .header-logo {
+    width: 100%;
+  }
+  #new-patient,
+  #smp-footer,
+  #smp-dashboard,
+  #smp-content {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #fefcfb;
+    border: 0px;
+  }
+  nav#navbar {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #e3f2fd;
+    border: 0px;
+  }
+  .sidebar-collapse .main-sidebar,
+  .sidebar-collapse .main-sidebar::before {
+    margin-left: -270px;
+  }
+  nav#navbar {
+    flex-direction: row-reverse;
+    padding-right: 1.5rem;
+  }
+  ul#header-icons {
+    margin-right: 4rem;
+  }
+  #smp-content .content-title {
+    font-size: 1.2rem;
+  }
+  #smp-content .breadcrumb {
+    font-size: 0.7rem;
+  }
+  #smp-footer {
+    font-size: 0.6rem;
+    text-align: center;
+  }
+  #smp-footer a {
+    font-size: 0.6rem;
+  }
+  #smp-content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  #smp-content .card-body {
+    padding: 2rem 1rem;
+  }
+  #smp-form select,
+  #smp-form input {
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  #smp-content .smp-button-clear,
+  #smp-content .smp-button {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 0.8rem;
+    margin-left: 25px;
+  }
+  .col-12.col-sm-6.col-md-6.col-lg-3.mt-2 {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  #smp-content .col-auto.mbm-30 {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  div#example2_wrapper {
+    margin-top: 1.5rem;
+  }
+  table#example2 {
+    margin-top: 1.5rem;
+  }
+  #example2 thead th {
+    line-height: 1rem;
+    font-size: 0.7rem;
+  }
+  #example2 tbody tr {
+    line-height: 1.5rem;
+  }
+  #example2 tbody tr td {
+    font-size: 0.8rem;
+  }
+  .dropdown-menu.show {
+    font-size: 0.8rem;
+  }
+  #smp-content div#page_info {
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 300;
+  }
+  ul.ngx-pagination {
+    padding-left: 0px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1rem;
+    margin-top: 1.5rem;
+  }
+  #smp-form label {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+  #example2 thead th {
+    white-space: nowrap;
+  }
+  #menu a.nav-link {
+    display: block;
+  }
+  #banner ul.button-reg-bot {
+    flex-direction: column;
+  }
+  #banner a.color-3 {
+    background-color: var(--newprimary);
+    color: white;
+  }
+  #banner a.color-3:hover {
+    background-color: var(--naccent1);
+    color: white;
+  }
+  #content .heading-minister {
+    padding: 0px 15px 27px 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: -1px;
+  }
+  #page-header h6 {
+    font-size: 0.8rem;
+  }
+  #page-header h1 {
+    font-size: 1.3rem;
+  }
+  #page-header ul.bread_crumb.text-center {
+    padding-left: 0rem;
+  }
+  #sidebar .active {
+    margin-left: 0px;
+  }
+  #header button.mobile-menu {
+    display: block !important;
+    color: #fff;
+  }
+  #header .theme_btn.tp_two {
+    margin-left: 0px;
+  }
+  div#myDIV {
+    height: 100vh;
+    margin-top: 2rem;
+  }
+  /* .navbar-expand-lg .navbar-nav .nav-item.drop_down .nav-link.link_hd,
+    .navbar-expand-lg .navbar-nav .nav-link, .navbar-nav .nav-link{
+        padding: 15px 20px;
+        background-color: #e3f2fd;
+        border-bottom: 1px solid white;
+    } */
+  #header-icons .dropdown-menu {
+    width: fit-content;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 0.8rem;
+    color: #212529;
+    text-align: center;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px 1px 20px solid #74747415;
+    border-radius: 0.25rem;
+  }
+  a.theme_btn.tp_two.logo-button-website {
+    margin-top: 2rem;
+  }
+  a#verify {
+    min-width: 100%;
+    padding: 15px 17vw;
+  }
+  #registration {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  #registration button {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  #registration button .color-3 {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+  }
+  #user-login .login-logo img {
+    display: none;
+  }
+  #data-stats .stat-value {
+    font-size: 1.5rem;
+  }
+  #data-stats .stat-title {
+    font-size: 0.65rem;
+  }
+  #data-stats .data-card-bottom span {
+    font-size: 0.75rem;
+    line-height: 12px;
+  }
+  #data-stats .data-card-bottom img {
+    width: 12px;
+  }
+  #graph-stats .stats-title {
+    font-size: 0.65rem;
+  }
+  #graph-stats .chart-key {
+    font-size: 0.6rem;
+  }
+  #data-stats .stats-icon {
+    width: 1.5rem;
+  }
+  #smp-dashboard .content-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (min-device-width: 481px) and (max-device-width: 768px) {
+  .mobile-menu {
+    display: inline-block;
+  }
+  #user-login .col-sm-5 {
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background: white;
+    height: 100vh;
+  }
+  #user-login .card-body {
+    margin-top: 20%;
+    border-radius: 0.5rem;
+    padding: 3rem 2rem 4rem 2rem;
+  }
+  #user-login .login-logo img {
+    display: none;
+  }
+  .navbar-brand {
+    width: 70%;
+  }
+  #header .header-logo {
+    width: 100%;
+  }
+  #new-patient,
+  #smp-footer,
+  #smp-dashboard,
+  #smp-content {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #fefcfb;
+    border: 0px;
+  }
+  nav#navbar {
+    margin-left: 0px;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    background-color: #e3f2fd;
+    border: 0px;
+  }
+  .sidebar-collapse .main-sidebar,
+  .sidebar-collapse .main-sidebar::before {
+    margin-left: -270px;
+  }
+  nav#navbar {
+    flex-direction: row-reverse;
+    padding-right: 1.5rem;
+  }
+  ul#header-icons {
+    margin-right: 4rem;
+  }
+  #smp-content .content-title {
+    font-size: 1.2rem;
+  }
+  #smp-content .breadcrumb {
+    font-size: 0.7rem;
+  }
+  #smp-footer {
+    font-size: 0.6rem;
+    text-align: center;
+  }
+  #smp-footer a {
+    font-size: 0.6rem;
+  }
+  #smp-content {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  #smp-content .card-body {
+    padding: 2rem 1rem;
+  }
+  #smp-form select,
+  #smp-form input {
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+  #smp-content .smp-button-clear,
+  #smp-content .smp-button {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  .col-12.col-sm-6.col-md-6.col-lg-3.mt-2 {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  #smp-content .col-auto.mbm-30 {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  div#example2_wrapper {
+    margin-top: 1.5rem;
+  }
+  table#example2 {
+    margin-top: 1.5rem;
+  }
+  #example2 thead th {
+    line-height: 1rem;
+    font-size: 0.7rem;
+  }
+  #example2 tbody tr {
+    line-height: 1.5rem;
+  }
+  #example2 tbody tr td {
+    font-size: 0.8rem;
+  }
+  .dropdown-menu.show {
+    font-size: 0.8rem;
+  }
+  #smp-content div#page_info {
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 300;
+  }
+  ul.ngx-pagination {
+    padding-left: 0px;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1rem;
+    margin-top: 1.5rem;
+  }
+  #smp-form label {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+  #example2 thead th {
+    white-space: nowrap;
+  }
+  #menu a.nav-link {
+    display: block;
+  }
+  #banner ul.button-reg-bot {
+    flex-direction: inherit;
+  }
+  #banner a.color-3 {
+    background-color: var(--newprimary);
+    color: white;
+  }
+  #banner a.color-3:hover {
+    background-color: var(--naccent1);
+    color: white;
+  }
+  #content .heading-minister {
+    padding: 0px 15px 27px 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: -1px;
+  }
+  #page-header h6 {
+    font-size: 0.8rem;
+  }
+  #page-header h1 {
+    font-size: 1.3rem;
+  }
+  #page-header ul.bread_crumb.text-center {
+    padding-left: 0rem;
+  }
+  #sidebar .active {
+    margin-left: 0px;
+  }
+  #header button.mobile-menu {
+    display: block !important;
+  }
+  #header .theme_btn.tp_two {
+    margin-left: 0px;
+  }
+  div#myDIV {
+    height: 100vh;
+    margin-top: 2rem;
+  }
+  /* .navbar-expand-lg .navbar-nav .nav-item.drop_down .nav-link.link_hd,
+    .navbar-expand-lg .navbar-nav .nav-link, .navbar-nav .nav-link{
+        padding: 15px 20px;
+        background-color: var(--bodybg);
+        border-bottom: 1px solid white;
+    } */
+  #header-icons .dropdown-menu {
+    width: fit-content;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 0.8rem;
+    color: #212529;
+    text-align: center;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px 1px 20px solid #74747415;
+    border-radius: 0.25rem;
+  }
+  a.theme_btn.tp_two.logo-button-website {
+    margin-top: 2rem;
+  }
+  #registration {
+    margin-top: 2rem;
+  }
+  #registration button {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+  #registration button .color-3 {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+  }
+  #data-stats .stat-value {
+    font-size: 1.2rem;
+  }
+  #data-stats .stat-title {
+    font-size: 0.65rem;
+  }
+  #data-stats .data-card-bottom span {
+    font-size: 0.7rem;
+    line-height: 12px;
+  }
+  #data-stats .data-card-bottom img {
+    width: 12px;
+  }
+  #graph-stats .stats-title {
+    font-size: 0.65rem;
+  }
+  #graph-stats .chart-key {
+    font-size: 0.6rem;
+  }
+  #data-stats .stats-icon {
+    width: 1.5rem;
+  }
+  #smp-dashboard .content-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 750px) {
+  .nav > .nav-btn {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .nav > .nav-btn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .nav > .nav-btn > label:hover,
+  .nav #nav-check:checked ~ .nav-btn > label {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .nav > .nav-btn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #eee;
+  }
+  #registration {
+    margin-top: 2rem;
+  }
+  #registration button {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+  #registration button .color-3 {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+  }
+}
+@media (max-width: 920px) {
+  #sidebar .disapp {
+    width: 0px;
+  }
+  input[type="checkbox"] {
+    display: none;
+  }
+  #registration {
+    margin-top: 2rem;
+  }
+  #registration button {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+  #registration button .color-3 {
+    padding: 20px 10px;
+    background-color: var(--newprimary);
+  }
+
+  /*nav#myDIV{
+    position: fixed;
+    background-color: var(--Header);
+    height: 100vh;
+    left: -100%;
+    display: block;
+    transition: all 0.3s ease;
+}*/
+
+  #click:checked ~ nav {
+    left: 0;
+  }
+}
+
+/*@media (max-width:920px) {
+    input[type="checkbox"]{
+        display: block;
+    }
+  #school-body .main-sidebar{
+    margin-left: 0px;
+}
+#sidebar{
+    background-color: #40404000;
+}
+.mobile-logo{
+display: inline-block;
+}
+.desktop-logo{
+display: none;
+}
+label.menu-btn{
+    color: var(--newprimary);
+}
+aside nav ul{
+    position: fixed;
+    background-color: var(--Header);
+    padding-top: 3rem;
+    height: 100vh;
+    left: -100%;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+
+#click:checked ~ ul{
+    left: 0;
+  }
+#sidebar ul li a:target{
+
+}
+}
+*/
+@media (max-width: 767px) {
+  #navbar ul.navbar-nav {
+    justify-content: flex-end !important;
+    margin-right: 5px !important;
+  }
+  #navbar ul.navbar-nav li a.btn-link,
+  #navbar ul.navbar-nav li a.nav-link {
+    color: #2f71c8 !important;
+  }
+  .m-35 {
+    margin-bottom: 5px !important;
+  }
+  #sidebar {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  #new-patient,
+  #smp-footer,
+  nav#navbar,
+  #smp-dashboard,
+  #smp-content {
+    margin-left: 270px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border: 0;
+  }
+ .c-list-description > div .c-list-description-section {
+    flex: 1 0 100%;
+    margin-bottom: 24px;
+    /*max-width: calc(50% - 32px);*/
+  }
+}

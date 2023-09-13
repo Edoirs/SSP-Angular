@@ -1,0 +1,187 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" id="smp-content">
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Left col -->
+
+            <!-- MAP & BOX PANE -->
+            <div class="card">
+                <div class="card-header card-bg">
+                    <h3 class="card-title mt-2">Settlement History</h3>
+                </div>
+                <div class="card-body">
+                    <form id="smp-form" [formGroup]="searchForm" autocomplete="off" class="mt-1"
+                        (ngSubmit)="onSubmitSearch()">
+                        <div class="form-row">
+                            <div class=" col-sm-3  mt-1">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="invoice" maxlength="11" id="invoice"
+                                        formControlName="invoice" placeholder="Enter Invoice Number" />
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-3  mt-1">
+                                <div class="form-group">
+                                    <input type="date" name="startDate"  [max]="date" [min]="minDate"
+                                        formControlName="startDate" id="startDate" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && searchForm.controls['startDate'].errors  }" />
+                                    <!-- <div *ngIf="submitted &amp;&amp; searchForm.controls['startDate'].errors"
+                      class="form-text text-danger">
+                      <div *ngIf="searchForm.controls['startDate'].errors['required']">Start Date
+                        is required</div>
+                    </div> -->
+                                </div>
+                            </div>
+                            <div class=" col-sm-3  mt-1">
+                                <div class="form-group">
+                                    <input type="date" name="endDate" [max]="date" [min]="minDate"  formControlName="endDate"
+                                        id="endDate" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && searchForm.controls['endDate'].errors  }" />
+                                    <!-- <div *ngIf="submitted &amp;&amp; searchForm.controls['endDate'].errors" class="form-text text-danger">
+                      <div *ngIf="searchForm.controls['endDate'].errors['required']">End Date
+                        is required</div>
+                    </div> -->
+                                </div>
+                            </div>
+                            <div class=" col-sm-5 mt-1">
+                                <button type="submit" class="btn btn-primary font-12 smp-button">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <button type="button" class="btn btn-primary font-12 smp-button-clear"
+                                    (click)="clearSearch()">
+                                    <i class="fas fa-sync-alt"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <!-- /.card-header -->
+                    <table
+                    class="table table-bordered table-condensed table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl"
+                    datatable  *ngIf="paymentStatsData" [dtOptions]="dtOptionsPopUp1" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Total settlement (₦)</th> 
+                        <th>NISWASEC (₦)</th>
+                        <th>IGR (₦)</th> 
+                        <th>Provider (₦)</th>          
+                        <th>Transaction Charges (₦) </th>  
+                        <th>Split Charges (₦) </th>  
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ "₦" }} {{ paymentStatsData?.total | number:'1.0':'en-US' }}</td>
+                        <td>{{ "₦" }} {{ paymentStatsData?.total_mda | number:'1.0':'en-US' }}</td>
+                        <td>{{ "₦" }} {{ paymentStatsData?.total_igr | number:'1.0':'en-US' }}</td> 
+                        <td>{{ "₦" }} {{ paymentStatsData?.total_provider | number:'1.0':'en-US' }}</td> 
+                        <td>{{ "₦" }} {{ paymentStatsData?.total_pos | number:'1.0':'en-US'  }}</td> 
+                        <td>{{ "₦" }} {{ paymentStatsData?.split_charges | number:'1.0':'en-US'  }}</td> 
+                    </tr> 
+                    </tbody>
+                  </table>
+
+                    <div class="card-body mt-4">
+                        <div class="col-auto mbm-30">
+                            <div class="row m-35" *ngIf="settlementData">
+                                <div class="col-sm-4" style="z-index: 1;">
+                                    <span>Show &nbsp; </span>
+                                    <select (change)="setItemsPerPage(page.value)" #page>
+                                        <option [selected]="currentPageLength == 10">10</option>
+                                        <option [selected]="currentPageLength == 30">30</option>
+                                        <option [selected]="currentPageLength == 50">50</option>
+                                        <option [selected]="currentPageLength == 100">100</option>
+                                        <option [selected]="currentPageLength == 500">500</option>
+                                        <option [selected]="currentPageLength == 1000">1000</option>
+                                    </select>
+                                    <span> &nbsp; entries </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <table class="table table-bordered table-sm row-border hover mt-4" id="example2"
+                                    *ngIf="settlementData" datatable [dtOptions]="dtOptions">
+                                    <thead style="white-space: nowrap">
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Consumer Name</th>
+                                            <th>Contract Id</th>
+                                            <th>Identifier</th>
+                                            <th>Invoice Number</th>
+                                            <th>Request Reference</th>
+                                            <th>Total Amount Paid (₦)</th>
+
+                                            <th>Provider (₦)</th>
+                                            <th>MDA Collection (₦)</th>
+                                            <th>IGR Collection (₦)</th>
+                                           
+                                            <th>PGC Collection (₦)</th>
+                                            <th>Split Charges (₦)</th>
+                                            <th>Year</th>
+                                            <th>Transaction Date</th>
+                                            <th>Payment Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="white-space: nowrap">
+                                        <tr *ngFor="let mydata of settlementData | paginate : config;let i = index">
+                                            <td>{{ config.itemsPerPage * (config.currentPage - 1) + i + 1 }}</td>
+                                            <td>{{ mydata.first_name }}  {{ mydata.last_name }}</td>
+                                            <td>{{ mydata.contract_reference }} </td>
+                                            <td>{{ mydata.identifier }}</td>
+                                            <td>{{ mydata.invoice_number }} </td>
+                                            <td>{{ mydata.request_reference }} </td>
+
+                                            <td>{{ "₦" }} {{ mydata.total_paid | number:'1.0':'en-US' }} </td>
+                                            <td>{{ "₦" }} {{ mydata.provider | number:'1.0':'en-US' }} </td>
+                                            <td>{{ "₦" }} {{ mydata.mda_collection | number:'1.0':'en-US' }} </td>
+                                            <td>{{ "₦" }} {{ mydata.igr_collection | number:'1.0':'en-US' }} </td>
+                                            <td>{{ "₦" }} {{ mydata.pgc_collection | number:'1.0':'en-US' }} </td>
+                                            <td>{{ "₦" }} {{ mydata.split_charges | number:'1.0':'en-US' }} </td>
+                                            <td>{{ mydata.year }} </td>
+                                            <td>{{ mydata.tx_date | date: "dd MMM yyyy" }}</td>
+                                            <td *ngIf="mydata.invoice_payment_status_id == 1">Awaiting Payment </td>
+                                            <td *ngIf="mydata.invoice_payment_status_id == 2">Partial </td>
+                                            <td *ngIf="mydata.invoice_payment_status_id == 3">Paid </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row m-0 mt-3">
+                                <div class="col-sm-6">
+                                    <div id="page_info" class="record-show-text-bottom" *ngIf="settlementData">
+                                        Showing
+                                        {{ (config.currentPage - 1) * config.itemsPerPage + 1 }} -
+                                        {{ config.currentPage * config.itemsPerPage }} &nbsp; of
+                                        &nbsp;{{ config.totalItems }}
+                                        &nbsp; entries
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div *ngIf="settlementData">
+                                        <pagination-controls (pageChange)="pageChange($event)" class="float-right">
+                                        </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <!-- /.card-footer -->
+            </div>
+
+            <!-- /.card -->
+            <!-- </div> -->
+            <!-- /.col -->
+
+            <!-- /.col -->
+        </div>
+        <!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

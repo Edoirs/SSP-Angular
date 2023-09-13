@@ -1,0 +1,50 @@
+
+<!--whatsapp section start -->
+
+<div class="wa-box-outer-1">
+    <span class="whsatapp-icon close-ws" (click)="waClick()">X</span>
+
+    <!-- whatsapp row 1 -->
+    <div class="wa-box-outer-2">
+
+        <div class="profile-box">
+            <div class="profile-img"><img src="assets/image/profile/p-1.png"> <div class="wa-active"></div></div>
+            <div class="profile-name">
+                <div class="person-name">John Doe</div>
+                <div class="typing-status">Typically replies within a day</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- whatsapp row 2 -->
+    <div class="wa-box-outer-3 min-height-200">
+
+        <!-- sender box -->
+        <div class="sender-box">
+            <div class="name">John Doe</div>
+            <div class="message-box">Hi there, How can I help you ?</div>
+            <div class="time">{{today | date:'fullDate'}} {{today | date:'h:mm a'}}</div>
+        </div>
+
+
+
+    </div>
+
+    <!-- whatsapp row 3 -->
+    <div class="wa-box-outer-4">
+        <a href="https://api.whatsapp.com/send?phone={{whatsAppNo}}&text=&source=&data=" class="button-start-chat" target="_blank">Start Chat</a>
+        <!-- <a href="https://api.whatsapp.com/send?phone=918287699730&text=&source=&data=" class="whatsApp" target="_blank"><i class="fa fa-whatsapp my-whatsApp"></i></a> -->
+    </div>
+
+
+
+  </div>
+
+
+  <button class="whsatapp-icon"  (click)="waClick()">
+    <img src="assets/image/whatsapp-icon.png">
+  </button>
+
+
+  <!--whatsapp section end -->

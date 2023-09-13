@@ -1,0 +1,144 @@
+<app-webheader></app-webheader>
+<main class="main-content-login" id="smp-contact">
+  <div class="container">
+    <div class="row">
+      <div class="d-flex flex-lg-row flex-column-reverse justify-content-center my-auto">
+        <div class="col-md-6 col-12 my-5 pb-5" style="
+            background-color: #1a2634;
+            box-shadow: 0px 0px 4px #0d1820, 0px 0px 8px #333;
+            opacity: 0.9;
+          ">
+          <div class="row justify-content-center px-1 my-5 text-center">
+            <img src="assets/image/niger.jpg" class="img-fluid" id="logo-login" alt="logo" />
+
+            <h1 class="text-center msg-info">NISWASEC</h1>
+            <h6 class="text-center msg-info">
+              Enter Email address to Login to your account
+            </h6>
+          </div>
+          <div *ngIf="showLoginForm" class="form_box type_one remove-pt">
+            <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="onOtpSubmit(loginForm.value)">
+              <div class="messages"></div>
+              <div class="controls">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <!-- <label class="form-control-label text-muted">Enter Your Email Address</label> -->
+
+                    <input type="email" id="email" name="emailAddress" placeholder="Email address" class="form-control"
+                      (change)="checkEmail(loginForm.value)" formControlName="emailAddress"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['emailAddress'].errors }" />
+
+                    <div class="input-group-append mail-password">
+                      <div class="input-group-text mail-position">
+                        <span class="fas fa-envelope pb-12"></span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['emailAddress'].errors"
+                      class="form-text text-danger">
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['required']">
+                        Email is required
+                      </div>
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['pattern']">
+                        Please enter a valid email
+                      </div>
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['maxlength']">
+                        Email must be under 45 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12" *ngIf="showOtpForm">
+                  <div class="form-group relative-position">
+                    <!-- <label class="form-control-label text-muted">Password</label> -->
+                    <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password"
+                      name="password" placeholder="Password" id="psw" />
+
+                    <div class="input-group-append eye-password">
+                      <div class="input-group-text eye-position">
+                        <span class="pb-12 fa" [ngClass]="{
+                            'fa-eye': !fieldTextType,
+                            'fa-eye-slash': fieldTextType
+                          }" (click)="toggleFieldTextType()">
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['password'].errors"
+                      class="form-text text-danger">
+                      <div *ngIf="loginForm.controls['password'].errors['required']">
+                        Password is required
+                      </div>
+                      <!-- <div *ngIf="loginForm.controls['password'].errors['minlength']">
+                        Password must be 8 character long.
+                      </div> -->
+                      <div *ngIf="loginForm.controls['password'].errors['maxlength']">
+                        Password must not exceed 40 character.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-12" *ngIf="showOtpForm">
+                  <div class="form-group relative-position">
+                    <!-- <label class="form-control-label text-muted">Enter OTP</label> -->
+                    <input [type]="fieldTextType2 ? 'text' : 'password'" id="psw" class="form-control"
+                      formControlName="enterOtp" name="enterOtp" placeholder="Enter 6-digit code to login" maxlength="6"
+                      (keypress)="keyPressNumbersWithDecimal($event)" />
+                    <div class="input-group-append eye-password">
+                      <div class="input-group-text eye-position">
+                        <span class="pb-12 fa" [ngClass]="{
+                            'fa-eye': !fieldTextType2,
+                            'fa-eye-slash': fieldTextType2
+                          }" (click)="toggleFieldTextType2()">
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['enterOtp'].errors"
+                      class="text-danger validation-error">
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['required']">
+                        OTP is required
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['pattern']">
+                        Characters or space are not allowed
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['maxlength']">
+                        OTP must be max 6 characters
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['minlength']">
+                        OTP must be min 6 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <button class="btn btn-outline-secondary btn-block logo-button-website text-white" type="submit">
+                      Login to NISWASEC
+                    </button>
+                    <!-- <button class="btn btn-outline-secondary btn-block logo-button-website" [disabled]="loginForm.invalid" type="submit">Login to
+                                NISWASEC</button> -->
+                  </div>
+                </div>
+
+                <div class="login-remeber text-center my-2">
+                  <a class="a-login" [routerLink]="['/forgotpassword']"><small class="form-text mt-3 text-white">Forgot
+                      Password?</small></a>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!--
+                <div class="text-center py-3">
+                  <p class="lead">If you have any issues logging in or accessing your account, please contact our support team.
+
+                    Thank you for using Niger State Water and Sewage Corp. App!</p>
+                </div>end title -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<app-webfooter></app-webfooter>
+
+<!-- <app-scrolltotop></app-scrolltotop> -->

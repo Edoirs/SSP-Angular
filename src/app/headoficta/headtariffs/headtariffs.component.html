@@ -1,0 +1,418 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" id="smp-content">
+  <section class="content">
+    <div class="container-fluid">
+      <!-- MAP & BOX PANE -->
+      <div class="card">
+        <div class="card-header card-bg">
+          <h3 class="card-title mt-2 ms-3">Tariff Listings</h3>
+          <button class="btn btn-sm btn-primary float-right" (click)="createAdmin(createAdminModal)">
+            Create Tariff
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- /.card-header -->
+
+          <div class="card-body">
+            <div class="col-auto mbm-30">
+              <div class="row m-35" *ngIf="tariffListData">
+                <div class="col-sm-4"  style="z-index: 1;">
+                  <span>Show &nbsp; </span>
+                  <select (change)="setItemsPerPage(page.value)" #page>
+                    <option [selected]="currentPageLength == 10">10</option>
+                    <option [selected]="currentPageLength == 30">30</option>
+                    <option [selected]="currentPageLength == 50">50</option>
+                    <option [selected]="currentPageLength == 100">100</option>
+                    <option [selected]="currentPageLength == 500">500</option>
+                    <option [selected]="currentPageLength == 1000">1000</option>
+                  </select>
+                  <span> &nbsp; entries </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <table class="table table-bordered table-sm row-border hover mt-4   " id="example2" *ngIf="tariffListData"
+                  datatable [dtOptions]="dtOptions">
+                  <thead style="white-space: nowrap">
+                    <tr>
+                      <th>S/N</th>
+                      <th>Tariff Id</th>
+                      <th>Name</th>
+                      <th>Sub-Tariff Count</th>
+                      <th>Action</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  <tbody style="white-space: nowrap">
+                    <tr *ngFor="
+                        let mydata of tariffListData | paginate : config;
+                        let i = index
+                      ">
+                      <td>
+                        {{
+                        config.itemsPerPage * (config.currentPage - 1) + i + 1
+                        }}
+                      </td>
+                      <td>{{ mydata.id }}</td>
+                      <td>{{ mydata.name }}</td>
+                      <td>{{ mydata.sub_tariff_count }}</td>
+                      <td style="width: 10%">
+                        <button class="btn btn-sm btn-outline-success"
+                          (click)="onEditTariff(vieweditTariffModal, mydata)">
+                          <i class="nav-icon fa fa-pencil"></i> Edit
+                        </button>
+                      </td>
+                      <td style="width: 10%">
+                        <button class="btn btn-sm btn-outline-success" (click)="
+                            viewSingleTariff(viewSingleTariffModal, mydata)
+                          ">
+                          <i class="nav-icon fas fa-eye"></i> View
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row m-0 mt-3">
+                <div class="col-sm-6">
+                  <div id="page_info" class="record-show-text-bottom" *ngIf="tariffListData">
+                    Showing
+                    {{ (config.currentPage - 1) * config.itemsPerPage + 1 }} -
+                    {{ config.currentPage * config.itemsPerPage }} &nbsp; of
+                    &nbsp;{{ config.totalItems }}
+                    &nbsp; entries
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div *ngIf="tariffListData">
+                    <pagination-controls (pageChange)="pageChange($event)" class="float-right">
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+
+        <!-- /.card-footer -->
+      </div>
+    </div>
+    <!--/. container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<ng-template #viewSingleTariffModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Single Tariff</h4>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm row-border hover mt-3   " id="example2" *ngIf="singleTariffData"
+          datatable [dtOptions]="dtOptionsPopUp1">
+          <thead style="white-space: nowrap">
+            <tr>
+              <th>Tariff Id</th>
+              <th>Name</th>
+              <th>Sub-Tariff Count</th>
+            </tr>
+          </thead>
+          <tbody style="white-space: nowrap">
+            <tr>
+              <td>{{ singleTariffData.id }}</td>
+              <td>{{ singleTariffData.name }}</td>
+              <td>{{ singleTariffData.sub_tariff_count }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
+      Close
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #vieweditTariffModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Tariff</h4>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <div class="table-responsive">
+        <form id="smp-form" autocomplete="off" [formGroup]="editTariffForm">
+          <div class="messages"></div>
+          <div class="controls">
+            <br />
+            <div class="row">
+              <div class="col-lg-4 col-sm-12">
+                <div class="mb-3">
+                  <label for="role" class="form-label"> Name*</label>
+
+                  <select type="text" name="name" id="name" formControlName="name" [ngClass]="{
+                      'is-invalid':
+                        submitted && editTariffForm.controls['name'].errors
+                    }" class="form-control">
+                    <option value=""  disabled="true">Select Name</option>
+                    <option *ngFor="let data of tariffTypes" [value]="data.name">
+                      {{ data.name }}
+                    </option>
+                  </select>
+                  <div *ngIf="submitted && editTariffForm.controls['name'].errors" class="form-text text-danger">
+                    <div *ngIf="editTariffForm.controls['name'].errors['required']">
+                      Name is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                  <div class="form-group">
+                    <button class="theme_btn tp_two logo-button-website" (click)="updateAdmin(editTariffForm.value)"
+                      type="submit">
+                      Update Admin
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
+      Close
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #createAdminModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Admin</h4>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <form id="smp-form" autocomplete="off" [formGroup]="addAdminform">
+        <div class="messages"></div>
+        <div class="controls">
+          <br />
+          <div class="row">
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="firstName" class="form-label">First Name*</label>
+                <input type="text" formControlName="firstName" maxlength="30" id="firstName" class="form-control"
+                  placeholder="Enter First Name" [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['firstName'].errors
+                  }" />
+                <div *ngIf="
+                    submitted1 && addAdminform.controls['firstName'].errors
+                  " class="form-text text-danger">
+                  <div *ngIf="
+                      addAdminform.controls['firstName'].errors['required']
+                    ">
+                    First Name is required
+                  </div>
+                  <div *ngIf="addAdminform.controls['firstName'].errors['pattern']">
+                    Please enter a valid First Name
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['firstName'].errors['maxlength']
+                    ">
+                    First Name must be at most 30 characters
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="middleName" class="form-label">Middle Name</label>
+                <input type="text" formControlName="middleName" maxlength="30" id="middleName" class="form-control"
+                  placeholder="Enter Middle Name" [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['middleName'].errors
+                  }" />
+                <div *ngIf="
+                    submitted1 && addAdminform.controls['middleName'].errors
+                  " class="text-danger">
+                  <div *ngIf="
+                      addAdminform.controls['middleName'].errors['pattern']
+                    ">
+                    Please enter a valid Middle Name
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name*</label>
+                <input type="text" formControlName="lastName" maxlength="30" id="lastName" class="form-control"
+                  placeholder="Enter Last Name" [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['lastName'].errors
+                  }" />
+                <div *ngIf="submitted1 && addAdminform.controls['lastName'].errors" class="form-text text-danger">
+                  <div *ngIf="addAdminform.controls['lastName'].errors['required']">
+                    Last Name is required
+                  </div>
+                  <div *ngIf="addAdminform.controls['lastName'].errors['pattern']">
+                    Please enter a valid Last Name
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['lastName'].errors['maxlength']
+                    ">
+                    Last Name must be at most 30 characters
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="emailAddress" class="form-label">Email*</label>
+                <input type="text" class="form-control" name="emailAddress" placeholder="Email Address"
+                  formControlName="emailAddress" id="emailAddress" maxlength="45" [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['emailAddress'].errors
+                  }" />
+
+                <div *ngIf="
+                    submitted1 && addAdminform.controls['emailAddress'].errors
+                  " class="form-text text-danger">
+                  <div *ngIf="
+                      addAdminform.controls['emailAddress'].errors['required']
+                    ">
+                    Email Address is required
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['emailAddress'].errors['maxlength']
+                    ">
+                    Email Address be more than 60 characters
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['emailAddress'].errors['pattern']
+                    ">
+                    Email Address must contain alphabets
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Mobile*</label>
+
+                <input type="text" class="form-control" name="phoneNumber" maxlength="11" placeholder="Mobile Number"
+                  id="phoneNumber" (keypress)="keyPressNumbersWithDecimal($event)" formControlName="phoneNumber"
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['phoneNumber'].errors
+                  }" />
+
+                <div *ngIf="
+                    submitted1 && addAdminform.controls['phoneNumber'].errors
+                  " class="form-text text-danger">
+                  <div *ngIf="
+                      addAdminform.controls['phoneNumber'].errors['required']
+                    ">
+                    Mobile Number is required
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['phoneNumber'].errors['maxlength']
+                    ">
+                    Mobile Number must be at most 11 digit Long
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['phoneNumber'].errors['minlength']
+                    ">
+                    Mobile Number must be at least 11 digit long
+                  </div>
+                  <div *ngIf="
+                      addAdminform.controls['phoneNumber'].errors['pattern']
+                    ">
+                    Enter a valid Mobile Number
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="role" class="form-label"> Role*</label>
+
+                <select type="text" name="role" id="role" formControlName="role" [ngClass]="{
+                    'is-invalid':
+                      submitted1 && addAdminform.controls['role'].errors
+                  }" class="form-control">
+                  <option value=""  disabled="true">Select Role</option>
+                  <option *ngFor="let data of tariffTypes" [value]="data.id">
+                    {{ data.name }}
+                  </option>
+                </select>
+                <div *ngIf="submitted1 && addAdminform.controls['role'].errors" class="form-text text-danger">
+                  <div *ngIf="addAdminform.controls['role'].errors['required']">
+                    Role is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+              <div class="mb-3">
+                <label for="role" class="form-label"> Password*</label>
+
+                <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" maxlength="10"
+                  placeholder="Password" formControlName="password"
+                  [ngClass]="{ 'is-invalid': submitted1 &amp;&amp; addAdminform.controls['password'].errors }" />
+
+                <div class="input-group-append eye-password">
+                  <div class="input-group-text eye-position">
+                    <span class="fa" [ngClass]="{
+                        'fa-eye-slash': !fieldTextType,
+                        'fas fa-eye': fieldTextType
+                      }" style="margin-top: 44px; margin-right: 9px" (click)="toggleFieldTextType()">
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="submitted1 &amp;&amp; addAdminform.controls['password'].errors"
+                  class="form-text text-danger">
+                  <div *ngIf="addAdminform.controls['password'].errors['required']">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4 col-sm-12">
+                <div class="form-group">
+                  <button class="theme_btn tp_two logo-button-website" (click)="onAddNewUser(addAdminform.value)"
+                    type="submit">
+                    Create User
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
+      Close
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,529 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="parent">
+  <div class="content-wrapper" id="smp-dashboard">
+    <!-- Content Header (Page header) -->
+    <div class="content-header pt-0 mt-0">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 content-title">Welcome to your Dashboard</h1>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <!-- Content Row -->
+        <div class="row" id="data-stats">
+          <!-- card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header">
+                <div class="row no-gutters align-items-center">
+                  <div class="align-items-baseline">
+                    <div class="">
+                      <img src="assets/image/icon/status.svg" class="stats-icon float-left" />
+                    </div>
+                    <div class="">
+                      <h3 class="stat-title mx-auto">Status</h3>
+                    </div>
+                  </div>
+
+                  <div class="data-card-top">
+                    <div class="stat-value">Active</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header">
+                <div class="row no-gutters align-items-center">
+                  <div class="align-items-baseline">
+                    <div class="">
+                      <img src="assets/dist/img/wallet.svg" class="stats-icon float-left" />
+                    </div>
+                    <div class="">
+                      <h3 class="stat-title mx-auto">Total Transactions</h3>
+                    </div>
+                  </div>
+                  <div class="data-card-top">
+                    <div class="stat-value">
+                      {{ dashboardData?.consumers_count || '0' }}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header">
+                <div class="row no-gutters align-items-center">
+                  <div class="align-items-baseline">
+                    <div class="">
+                      <img src="assets/dist/img/naira.svg" class="stats-icon float-left" />
+                    </div>
+                    <div class="">
+                      <h3 class="stat-title mx-auto">
+                        Total Transactions (₦)
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="data-card-top">
+                    <div class="stat-value">{{ dashboardData?.metered_count || '₦ 0.00' }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header">
+                <div class="row no-gutters align-items-center">
+                  <div class="align-items-baseline">
+                    <div class="">
+                      <img src="assets/dist/img/user.png" class="stats-icon float-left" />
+                    </div>
+                    <div class="">
+                      <h3 class="stat-title mx-auto">
+                        Account Balance (₦)
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div class="data-card-top">
+                    <div class="stat-value">{{ dashboardData?.unmetered_count || '₦ 0.00'}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="graph-stats">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card ">
+                  <div class="card-header">
+                    <span class="stats-title">Transaction History</span>
+                    <div class="chart-key">
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="stats-graph">
+                      <canvas baseChart [data]="barChartData"> </canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header">
+                    <span class="stats-title"><i class="fas fa-list-alt"></i> To do List</span>
+                    <a class="dropdown-toggle text-black float-right" href="#" id="userDropdown" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                      aria-labelledby="userDropdown">
+                      <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-plus fa-sm fa-fw text-gray-400 mr-2"></i>
+                          <span>Add more</span>
+                        </div>
+                      </a>
+                      <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-list-alt fa-sm fa-fw text-gray-400 mr-2"></i>
+                          <span>View All</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="card-body" style="overflow-y: auto; min-height: 350px;">
+                    <!-- Create todo section -->
+                    <div class="row m-1 p-2">
+                      <div class="col col-11 mx-auto">
+                        <div
+                          class="row bg-white rounded shadow-sm p-2 pt-2 add-todo-wrapper align-items-center justify-content-center border">
+                          <div class="col">
+                            <input class="form-control form-control-lg border add-todo-input bg-transparent rounded"
+                              type="text" placeholder="Add new ..">
+                          </div>
+                          <div class="col-auto px-0 mx-0 mr-2">
+                            <button type="button" class="btn btn-primary">Add</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="p-1 border-black-25 border-bottom"></div>
+                    <!-- View options section -->
+                    <div class="row mx-auto justify-content-between">
+                      <div class="col-auto d-flex align-items-center px-1">
+                        <label class="text-secondary my-2 pr-1 view-opt-label">Filter:</label>
+                        <select class="form-select form-select-sm btn my-2">
+                          <option value="all" selected>All</option>
+                          <option value="completed">Completed</option>
+                          <option value="active">Active</option>
+                        </select>
+                      </div>
+                      <div class="col-auto d-flex align-items-center px-1">
+                        <label class="text-secondary my-2 pr-1 view-opt-label">Sort:</label>
+                        <select class="form-select form-select-sm btn my-2">
+                          <option value="all" selected>Date</option>
+                          <option value="completed">Added date</option>
+                          <option value="active">Due date</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- Todo list section -->
+                    <div class="row">
+                      <div class="col mx-auto">
+                        <!-- Todo item 1 -->
+                        <div class="row px-3 align-items-center todo-item rounded border-bottom">
+                          <div class="col-auto m-1 p-0 d-flex align-items-center">
+                            <input class="form-check-input-default" type="checkbox" value="" id="flexCheckChecked"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as complete">
+                          </div>
+                          <div class="col px-1 m-1 d-flex align-items-center">
+                            <input type="text"
+                              class="form-control form-control-lg border edit-todo-input bg-transparent rounded px-3"
+                              readonly value="Profile Setup" title="Profile Setup" />
+                          </div>
+                        <div class="col-auto m-1 p-0 px-3"></div>
+                          <div class="col-auto m-1 p-0 todo-actions">
+                            <div class="row d-flex align-items-center justify-content-end">
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-info m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Edit todo">
+                                  <i class="fa fa-pencil"></i>
+                                </button>
+                              </div>
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-danger m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Delete todo">
+                                  <i class="fa fa-trash-o"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row todo-created-info">
+                              <div class="col-auto d-flex align-items-center pr-2">
+                                <button class="btn btn-link text-black-50 m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Created date">
+                                  <i class="fa fa-info-circle"></i>
+                                </button>
+                                <label class="date-label my-2 text-black-50"> 08th Jun 2023</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Todo Item 2 -->
+                        <div class="row px-3 align-items-center todo-item rounded border-bottom">
+                          <div class="col-auto m-1 p-0 d-flex align-items-center">
+                            <input class="form-check-input-default" type="checkbox" value="" id="flexCheckChecked"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as complete">
+                          </div>
+                          <div class="col px-1 m-1 d-flex align-items-center">
+                            <input type="text"
+                              class="form-control form-control-lg border edit-todo-input bg-transparent rounded px-3"
+                              readonly value="Invoice Generation" title="Invoice Generation" />
+                          </div>
+                        <div class="col-auto m-1 p-0 px-3"></div>
+                          <div class="col-auto m-1 p-0 todo-actions">
+                            <div class="row d-flex align-items-center justify-content-end">
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-info m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Edit todo">
+                                  <i class="fa fa-pencil"></i>
+                                </button>
+                              </div>
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-danger m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Delete todo">
+                                  <i class="fa fa-trash-o"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row todo-created-info">
+                              <div class="col-auto d-flex align-items-center pr-2">
+                                <button class="btn btn-link text-black-50 m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Created date">
+                                  <i class="fa fa-info-circle"></i>
+                                </button>
+                                <label class="date-label my-2 text-black-50"> 15th Jun 2023</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Todo Item 3 -->
+                        <div class="row px-3 align-items-center todo-item rounded ">
+                          <div class="col-auto m-1 p-0 d-flex align-items-center">
+                            <input class="form-check-input-default" type="checkbox" value="" id="flexCheckChecked"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as complete">
+                          </div>
+                          <div class="col px-1 m-1 d-flex align-items-center">
+                            <input type="text"
+                              class="form-control form-control-lg border edit-todo-input bg-transparent rounded px-3"
+                              readonly value="Prepaid Credit Purchase" title="Prepaid Credit Purchase" />
+                          </div>
+                        <div class="col-auto m-1 p-0 px-3"></div>
+                          <div class="col-auto m-1 p-0 todo-actions">
+                            <div class="row d-flex align-items-center justify-content-end">
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-info m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Edit todo">
+                                  <i class="fa fa-pencil"></i>
+                                </button>
+                              </div>
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-danger m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Delete todo">
+                                  <i class="fa fa-trash-o"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row todo-created-info">
+                              <div class="col-auto d-flex align-items-center pr-2">
+                                <button class="btn btn-link text-black-50 m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Created date">
+                                  <i class="fa fa-info-circle"></i>
+                                </button>
+                                <label class="date-label my-2 text-black-50"> 28th Jul 2023</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                         <!-- Todo Item 3 -->
+                         <div class="row px-3 align-items-center todo-item rounded ">
+                          <div class="col-auto m-1 p-0 d-flex align-items-center">
+                            <input class="form-check-input-default" type="checkbox" value="" id="flexCheckChecked"
+                              data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as complete">
+                          </div>
+                          <div class="col px-1 m-1 d-flex align-items-center">
+                            <input type="text"
+                              class="form-control form-control-lg border edit-todo-input bg-transparent rounded px-3"
+                              readonly value="Prepaid Credit Purchase" title="Prepaid Credit Purchase" />
+                          </div>
+                        <div class="col-auto m-1 p-0 px-3"></div>
+                          <div class="col-auto m-1 p-0 todo-actions">
+                            <div class="row d-flex align-items-center justify-content-end">
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-info m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Edit todo">
+                                  <i class="fa fa-pencil"></i>
+                                </button>
+                              </div>
+                              <div class="col-auto p-0">
+                                <button class="btn btn-link text-danger m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Delete todo">
+                                  <i class="fa fa-trash-o"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row todo-created-info">
+                              <div class="col-auto d-flex align-items-center pr-2">
+                                <button class="btn btn-link text-black-50 m-0 p-0" data-bs-toggle="tooltip"
+                                  data-bs-placement="bottom" title="Created date">
+                                  <i class="fa fa-info-circle"></i>
+                                </button>
+                                <label class="date-label my-2 text-black-50"> 29th Jul 2023</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="card border rounded-1 shadow-sm">
+                  <div class="card-body" style="background-color: #F7F7F7; height: 120px;">
+                    <div class="d-flex align-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2388C2"
+                        class="bi bi-card-list" viewBox="0 0 16 16">
+                        <path
+                          d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                        <path
+                          d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+                      </svg>
+                      <div class="ms-3">
+                        <h5 class="mb-0">Bill Generated</h5>
+                      </div>
+                    </div>
+                    <div class="border-bottom mt-2"></div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                      <div class="stat-value2">5</div>
+                      <a href=""><span class="text-muted">View more </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2388C2"
+                          class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                          <path
+                            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+                        </svg></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="card border rounded-1 shadow-sm">
+                  <div class="card-body" style="background-color: #F7F7F7; height: 120px;">
+                    <div class="d-flex align-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2388C2"
+                        class="bi bi-receipt" viewBox="0 0 16 16">
+                        <path
+                          d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
+                        <path
+                          d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+                      </svg>
+                      <div class="ms-3">
+                        <h5 class="mb-0">Paid Invoices</h5>
+                      </div>
+                    </div>
+                    <div class="border-bottom mt-2"></div>
+                    <div class="d-flex justify-content-end align-items-center mt-2">
+                      <div class="stat-value2">₦ 25,124.00</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="card border rounded-1 shadow-sm">
+                  <div class="card-body" style="background-color: #F7F7F7; height: 120px;">
+                    <div class="d-flex align-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2388C2"
+                        class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                          d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293 6.854 8.146z" />
+                      </svg>
+                      <div class="ms-3">
+                        <h5 class="mb-0">Unpaid Invoices</h5>
+                      </div>
+                    </div>
+                    <div class="border-bottom mt-2"></div>
+                    <div class="d-flex justify-content-end align-items-center mt-2">
+                      <div class="stat-value2">₦ 15,676.00</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="card border rounded-1 shadow-sm">
+                  <div class="card-body" style="background-color: #F7F7F7; height: 120px;">
+                    <div class="d-flex align-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2388C2"
+                        class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                        <path
+                          d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path
+                          d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+                      </svg>
+                      <div class="ms-3">
+                        <h5 class="mb-0">Penalty Count</h5>
+                      </div>
+                    </div>
+                    <div class="border-bottom mt-2"></div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                      <div class="stat-value2">0</div>
+                      <a href=""><span class="text-muted">View more </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2388C2"
+                          class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                          <path
+                            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+                        </svg></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card">
+                <div class="card-header">
+                  <span class="stats-title"><i class="fas fa-bell"></i> Reminders</span>
+                  <a class="dropdown-toggle text-black float-right" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="userDropdown">
+
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-plus fa-sm fa-fw text-gray-400 mr-2"></i>
+                        <span>Add more</span>
+                      </div>
+                    </a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-list-alt fa-sm fa-fw text-gray-400 mr-2"></i>
+                        <span>Clear All</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover ">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Unpaid Invoice Number</th>
+                                <th></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>0000000507</td>
+                                <td>1 week ago</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>0000000508</td>
+                                <td>1 week ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <span class="stats-title">Transactions Information</span>
+                    <div class="chart-key">
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="stats-graph">
+                      <canvas baseChart [data]="salesData" [type]="'line'" [options]="chartOptions">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row p-3 border-top" id="data-stats">
+        </div>
+      </div>
+    </div>
+    <!-- /.content-wrapper -->
+  </div>
+</div>

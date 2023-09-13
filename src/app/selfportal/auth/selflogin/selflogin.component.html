@@ -1,0 +1,122 @@
+<app-webheader></app-webheader>
+<main class="selfportal-content-login" id="smp-contact">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-12 custom-bg5 login-image4 d-none d-md-block border-end"></div>
+      <div class="col-md-6 col-12 custom-bg5 center-box2">
+
+        <form class="w-50">
+          <div class="logo-circle mb-4">
+            <img src="assets/image/niger.jpg" class="img-fluid" id="logo-login" alt="logo" />
+          </div>
+          <h4 class="mb-4 text-center">NISWASEC SELF PORTAL</h4>
+          <h6 class="text-center text-gray">
+            Enter credentials to access your account
+          </h6>
+          <div *ngIf="showLoginForm" class="form_box type_one remove-pt">
+            <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="onOtpSubmit(loginForm.value)">
+              <div class="messages"></div>
+              <div class="controls">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <input type="email" id="email" name="emailAddress" placeholder="Email address" class="form-control"
+                      (change)="checkEmail(loginForm.value)" formControlName="emailAddress"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['emailAddress'].errors }" />
+
+                    <div class="input-group-append mail-password">
+                      <div class="input-group-text mail-position">
+                        <span class="fas fa-envelope pb-12"></span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['emailAddress'].errors"
+                      class="form-text text-danger">
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['required']">
+                        Email is required
+                      </div>
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['pattern']">
+                        Please enter a valid email
+                      </div>
+                      <div *ngIf="loginForm.controls['emailAddress'].errors['maxlength']">
+                        Email must be under 45 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12" *ngIf="showOtpForm">
+                  <div class="form-group relative-position">
+                    <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password"
+                      name="password" placeholder="Password" id="psw" />
+
+                    <div class="input-group-append eye-password">
+                      <div class="input-group-text eye-position">
+                        <span class="pb-12 fa" [ngClass]="{'fa-eye': !fieldTextType,'fa-eye-slash': fieldTextType
+                          }" (click)="toggleFieldTextType()">
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['password'].errors"
+                      class="form-text text-danger">
+                      <div *ngIf="loginForm.controls['password'].errors['required']">
+                        Password is required
+                      </div>
+                      <div *ngIf="loginForm.controls['password'].errors['maxlength']">
+                        Password must not exceed 40 character.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-12" *ngIf="showOtpForm">
+                  <div class="form-group relative-position">
+                     <input [type]="fieldTextType2 ? 'text' : 'password'" id="psw" class="form-control"
+                      formControlName="enterOtp" name="enterOtp" placeholder="Enter 6-digit code to login" maxlength="6"
+                      (keypress)="keyPressNumbersWithDecimal($event)" />
+                    <div class="input-group-append eye-password">
+                      <div class="input-group-text eye-position">
+                        <span class="pb-12 fa" [ngClass]="{
+                            'fa-eye': !fieldTextType2,
+                            'fa-eye-slash': fieldTextType2
+                          }" (click)="toggleFieldTextType2()">
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="submitted &amp;&amp; loginForm.controls['enterOtp'].errors"
+                      class="text-danger validation-error form-text">
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['required']">
+                        OTP is required
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['pattern']">
+                        Characters or space are not allowed
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['maxlength']">
+                        OTP must be max 6 characters
+                      </div>
+                      <div *ngIf="loginForm.controls['enterOtp'].errors['minlength']">
+                        OTP must be min 6 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <button class="btn btn-primary btn-block rounded-5" type="submit">
+                      Login
+                    </button>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group text-center">
+                    <a class="text-gray text-nowrap" [routerLink]="['/selfforgotpassword']">Forgot your Password?</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<app-webfooter></app-webfooter>
+

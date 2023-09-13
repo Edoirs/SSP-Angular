@@ -1,0 +1,93 @@
+<!-- footer section -->
+<section class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 col-sm-4">
+        <img
+          src="assets/image/nss-logo-new2.png"
+          class="img-fluid"
+          alt="logo"
+        />
+        <p class="footer_note mt-2" style="text-align: justify; text-justify: inter-word">
+          The Water Board by the NISWASEC Law 2020 has metamorphosed into a
+          wholly-owned Niger State Government Corporation.
+        </p>
+        <p>
+          <i class="fa fa-globe"></i> Nnamdi Azikiwe way Western bye Pass Minna
+        </p>
+        <p><i class="fa fa-envelope-o"></i><a href="mailto:info@nigerstatewaterboard.com.ng"  style="font-size: 16px; line-height: 30px; font-weight: 500; color: rgb(255, 253, 250)">info@nigerstatewaterboard.com.ng</a></p>
+        <p><i class="fa fa-phone"></i> +234 805 846 5076</p>
+      </div>
+      <div class="col-md-3 col-sm-4">
+        <div class="footer_widgets type_two">
+          <h3 class="widgets_title">Useful Links</h3>
+          <div class="widget_content">
+            <ul class="links">
+              <li><a [routerLink]="['/faqs']">What should I do</a></li>
+              <li><a [routerLink]="['/faqs']">FAQs</a></li>
+              <li><a [routerLink]="['/aboutus']">Latest Updates</a></li>
+              <li><a [routerLink]="['/contactus']">Contact Us</a></li>
+              <li><a [routerLink]="['/privacypolicy']">Our Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-4 newsletter">
+        <h3 style="color: #9ec2cf">Newsletter</h3>
+        <p class="footer_note" style="text-align: justify; text-justify: inter-word"  >
+          Stay up-to-date with the latest news, exclusive promotions, and valuable insights by subscribing to our newsletter today!
+        </p>
+        <div class="input-group">
+          <form action="#" method="post" >
+            <div style="display: flex;">
+              <input  id="myForm"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                class="form-control"
+                required
+              />
+              <button
+                type="button"
+                class=""  (click)="onSubmit()"
+                style="font-size: 14px; color:#fff; display: inline-block; background: #2388C2; border: none; padding: 13px 30px 12px;"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<div class="copyrights">
+  <div class="container">
+    <div class="footer-distributed">
+      <div class="footer-center">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <p class="mt-1 p-footer">
+              Copyright NISWASEC © {{ currYear }}
+              | Designed by NowNow Digital Systems Limited
+            </p>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <ul class="social-icons">
+              <li><a href="#" class="fa fa-facebook"></a></li>
+              <li><a href="#" class="fa fa-twitter"></a></li>
+              <li><a href="#" class="fa fa-youtube"></a></li>
+              <li><a href="#" class="fa fa-pinterest"></a></li>
+              <li><a href="#" class="fa fa-behance"></a></li>
+              <li><a href="#" class="fa fa-envelope-o"></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end container -->
+</div>
+<!-- end copyrights -->

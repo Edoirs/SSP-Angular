@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Niger Water Sewage Corporation</title>
+    <base href="./" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
+    />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+  <!-- <link rel="stylesheet" href="assets/dist/css/main.css"> -->
+  <link rel="stylesheet" href="assets/dist/css/dmain.css">
+
+
+  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/linearicons.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/owl.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/odometer.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/bsnav.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/dist/css/nresponsive.css">
+
+
+
+  <!-- <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" id="school-body">
+
+
+
+  <app-root></app-root>
+
+
+
+ <!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="assets/dist/js/adminlte.js"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+<script src="assets/plugins/raphael/raphael.min.js"></script>
+<script src="assets/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="assets/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+<!-- ChartJS -->
+<script src="assets/plugins/chart.js/Chart.min.js"></script>
+
+<!-- AdminLTE for demo purposes -->
+<!-- <script src="assets/dist/js/demo.js"></script> -->
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- <script src="assets/dist/js/pages/dashboard2.js"></script> -->
+
+</body>
+
+
+<noscript><meta http-equiv="refresh" content="0;url=errPage.html"></noscript>
+<script type = "text/javascript" >
+    function burstCache() {
+    if (!navigator.onLine) {
+        document.body.innerHTML = 'Loading...';
+        window.location = 'http://xyz.ErrorPage.html';
+    }
+
+    }
+     burstCache();
+</script>
+
+
+<!--<script>
+  let sidebar= document.getElementById("sidebar")
+let link= document.getElementByclass("nav-link")
+let showMenu= document.getElementById("show-menu")
+
+
+ link.addEventListener('click',function(){
+        document.getElementById("sidebar").style.display = "none"
+        });
+
+ showMenu.addEventListener('click',function(){
+        document.getElementById("sidebar").style.display = "flex"
+        });
+</script>-->
+
+<script>
+  jQuery(document).ready(function($){
+$('nav-link').on('click', function(){
+        $("aside").addClass("disapp");
+        $("#menu-icon").removeClass("active");
+    });
+    });
+</script>
+
+<script type="text/javascript">
+    if (top !== self) {
+        alert('The URL '+self.location.href+' cannot be viewed inside a frame.  You will be redirected.');
+        window.location.href = 'http://xyz.ErrorPage.html';
+    }
+</script>
+
+
+<script>
+  $(document).ready(function(){
+    if ($(window).width() <= 992){
+      $("#myDIV").css("display", "none");
+
+  }
+  });
+</script>
+
+
+<script>
+  jQuery(document).ready(function($) {
+    $(".entry-content").hide('slow');
+        $(".entry-title").click(function() {
+        $(".entry-content").hide();
+    $(this).parent().children(".entry-content").slideToggle(100); });
+  });
+</script>
+
+
+
+<script>
+$(document).scroll(function () {
+    var y = $(this).scrollTop();
+    if (y > 800) {
+        $('.show-go-to-top').fadeIn();
+
+    } else {
+        $('.show-go-to-top').fadeOut();
+    }
+
+});
+</script>
+
+
+
+<script>
+  $(function() {
+    $('.responsive-design').click(function() {
+
+      if ( $ (window).width() <= 991) {
+        $(".mobile-menu-asidebar").fadeToggle(500);
+      }
+
+    });
+  });
+</script>
+</html>
+
+

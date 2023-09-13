@@ -1,0 +1,262 @@
+<app-webheader></app-webheader>
+<main class="main-content" id="smp-contact">
+  <!------main-content------>
+  <!-----------page_title------------
+   <section class="page_title  pdt_80  pdb_40" id="page-header">
+      <div class="container">
+         <div class="row">---->
+            <!---------row--------->
+            <!-- <div class="col-lg-12 col-md-12 text-center"> -->
+               <!---------col---------->
+               <!-- <div class="content_box">
+                  <h6>Get in touch</h6>
+                  <h1> Contact us directly</h1>
+                  <ul class="bread_crumb text-center">
+                     <li class="bread_crumb-item"><a href="#">Home</a></li>
+                     <li class="bread_crumb-item active">Contact</li>
+                  </ul>
+               </div> -->
+               <!---------col-end------>
+            <!----------row-end-------->
+         <!-- </div>
+      </div>
+   </section> -->
+      <!-----------page_title-end-------------->
+  <section id="contactus">
+
+    <div style="width: 100%;position: relative;"><iframe width="100%" height="300"
+        src="https://maps.google.com/maps?width=1000&amp;height=300&amp;hl=en&amp;q=NIGER%20STATE%20WATER%20AND%20SEWAGE%20CORPORATION%20(NISWASEC)+(NIGER%20STATE%20WATER%20AND%20SEWAGE%20CORPORATION%20(NISWASEC))&amp;ie=UTF8&amp;t=&amp;z=11&amp;iwloc=B&amp;output=embed"
+        frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+      <div
+        style="position: absolute;width: 80%;bottom: 10px;left: 0;right: 0;margin-left: auto;margin-right: auto;color: #000;text-align: center;">
+        <small style="line-height: 1.8;font-size: 2px;background: #fff;">Powered by <a
+            href="http://www.googlemapsgenerator.com/fr/">Googlemapsgenerator.com/fr/</a> & <a
+            href="https://xn--snabbln5000-28a.com/lana-3000/">låna 3000 utan uc</a></small></div>
+      <style>
+        #gmap_canvas img {
+          max-width: none !important;
+          background: none !important
+        }
+      </style>
+    </div><br />
+
+  </section>
+
+  <section class="contact_page pdb_70 pdt_100">
+    <div class="container mt-5">
+      <div class="row my-4">
+        <div class="col-lg-12 col-md-12">
+          <h1 class="text-center text-white heading tp_one my-0">Get in touch with us!</h1>
+          <!----------row-end---------->
+        </div>
+        <!----------row-end---------->
+      </div>
+
+      <div class="row">
+        <!---------row----------->
+        <div class="col-lg-6 col-md-12">
+          <!---------col----------->
+          <div class="contact_us_form">
+            <p class="fw-light fs-6s">
+              If you need answers to your question, feel free to use our contact
+              form below and our experts will get back to you immediately
+            </p>
+            <div class="form_box type_one">
+              <form autocomplete="off" [formGroup]="contactUsForm" (ngSubmit)="onSubmitContactUs(contactUsForm.value)"
+                id="apply-admission">
+                <div class="messages"></div>
+                <div class="controls">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <input type="text" class="percent_100 login_input_padding" name="name" placeholder="Your Name"
+                          formControlName="name" />
+
+                        <div *ngIf="
+                            submitted && contactUsForm.controls['name'].errors
+                          " class="form-text text-danger">
+                          <div *ngIf="
+                              contactUsForm.controls['name'].errors['required']
+                            ">
+                            Name is required
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['name'].errors['maxlength']
+                            ">
+                            Name cannot be more than 45 characters
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['name'].errors['pattern']
+                            ">
+                            Name must contain alphabets
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <input type="email" class="percent_100 login_input_padding" name="email"
+                          placeholder="Your Email Address" formControlName="email" />
+
+                        <div *ngIf="
+                            submitted && contactUsForm.controls['email'].errors
+                          " class="form-text text-danger">
+                          <div *ngIf="
+                              contactUsForm.controls['email'].errors['required']
+                            ">
+                            Email is required
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['email'].errors['pattern']
+                            ">
+                            Please enter a valid email
+                          </div>
+                        </div>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <input type="text" class="percent_100 login_input_padding" name="phone" maxlength="11"
+                          placeholder="Your Phone" (keypress)="keyPressNumbersWithDecimal($event)"
+                          formControlName="phone" />
+
+                        <div *ngIf="
+                            submitted && contactUsForm.controls['phone'].errors
+                          " class="form-text text-danger">
+                          <div *ngIf="
+                              contactUsForm.controls['phone'].errors['required']
+                            ">
+                            Phone Number is required
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['phone'].errors[
+                                'minlength'
+                              ]
+                            ">
+                            Phone Number must be at least 11 digit long
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['phone'].errors[
+                                'maxlength'
+                              ]
+                            ">
+                            Phone Number must be at most 11 digit Long
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['phone'].errors['pattern']
+                            ">
+                            Phone Number must be numbers only
+                          </div>
+                        </div>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <input type="text" class="percent_100 login_input_padding" name="address" placeholder="Address"
+                          formControlName="address" />
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group textarea">
+                        <textarea name="message" class="percent_100 login_input_padding font-12"
+                          placeholder="Your Message..." formControlName="message" rows="6"></textarea>
+
+                        <div *ngIf="
+                            submitted &&
+                            contactUsForm.controls['message'].errors
+                          " class="form-text text-danger">
+                          <div *ngIf="
+                              contactUsForm.controls['message'].errors[
+                                'required'
+                              ]
+                            ">
+                            Message is required
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['message'].errors[
+                                'maxlength'
+                              ]
+                            ">
+                            Message cannot be more than 500 characters
+                          </div>
+                          <div *ngIf="
+                              contactUsForm.controls['message'].errors[
+                                'pattern'
+                              ]
+                            ">
+                            Alphanumeric characters are required
+                          </div>
+                        </div>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="form-group">
+                        <button class="btn btn-outline-secondary btn-block logo-button-website" type="submit">
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!---------col-end---------->
+        </div>
+        <div class="col-lg-6 col-md-12">
+          <!---------col----------->
+          <div class="contact_us_addres">
+            <!-- <div class="emergency_phone">
+              <h6>Emergency phone</h6>
+              <h2>+240 (8) 8234 3555</h2>
+            </div> -->
+            <ul class="contact_all mt-5 pt-5">
+              <li>
+                <span class="linearicons-home4"></span>Nnamdi Azikiwe way Western bye Pass Minna.
+              </li>
+              <li>
+                <span class="linearicons-envelope-open"></span>
+                <a href="mailto:customercare4nswb@gmail.com" style="font-size: 1rem; line-height: 1.5; font-weight: 400;">customercare4nswb@gmail.com</a><br>
+                <a href="mailto:info@nigerstatewaterboard.com.ng" style="font-size: 1rem; line-height: 1.5; font-weight: 400;">info@nigerstatewaterboard.com.ng</a>
+              </li>
+              <li>
+                <span class="linearicons-telephone"></span>Call: +234 805 846 5076
+              </li>
+            </ul>
+            <ul class="social-icons ms-3">
+              <li><a href="#" class="fa fa-facebook"></a></li>
+              <li><a href="#" class="fa fa-twitter"></a></li>
+              <li><a href="#" class="fa fa-youtube"></a></li>
+              <li><a href="#" class="fa fa-pinterest"></a></li>
+              <li><a href="#" class="fa fa-behance"></a></li>
+              <li><a href="#" class="fa fa-envelope-o"></a></li>
+            </ul>
+          </div>
+          <!---------col-end---------->
+        </div>
+        <!----------row-end---------->
+      </div>
+      <!-- <div class="row mt-4">
+        <div class="col-lg-12 col-md-12">
+          <div class="announcement">
+            <h5 class="text-center mb-2">Our Privacy Policy</h5>
+            <p class="fw-light fs-6s text-justify px-2">
+              We are strongly committed to keeping your information safe. And to do this we have designed our services with your safety in mind.
+              <br>We also have dedicated teams to look after your information security and privacy.
+              <br>We collect personal information that you voluntarily provide to us when you express an interest in our products and services.
+              <br>We store your information on an encrypted database, secured cabinets and other secure storage platforms.
+              <br>If you have any concerns that your personal information has been put at risk, for example if someone could have found out your password, please contact us immediately via email: <span class="text-muted" href="mailto:info@domain.net">info@domain.net</span>
+            </p>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+  </section>
+  <app-webfooter></app-webfooter>
+</main>
+<!-- <app-scrolltotop></app-scrolltotop>-->
+<app-whatsupchat></app-whatsupchat>

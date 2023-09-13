@@ -1,0 +1,610 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="parent">
+<div class="content-wrapper" id="smp-dashboard">
+  <!-- Content Header (Page header) -->
+  <div class="content-header pt-0 mt-0">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 content-title">Welcome to your Dashboard</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <!-- Content Row -->
+      <div class="row" id="data-stats">
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/user.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">Total Consumer</h3>
+                  </div>
+                </div>
+
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.consumers_count   || '0' }}</div>
+                </div>
+                <div class="data-card-bottom">
+                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
+                  <span><a > See all Consumer </a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/budget.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">
+                      Metered Consumers
+                    </h3>
+                  </div>
+                </div>
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.metered_count  || '0' }}</div>
+                </div>
+                <div class="data-card-bottom">
+                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
+                  <span><a > See Metered Consumer </a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/money-bag.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">
+                      Unmetered Consumers
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.unmetered_count  || '0'}}</div>
+                </div>
+                <div class="data-card-bottom">
+                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
+                  <span ><a > See Unmetered Consumer </a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/team.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">Total Staff</h3>
+                  </div>
+                </div>
+
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.staff_count  || '0' }}</div>
+                </div>
+                <div class="data-card-bottom">
+                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
+                  <span *ngIf="roleID == 1 || 2 || 3"></span>
+                  <span *ngIf="roleID == 4"><a [routerLink]="['/headmanageadmin']"> See Total Staff </a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" id="graph-stats">
+          <div class="col-sm-6">
+            <div class="graph-card">
+              <div class="d-flex">
+                <span class="stats-title">Collected Information</span>
+                <div class="chart-key">
+                  <!-- <span class="key-1">
+                  <i class="fa fa-circle" aria-hidden="true"></i>
+                  New Students
+                </span>
+
+                <span class="key-2">
+                  <i class="fa fa-circle" aria-hidden="true"></i>
+                  old Students
+                </span> -->
+                </div>
+              </div>
+              <div class="stats-graph">
+                <canvas baseChart [data]="barChartData"> </canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="graph-card">
+              <div class="d-flex">
+                <span class="stats-title">Registered Information</span>
+                <div class="chart-key">
+                  <!-- <span class="key-1">
+                  <i class="fa fa-circle" aria-hidden="true"></i>
+                  New Students
+                </span>
+
+                <span class="key-2">
+                  <i class="fa fa-circle" aria-hidden="true"></i>
+                  old Students
+                </span> -->
+                </div>
+              </div>
+              <div class="stats-graph">
+                <!-- <img src="assets/dist/img/student-graph.png"> -->
+
+                <canvas
+                  baseChart
+                  [data]="salesData"
+                  [type]="'line'"
+                  [options]="chartOptions"
+                >
+                </canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dtable">
+          <div class="card-body">
+            <div class="col-12 mt-2 mb-4"></div>
+            <div class="col-auto mbm-30">
+              <div class="row">
+                <!-- <div id="show-entries">
+                  Show &nbsp;
+                  <select>
+                    <option>10</option>
+                    <option>30</option>
+                    <option>50</option>
+                    <option>100</option>
+                    <option>500</option>
+                    <option>1000</option>
+                  </select>
+                  &nbsp; entries
+                </div> -->
+              </div>
+            </div>
+
+            <div class="table-responsive">
+               <table *ngIf="!latestCustomersData"
+                class="table table-bordered table-sm row-border hover"
+                id="example2"
+              >
+                <thead style="white-space: nowrap">
+                  <tr>
+                    <th>#</th>
+                    <th>Consumer Ref.</th>
+                    <th>Registered Name</th>
+                    <th>Consumer Category</th>
+                    <th>Registration Date</th>
+                    <th>Tariff</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody style="white-space: nowrap">
+                  <tr>
+                    <td>1</td>
+                    <td>CTI96447</td>
+                    <td>Uzodimma Akeem</td>
+                    <td>Corporate</td>
+                    <td>12-08-2019</td>
+                    <td>Metered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>CTI23675</td>
+                    <td>Matthew Balms</td>
+                    <td>Individual</td>
+                    <td>12-08-2012</td>
+                    <td>Unmetered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>CTI41486</td>
+                    <td>Hapreet Prince</td>
+                    <td>Individual</td>
+                    <td>12-08-2019</td>
+                    <td>Metered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>CTI25169</td>
+                    <td>Andrew Philip</td>
+                    <td>Corporate</td>
+                    <td>10-08-2019</td>
+                    <td>Metered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>CTI78460</td>
+                    <td>Bridget Kate</td>
+                    <td>Individual</td>
+                    <td>09-05-2018</td>
+                    <td>Unmetered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>CTI07076</td>
+                    <td>Uzodimma Akeem</td>
+                    <td>Corporate</td>
+                    <td>12-08-2022</td>
+                    <td>Metered</td>
+                    <td style="width: 10%">
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="nav-icon fas fa-eye"></i> View
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+  
+              <table class="table table-bordered table-sm row-border hover   " id="example2"
+              *ngIf="latestCustomersData" datatable [dtOptions]="dtOptions">
+              <thead style="white-space: nowrap;">
+                <tr>
+                  <th>S/N</th>
+                  <th>Consumer Id</th>
+                  <th>Consumer Name</th>
+                  <th>Category</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+               
+                </tr>
+              </thead>
+              <tbody style="white-space: nowrap;">
+                <tr *ngFor="let mydata of latestCustomersData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ mydata.reference}} </td>
+                  <td>{{ mydata.first_name | titlecase }} {{ mydata.last_name | titlecase }} </td>
+                  <td>{{ mydata.consumer_sub_category_name}}</td>
+                  <td>{{ mydata.email}} </td>
+                  <td>{{ mydata.phone}} </td>
+                
+                </tr>
+              </tbody>
+            </table>
+              <div class="row m-0 mt-3">
+                <div class="col-sm-6">
+              <div id="page_info" class="record-show-text-bottom"></div>
+               </div></div>
+              <div >
+                <pagination-controls class="float-right"> </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">Student</h3>
+                  <a href="javascript:void(0);">View Report</a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex">
+                  <p class="d-flex flex-column">
+                    <span class="text-bold text-lg">820</span>
+                    <span>Visitors Over Time</span>
+                  </p>
+                  <p class="ml-auto d-flex flex-column text-right">
+                    <span class="text-success">
+                      <i class="fas fa-arrow-up"></i> 12.5%
+                    </span>
+                    <span class="text-muted">Since last week</span>
+                  </p>
+                </div>-->
+    <!-- /.d-flex -->
+
+    <!--<div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="visitors-chart" height="200" width="200" style="display: block; width: 200px; height: 200px;" class="chartjs-render-monitor"></canvas>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end">
+                  <span class="mr-2">
+                    <i class="fas fa-square text-primary"></i> This Week
+                  </span>
+
+                  <span>
+                    <i class="fas fa-square text-gray"></i> Last Week
+                  </span>
+                </div>
+              </div>
+            </div>-->
+    <!-- /.card -->
+
+    <!--<div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Student</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                  <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Payment</th>
+                    <th>Process</th>
+                    <th>More</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>
+
+                      Some Product
+                    </td>
+                    <td>$13 USD</td>
+                    <td>
+                      <small class="text-success mr-1">
+                        <i class="fas fa-arrow-up"></i>
+                        12%
+                      </small>
+                      12,000 Sold
+                    </td>
+                    <td>
+                      <a href="#" class="text-muted">
+                        <i class="fas fa-search"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      Another Product
+                    </td>
+                    <td>$29 USD</td>
+                    <td>
+                      <small class="text-warning mr-1">
+                        <i class="fas fa-arrow-down"></i>
+                        0.5%
+                      </small>
+                      123,234 Sold
+                    </td>
+                    <td>
+                      <a href="#" class="text-muted">
+                        <i class="fas fa-search"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      Amazing Product
+                    </td>
+                    <td>$1,230 USD</td>
+                    <td>
+                      <small class="text-danger mr-1">
+                        <i class="fas fa-arrow-down"></i>
+                        3%
+                      </small>
+                      198 Sold
+                    </td>
+                    <td>
+                      <a href="#" class="text-muted">
+                        <i class="fas fa-search"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                      Perfect Item
+                      <span class="badge bg-danger">NEW</span>
+                    </td>
+                    <td>$199 USD</td>
+                    <td>
+                      <small class="text-success mr-1">
+                        <i class="fas fa-arrow-up"></i>
+                        63%
+                      </small>
+                      87 Sold
+                    </td>
+                    <td>
+                      <a href="#" class="text-muted">
+                        <i class="fas fa-search"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>-->
+    <!-- /.card -->
+    <!--</div>-->
+    <!-- /.col-md-6 -->
+    <!--<div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">Student</h3>
+                  <a href="javascript:void(0);">View Report</a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex">
+                  <p class="d-flex flex-column">
+                    <span class="text-bold text-lg">$18,230.00</span>
+                    <span>Payment Over Time</span>
+                  </p>
+                  <p class="ml-auto d-flex flex-column text-right">
+                    <span class="text-success">
+                      <i class="fas fa-arrow-up"></i> 33.1%
+                    </span>
+                    <span class="text-muted">Since last month</span>
+                  </p>
+                </div>-->
+    <!-- /.d-flex -->
+
+    <!--<div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="sales-chart" height="200" style="display: block; width: 200px; height: 200px;" width="765" class="chartjs-render-monitor"></canvas>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end">
+                  <span class="mr-2">
+                    <i class="fas fa-square text-primary"></i> This year
+                  </span>
+
+                  <span>
+                    <i class="fas fa-square text-gray"></i> Last year
+                  </span>
+                </div>
+              </div>
+            </div>-->
+    <!-- /.card -->
+
+    <!--<div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Online Overview</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                  <p class="text-success text-xl">
+                    <i class="ion ion-ios-refresh-empty"></i>
+                  </p>
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-up text-success"></i> 12%
+                    </span>
+                    <span class="text-muted">CONVERSION RATE</span>
+                  </p>
+                </div>-->
+    <!-- /.d-flex -->
+    <!--<div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                  <p class="text-warning text-xl">
+                    <i class="ion ion-ios-cart-outline"></i>
+                  </p>
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
+                    </span>
+                    <span class="text-muted">SALES RATE</span>
+                  </p>
+                </div>-->
+    <!-- /.d-flex -->
+    <!--<div class="d-flex justify-content-between align-items-center mb-0">
+                  <p class="text-danger text-xl">
+                    <i class="ion ion-ios-people-outline"></i>
+                  </p>
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-down text-danger"></i> 1%
+                    </span>
+                    <span class="text-muted">REGISTRATION RATE</span>
+                  </p>
+                </div>-->
+    <!-- /.d-flex -->
+    <!--</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>-->
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+</div>
+</div>
