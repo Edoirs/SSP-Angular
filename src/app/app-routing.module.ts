@@ -41,14 +41,7 @@ import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.c
 import { BillingsettlementsComponent } from './billingofficer/billingsettlements/billingsettlements.component';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettlements/headbillingsettlements.component';
-import { SelfloginComponent } from './selfportal/auth/selflogin/selflogin.component';
-import { SelfresetpasswordComponent } from './selfportal/auth/selfresetpassword/selfresetpassword.component';
-import { SelflogoutComponent } from './selfportal/auth/selflogout/selflogout.component';
-import { SelfforgotpasswordComponent } from './selfportal/auth/selfforgotpassword/selfforgotpassword.component';
-import { SelfdashboardComponent } from './selfportal/dashboard/selfdashboard/selfdashboard.component';
-import { SelfconsumerlistingComponent } from './selfportal/profile/selfconsumerlisting/selfconsumerlisting.component';
-import { SelfpaymenthistoryComponent } from './selfportal/reports/selfpaymenthistory/selfpaymenthistory.component';
-import { SelfbillpaymnetComponent } from './selfportal/billmanangement/selfbillpaymnet/selfbillpaymnet.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -110,26 +103,6 @@ const routes: Routes = [
   
 
 
-  // <!------------ Self Portal Auth Menu  ------------------>
-  { path: "selflogin", component: SelfloginComponent },
-  { path: "selfresetpassword", component: SelfresetpasswordComponent },
-  { path: "selfforgotpassword", component: SelfforgotpasswordComponent },
-  { path: "selflogout", component: SelflogoutComponent },
-
-
-  
-  { path: "selfdashboard", component: SelfdashboardComponent },
-  
-  { path: "selfprofilelisting", component: SelfconsumerlistingComponent },
-
-
-  { path: "selfpayhistory", component: SelfpaymenthistoryComponent },
-
-  
-
-  { path: "selfpayment", component: SelfbillpaymnetComponent },
-  
-  
 ];
 
 @NgModule({

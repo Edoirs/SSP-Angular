@@ -8,9 +8,10 @@ import Swal from 'sweetalert2';
   styleUrls: ['./webfooter.component.css']
 })
 export class WebfooterComponent {
+
+  input1: any;
   currYear: any;
   today= new Date();
-  input1: any;
 
   constructor() { }
 

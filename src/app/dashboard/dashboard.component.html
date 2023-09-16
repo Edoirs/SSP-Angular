@@ -1,27 +1,23 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="parent">
 <div class="content-wrapper" id="smp-dashboard">
-  <!-- Content Header (Page header) -->
+  <!-- Content Header (Page header) 
   <div class="content-header pt-0 mt-0">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
+     <div class="container-fluid">
+     <div class="row mb-2">
+         <div class="col-sm-6">
           <h1 class="m-0 content-title">Welcome to your Dashboard</h1>
-        </div>
-        <!-- /.col -->
+        </div> 
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-        </div>
-        <!-- /.col -->
+        </div> 
       </div>
-      <!-- /.row -->
+      /.row 
     </div>
-    <!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
+  </div> -->
 
   <!-- Main content -->
   <div class="content">
@@ -30,96 +26,7 @@
       <div class="row" id="data-stats">
         <!-- card -->
         <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-primary border-left-water shadow py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="align-items-baseline">
-                  <div class="">
-                    <img
-                      src="assets/dist/img/user.png"
-                      class="stats-icon float-left"
-                    />
-                  </div>
-                  <div class="">
-                    <h3 class="stat-title mx-auto">Total Consumer</h3>
-                  </div>
-                </div>
-
-                <div class="data-card-top">
-                  <div class="stat-value">{{ dashboardData?.consumers_count   || '0' }}</div>
-                </div>
-                <div class="data-card-bottom">
-                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
-                  <span><a > See all Consumer </a></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-primary border-left-water shadow py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="align-items-baseline">
-                  <div class="">
-                    <img
-                      src="assets/dist/img/budget.png"
-                      class="stats-icon float-left"
-                    />
-                  </div>
-                  <div class="">
-                    <h3 class="stat-title mx-auto">
-                      Metered Consumers
-                    </h3>
-                  </div>
-                </div>
-                <div class="data-card-top">
-                  <div class="stat-value">{{ dashboardData?.metered_count  || '0' }}</div>
-                </div>
-                <div class="data-card-bottom">
-                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
-                  <span><a > See Metered Consumer </a></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-primary border-left-water shadow py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="align-items-baseline">
-                  <div class="">
-                    <img
-                      src="assets/dist/img/money-bag.png"
-                      class="stats-icon float-left"
-                    />
-                  </div>
-                  <div class="">
-                    <h3 class="stat-title mx-auto">
-                      Unmetered Consumers
-                    </h3>
-                  </div>
-                </div>
-
-                <div class="data-card-top">
-                  <div class="stat-value">{{ dashboardData?.unmetered_count  || '0'}}</div>
-                </div>
-                <div class="data-card-bottom">
-                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
-                  <span ><a > See Unmetered Consumer </a></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-          <div class="card border-left-primary border-left-water shadow py-2">
+          <div class="card border-left-water shadow py-2">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="align-items-baseline">
@@ -130,17 +37,88 @@
                     />
                   </div>
                   <div class="">
-                    <h3 class="stat-title mx-auto">Total Staff</h3>
+                    <h3 class="stat-title mx-auto">Total No of Employees</h3>
+                  </div>
+                </div>
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.consumers_count   || '0' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/invoice.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">
+                      Paid Invoice
+                    </h3>
+                  </div>
+                </div>
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.metered_count  || '0' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/invoice2.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">
+                      Unpaid Invoice
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="data-card-top">
+                  <div class="stat-value">{{ dashboardData?.unmetered_count  || '0'}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-water shadow py-2">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="align-items-baseline">
+                  <div class="">
+                    <img
+                      src="assets/dist/img/budget.png"
+                      class="stats-icon float-left"
+                    />
+                  </div>
+                  <div class="">
+                    <h3 class="stat-title mx-auto">Total No of Business</h3>
                   </div>
                 </div>
 
                 <div class="data-card-top">
                   <div class="stat-value">{{ dashboardData?.staff_count  || '0' }}</div>
-                </div>
-                <div class="data-card-bottom">
-                  <!-- <img src="assets/dist/img/growth-chart.png" /> -->
-                  <span *ngIf="roleID == 1 || 2 || 3"></span>
-                  <span *ngIf="roleID == 4"><a [routerLink]="['/headmanageadmin']"> See Total Staff </a></span>
                 </div>
               </div>
             </div>
@@ -153,7 +131,7 @@
               <div class="d-flex">
                 <span class="stats-title">Collected Information</span>
                 <div class="chart-key">
-                  <!-- <span class="key-1">
+                  <span class="key-1">
                   <i class="fa fa-circle" aria-hidden="true"></i>
                   New Students
                 </span>
@@ -161,7 +139,7 @@
                 <span class="key-2">
                   <i class="fa fa-circle" aria-hidden="true"></i>
                   old Students
-                </span> -->
+                </span>
                 </div>
               </div>
               <div class="stats-graph">

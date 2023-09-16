@@ -1,8 +1,18 @@
-<header class="top-navbar">
+<div class="top-bar text-bg-success" style="padding: 3px 18px; ">
+<div class="d-md-inline-block" style="padding: 0 16px 0 0;">
+  <div class="d-md-inline fs-6 me-3"><i class="fa fa-phone"></i> (234)800-000-0000 </div>
+  <div class="d-md-inline fs-6 me-3"> <i class="fa fa-envelope"></i> enquiry@info.com </div>
+  <div class="d-md-inline fs-6">mon-sun : 12pm to 12am </div>  
+</div>
+</div>
+
+
+
+ <header class="top-navbar">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand ms-3" href="index.html">
-        <img src="assets/image/nss-logo-new2.png" alt="logo" />
+        <img src="assets/image/icon.png" alt="logo" />
       </a>
       <button
         class="navbar-toggler"
@@ -23,47 +33,39 @@
               class="nav-link"
               [routerLinkActive]="['active']"
               [routerLink]="['/home']"
-              >Home</a
+              ><i class="fa fa-home"></i> Home</a
             >
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a
               [routerLinkActive]="['active']"
-              class="nav-link"
+              class="nav-link disabled"
               [routerLink]="['/aboutus']"
               >About Us</a
             >
-          </li>
-          <li class="nav-item">
+          </li> -->          
+          <!-- <li class="nav-item">
             <a
               [routerLinkActive]="['active']"
-              class="nav-link"
-              [routerLink]="['/faqs']"
-              >FAQs</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              [routerLinkActive]="['active']"
-              class="nav-link"
+              class="nav-link disabled"
               [routerLink]="['/contactus']"
               >Contact Us</a
             >
-          </li>
-          <li class="nav-item">
-            <a
-              [routerLinkActive]="['active']"
-              class="nav-link"
-              [routerLink]="['/selflogin']"
-              >Self Portal</a
-            >
-          </li>
+          </li> -->
           <li class="nav-item">
             <a
               [routerLinkActive]="['active']"
               class="nav-link"
               [routerLink]="['/login']"
-              >Login</a
+              ><i class="fa fa-sign-in"></i> Sign In</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              [routerLinkActive]="['active']"
+              class="nav-link disabled"
+              [routerLink]="['/faqs']"
+              ><i class="fa fa-wechat"></i> FAQs</a
             >
           </li>
         </ul>

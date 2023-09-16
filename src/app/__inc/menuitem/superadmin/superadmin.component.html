@@ -11,149 +11,16 @@
         [routerLinkActive]="['active']"
         class="nav-link active"
       >
-        <i class="nav-icon side-nav-icon fas fa-tachometer-alt"></i>
+        <i class="nav-icon side-nav-icon fas fa-chart-pie"></i>
         <p class="font-weight-bold">Dashboard</p>
 
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link ">
-        <i class="nav-icon side-nav-icon fas fa-fw fa-cog"></i>
+        <i class="nav-icon side-nav-icon fa fa-user" aria-hidden="true"></i>
         <p class="font-weight-bold">
           Profile
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview" style="display: none">
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headconsumer']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-            <p> Consumer</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headprofilerequest']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-            <p> Profiling Requests</p>
-          </a>
-        </li>
-
-      </ul>
-    </li>
- 
-    <li class="nav-item">
-      <a class="nav-link">
-        <i class="nav-icon side-nav-icon  fas fa-fw fa-table" aria-hidden="true"></i>
-        <p class="font-weight-bold">
-          Bill Management
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview" style="display: none">
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headbillstructure']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Bill Structure</p>
-          </a>
-        </li>
-        <!-- <li class="nav-item">
-          <a
-            [routerLink]="['/headbills']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Generate Bill</p>
-          </a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a
-            [routerLink]="['/headasset']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Consumption Bill</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/reports']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Other Bills</p>
-          </a>
-        </li> -->
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headbillspayment']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Bill Payment</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link ">
-        <i class="nav-icon side-nav-icon  fas fa-fw fa-chart-area" aria-hidden="true"></i>
-        <p class="font-weight-bold">
-          Report
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview" style="display: none">
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headgeneratedbills']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Bill Generated</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headsettlement']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Settlement History</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/headpaymenthistory']"
-            [routerLinkActive]="['active']"
-            class="nav-link nav-child"
-          >
-
-            <p>Payment of Bill</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link ">
-        <i class="nav-icon side-nav-icon  fa fa-user" aria-hidden="true"></i>
-        <p class="font-weight-bold">
-          User Management
           <i class="fas fa-angle-left right"></i>
         </p>
       </a>
@@ -190,9 +57,204 @@
         </li>
       </ul>
     </li>
+    <li class="nav-item menu-open">
+      <a
+        [routerLink]="['/dashboard']"
+        [routerLinkActive]="['active']"
+        class="nav-link active"
+      >
+        <i class="nav-icon side-nav-icon fas fa-briefcase"></i>
+        <p class="font-weight-bold">Associated Businesses</p>
+
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">
+        <i class="nav-icon side-nav-icon  fas fa-hand-holding-usd" aria-hidden="true"></i>
+        <p class="font-weight-bold">
+          Associated Businesses
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview" style="display: none">
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbillstructure']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Employees</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbills']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Schedule</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbillspayment']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Assessments</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">
+        <i class="nav-icon side-nav-icon fas fa-edit" aria-hidden="true"></i>
+        <p class="font-weight-bold">
+          Form H1 (Annual Return)
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview" style="display: none">
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbillstructure']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Form H1 filing & Uploads</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbills']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Form H1 Schedules</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbillspayment']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+          <p>Filled/Reassessed Form H1</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headbillspayment']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+          <p>Objections</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+        <li class="nav-item">
+      <a class="nav-link ">
+        <i class="nav-icon side-nav-icon  fas fa-fw fa-chart-area" aria-hidden="true"></i>
+        <p class="font-weight-bold">
+          Annual Projections(F-H3)
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview" style="display: none">
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headgeneratedbills']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Upload Form H3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headsettlement']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Forwarded H3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headpaymenthistory']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+
+            <p>Filled Form H3</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link ">
+        <i class="nav-icon side-nav-icon fas fa-certificate"></i>
+        <p class="font-weight-bold">
+          Tax Clearance Certificate
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview" style="display: none">
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headconsumer']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+            <p>TCC Application</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headprofilerequest']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+            <p>TCC Awaiting Approval</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headprofilerequest']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+            <p>TCC Awaiting Approved</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/headprofilerequest']"
+            [routerLinkActive]="['active']"
+            class="nav-link nav-child"
+          >
+            <p>TCC Awaiting Declined</p>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+ 
     <li class="nav-item">
       <a [routerLink]="['/logout']" class="nav-link">
-        <p class="font-weight-bold"><i class="nav-icon side-nav-icon  fa fa-power-off"></i> Logout</p>
+        <i class="nav-icon side-nav-icon fa fa-power-off"></i>
+        <p class="font-weight-bold"> Logout</p>
       </a>
     </li>
   </ul>
