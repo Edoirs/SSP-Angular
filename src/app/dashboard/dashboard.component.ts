@@ -48,7 +48,7 @@ export class DashboardComponent {
     plugins: {
       title: {
         display: true,
-        text: 'Consumer statistics',
+        // text: 'Invoice statistics',
       },
     },
 
@@ -119,10 +119,10 @@ export class DashboardComponent {
     this.ngxService.stop();
   }
   public barChartData: ChartData<'line'> = {
-    labels: [ '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023' ],
+    labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Aug', 'Sep', 'Oct' ],
       datasets: [{ 
-        label: 'New Consumers', 
-        data: [1000, 1200, 1050, 2000, 500, 700, 800, 1000, 900], tension: 0.5 ,
+        label: 'Monthly Tax Paid', 
+        data: [1.00, 1.20, 1.05, 2.00, 0.50, 0.70, 0.80, 1.00, 0.90], tension: 0.5 ,
         backgroundColor : 'rgb(36 127 197)',
       hoverBackgroundColor: '#4892f4',
       borderColor : '#36A2EB',
@@ -136,7 +136,7 @@ export class DashboardComponent {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [
       {
-        label: 'New Registered Consumers',
+        label: 'Paid Invoice',
         data: [1000, 1200, 1050, 2000, 500], tension: 0.5,
         backgroundColor: 'rgb(146 192 237 / 33%)',
         hoverBackgroundColor: '#6189e5f5',
@@ -146,7 +146,7 @@ export class DashboardComponent {
       },
       // { label: 'old Students', data: [200, 100, 400, 50, 90], tension: 0.5 },
       {
-        label: 'Old Consumers',
+        label: 'Unpaid Invoice',
         data: [500, 800, 350, 450, 650],
         tension: 0.5,
         backgroundColor: 'rgb(36 127 197 / 20%)',

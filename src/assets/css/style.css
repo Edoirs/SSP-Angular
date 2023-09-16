@@ -28,7 +28,7 @@ body {
   -moz-font-smoothing: antialiased;
   overflow-x: hidden;
   font-family: "Poppins";
-  background: linear-gradient(90deg, #8DD877, #639B63);
+  background: #fff;
  
 }
 .main-content-login{
@@ -676,7 +676,7 @@ a.ui-button:active,
   font-size: 12px;
   position: relative;
   color: #ffffff;
-  background-color: #2388c2;
+  background-color: #319060;
   display: inline-block;
   height: 35px;
   line-height: 35px;
