@@ -36,7 +36,7 @@
                   <div class="login__field input-group">
                     <i class="login__icon fa fa-user"></i>
                     <input type="email" id="email" name="emailAddress" placeholder="RIN / Phone Number"
-                      class="login__input border-end-0" (change)="checkEmail(loginForm.value)" formControlName="emailAddress"
+                      class="login__input border-end-0" formControlName="emailAddress"
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['emailAddress'].errors }" />
                     <div class="input-group-append">
                       <div class="input-group-text border border-0 bg-transparent">
@@ -55,11 +55,11 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="showOtpForm">
+                  <div>
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-lock"></i>
                       <input [type]="fieldTextType ? 'text' : 'password'" class="login__input border-end-0"
-                        formControlName="password" name="password" placeholder="Password" id="psw" />
+                        formControlName="password" name="password" placeholder="Password" id="psw"  (change)="checkEmail(loginForm.value)"/>
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent ">
                           <span class="fa login__icon" [ngClass]="{
@@ -127,13 +127,16 @@
                   </button>
                 </form>
               </div>
-              <div class="me-3 ">
-
+              <div class="me-3 d-flex justify-content-between">
+                <a class="a-login" [routerLink]="['/signUp']">
+                  <p class="text-left" style="color: #4c489d;">Create Account</p>
+                </a>
+              
                 <a class="a-login" [routerLink]="['/forgotpassword']">
                   <p class="text-right" style="color: #4c489d;">Forgot your password?</p>
                 </a>
-
               </div>
+              
             </div>
             <div style="position: absolute;
                         top: 0;

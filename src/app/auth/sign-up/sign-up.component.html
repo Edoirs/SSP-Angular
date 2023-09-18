@@ -1,0 +1,260 @@
+<div class="wrapper main-content-login" style="overflow: hidden;">
+    <app-webheader></app-webheader>
+    <main class="" id="smp-contact">
+      <div class="container">
+        <div class="row">
+          <div class="d-flex justify-content-center py-5">
+            <div style="background: linear-gradient(90deg, #4f994e, #639b63);
+                        position: relative;
+                        min-height: 550px;
+                        width: 460px;
+                        box-shadow: 0px 0px 24px #4e8f51;">
+              <div style="padding: 30px;
+                        padding-top: 50px;
+                        z-index: 1;
+                        position: relative;
+                        height: 100%;">
+                <h5 class="mb-4 text-center uppercase">Pay As You Earn <br>(Self-Service Portal)</h5>
+                <h6 class="text-center">
+                  Sign Up
+                </h6>
+                <div class="form_box type_one remove-pt">
+                  <form autocomplete="off" *ngIf="showRequestOtpForm" [formGroup]="forgotEmailForm"
+                    (ngSubmit)="onEmailSubmit(forgotEmailForm.value)" style="width: 420px; padding: 30px;">
+                    <div class="messages"></div>
+                    <select class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
+                    color: #4c489d; box-shadow: 0px 2px 2px #5c5696; transition: 0.2s;">
+                      <option value="0" selected>Select Tax Payer Type</option>
+                      <option value="1">Individual</option>
+                      <option value="2">Company</option>
+                      <option value="3">Special</option>
+                      <option value="3">Government</option>
+                    </select>
+  
+                    <div class="login__field input-group">
+                      <i class="login__icon fa fa-hashtag"></i>
+                      <input type="email" id="email" name="emailAddress" placeholder="Enter RIN"
+                        class="login__input border-end-0" formControlName="emailAddress"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors }" />
+                      <div class="input-group-append">
+                        <div class="input-group-text border border-0 bg-transparent">
+                          <span class="fas fa-envelope login__icon"></span>
+                        </div>
+                      </div>
+                      <div *ngIf="submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors"
+                        class="form-text text-danger">
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['required']">
+                          Email is required
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['pattern']">
+                          Please enter a valid email
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['maxlength']">
+                          Email must be under 45 characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="login__field input-group">
+                      <i class="login__icon fa fa-building"></i>
+                      <input type="email" id="email" name="emailAddress" placeholder="Enter Company Name"
+                        class="login__input border-end-0" formControlName="emailAddress"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors }" />
+                      <div class="input-group-append">
+                        <div class="input-group-text border border-0 bg-transparent">
+                          <span class="fas fa-envelope login__icon"></span>
+                        </div>
+                      </div>
+                      <div *ngIf="submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors"
+                        class="form-text text-danger">
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['required']">
+                          Email is required
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['pattern']">
+                          Please enter a valid email
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['maxlength']">
+                          Email must be under 45 characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="login__field input-group">
+                      <i class="login__icon fa fa-location-arrow"></i>
+                      <input type="email" id="email" name="emailAddress" placeholder="Enter Address"
+                        class="login__input border-end-0" formControlName="emailAddress"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors }" />
+                      <div class="input-group-append">
+                        <div class="input-group-text border border-0 bg-transparent">
+                          <span class="fas fa-envelope login__icon"></span>
+                        </div>
+                      </div>
+                      <div *ngIf="submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors"
+                        class="form-text text-danger">
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['required']">
+                          Email is required
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['pattern']">
+                          Please enter a valid email
+                        </div>
+                        <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['maxlength']">
+                          Email must be under 45 characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="login__field input-group">
+                        <i class="login__icon fa fa-volume-control-phone"></i>
+                        <input type="email" id="email" name="emailAddress" placeholder="Enter Phone Number"
+                        class="login__input border-end-0" formControlName="emailAddress"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors }" />                        
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent">
+                            <span class="fas fa-envelope login__icon"></span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted &amp;&amp; forgotEmailForm.controls['emailAddress'].errors"
+                          class="form-text text-danger">
+                          <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['required']">
+                            Email is required
+                          </div>
+                          <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['pattern']">
+                            Please enter a valid email
+                          </div>
+                          <div *ngIf="forgotEmailForm.controls['emailAddress'].errors['maxlength']">
+                            Email must be under 45 characters
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-lg-12">
+                      <button class="button login__submit" type="submit" id="mycaptcha">
+                        Send OTP
+                        <i class="button__icon fa fa-chevron-right"></i>
+                      </button>
+                    </div>
+                  </form>
+                  <form autocomplete="off" *ngIf="showForgotPasswordForm" [formGroup]="forgotPasswordForm"
+                    (ngSubmit)="onSubmitForgotPassword(forgotPasswordForm.value)">
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType ? 'text' : 'password'" class="login__input border-end-0"
+                          formControlName="newPassword" name="password" placeholder="New Password"
+                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotPasswordForm.controls['newPassword'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                          'fa-eye': !fieldTextType,
+                                          'fa-eye-slash': fieldTextType
+                                        }" (click)="toggleFieldTextType()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted &amp;&amp; forgotPasswordForm.controls['newPassword'].errors"
+                          class="form-text text-danger">
+                          <div *ngIf="forgotPasswordForm.controls['newPassword'].errors['required']">
+                            New Password is required
+                          </div>
+                          <div *ngIf="forgotPasswordForm.controls['newPassword'].errors['minlength']">
+                            New Password must be min 8 characters.
+                          </div>
+                          <div *ngIf="forgotPasswordForm.controls['newPassword'].errors['maxlength']">
+                            New Password must not exceed 40 character.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType1 ? 'text' : 'password'" class="login__input border-end-0"
+                          placeholder="Confirm Password" formControlName="confirmPassword" name="password"
+                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotPasswordForm.controls['confirmPassword'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                    'fa-eye': !fieldTextType1,
+                                    'fa-eye-slash': fieldTextType1
+                                  }" (click)="toggleFieldTextType1 ()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted &amp;&amp; forgotPasswordForm.controls['confirmPassword'].errors"
+                          class="form-text text-danger">
+                          <div *ngIf="forgotPasswordForm.controls['confirmPassword'].errors['minlength']">
+                            Confirm Password must be min 8 characters.
+                          </div>
+                          <div *ngIf="forgotPasswordForm.controls['confirmPassword'].errors['maxlength']">
+                            Confirm Password must not exceed 40 character.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType2 ? 'text' : 'password'" id="psw" class="login__input border-end-0"
+                          formControlName="enterOtp" name="enterOtp" placeholder="Enter 6-digit code to login"
+                          maxlength="6"
+                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; forgotPasswordForm.controls['enterOtp'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                        'fa-eye': !fieldTextType2,
+                                        'fa-eye-slash': fieldTextType2
+                                      }" (click)="toggleFieldTextType2()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted &amp;&amp; forgotPasswordForm.controls['enterOtp'].errors"
+                          class="text-danger validation-error">
+                          <div *ngIf="
+                        forgotPasswordForm.controls['enterOtp'].errors['required']
+                      ">
+                            OTP is required
+                          </div>
+  
+                          <div *ngIf="
+                        forgotPasswordForm.controls['enterOtp'].errors['pattern']
+                      ">
+                            Special characters or space are not allowed
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="login__field">
+                    <i class="login__icon fa fa-lock"></i>
+                    <input type="password" class="login__input" placeholder="Password">
+                  </div> -->
+                    <button class="button login__submit" type="submit" id="mycaptcha">
+                      Create Account
+                      <i class="button__icon fa fa-chevron-right"></i>
+                    </button>
+                  </form>
+                </div>
+                <div class="me-3 ">
+  
+                  <a class="a-login" [routerLink]="['/login']">
+                    <p class="text-right text-muted" >Back to Login</p>
+                  </a>
+  
+                </div>
+              </div>
+              <div style="position: absolute;
+                          top: 0;
+                          left: 0;
+                          right: 0;
+                          bottom: 0;
+                          z-index: 0;
+                          clip-path: inset(0 0 0 0);">
+                <span class="screen__background__shape screen__background__shape4"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- <app-webfooter></app-webfooter> -->
+  
+  </div>

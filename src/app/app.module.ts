@@ -66,6 +66,7 @@ import { NumbersOnlyDirective } from './numbers-only.directive';
 import { BillingsettlementsComponent } from './billingofficer/billingsettlements/billingsettlements.component';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettlements/headbillingsettlements.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 
 
@@ -127,6 +128,7 @@ import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettle
     BillingsettlementsComponent,
     HeadictsettlementsComponent,
     HeadbillingsettlementsComponent,
+    SignUpComponent,
 
  
   ],

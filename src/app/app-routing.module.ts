@@ -41,6 +41,7 @@ import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.c
 import { BillingsettlementsComponent } from './billingofficer/billingsettlements/billingsettlements.component';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettlements/headbillingsettlements.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "resetpassword", component: ResetpasswordComponent },
   { path: "forgotpassword", component: ForgotpasswordComponent },
+  { path: "signUp", component:SignUpComponent},
 
   { path: "contactus", component: ContactusComponent },
   { path: "aboutus", component: AboutusComponent },
