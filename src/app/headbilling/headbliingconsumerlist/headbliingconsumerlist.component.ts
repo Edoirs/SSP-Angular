@@ -831,13 +831,13 @@ export class HeadbliingconsumerlistComponent {
         buttons: [
           {
             extend: "csv",
-            className: "btn btn-primary font-12 export-btn mb-4",
+            className: "btn btn-success font-12 export-btn mb-4",
             text: '<i class="fas fa-file-csv"> CSV</i>',
             exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
           },
           {
             extend: "excel",
-            className: "btn btn-primary font-12 export-btn mb-4",
+            className: "btn btn-success font-12 export-btn mb-4",
             text: '<i class="fas fa-file-excel"> Excel</i>',
             exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
           },
@@ -867,13 +867,13 @@ export class HeadbliingconsumerlistComponent {
         buttons: [
           {
             extend: "csv",
-            className: "btn btn-primary font-12 export-btn mb-4",
+            className: "btn btn-success font-12 export-btn mb-4",
             text: '<i class="fas fa-file-csv"> CSV</i>',
             exportOptions: { columns: [0, 1, 2, 3, 4] },
           },
           {
             extend: "excel",
-            className: "btn btn-primary font-12 export-btn mb-4",
+            className: "btn btn-success font-12 export-btn mb-4",
             text: '<i class="fas fa-file-excel"> Excel</i>',
             exportOptions: { columns: [0, 1, 2, 3, 4] },
           },

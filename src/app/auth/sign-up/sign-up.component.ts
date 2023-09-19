@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { environment } from 'src/environments/environment';
+import { Component } from '@angular/core';
+  import { HttpClient, HttpHeaders } from '@angular/common/http';
+  import { Router } from '@angular/router';
+  //import { SessionService } from '../../session.service';
+  import { environment } from '../../../environments/environment';
+  import Swal from 'sweetalert2';
+  import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+  import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
-  selector: 'app-selfforgotpassword',
-  templateUrl: './selfforgotpassword.component.html',
-  styleUrls: ['./selfforgotpassword.component.css']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.css']
 })
-export class SelfforgotpasswordComponent implements OnInit {
+export class SignUpComponent  {
+    
     forgotEmailForm!: FormGroup
     forgotPasswordForm!: FormGroup
     submitted = false;
@@ -27,6 +29,7 @@ export class SelfforgotpasswordComponent implements OnInit {
       private formBuilder: FormBuilder, private ngxService: NgxUiLoaderService,) { }
   
     ngOnInit(): void {
+  
       this.initialiseForms();
       this.initialiseForgotForms()
     }
@@ -45,9 +48,11 @@ export class SelfforgotpasswordComponent implements OnInit {
       this.forgotPasswordForm = this.formBuilder.group({
         newPassword: ['', [Validators.required,  Validators.minLength(8),
           Validators.maxLength(40),
-         ]],
+          // Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$')
+        ]],
         confirmPassword: ['', [Validators.required,  Validators.minLength(8),
           Validators.maxLength(40),
+          //   Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$')
         ]],
         enterOtp: ['', Validators.required],
       });
@@ -60,12 +65,13 @@ export class SelfforgotpasswordComponent implements OnInit {
       if (this.forgotEmailForm.invalid) {
         return;
       }
-      this.email = formAllData.emailAddress; 
+      this.email = formAllData.emailAddress;
+  
       var requestObj = {
         email: formAllData.emailAddress,
       };
       this.ngxService.start();
-      this.apiUrl = environment.AUTHAPIURL + 'self-portal/auth/send-pass-reset-email';
+      this.apiUrl = environment.AUTHAPIURL + 'auth/send-pass-reset-email';
   
       this.http.post<any>(this.apiUrl, requestObj).subscribe(data => {
         this.ngxService.stop();
@@ -73,7 +79,8 @@ export class SelfforgotpasswordComponent implements OnInit {
         if (data.status == true) {
           this.submitted = false;
           this.showRequestOtpForm = false;
-          this.showForgotPasswordForm = true; 
+          this.showForgotPasswordForm = true;
+  
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -82,10 +89,12 @@ export class SelfforgotpasswordComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true
           });
-        } 
-        else {
+  
+  
+        } else {
           this.showRequestOtpForm = true;
           this.showForgotPasswordForm = false;
+  
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -95,7 +104,9 @@ export class SelfforgotpasswordComponent implements OnInit {
             timerProgressBar: true
           });
         }
+  
       });
+  
     }
     toggleFieldTextType() {
       this.fieldTextType = !this.fieldTextType;
@@ -119,11 +130,13 @@ export class SelfforgotpasswordComponent implements OnInit {
         token: formAllData.enterOtp,
       };
       this.ngxService.start();
-      this.apiUrl = environment.AUTHAPIURL + 'self-portal/auth/reset-password';
+      this.apiUrl = environment.AUTHAPIURL + 'auth/reset-password';
   
       this.http.post<any>(this.apiUrl, requestObj).subscribe(data => {
         this.ngxService.stop();
         if (data.status == true) {
+  
+  
           Swal.fire({
             icon: 'success',
             title: 'Success',
@@ -132,9 +145,11 @@ export class SelfforgotpasswordComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true
           });
-          this.router.navigate(["/selflogin"]);
-        }
-         else {
+          this.router.navigate(["/login"]);
+          // this.initialiseForgotForms();
+          // this.submitted= false;
+        } else {
+  
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -143,8 +158,11 @@ export class SelfforgotpasswordComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true
           });
-        } 
+        }
+  
       });
+  
+  
     }
   }
   

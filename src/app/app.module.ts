@@ -66,15 +66,8 @@ import { NumbersOnlyDirective } from './numbers-only.directive';
 import { BillingsettlementsComponent } from './billingofficer/billingsettlements/billingsettlements.component';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettlements/headbillingsettlements.component';
-import { SelfloginComponent } from './selfportal/auth/selflogin/selflogin.component';
-import { SelflogoutComponent } from './selfportal/auth/selflogout/selflogout.component';
-import { SelfresetpasswordComponent } from './selfportal/auth/selfresetpassword/selfresetpassword.component';
-import { SelfforgotpasswordComponent } from './selfportal/auth/selfforgotpassword/selfforgotpassword.component';
-import { SelfdashboardComponent } from './selfportal/dashboard/selfdashboard/selfdashboard.component';
-import { SelfserviceComponent } from './__inc/menuitem/selfservice/selfservice.component';
-import { SelfconsumerlistingComponent } from './selfportal/profile/selfconsumerlisting/selfconsumerlisting.component';
-import { SelfpaymenthistoryComponent } from './selfportal/reports/selfpaymenthistory/selfpaymenthistory.component';
-import { SelfbillpaymnetComponent } from './selfportal/billmanangement/selfbillpaymnet/selfbillpaymnet.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
+
 
 
 @NgModule({
@@ -135,15 +128,8 @@ import { SelfbillpaymnetComponent } from './selfportal/billmanangement/selfbillp
     BillingsettlementsComponent,
     HeadictsettlementsComponent,
     HeadbillingsettlementsComponent,
-    SelfloginComponent,
-    SelflogoutComponent,
-    SelfresetpasswordComponent,
-    SelfforgotpasswordComponent,
-    SelfdashboardComponent,
-    SelfserviceComponent,
-    SelfconsumerlistingComponent,
-    SelfpaymenthistoryComponent,
-    SelfbillpaymnetComponent,
+    SignUpComponent,
+
  
   ],
   imports: [

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelfserviceComponent } from './selfservice.component';
+import { SignUpComponent } from './sign-up.component';
 
-describe('SelfserviceComponent', () => {
-  let component: SelfserviceComponent;
-  let fixture: ComponentFixture<SelfserviceComponent>;
+describe('SignUpComponent', () => {
+  let component: SignUpComponent;
+  let fixture: ComponentFixture<SignUpComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelfserviceComponent ]
+      declarations: [ SignUpComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SelfserviceComponent);
+    fixture = TestBed.createComponent(SignUpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -21,3 +21,4 @@ describe('SelfserviceComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

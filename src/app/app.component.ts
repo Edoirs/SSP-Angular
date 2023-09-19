@@ -29,7 +29,7 @@ export class AppComponent {
         // tslint:disable-next-line: triple-equals
         if (event.url == '/login'
 
-          || event.url == '/selflogin'
+          || event.url == '/signUp'
           || event.url == '/newlogin'
           || event.url == '/'
           || event.url == ''
