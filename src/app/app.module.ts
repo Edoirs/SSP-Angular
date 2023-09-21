@@ -37,35 +37,16 @@ import { HeadchangepasswordComponent } from './headoficta/headchangepassword/hea
 import { HeadtariffsComponent } from './headoficta/headtariffs/headtariffs.component';
 import { HeadbillstructureComponent } from './headoficta/headbillstructure/headbillstructure.component';
 import { HeadconsumerlistingComponent } from './headoficta/headconsumerlisting/headconsumerlisting.component';
-import { RegisteroffcrprofileComponent } from './registrationoffcr/registeroffcrprofile/registeroffcrprofile.component';
 import { HeadgeneratedbillsComponent } from './headoficta/headgeneratedbills/headgeneratedbills.component';
 import { HeadpayhistoryComponent } from './headoficta/headpayhistory/headpayhistory.component';
 import { HeadcreatebillComponent } from './headoficta/headcreatebill/headcreatebill.component';
 import { HeadBillPaymentComponent } from './headoficta/head-bill-payment/head-bill-payment.component';
-import { RegstrncreatebillComponent } from './registrationoffcr/regstrncreatebill/regstrncreatebill.component';
-import { RegistrationbillpaymntComponent } from './registrationoffcr/registrationbillpaymnt/registrationbillpaymnt.component';
 
 import { BillingofficerComponent } from './__inc/menuitem/billingofficer/billingofficer.component';
-import { BillingbillstructureComponent } from './billingofficer/billingbillstructure/billingbillstructure.component';
-import { BillingbillpaymentComponent } from './billingofficer/billingbillpayment/billingbillpayment.component';
-import { BillingcreatebillComponent } from './billingofficer/billingcreatebill/billingcreatebill.component';
-import { BillingpaymnthistoryComponent } from './billingofficer/billingpaymnthistory/billingpaymnthistory.component';
-import { BillingreportsbillsComponent } from './billingofficer/billingreportsbills/billingreportsbills.component';
-import { HeadbilligcreatebillComponent } from './headbilling/headbilligcreatebill/headbilligcreatebill.component';
-import { HeadbillingpaymentComponent } from './headbilling/headbillingpayment/headbillingpayment.component';
-import { HeadbillingpaymenthistryComponent } from './headbilling/headbillingpaymenthistry/headbillingpaymenthistry.component';
-import { HeadbillinggeneratedbillsComponent } from './headbilling/headbillinggeneratedbills/headbillinggeneratedbills.component';
-import { HeadbliingconsumerlistComponent } from './headbilling/headbliingconsumerlist/headbliingconsumerlist.component';
 import { HeadprofilerequestsComponent } from './headoficta/headprofilerequests/headprofilerequests.component';
-import { HeadbillingprofilereqComponent } from './headbilling/headbillingprofilereq/headbillingprofilereq.component';
-import { BillingprofileComponent } from './billingofficer/billingprofile/billingprofile.component';
-import { HeadbillingbillstrctureComponent } from './headbilling/headbillingbillstrcture/headbillingbillstrcture.component';
-import { BillingprofilereqComponent } from './billingofficer/billingprofilereq/billingprofilereq.component';
 import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.component';
 import { NumbersOnlyDirective } from './numbers-only.directive';
-import { BillingsettlementsComponent } from './billingofficer/billingsettlements/billingsettlements.component';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
-import { HeadbillingsettlementsComponent } from './headbilling/headbillingsettlements/headbillingsettlements.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 
@@ -100,34 +81,15 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
     HeadtariffsComponent,
     HeadbillstructureComponent,
     HeadconsumerlistingComponent,
-    RegisteroffcrprofileComponent,
     HeadgeneratedbillsComponent,
     HeadpayhistoryComponent,
     HeadcreatebillComponent,
     HeadBillPaymentComponent,
-    RegstrncreatebillComponent,
-    RegistrationbillpaymntComponent,
     BillingofficerComponent,
-    BillingbillstructureComponent,
-    BillingbillpaymentComponent,
-    BillingcreatebillComponent,
-    BillingpaymnthistoryComponent,
-    BillingreportsbillsComponent,
-    HeadbilligcreatebillComponent,
-    HeadbillingpaymentComponent,
-    HeadbillingpaymenthistryComponent,
-    HeadbillinggeneratedbillsComponent,
-    HeadbliingconsumerlistComponent,
     HeadprofilerequestsComponent,
-    HeadbillingprofilereqComponent,
-    BillingprofileComponent,
-    HeadbillingbillstrctureComponent,
-    BillingprofilereqComponent,
     PrivacypolicyComponent,
     NumbersOnlyDirective,
-    BillingsettlementsComponent,
     HeadictsettlementsComponent,
-    HeadbillingsettlementsComponent,
     SignUpComponent,
 
  
