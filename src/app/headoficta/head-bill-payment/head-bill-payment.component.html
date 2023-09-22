@@ -69,10 +69,10 @@
             </div>
 
             <div class=" col-sm-5 mt-1">
-              <button type="submit" class="btn btn-primary font-12 smp-button">
+              <button type="submit" class="btn btn-success font-12 smp-button">
                 <i class="fas fa-search"></i> Search
               </button>
-              <button type="button" class="btn btn-primary font-12 smp-button-clear" (click)="clearSearch()">
+              <button type="button" class="btn btn-success font-12 smp-button-clear" (click)="clearSearch()">
                 <i class="fas fa-sync-alt"></i> Clear
               </button>
             </div>
@@ -270,14 +270,14 @@
 
             <div class="modal-footer" style="justify-content: space-between !important;" *ngIf="selectedsubTariff != 3">
               <button type="submit" *ngIf="singleBillData && singleBillData?.payment_status_name != 3" (click)="pay(singleBillData)"
-                    class="btn btn-primary theme_btn tp_two my-1">
+                    class="btn btn-success theme_btn tp_two my-1">
                     <i class="fas fa-plus-square"></i> Make Payment
                   </button>
                   <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Close</button>
               </div>
               <div class="modal-footer" style="justify-content: space-between !important;" *ngIf="selectedsubTariff == 3">
                 <button type="submit" *ngIf="singleBillData && singleBillData?.payment_status_name != 3" (click)="partialPay(singleBillData,partialPayModal)"
-                      class="btn btn-primary theme_btn tp_two my-1">
+                      class="btn btn-success theme_btn tp_two my-1">
                       <i class="fas fa-plus-square"></i> Make Payment
                     </button>
                     <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Close</button>
