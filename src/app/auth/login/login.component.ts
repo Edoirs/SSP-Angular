@@ -12,41 +12,53 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
-
     submitted = false;
     apiUrl: any;
     loginForm!: FormGroup
+    otpForm!: FormGroup
     showLoginForm: boolean = true;
     showOtpForm: boolean = false;
     defaultPwd!: boolean
     fieldTextType: boolean=false;
     fieldTextType2: boolean=false;
+  status: any;
+  appKey: any;
+  md5: any;
+  rinPhoneNumber: any;
+  password: any;
+  companyId: any;
   
-  
-    constructor(private http: HttpClient, private router: Router,
-      private formBuilder: FormBuilder, private ngxService: NgxUiLoaderService) { }
-  
-  
-    ngOnInit(): void {
-      this.initialiseForms();
-  
-    }
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    private formBuilder: FormBuilder, 
+    private ngxService: NgxUiLoaderService) { }
+
+  ngOnInit(): void {
+    this.initialiseForms();
+  }
   
     initialiseForms() {
       this.loginForm = this.formBuilder.group({
-        emailAddress: ["", [
-          Validators.required,
-          Validators.maxLength(40),
-          Validators.pattern("^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
-        ]],
-  
-        password: ["", [
-          Validators.required,
-       //   Validators.minLength(8),
-          Validators.maxLength(40),
-        ]],
-        enterOtp: ["", [Validators.required, Validators.maxLength(6), Validators.minLength(6), Validators.pattern(/^[0-9]*$/)]],
+        rinPhoneNumber: [
+          "",
+          [
+            Validators.required,
+            Validators.minLength(11),
+            Validators.maxLength(11),
+            // Validators.pattern(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/),
+          ],
+        ],
+        password: ["", [Validators.required]],
+        rememberMe: [false, []],
+        taxTypeId: ["", Validators.required],
+        // captcha: ['', Validators.required],
+      });
+    }
+
+    initialiseOtpForm() {
+      this.otpForm = this.formBuilder.group({
+        enterOtp: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       });
     }
   
@@ -101,23 +113,29 @@ export class LoginComponent {
   
     }
   
-    onOtpSubmit(formAllData: any) {
+    onSubmit(formAllData: any) {
       this.submitted = true;
   
       if (this.loginForm.invalid) {
         return;
       }
-      var otpObj = {
-        email: formAllData.emailAddress,
-        password: formAllData.password,
-        otp: formAllData.enterOtp
+
+      this.password = formAllData.password;
+      this.rinPhoneNumber = formAllData.rinPhoneNumber;
+
+      var requestObj = {
+        userType: formAllData.taxTypeId,
+        password: this.password,
+        phoneNumber_RIN: this.rinPhoneNumber
       };
+
       this.ngxService.start();
-      this.apiUrl = environment.AUTHAPIURL + "auth/login";
-      this.http.post<any>(this.apiUrl, otpObj).subscribe((data) => {
+      this.apiUrl = environment.AUTHAPIURL + "Login/SignIn";
+
+      this.http.post<any>(this.apiUrl, requestObj).subscribe((data) => {
         this.ngxService.stop();
-        if (data.response != null) {
-          this.defaultPwd = data.response.changed_default_password;
+        if (data != null) {
+          this.defaultPwd = data.hasDefaultPassword;
         }
   
         if (this.defaultPwd == false) {
@@ -129,26 +147,24 @@ export class LoginComponent {
             timer: 5000,
             timerProgressBar: true,
           });
+
           this.router.navigate(["/resetpassword"]);
         }
   
         if (data.status == true) {
-          localStorage.setItem("niswasec_access_token", data.response?.access_token);
-          localStorage.setItem("niswasec_email", data.response?.user?.email);
-          localStorage.setItem("niswasec_name", data.response?.user?.name);
-          localStorage.setItem("niswasec_role_id", data.response?.role?.id);
-  
-          localStorage.setItem("niswasec_role_name", data.response?.role?.name);
-          localStorage.setItem("niswasec_phone", data.response?.user?.phone);
-          localStorage.setItem("niswasec_designation", data.response?.user?.designation);
-          localStorage.setItem("niswasec_department", data.response?.user?.department);
-          this.router.navigate(["/dashboard"])
+          localStorage.setItem("token", data?.token);
+          localStorage.setItem("email", data?.email);
+          localStorage.setItem("name", data?.name);
+          localStorage.setItem("companyId", data?.companyId);
+          this.companyId = formAllData.companyId;
+          this.goToOtp();
+          // this.router.navigate(["/dashboard"])
         }
         else if(data.status != true  && this.defaultPwd != false) {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: data.message || data.error.errors.email[0],
+            text: data.message,
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
@@ -156,8 +172,114 @@ export class LoginComponent {
         }
       });
     }
+
+    onOtpSubmit(otpFormData: any) {
+      this.submitted = true;
+      // let enterOtp = otpFormData.enterOtp;
+
+      let requestObj = {
+        companyId: this.companyId,
+        password: this.password,
+        verificationOtp: otpFormData.enterOtp
+      }
+      console.log("loginRequest: ", requestObj);
+  
+      if (this.otpForm.valid) {
+        this.userLogin(requestObj);
+      }
+      else {
+        return;
+      }
+    }
+
+    userLogin(jsonData: any) {
+      this.ngxService.start();
+      this.apiUrl = environment.AUTHAPIURL + 'Login/ValidateOTPAccount';
+  
+      const myheaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        // 'token': this.md5
+      });
+  
+      const options = { headers: myheaders };
+  
+      this.http.post<any>(this.apiUrl, jsonData, options).subscribe(data => {
+        console.log("loginApiResponse: ", data);
+        this.status = data.status;
+        if (this.status == true) {
+          console.log("user: ", data);
+          // localStorage.setItem('admin_email', data.response.user.email);
+          // localStorage.setItem('admin_id', data.response.user.id);
+          // localStorage.setItem('admin_access_token', data.response.access_token);
+          
+          this.initialiseOtpForm();
+          this.ngxService.stop();
+          this.router.navigate(['/dashboard']);
+        }
+        else {
+          this.ngxService.stop();
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000
+          });
+        }
+      });
+    }
+
+    requestNewOtp() {
+      this.ngxService.start();
+  
+      var otpObjData = {
+        companyId: this.companyId,
+        password: this.password,
+      };
+  
+      this.apiUrl = environment.AUTHAPIURL + "Login/ResendOTPAccount";
+  
+      this.http.post<any>(this.apiUrl, otpObjData).subscribe((data) => {
+        console.log("otpApiResponse: ", data);
+        this.ngxService.stop();
+  
+        if (data.status == true) {
+          this.showLoginForm = false;
+          this.showOtpForm = true;
+  
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "The OTP has been sent to mail successfully!",
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        } 
+        else {
+          this.showLoginForm = true;
+          this.showOtpForm = false;
+  
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        }
+      });
+    }
+
+    goToOtp() {
+      this.showLoginForm = false;
+      this.showOtpForm = true;
+    }
+
     backToLogin() {
-      
+      this.showLoginForm = true;
+      this.showOtpForm = false;
     }
 
     keyPressNumbersWithDecimal(event: any) {
