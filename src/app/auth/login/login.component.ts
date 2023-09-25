@@ -182,6 +182,7 @@ export class LoginComponent {
         password: this.password,
         verificationOtp: otpFormData.enterOtp
       }
+      
       console.log("loginRequest: ", requestObj);
   
       if (this.otpForm.valid) {
