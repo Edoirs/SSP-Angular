@@ -3,6 +3,7 @@ export const environment = {
     sessionTimeOut: 144000,
    // AUTHAPIURL: 'http://127.0.0.1:3333/water-api/api/',
     AUTHAPIURL: 'https://nsirs.nownowpay.com.ng/water-api/api/',
+    SAMPLE_FILE_URL: "https://nsirs.nownowpay.com.ng/NIGER-API/public/files/",
     GOOGLE_RECAPTCHA: false,
       WHATSAPP_PHONE_NO: 919012017120
   };

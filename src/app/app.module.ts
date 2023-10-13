@@ -48,6 +48,8 @@ import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.c
 import { NumbersOnlyDirective } from './numbers-only.directive';
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { AnnualreturnemployeesuploadComponent } from './paye/annualreturns/annualreturnemployeesupload/annualreturnemployeesupload.component';
+import { AnnualreturnsComponent } from './paye/annualreturns/annualreturns/annualreturns.component';
 
 
 
@@ -91,6 +93,8 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
     NumbersOnlyDirective,
     HeadictsettlementsComponent,
     SignUpComponent,
+    AnnualreturnemployeesuploadComponent,
+    AnnualreturnsComponent,
 
  
   ],

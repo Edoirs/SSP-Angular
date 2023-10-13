@@ -80,9 +80,10 @@ export class LoginComponent {
       var requestObj = {
         email: formAllData.emailAddress,
       };
+      
       this.ngxService.start();
       this.apiUrl = environment.AUTHAPIURL + "auth/send-otp";
-      this.http.post<any>(this.apiUrl, requestObj).subscribe((data) => {
+      this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
   
         this.ngxService.stop();
         if (data.status == true) {
@@ -132,7 +133,7 @@ export class LoginComponent {
       this.ngxService.start();
       this.apiUrl = environment.AUTHAPIURL + "Login/SignIn";
 
-      this.http.post<any>(this.apiUrl, requestObj).subscribe((data) => {
+      this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
         this.ngxService.stop();
         if (data != null) {
           this.defaultPwd = data.hasDefaultPassword;
@@ -204,7 +205,7 @@ export class LoginComponent {
   
       const options = { headers: myheaders };
   
-      this.http.post<any>(this.apiUrl, jsonData, options).subscribe(data => {
+      this.http.post<any>(this.apiUrl, jsonData, options).subscribe((data: any) => {
         console.log("loginApiResponse: ", data);
         this.status = data.status;
         if (this.status == true) {
@@ -240,7 +241,7 @@ export class LoginComponent {
   
       this.apiUrl = environment.AUTHAPIURL + "Login/ResendOTPAccount";
   
-      this.http.post<any>(this.apiUrl, otpObjData).subscribe((data) => {
+      this.http.post<any>(this.apiUrl, otpObjData).subscribe((data: any) => {
         console.log("otpApiResponse: ", data);
         this.ngxService.stop();
   

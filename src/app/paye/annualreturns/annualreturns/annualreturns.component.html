@@ -1,0 +1,1433 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header"></div>
+    <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31">
+        <flash-messages></flash-messages>
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-secondary">
+          <div class="card-header custome">
+            <h3 class="card-title">List of Businesses</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="over-auto">
+              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+              <table
+                class="table table-bordered table-condensed"
+                *ngIf="businessesData"
+                datatable
+                [dtOptions]="dtOptions"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Business ID</th>
+                    <th>Business Name</th>
+                    <th>Sector</th>
+                    <th>Subsector</th>
+                    <th>Address</th>
+                    <th>Employees Count</th>
+                    <th>LGA</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let mydata of businessesData; index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ mydata.business_id }}</td>
+                    <td>{{ mydata.business_name | titlecase }}</td>
+                    <td>{{ mydata.industry_sector_name }}</td>
+                    <td>{{ mydata.industry_subsector_name }}</td>
+                    <td>{{ mydata.business_address }}</td>
+                    <td>{{ mydata.employees_count }}</td>
+                    <td>
+                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    </td>
+  
+                    <td title="View">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        (click)="
+                          viewBusinessAnnualReturn(annualReturnModal, mydata)
+                        "
+                      >
+                        <i class="nav-icon fas fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <!-- <div class="card-footer" *ngIf="apidataEmpty">
+            <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
+              class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
+          </div> -->
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <ng-template #annualReturnModal let-modal>
+    <div class="card card-secondary">
+      <div class="card-header custome">
+        <h3 class="card-title">Annual Return Uploads</h3>
+  
+        <!-- <div class="pull-right">
+                <button type="submit" (click)="uploadAnnualReturn(annualreturnmodal)" class="btn button-login">Upload Annual Return</button>
+            </div> -->
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="over-auto">
+          <table
+            class="table table-bordered table-condensed"
+            *ngIf="annualReturnsData"
+            datatable
+            [dtOptions]="dtOptions"
+            width="100%"
+          >
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <!-- <th>Date Created</th> -->
+                <th>Taxpayer ID</th>
+                <th>Full Name</th>
+                <!-- <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Surname</th> -->
+                <th>Designation</th>
+                <th>Phone</th>
+                <th>Total Income (₦)</th>
+                <th>Pension (₦)</th>
+                <th>NHIS (₦)</th>
+                <th>NHF (₦)</th>
+                <th>Life Assurance (₦)</th>
+                <th>Nationality</th>
+                <th>Monthly Income (₦)</th>
+                <th>Annual Gross Income (₦)</th>
+                <th>Annual Tax Paid (₦)</th>
+                <th>Months</th>
+  
+                <th *ngIf="showEditEmployee">Edit</th>
+                <th *ngIf="showEditEmployee">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of annualReturnsData; index as i">
+                <td>{{ i + 1 }}</td>
+                <!-- <td>{{ mydata.created_at | date:'MMM d, y, h:mm:ss a' }}</td> -->
+                <td>{{ mydata.taxpayer_id }}</td>
+                <td>
+                  {{ mydata.first_name + " " + mydata.surname | titlecase }}
+                </td>
+                <!-- <td>{{ mydata.first_name | titlecase }}</td>
+                <td>{{ mydata.middle_name | titlecase }}</td>
+  
+                <td>{{ mydata.surname | titlecase }}</td> -->
+                <td>{{ mydata.designation | titlecase }}</td>
+                <td>{{ mydata.phone }}</td>
+                <td>{{ mydata.total_income | number }}</td>
+                <td>{{ mydata.pension | number }}</td>
+                <td>{{ mydata.nhis | number }}</td>
+                <td>{{ mydata.nhf | number }}</td>
+                <td>{{ mydata.life_assurance | number }}</td>
+                <td>{{ mydata.nationality | titlecase }}</td>
+  
+                <td>{{ mydata.monthly_income | number }}</td>
+                <td>{{ mydata.annual_gross_income | number }}</td>
+                <td>{{ mydata.annual_tax_paid | number }}</td>
+                <!-- <td>{{ mydata.months == "01" ? "January" : mydata.months == "02" ? "February" : mydata.months == "03" ? "March" : mydata.months == "04" ? "April" : mydata.months == "05" ? "May" : mydata.months == "06" ? "June" : mydata.months == "07" ? "July" : mydata.months == "08" ? "August" : mydata.months == "09" ? "September" : mydata.months == "10" ? "October" : mydata.months == "11" ? "November" : "December" }}</td> -->
+                <td>{{ mydata.months }}</td>
+  
+                <td title="Edit" *ngIf="showEditEmployee">
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="editAnnualReturn(annualreturnmodal, mydata)"
+                  >
+                    <i class="nav-icon fas fa-edit"></i>
+                  </button>
+                </td>
+                <td *ngIf="showEditEmployee">
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="deleteAnnualReturn(mydata.id)"
+                  >
+                    <i class="nav-icon far fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <button
+          *ngIf="showCreateSchedule && apidataEmpty"
+          type="submit"
+          (click)="forwardSchedule(schedulemodal)"
+          [disabled]="annualReturnsData == null"
+          class="btn btn button-login"
+        >
+          <i class="fas fa-plus-square"></i> Create Schedule
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark button-login float-right"
+          (click)="modal.close('Save click')"
+        >
+          Ok
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #annualreturnmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Annual Return Details</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                          style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="annualReturnForm"
+          (ngSubmit)="onSubmitAnnualReturn(annualReturnForm.value)"
+        >
+          <div class="form-row">
+            <!-- <div class="form-group col-md-6">
+                          <label for="dateCreated">Date Created</label>
+                          <input type="text" formControlName="dateCreated" class="form-control" [attr.disabled]="true"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.dateCreated.errors }" />
+  
+                          <div *ngIf="submitted &amp;&amp; annualReturnForm.controls.dateCreated.errors" class="text-danger">
+                          </div>
+                      </div> -->
+  
+            <div class="form-group col-md-6">
+              <label for="taxPayerID">Taxpayer ID</label>
+              <input
+                type="text"
+                formControlName="taxPayerID"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.taxPayerID.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.taxPayerID.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="annualReturnForm.controls.taxPayerID.errors.required">First Name is required</div> -->
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="basicIncome"
+                >Basic Income<sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="basicIncome"
+                class="form-control"
+                (keyup)="calculateTotalIncome($event)"
+                placeholder="Basic Income"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.basicIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.basicIncome.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.basicIncome.errors.required"
+                >
+                  Basic Income required
+                </div>
+                <div *ngIf="annualReturnForm.controls.basicIncome.errors.pattern">
+                  Basic Income must be Number with only two digits allowed after
+                  the decimal
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="firstName">Firstname
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="firstName"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.firstName.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.firstName.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.firstName.errors.required">
+                  First Name is required
+                </div>
+                <div *ngIf="annualReturnForm.controls.firstName.errors.pattern">
+                  First Name cannot contain numeric value
+                </div>
+                <div *ngIf="annualReturnForm.controls.firstName.errors.maxlength">
+                  First Name must be at most 30 characters
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="rent"
+                >Rent</label>
+              <input
+                type="text"
+                formControlName="rent"
+                class="form-control"
+                placeholder="Rent"
+                (keyup)="calculateTotalIncome($event)"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.rent.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.rent.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="annualReturnForm.controls.rent.errors.required">
+                    Rent required
+                  </div> -->
+                <div *ngIf="annualReturnForm.controls.rent.errors.pattern">
+                  Rent must be Number with only two digits allowed after the
+                  decimal
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="middleName">Middle Name</label>
+              <input
+                type="text"
+                formControlName="middleName"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.middleName.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.middleName.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.middleName.errors.required">
+                  Middle Name is required
+                </div>
+                <div *ngIf="annualReturnForm.controls.middleName.errors.pattern">
+                  Middle Name cannot contain numeric value
+                </div>
+                <div
+                  *ngIf="annualReturnForm.controls.middleName.errors.maxlength"
+                >
+                  Middle Name must be at most 30 characters
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="transport"
+                >Transport
+              </label>
+              <input
+                type="text"
+                formControlName="transport"
+                class="form-control"
+                (keyup)="calculateTotalIncome($event)"
+                placeholder="transport"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.transport.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.transport.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="annualReturnForm.controls.transport.errors.required">
+                    Transport required
+                  </div> -->
+                <div *ngIf="annualReturnForm.controls.transport.errors.pattern">
+                  Transport must be Number with only two digits allowed after the
+                  decimal
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="surname">Surname
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="surname"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.surname.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.surname.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.surname.errors.required">
+                  Surname is required
+                </div>
+                <div *ngIf="annualReturnForm.controls.surname.errors.pattern">
+                  Surname cannot contain numeric value
+                </div>
+                <div *ngIf="annualReturnForm.controls.surname.errors.maxlength">
+                  Surname must be at most 30 characters
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="otherIncome"
+                >Other Income
+              </label>
+              <input
+                type="text"
+                formControlName="otherIncome"
+                class="form-control"
+                (keyup)="calculateTotalIncome($event)"
+                placeholder="Other Income"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.otherIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.otherIncome.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="annualReturnForm.controls.otherIncome.errors.required">
+                      otherIncome required
+                    </div> -->
+                <div *ngIf="annualReturnForm.controls.otherIncome.errors.pattern">
+                  Other Income must be Number with only two digits allowed after
+                  the decimal
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="NHF">National Housing Fund (NHF)</label>
+              <input
+                type="text"
+                formControlName="NHF"
+                class="form-control"
+                (keyup)="calculateGrossIncome($event)"
+                placeholder="National Housing Fund"
+                [attr.disabled]="disableEmployeeControl"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.NHF.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.NHF.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.NHF.errors.pattern">
+                  National Housing Fund must be Number with only two digits
+                  allowed after the decimal
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
+              <input
+                type="text"
+                formControlName="NHIS"
+                class="form-control"
+                (keyup)="calculateGrossIncome($event)"
+                placeholder="National Health Insurance Scheme"
+                [attr.disabled]="disableEmployeeControl"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.NHIS.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.NHIS.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.NHIS.errors.pattern">
+                  National Health Insurance Scheme must be Number with only two
+                  digits allowed after the decimal
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="pension"
+                >Pension<sup class="ml-1 font-wegiht-bold text-danger"></sup
+              ></label>
+              <input
+                type="text"
+                formControlName="pension"
+                class="form-control"
+                placeholder="Pension"
+                [attr.disabled]="disableEmployeeControl"
+                (keyup)="calculateGrossIncome($event)"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.pension.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.pension.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.pension.errors.required">
+                  Pension is required
+                </div>
+                <div *ngIf="annualReturnForm.controls.pension.errors.pattern">
+                  Pension must be Number with only two digits allowed after the
+                  decimal
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="lifeAssurance">Life Assurance</label>
+              <input
+                type="text"
+                formControlName="lifeAssurance"
+                class="form-control"
+                placeholder="Life Assurance"
+                (keyup)="calculateGrossIncome($event)"
+                [attr.disabled]="disableEmployeeControl"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.lifeAssurance.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.lifeAssurance.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.lifeAssurance.errors.pattern"
+                >
+                  Life Assurance must be numbers with only two digits allowed
+                  after the decimal
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="monthlyIncome">Monthly Income (₦)
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="monthlyIncome"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.monthlyIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.monthlyIncome.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.monthlyIncome.errors.required"
+                >
+                  Monthly Income is required
+                </div>
+                <div
+                  *ngIf="annualReturnForm.controls.monthlyIncome.errors.pattern"
+                >
+                  Monthly Income must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="annualGrossIncome">Annual Gross (₦) 
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="annualGrossIncome"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.annualGrossIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.annualGrossIncome.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="
+                    annualReturnForm.controls.annualGrossIncome.errors.required
+                  "
+                >
+                  Annual Gross Income is required
+                </div>
+                <div
+                  *ngIf="
+                    annualReturnForm.controls.annualGrossIncome.errors.pattern
+                  "
+                >
+                  Annual Gross Income must be Number Only
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="annualTaxPaid">Annual Tax Paid (₦)
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="annualTaxPaid"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.annualTaxPaid.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.annualTaxPaid.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.annualTaxPaid.errors.required"
+                >
+                  Annual Tax Paid is required
+                </div>
+                <div
+                  *ngIf="annualReturnForm.controls.annualTaxPaid.errors.pattern"
+                >
+                  Annual Tax Paid must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="months">Months
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="months"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.months.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.months.errors"
+                class="text-danger"
+              >
+                <div *ngIf="annualReturnForm.controls.months.errors.required">
+                  Months is required
+                </div>
+                <div *ngIf="annualReturnForm.controls.months.errors.pattern">
+                  Months must be Number Only
+                </div>
+                <div *ngIf="annualReturnForm.controls.months.errors.maxlength">
+                  Months must be at most 2 characters
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="designation">Designation
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="designation"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.designation.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.designation.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.designation.errors.required"
+                >
+                  Designation is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="nationality">Nationality
+                <sup
+                  style="font-weight: 800"
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                >
+              </label>
+              <input
+                type="text"
+                formControlName="nationality"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls.nationality.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; annualReturnForm.controls.nationality.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="annualReturnForm.controls.nationality.errors.required"
+                >
+                  Nationality is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn button-login">
+            Save Annual Return
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #schedulemodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Schedule</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                          style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="forwardScheduleForm"
+          (ngSubmit)="onSubmitSchedule(forwardScheduleForm.value)"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="scheduleYear">Schedule Year</label>
+              <input
+                type="text"
+                formControlName="scheduleYear"
+                maxlength="4"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls.scheduleYear.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; forwardScheduleForm.controls.scheduleYear.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="
+                    forwardScheduleForm.controls.scheduleYear.errors.required
+                  "
+                >
+                  Schedule Year is required
+                </div>
+                <div
+                  *ngIf="
+                    forwardScheduleForm.controls.scheduleYear.errors.minlength
+                  "
+                >
+                  Schedule Year must be at least 4 characters long.
+                </div>
+                <div
+                  *ngIf="
+                    forwardScheduleForm.controls.scheduleYear.errors.maxLength
+                  "
+                >
+                  Schedule Year must be 4 characters long.
+                </div>
+                <div
+                  *ngIf="forwardScheduleForm.controls.scheduleYear.errors.pattern"
+                >
+                  Schedule Year must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <!-- <div class="form-group col-md-6">
+                          <label for="scheduleMonthId">Schedule Month</label>
+                          <select type="text" name="scheduleMonthId" formControlName="scheduleMonthId" id="scheduleMonthId"
+                              class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls.scheduleMonthId.errors }">
+                              <option value="">-- Select Tax Month --</option>
+                              <option value="01">January</option>
+                              <option value="02">February</option>
+                              <option value="03">March</option>
+                              <option value="04">April</option>
+                              <option value="05">May</option>
+                              <option value="06">June</option>
+                              <option value="07">July</option>
+                              <option value="08">August</option>
+                              <option value="09">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                          </select>
+                          <div *ngIf="submitted &amp;&amp; forwardScheduleForm.controls.scheduleMonthId.errors"
+                              class="text-danger">
+                              <div *ngIf="forwardScheduleForm.controls.scheduleMonthId.errors.required">Schedule Month is required</div>
+                          </div>
+                      </div> -->
+          </div>
+  
+          <!-- <div class="form-row">
+                      <div class="form-group col-md-6">
+                          <label for="comment">Comment</label>
+                          <textarea type="text" formControlName="comment" class="form-control" rows="4"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls.comment.errors }"></textarea>
+                          <div *ngIf="submitted &amp;&amp; forwardScheduleForm.controls.comment.errors" class="text-danger">
+                              <div *ngIf="forwardScheduleForm.controls.comment.errors.required">Comment is required</div>
+                          </div>
+                      </div>
+                  </div> -->
+  
+          <button type="submit" class="btn btn button-login">
+            <i class="fas fa-save"></i> Save Schedule
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #editemploymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Employee Details</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                          style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="addEmployeeForm"
+          (ngSubmit)="onSubmit(addEmployeeForm.value)"
+          #formDirective="ngForm"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="titleId">Title</label>
+              <select
+                type="text"
+                name="titleId"
+                formControlName="titleId"
+                id="titleId"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.titleId.errors }"
+              >
+                <option value="">Select Title</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Miss.">Miss.</option>
+              </select>
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.titleId.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="addEmployeeForm.controls.titleId.errors.required">Title is required</div> -->
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="firstName"
+                >First Name<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="firstName"
+                class="form-control"
+                placeholder="First Name"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.firstName.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.firstName.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.firstName.errors.required">
+                  First Name is required
+                </div>
+                <!-- <div *ngIf="addEmployeeForm.controls.firstName.errors.minlength">Confirm Password must be at least 6 characters long.</div> -->
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="surname"
+                >Surname<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="surname"
+                class="form-control"
+                placeholder="Surname"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.surname.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.surname.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.surname.errors.required">
+                  Surname is required
+                </div>
+                <!-- <div *ngIf="addEmployeeForm.controls.surname.errors.minlength">New Password  must be at least 6 characters long</div> -->
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="emailAddress"
+                >Email Address<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="emailAddress"
+                class="form-control"
+                placeholder="Email Address"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.emailAddress.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.emailAddress.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls.emailAddress.errors.required"
+                >
+                  Email Address is required
+                </div>
+                <div
+                  *ngIf="addEmployeeForm.controls.emailAddress.errors.minlength"
+                >
+                  Email Address must not be more than 60 characters long.
+                </div>
+                <div *ngIf="addEmployeeForm.controls.emailAddress.errors.email">
+                  Provide valid Email address
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="phoneNumber"
+                >Phone Number<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="phoneNumber"
+                class="form-control"
+                placeholder="Phone Number"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.phoneNumber.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.phoneNumber.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.phoneNumber.errors.required">
+                  Phone Number is required
+                </div>
+                <div
+                  *ngIf="addEmployeeForm.controls.phoneNumber.errors.minlength"
+                >
+                  Phone Number must be at least 11 characters long.
+                </div>
+                <div
+                  *ngIf="addEmployeeForm.controls.phoneNumber.errors.maxlength"
+                >
+                  Phone Number must at most 11 Digit Long.
+                </div>
+                <div *ngIf="addEmployeeForm.controls.phoneNumber.errors.pattern">
+                  Phone Number must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="employeeTIN"
+                >Employee TIN<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="employeeTIN"
+                class="form-control"
+                placeholder="Employee TIN"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.employeeTIN.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.employeeTIN.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.employeeTIN.errors.required">
+                  Employee TIN is required
+                  <div
+                    *ngIf="addEmployeeForm.controls.employeeTIN.errors.minlength"
+                  >
+                    Employee TIN must be 10 Digit Long.
+                  </div>
+                  <div
+                    *ngIf="addEmployeeForm.controls.employeeTIN.errors.maxlength"
+                  >
+                    Employee TIN must be 10 Digit Long.
+                  </div>
+                  <div
+                    *ngIf="addEmployeeForm.controls.employeeTIN.errors.pattern"
+                  >
+                    Employee TIN must be numbers only.
+                  </div>
+                </div>
+                <!-- <div *ngIf="addEmployeeForm.controls.employeeTIN.errors.minlength">Confirm Password must be at least 6 characters long.</div> -->
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="BVN"
+                >BVN<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label
+              >
+              <input
+                type="text"
+                formControlName="BVN"
+                class="form-control"
+                placeholder="BVN"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.BVN.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.BVN.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.BVN.errors.required">
+                  BVN is required
+                </div>
+                <div *ngIf="addEmployeeForm.controls.BVN.errors.minlength">
+                  BVN must be at least 11 characters long.
+                </div>
+                <div *ngIf="addEmployeeForm.controls.BVN.errors.maxlength">
+                  BVN must be 11 Digit Long.
+                </div>
+                <div *ngIf="addEmployeeForm.controls.BVN.errors.pattern">
+                  BVN must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="grossIncome"
+                >Gross Income<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="grossIncome"
+                class="form-control"
+                placeholder="Gross Income"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.grossIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.grossIncome.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.grossIncome.errors.required">
+                  Gross Income is required
+                </div>
+                <div *ngIf="addEmployeeForm.controls.grossIncome.errors.pattern">
+                  Gross must be Number Only
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="pension"
+                >Pension<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="pension"
+                class="form-control"
+                placeholder="Pension"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.pension.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.pension.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.pension.errors.required">
+                  Pension is required
+                </div>
+                <div *ngIf="addEmployeeForm.controls.pension.errors.pattern">
+                  Pension must be Number Only
+                </div>
+                <!-- <div *ngIf="addEmployeeForm.controls.pension.errors.minlength">Confirm Password must be at least 6 characters long.</div> -->
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="CRA"
+                >Consolidated Relief Allowance (CRA)<sup
+                  class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="CRA"
+                class="form-control"
+                placeholder="Consolidated Relief Allowance"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.CRA.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.CRA.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.CRA.errors.required">
+                  Consolidated Relief Allowance is required
+                </div>
+                <div *ngIf="addEmployeeForm.controls.CRA.errors.pattern">
+                  Consolidated Relief Allowance must be Number Only
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
+              <input
+                type="text"
+                formControlName="NHIS"
+                class="form-control"
+                placeholder="National Health Insurance Scheme"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.NHIS.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.NHIS.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="addEmployeeForm.controls.NHIS.errors.required">National Health Insurance Scheme is required</div> -->
+                <div *ngIf="addEmployeeForm.controls.NHIS.errors.pattern">
+                  National Health Insurance Scheme must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="NHF">National Housing Fund (NHF)</label>
+              <input
+                type="text"
+                formControlName="NHF"
+                class="form-control"
+                placeholder="National Housing Fund"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.NHF.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.NHF.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="addEmployeeForm.controls.NHF.errors.required">National Housing Fund is required</div> -->
+                <div *ngIf="addEmployeeForm.controls.NHF.errors.pattern">
+                  National Housing Fund must be Number Only
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="otherIncome">Other Income</label>
+              <input
+                type="text"
+                formControlName="otherIncome"
+                class="form-control"
+                placeholder="Other Income"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.otherIncome.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.otherIncome.errors"
+                class="text-danger"
+              >
+                <!-- <div *ngIf="addEmployeeForm.controls.otherIncome.errors.required">Other Income required</div> -->
+                <div *ngIf="addEmployeeForm.controls.otherIncome.errors.pattern">
+                  Other Income must be Number Only
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="startMonthId"
+                >Start Month<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <select
+                type="text"
+                name="startMonthId"
+                formControlName="startMonthId"
+                id="startMonthId"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.startMonthId.errors }"
+              >
+                <option value="">Select Start Month</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.startMonthId.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls.startMonthId.errors.required"
+                >
+                  Start Month is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="nationality"
+                >Nationality<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="nationality"
+                class="form-control"
+                placeholder="Nationality"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.nationality.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.nationality.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.nationality.errors.required">
+                  Nationality is required
+                </div>
+                <!-- <div *ngIf="addEmployeeForm.controls.pension.errors.minlength">Confirm Password must be at least 6 characters long.</div> -->
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="zipCode" class="input-label pull-left"
+                >Zip Code
+                <!-- <sup class="font-wegiht-bold text-danger">*</sup> -->
+              </label>
+              <select
+                type="text"
+                name="zipCode"
+                formControlName="zipCode"
+                id="zipCode"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.zipCode.errors }"
+              >
+                <option value="">Select Zip Code</option>
+                <option *ngFor="let zipcode of zipCodes" [value]="zipcode.id">
+                  {{ zipcode.city + " - " + zipcode.postalcode }}
+                </option>
+              </select>
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.zipCode.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.zipCode.errors.required">
+                  Zip Code is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="NSIRSTaxPayerID">NSIRS Taxpayer ID</label>
+              <input
+                type="text"
+                formControlName="NSIRSTaxPayerID"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.NSIRSTaxPayerID.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.NSIRSTaxPayerID.errors"
+                class="text-danger"
+              ></div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="designation"
+                >Designation<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="designation"
+                class="form-control"
+                placeholder="Designation"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.designation.errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.designation.errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls.designation.errors.required">
+                  Designation is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="contactAddress"
+                >Home Address<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <textarea
+                type="text"
+                formControlName="contactAddress"
+                class="form-control"
+                rows="3"
+                placeholder="Home Address"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; addEmployeeForm.controls.contactAddress.errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; addEmployeeForm.controls.contactAddress.errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls.contactAddress.errors.required"
+                >
+                  Home Address is required
+                </div>
+                <div
+                  *ngIf="addEmployeeForm.controls.contactAddress.errors.maxLength"
+                >
+                  Home Address must be at most 150 characters
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button
+            *ngIf="showSaveEmployee"
+            type="submit"
+            class="btn btn button-login"
+          >
+            <i class="far fa-save"></i> Save Employee
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
