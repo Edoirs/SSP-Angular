@@ -141,7 +141,7 @@ export class LoginComponent {
           this.defaultPwd = data.hasDefaultPassword;
         }
   
-        if (this.defaultPwd == false) {
+        if (this.defaultPwd) {
           Swal.fire({
             icon: "info",
             title: "Info",
