@@ -8,7 +8,7 @@
     <!-- Main content -->
     <section class="content" data-select2-id="32">
         <div class="container-fluid" data-select2-id="31">
-            <flash-messages></flash-messages>
+            <!-- <flash-messages></flash-messages> -->
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-secondary">
                 <div class="card-header custome">
@@ -26,7 +26,7 @@
                                     [(ngModel)]="userRecord.name"
                                     [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls['name'].errors }" />
                                 <div *ngIf="submitted &amp;&amp; editForm.controls['name'].errors" class="text-danger">
-                                    <div *ngIf="editForm.controls['name'].controls['required']">Name is required</div>
+                                    <div *ngIf="editForm.controls['name'].errors['required']">Name is required</div>
                                 </div>
 
                             </div>
@@ -37,8 +37,8 @@
                                     [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls['email'].errors }"
                                     readonly />
                                 <div *ngIf="submitted &amp;&amp; editForm.controls['email'].errors" class="text-danger">
-                                    <div *ngIf="editForm.controls['email'].controls['required']">Email is required</div>
-                                    <div *ngIf="editForm.controls['email'].errors.email">Email must be a valid email
+                                    <div *ngIf="editForm.controls['email'].errors['required']">Email is required</div>
+                                    <div *ngIf="editForm.controls['email'].errors['email']">Email must be a valid email
                                         address</div>
                                 </div>
 
@@ -57,7 +57,7 @@
                                     </option>
                                 </select>
                                 <div *ngIf="submitted &amp;&amp; editForm.controls['role'].errors" class="text-danger">
-                                    <div *ngIf="editForm.controls['role'].controls['required']">Role is required</div>
+                                    <div *ngIf="editForm.controls['role'].errors['required']">Role is required</div>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
@@ -66,10 +66,10 @@
                                     [(ngModel)]="userRecord.phone"
                                     [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls['phone'].errors }" />
                                 <div *ngIf="submitted &amp;&amp; editForm.controls['phone'].errors" class="text-danger">
-                                    <div *ngIf="editForm.controls['phone'].controls['required']">Phone is required</div>
-                                    <div *ngIf="editForm.controls['phone'].controls['minlength']">Phone must be at least
+                                    <div *ngIf="editForm.controls['phone'].errors['required']">Phone is required</div>
+                                    <div *ngIf="editForm.controls['phone'].errors['minlength']">Phone must be at least
                                         11 digits long.</div>
-                                    <div *ngIf="editForm.controls['phone'].controls['maxlength']">Phone must be at most
+                                    <div *ngIf="editForm.controls['phone'].errors['maxlength']">Phone must be at most
                                         11 digits long.</div>
                                 </div>
                             </div>

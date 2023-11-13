@@ -134,6 +134,7 @@ export class LoginComponent {
       this.apiUrl = environment.AUTHAPIURL + "Login/SignIn";
 
       this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
+        console.log("SignInResponse: ", data);
         this.ngxService.stop();
         if (data != null) {
           this.defaultPwd = data.hasDefaultPassword;
@@ -185,7 +186,6 @@ export class LoginComponent {
       }
       
       console.log("loginRequest: ", requestObj);
-  
       if (this.otpForm.valid) {
         this.userLogin(requestObj);
       }
@@ -206,7 +206,7 @@ export class LoginComponent {
       const options = { headers: myheaders };
   
       this.http.post<any>(this.apiUrl, jsonData, options).subscribe((data: any) => {
-        console.log("loginApiResponse: ", data);
+        console.log("ValidateOTPAccountResponse: ", data);
         this.status = data.status;
         if (this.status == true) {
           console.log("user: ", data);
@@ -242,7 +242,7 @@ export class LoginComponent {
       this.apiUrl = environment.AUTHAPIURL + "Login/ResendOTPAccount";
   
       this.http.post<any>(this.apiUrl, otpObjData).subscribe((data: any) => {
-        console.log("otpApiResponse: ", data);
+        console.log("ResendOTPAccountResponse: ", data);
         this.ngxService.stop();
   
         if (data.status == true) {

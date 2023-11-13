@@ -1357,6 +1357,7 @@ export class EmployeescheduleComponent implements OnInit {
       this.filePath = event.target.files[0].name;
       this.uploadForm.get("myfile")?.setValue(file);
     }
+    return true;
   }
 
 }

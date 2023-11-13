@@ -350,6 +350,7 @@ export class UploadprojectionComponent implements OnInit {
       this.filePath = event.target.files[0].name;
       this.myForm.get("myfile")?.setValue(file);
     }
+    return true;
   }
 
   showModal(modal: any) {

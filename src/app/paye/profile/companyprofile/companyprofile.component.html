@@ -83,9 +83,9 @@
                       [readonly]="isReadOnly"    [ngClass]="{ 'is-invalid': submitted &amp;&amp; companyProfileForm.controls['phone'].errors }"/>
                       <div *ngIf="submitted &amp;&amp; companyProfileForm.controls['phone'].errors" class="text-danger">
                         <div *ngIf="companyProfileForm.controls['phone'].errors['required']">Phone number is required</div>
-                        <div *ngIf="companyProfileForm.controls['phone'].errors.pattern">Phone number must be numbers only</div>
-                        <div *ngIf="companyProfileForm.controls['phone'].errors.minlength">Phone number must be 11 characters long</div>
-                        <div *ngIf="companyProfileForm.controls['phone'].errors.maxlength">Phone number must be at most 11 characters long</div>
+                        <div *ngIf="companyProfileForm.controls['phone'].errors['pattern']">Phone number must be numbers only</div>
+                        <div *ngIf="companyProfileForm.controls['phone'].errors['minlength']">Phone number must be 11 characters long</div>
+                        <div *ngIf="companyProfileForm.controls['phone'].errors['maxlength']">Phone number must be at most 11 characters long</div>
                       </div>
                     </div>
                   </div>
