@@ -18,106 +18,106 @@ export class UtilityService {
     this.getTaxOffices();
   }
 
-  // calculateGrossIncome(addEmployeeForm: any) {
-  //   let nhis = Number(addEmployeeForm.get("NHIS").value);
-  //   let nhf = Number(addEmployeeForm.get("NHF").value);
-  //   let pension = Number(addEmployeeForm.get("pension").value);
-  //   let totalIncome = Number(addEmployeeForm.get("totalIncome").value);
+  calculateGrossIncome(addEmployeeForm: any) {
+    let nhis = Number(addEmployeeForm.get("NHIS").value);
+    let nhf = Number(addEmployeeForm.get("NHF").value);
+    let pension = Number(addEmployeeForm.get("pension").value);
+    let totalIncome = Number(addEmployeeForm.get("totalIncome").value);
 
-  //   let lifeAssurance = Number(addEmployeeForm.get("lifeAssurance").value);
+    let lifeAssurance = Number(addEmployeeForm.get("lifeAssurance").value);
 
-  //   let grossIncome = totalIncome - (pension + nhis + nhf + lifeAssurance);
-  //   grossIncome = this.numRound(grossIncome);
-  //   addEmployeeForm.controls["grossIncome"].setValue(grossIncome);
+    let grossIncome = totalIncome - (pension + nhis + nhf + lifeAssurance);
+    grossIncome = this.numRound(grossIncome);
+    addEmployeeForm.controls["grossIncome"].setValue(grossIncome);
 
-  //   // check if gross income is correct
-  //   let grossIncomeIncorrect;
-  //   grossIncome <= 0
-  //     ? (grossIncomeIncorrect = true)
-  //     : (grossIncomeIncorrect = false);
+    // check if gross income is correct
+    let grossIncomeIncorrect;
+    grossIncome <= 0
+      ? (grossIncomeIncorrect = true)
+      : (grossIncomeIncorrect = false);
 
-  //   // calculate CRA
-  //   let cra = grossIncome * 0.2 + 16666.667;
-  //   let cra1 = grossIncome * 0.2 + 0.01 * grossIncome;
+    // calculate CRA
+    let cra = grossIncome * 0.2 + 16666.667;
+    let cra1 = grossIncome * 0.2 + 0.01 * grossIncome;
 
-  //   let approxCra = Math.round((cra + Number.EPSILON) * 100) / 100;
-  //   let approxCra1 = Math.round((cra1 + Number.EPSILON) * 100) / 100;
+    let approxCra = Math.round((cra + Number.EPSILON) * 100) / 100;
+    let approxCra1 = Math.round((cra1 + Number.EPSILON) * 100) / 100;
 
-  //   if (approxCra > approxCra1) {
-  //     addEmployeeForm.controls["CRA"].setValue(approxCra);
-  //   } else {
-  //     addEmployeeForm.controls["CRA"].setValue(approxCra1);
-  //   }
+    if (approxCra > approxCra1) {
+      addEmployeeForm.controls["CRA"].setValue(approxCra);
+    } else {
+      addEmployeeForm.controls["CRA"].setValue(approxCra1);
+    }
 
-  //   return grossIncomeIncorrect;
-  // }
+    return grossIncomeIncorrect;
+  }
 
-  // calculateTotalIncome(addEmployeeForm: any) {
-  //   let basicIncome = Number(addEmployeeForm.get("basicIncome").value);
-  //   let rent = Number(addEmployeeForm.get("rent").value);
-  //   let transport = Number(addEmployeeForm.get("transport").value);
-  //   let otherIncome = Number(addEmployeeForm.get("otherIncome").value);
-  //   let totalIncome = basicIncome + rent + transport + otherIncome;
-  //   totalIncome = this.numRound(totalIncome);
-  //   addEmployeeForm.controls["totalIncome"].setValue(totalIncome);
+  calculateTotalIncome(addEmployeeForm: any) {
+    let basicIncome = Number(addEmployeeForm.get("basicIncome").value);
+    let rent = Number(addEmployeeForm.get("rent").value);
+    let transport = Number(addEmployeeForm.get("transport").value);
+    let otherIncome = Number(addEmployeeForm.get("otherIncome").value);
+    let totalIncome = basicIncome + rent + transport + otherIncome;
+    totalIncome = this.numRound(totalIncome);
+    addEmployeeForm.controls["totalIncome"].setValue(totalIncome);
 
-  //   this.calculateGrossIncome(addEmployeeForm);
-  // }
+    this.calculateGrossIncome(addEmployeeForm);
+  }
 
-  // calculateTotalIncomeDA(declarationForm: any) {
-  //   let bi = Number(declarationForm.get("businessIncome").value);
-  //   let ei = Number(declarationForm.get("employmentIncome").value);
-  //   let cf = Number(declarationForm.get("professionalFee").value);
-  //   let oi = Number(declarationForm.get("otherIncome").value);
-  //   let df = Number(declarationForm.get("directorFees").value);
+  calculateTotalIncomeDA(declarationForm: any) {
+    let bi = Number(declarationForm.get("businessIncome").value);
+    let ei = Number(declarationForm.get("employmentIncome").value);
+    let cf = Number(declarationForm.get("professionalFee").value);
+    let oi = Number(declarationForm.get("otherIncome").value);
+    let df = Number(declarationForm.get("directorFees").value);
 
-  //   let bk = Number(declarationForm.get("benefit").value);
-  //   let tb = Number(declarationForm.get("terminalBonus").value);
-  //   let co = Number(declarationForm.get("contract").value);
-  //   let al = Number(declarationForm.get("allowance").value);
-  //   let ps = Number(declarationForm.get("profitSharing").value);
+    let bk = Number(declarationForm.get("benefit").value);
+    let tb = Number(declarationForm.get("terminalBonus").value);
+    let co = Number(declarationForm.get("contract").value);
+    let al = Number(declarationForm.get("allowance").value);
+    let ps = Number(declarationForm.get("profitSharing").value);
 
-  //   let cm = Number(declarationForm.get("commission").value);
-  //   let int = Number(declarationForm.get("interest").value);
-  //   let ro = Number(declarationForm.get("royalty").value);
-  //   let re = Number(declarationForm.get("rent").value);
-  //   let bc = Number(declarationForm.get("balancingCharge").value);
+    let cm = Number(declarationForm.get("commission").value);
+    let int = Number(declarationForm.get("interest").value);
+    let ro = Number(declarationForm.get("royalty").value);
+    let re = Number(declarationForm.get("rent").value);
+    let bc = Number(declarationForm.get("balancingCharge").value);
 
-  //   let totalIncome =
-  //     bi + ei + cf + oi + df + bk + tb + co + al + ps + cm + int + ro + re + bc;
-  //   declarationForm.controls["totalIncome"].setValue(totalIncome);
-  // }
+    let totalIncome =
+      bi + ei + cf + oi + df + bk + tb + co + al + ps + cm + int + ro + re + bc;
+    declarationForm.controls["totalIncome"].setValue(totalIncome);
+  }
 
-  // calculateGrossIncomeDA(reliefForm: any, declarationForm: any) {
-  //   let nhis = Number(reliefForm.get("nhis").value);
-  //   let nhf = Number(reliefForm.get("nhf").value);
-  //   let la = Number(reliefForm.get("lifeAssurance").value);
-  //   let pension = Number(reliefForm.get("nps").value);
-  //   let totalIncome = Number(declarationForm.get("totalIncome").value);
+  calculateGrossIncomeDA(reliefForm: any, declarationForm: any) {
+    let nhis = Number(reliefForm.get("nhis").value);
+    let nhf = Number(reliefForm.get("nhf").value);
+    let la = Number(reliefForm.get("lifeAssurance").value);
+    let pension = Number(reliefForm.get("nps").value);
+    let totalIncome = Number(declarationForm.get("totalIncome").value);
 
-  //   let grossIncome = totalIncome - (pension + nhis + nhf + la);
-  //   reliefForm.controls["grossIncome"].setValue(grossIncome);
+    let grossIncome = totalIncome - (pension + nhis + nhf + la);
+    reliefForm.controls["grossIncome"].setValue(grossIncome);
 
-  //   // check if gross income is correct
-  //   let grossIncomeIncorrectDA;
-  //   grossIncome <= 0
-  //     ? (grossIncomeIncorrectDA = true)
-  //     : (grossIncomeIncorrectDA = false);
+    // check if gross income is correct
+    let grossIncomeIncorrectDA;
+    grossIncome <= 0
+      ? (grossIncomeIncorrectDA = true)
+      : (grossIncomeIncorrectDA = false);
 
-  //   // calculate CRA
-  //   let cra = grossIncome * 0.2 + 200000;
-  //   let cra1 = grossIncome * 0.21;
-  //   let approxCra = Math.round((cra + Number.EPSILON) * 100) / 100;
-  //   let approxCra1 = Math.round((cra1 + Number.EPSILON) * 100) / 100;
+    // calculate CRA
+    let cra = grossIncome * 0.2 + 200000;
+    let cra1 = grossIncome * 0.21;
+    let approxCra = Math.round((cra + Number.EPSILON) * 100) / 100;
+    let approxCra1 = Math.round((cra1 + Number.EPSILON) * 100) / 100;
 
-  //   if (approxCra > approxCra1) {
-  //     reliefForm.controls["consolidateRelief"].setValue(approxCra);
-  //   } else {
-  //     reliefForm.controls["consolidateRelief"].setValue(approxCra1);
-  //   }
+    if (approxCra > approxCra1) {
+      reliefForm.controls["consolidateRelief"].setValue(approxCra);
+    } else {
+      reliefForm.controls["consolidateRelief"].setValue(approxCra1);
+    }
 
-  //   return grossIncomeIncorrectDA;
-  // }
+    return grossIncomeIncorrectDA;
+  }
 
   getTaxOfficeById(taxOfficeId: any) {
     if (taxOfficeId == null) {

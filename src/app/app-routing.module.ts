@@ -1,3 +1,4 @@
+import { DisplayuserComponent } from './paye/users/displayuser/displayuser.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForgotpasswordComponent } from './auth/forgotpassword/forgotpassword.component';
@@ -23,6 +24,22 @@ import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.c
 import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AnnualreturnemployeesuploadComponent } from './paye/annualreturns/annualreturnemployeesupload/annualreturnemployeesupload.component';
+import { AnnualreturnassessmentsComponent } from './paye/annualreturns/annualreturnassessments/annualreturnassessments.component';
+import { AnnualreturnschedulesComponent } from './paye/annualreturns/annualreturnschedules/annualreturnschedules.component';
+import { AnnualreturnsComponent } from './paye/annualreturns/annualreturns/annualreturns.component';
+import { ReassessmentappealsComponent } from './paye/annualreturns/reassessmentappeals/reassessmentappeals.component';
+import { ReassessmentsComponent } from './paye/annualreturns/reassessments/reassessments.component';
+import { ApprovedprojectionComponent } from './paye/annualprojection/approvedprojection/approvedprojection.component';
+import { PendingprojectionComponent } from './paye/annualprojection/pendingprojection/pendingprojection.component';
+import { UploadprojectionComponent } from './paye/annualprojection/uploadprojection/uploadprojection.component';
+import { AssessmentsComponent } from './paye/monthlyremittance/assessments/assessments.component';
+import { DeletedemployeesComponent } from './paye/monthlyremittance/deletedemployees/deletedemployees.component';
+import { EmployeescheduleComponent } from './paye/monthlyremittance/employeeschedule/employeeschedule.component';
+import { SchedulesComponent } from './paye/monthlyremittance/schedules/schedules.component';
+import { AdduserComponent } from './paye/users/adduser/adduser.component';
+import { EditComponent } from './paye/users/edit/edit.component';
+// import { CompanyprofileComponent } from './paye/users/companyprofile/companyprofile.component';
 
 
 const routes: Routes = [
@@ -33,7 +50,7 @@ const routes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "resetpassword", component: ResetpasswordComponent },
   { path: "forgotpassword", component: ForgotpasswordComponent },
-  { path: "signUp", component:SignUpComponent},
+  { path: "signUp", component: SignUpComponent },
 
   { path: "contactus", component: ContactusComponent },
   { path: "aboutus", component: AboutusComponent },
@@ -52,10 +69,27 @@ const routes: Routes = [
   { path: "headbillspayment", component: HeadBillPaymentComponent },
   { path: "headpaymenthistory", component: HeadpayhistoryComponent },
   { path: "headprofilerequest", component: HeadprofilerequestsComponent },
-   { path: "headsettlement", component: HeadictsettlementsComponent },
-  
-  
+  { path: "headsettlement", component: HeadictsettlementsComponent },
 
+  { path: "assessments", component: AssessmentsComponent },
+  { path: "deletedemployees", component: DeletedemployeesComponent },
+  { path: "employeeschedule", component: EmployeescheduleComponent },
+  { path: "schedules", component: SchedulesComponent },
+
+  { path: "annualreturnemployeesupload", component: AnnualreturnemployeesuploadComponent },
+  { path: "annualreturnassessments", component: AnnualreturnassessmentsComponent },
+  { path: "annualreturnschedules", component: AnnualreturnschedulesComponent },
+  { path: "annualreturns", component: AnnualreturnsComponent },
+  { path: "reassessmentappeals", component: ReassessmentappealsComponent },
+  { path: "reassessments", component: ReassessmentsComponent },
+
+  { path: "approvedprojection", component: ApprovedprojectionComponent },
+  { path: "pendingprojection", component: PendingprojectionComponent },
+  { path: "uploadprojection", component: UploadprojectionComponent },
+
+  { path: "adduser", component: AdduserComponent },
+  { path: "edituser", component: EditComponent },
+  { path: "displayuser", component: DisplayuserComponent },
 
 ];
 

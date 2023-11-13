@@ -3,88 +3,104 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { DatePipe } from "@angular/common";
+// import { TRANSITION_END_EVENTS } from "src/assets/plugins/filterizr/utils";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
 
 
 @Component({
-  selector: 'app-annualreturns',
-  templateUrl: './annualreturns.component.html',
-  styleUrls: ['./annualreturns.component.css']
+  selector: 'app-reassessmentappeals',
+  templateUrl: './reassessmentappeals.component.html',
+  styleUrls: ['./reassessmentappeals.component.css']
 })
-export class AnnualreturnsComponent implements OnInit {
+export class ReassessmentappealsComponent implements OnInit {
+  apiUrl!: string;
+  assessmentsData!: [];
+  dtOptions: any = {};
   modalOptions!: NgbModalOptions;
   closeResult!: string;
-  dtOptions: any = {};
-  annualReturnForm!: FormGroup;
-  forwardScheduleForm!: FormGroup;
+  reassessmentAppealsData: any;
+  appealForm!: FormGroup;
+  selectedAppeal: any;
   submitted: boolean = false;
-  apiUrl!: string;
-  annualReturnsData: any;
-  showCreateSchedule: boolean = false;
-  months: { monthId: string; monthName: string }[] = [];
-  apidataEmpty: boolean = false;
+  taxpayerId: any;
+  reassessmentAppealsComments: any;
   date!: Date;
-  addEmployeeForm!: FormGroup;
-  selectedEmployee: any;
-  showSaveEmployee!: boolean;
-  showEditEmployee!: boolean;
-  selectedEmployeeId: any;
-  selectedScheduleRecordId: any;
-  editEmployeeModalRef: any;
-  corporateId: any;
-  title = "PAYE - Annual Returns Report";
-  zipCodes: any;
+  forwardApealForm!: FormGroup;
+  submitApealForm!: FormGroup;
+  managerRole!: boolean;
+  roleID: any;
+  editorRole!: boolean;
+  disableEditor!: boolean;
+  disableManager!: boolean;
+  title = "PAYE - Reassessment Objections Report";
+  approvalStatus: any;
+  searchObject!: {};
+  searchForm!: FormGroup;
+  appealSubmitted: any;
+  invites: any;
+  files: any;
+  inviteForm!: FormGroup;
+  appealId: any;
+  showInvite!: boolean;
+  disableInviteForm: any;
   businessesData: any;
   selectedBusiness: any;
   businessId: any;
-  disableEmployeeControl: any;
 
   constructor(
-    private titleService: Title,
     private formBuilder: FormBuilder,
+    private titleService: Title,
     private httpClient: HttpClient,
     private router: Router,
+    // private component: DashboardComponent,
     private datepipe: DatePipe,
     private sess: SessionService,
-    // private component: DashboardComponent,
     private modalService: NgbModal,
     // private spinnerService: Ng4LoadingSpinnerService
 
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(searchObj = null): void {
     this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
-    this.initialiseForms();
     this.getBusinesses();
-    let userRole = localStorage.getItem("role_id");
-    this.corporateId = localStorage.getItem("corporate_id");
+    this.initialiseSearch();
 
-    if (userRole == "6") {
-      this.showCreateSchedule = true;
-      this.showEditEmployee = true;
-      this.disableEmployeeControl = null;
-    } else {
-      this.disableEmployeeControl = true;
+    // if (searchObj == null || searchObj == "") {
+    //   this.reassessmentAppealsData = "";
+    //   this.initialiseForms();
+    //   this.getReassessmentAppeals(this.businessId);
+    // } else {
+    //   this.getReassessmentAppeals(this.businessId);
+    // }
+
+    this.roleID = localStorage.getItem("role_id");
+
+    if (this.roleID === "5") {
+      this.managerRole = true;
+      // this.disableInviteForm = null;
+    } else if (this.roleID === "6") {
+      this.editorRole = true;
+      // this.disableInviteForm = true;
     }
 
     this.modalOptions = {
       backdrop: true,
       centered: true,
       backdropClass: "customBackdrop",
-      // size: "lg",
+      // size: 'lg'
       size: "xl",
     };
 
@@ -98,22 +114,32 @@ export class AnnualreturnsComponent implements OnInit {
       processing: true,
       ordering: false,
       info: true,
+      columnDefs: [
+        {
+          //targets: [ 10 ],
+          visible: false,
+          searchable: false,
+        },
+      ],
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
+        // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+        // tslint:disable-next-line: max-line-length
         {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-csv"> CSV</i>',
-          exportOptions: { columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ] },
+          exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
         },
+        // tslint:disable-next-line: max-line-length
         {
           extend: "excel",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-excel"> Excel</i>',
-          exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8 ] },
+          exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
         },
 
         {
@@ -123,7 +149,7 @@ export class AnnualreturnsComponent implements OnInit {
           orientation: "landscape",
           pageSize: "LEGAL",
           exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8 ],
+            columns: [0, 1, 2, 3, 4, 5, 6, 7],
           },
 
           customize: function (doc: any) {
@@ -139,50 +165,124 @@ export class AnnualreturnsComponent implements OnInit {
     };
   }
 
-  onSubmit(formAllData: any) {
-    this.submitted = true;
+  initialiseForms() {
+    this.appealForm = this.formBuilder.group({
+      dateAppealed: [""],
+      // documentUrl: [""],
+      reason: [""],
+      description: [""],
+      approvalStatus: [""],
+      comment: [""],
+      assessmentId: [""],
+    });
 
-    // stop the process here if form is invalid
-    if (this.addEmployeeForm.invalid) {
-      return;
-    }
+    this.forwardApealForm = this.formBuilder.group({
+      comment: ["", Validators.required],
+    });
+
+    this.submitApealForm = this.formBuilder.group({
+      comment: ["", Validators.required],
+      messageTitle: ["", Validators.required],
+    });
+
+    this.inviteForm = this.formBuilder.group({
+      inviteMessage: [""],
+      inviteDate: [""],
+      inviteTime: [""],
+    });
+  }
+
+  getReassessmentAppeals(businessId: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals/list";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
 
     let corporateId = localStorage.getItem("corporate_id");
 
     const obj = {
-      id: this.selectedEmployee.id,
-      tin: formAllData.employeeTIN,
-      bvn: formAllData.BVN,
-      nhis: formAllData.NHIS,
-      nhf: formAllData.NHF,
-      designation: formAllData.designation,
-      title: formAllData.titleId,
-      first_name: formAllData.firstName,
-      last_name: formAllData.surname,
-      email: formAllData.emailAddress,
-      nationality: formAllData.nationality,
-      tax_year: formAllData.taxYear,
-      tax_month: formAllData.taxMonthId,
-      zip_code: formAllData.zipCode,
-      // annual_basic: formAllData.annualBasic,
-      cra: formAllData.CRA,
-      pension: formAllData.pension,
-      gross_income: formAllData.grossIncome,
-      other_income: formAllData.otherIncome,
-      phone: formAllData.phoneNumber,
-      start_month: formAllData.startMonthId,
-      home_address: formAllData.contactAddress,
-      corporate_id: corporateId,
-      business_id: this.businessId,
+      corporate_id: [corporateId],
+      business_id: businessId,
     };
 
-    console.log("employeeFormData: ", obj);
-    this.postUpdateEmployee(obj);
+    this.httpClient
+      .post<any>(this.apiUrl, this.searchObject, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("reassessmentAppealsData: ", data);
+        this.reassessmentAppealsData =
+          data.response == null ? [] : data.response.data.reverse();
+        this.taxpayerId = data.response.data[0]?.taxpayer_id;
+        // this.spinnerService.hide();
+      });
   }
 
-  getSingleEmployee(employeeId: any) {
+  viewReassessmentAppeal(modal: any, selectedAppeal: any) {
+    console.log("selectedAppeal: ", selectedAppeal);
+    this.appealId = selectedAppeal.id;
+    this.showModal(modal);
+
+    this.getSingleReassessmentAppeal(selectedAppeal.id);
+  }
+
+  loadSelectedAppealData(selectedAppeal: any) {
+    let forward =
+      selectedAppeal.forwarded_to == 1
+        ? "Forwarded to Editor"
+        : selectedAppeal.forwarded_to == 2
+        ? "Forwarded to Manager"
+        : "Not forwarded";
+    if (selectedAppeal.forwarded_to == 2) {
+      this.disableEditor = false;
+      this.disableManager = true;
+    } else {
+      this.disableEditor = true;
+      this.disableManager = false;
+    }
+
+    // let submit = selectedAppeal.submitted == 1 ? 'Submitted' : 'Not Submitted';
+    this.approvalStatus = selectedAppeal.status;
+    this.appealSubmitted = selectedAppeal.submitted;
+    let approvalStatus =
+      selectedAppeal.status == 0
+        ? "In Progress"
+        : selectedAppeal.status == 1
+        ? "Approved"
+        : "Rejected";
+
+    this.date = new Date(selectedAppeal.created_at);
+    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+    this.appealForm = this.formBuilder.group({
+      dateAppealed: [latest_date],
+      // documentUrl: [selectedAppeal.file_url],
+      reason: [selectedAppeal.message_title],
+      description: [selectedAppeal.message],
+      approvalStatus: [approvalStatus],
+      comment: [selectedAppeal.admin_message],
+      assessmentId: [selectedAppeal.reassessment_id],
+    });
+
+
+    if (selectedAppeal.invites[0]) {
+      // this.showInvite = true;
+      this.inviteForm = this.formBuilder.group({
+        inviteMessage: [selectedAppeal.invites[0].comments],
+        inviteDate: [selectedAppeal.invites[0].invite_date],
+        inviteTime: [selectedAppeal.invites[0].invite_time],
+      });
+    }
+
+    this.reassessmentAppealsComments = selectedAppeal.comments;
+  }
+  inviteChange(){
+  this.inviteForm.reset();
+}
+  getSingleReassessmentAppeal(reassessmentId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/" + employeeId;
+    this.apiUrl =
+      environment.AUTHAPIURL + "reassessment-appeals/" + reassessmentId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -192,407 +292,71 @@ export class AnnualreturnsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("singleEmployeeData: ", data);
-        this.loadSelectedEmployeeData(data.response);
-        this.selectedEmployee = data.response;
+        console.log("selectedAppealData: ", data);
+        this.selectedAppeal = data.response;
+        this.files = data.response.files;
+        this.loadSelectedAppealData(this.selectedAppeal);
         // this.spinnerService.hide();
-
-        if (data.response !== null) {
-          this.loadSelectedEmployeeData(data.response);
-          this.selectedEmployee = data.response;
-        } else {
-          Swal.fire({
-            icon: "info",
-            title: "Info",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
       });
   }
 
-  editAnnualReturn(modal: any, selectedAnnualReturn: any) {
-    console.log("selectedAnnualReturn: ", selectedAnnualReturn);
-    this.selectedEmployeeId = selectedAnnualReturn.employee_id;
-    this.selectedScheduleRecordId = selectedAnnualReturn.id;
+  public daterange: any = {};
 
-    this.annualReturnForm = this.formBuilder.group({
-      taxPayerID: [selectedAnnualReturn.taxpayer_id],
+  public options: any = {
+    locale: { format: "YYYY-MM-DD" },
+    alwaysShowCalendars: false,
+  };
 
-      basicIncome: [
-        selectedAnnualReturn.basic,
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      pension: [ selectedAnnualReturn.pension, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHF: [ selectedAnnualReturn.nhf, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHIS: [ selectedAnnualReturn.nhis, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      CRA: [ selectedAnnualReturn.cra, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
-      rent: [
-         selectedAnnualReturn.rent,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      transport: [
-        selectedAnnualReturn.transport,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      otherIncome: [
-        selectedAnnualReturn.other_income,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      lifeAssurance: [
-        selectedAnnualReturn.life_assurance,
-        [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
-      ],
+  public selectedDate(value: any, datepicker?: any) {
+    // this is the date  selected
+    console.log("selectedDate: ", value);
 
-      monthlyIncome: [
-        selectedAnnualReturn.monthly_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualGrossIncome: [
-        selectedAnnualReturn.annual_gross_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualTaxPaid: [
-        selectedAnnualReturn.annual_tax_paid,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      months: [
-        selectedAnnualReturn.months,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.maxLength(2),
-        ],
-      ],
-      firstName: [
-        selectedAnnualReturn.first_name,
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      middleName: [
-        selectedAnnualReturn.middle_name,
-        [
-          // Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      surname: [
-        selectedAnnualReturn.surname,
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      nationality: [selectedAnnualReturn.nationality, Validators.required],
-      designation: [selectedAnnualReturn.designation, Validators.required],
-    });
-
-    this.editEmployeeModalRef = this.modalService.open(
-      modal,
-      this.modalOptions
-    );
+    this.daterange.start = value.start.format("YYYY-MM-DD");
+    this.daterange.end = value.end.format("YYYY-MM-DD");
+    this.daterange.label = value.label;
   }
 
-  postUpdateEmployee(jsonData: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/update";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("employeeResponseData: ", data);
-
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.addEmployeeForm.reset();
-
-          Object.keys(this.addEmployeeForm.controls).forEach((key) => {
-            this.addEmployeeForm.get(key)?.setErrors(null);
-          });
-          // this.formDirective.resetForm()
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Employee has been updated successfully!",
-            // text: data.response != null && data.response[0] != undefined ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-          //  this.getEmployees();
-          // this.reload();
-        } else {
-          // this.spinnerService.hide();
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-        }
-      });
-  }
-
-  loadSelectedEmployeeData(selectedEmployee: any) {
-    this.addEmployeeForm = this.formBuilder.group({
-      emailAddress: [
-        selectedEmployee?.email,
-        [Validators.required, Validators.maxLength(60), Validators.email],
-      ],
-      NSIRSTaxPayerID: [selectedEmployee?.taxpayer_id],
-      zipCode: [selectedEmployee?.zip_code, Validators.required],
-      nationality: [selectedEmployee?.nationality, Validators.required],
-      startMonthId: [selectedEmployee?.start_month, Validators.required],
-      otherIncome: [
-        selectedEmployee?.other_income,
-        [Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      NHF: [selectedEmployee?.nhf, [Validators.pattern(/^[0-9\s]*$/)]],
-      NHIS: [selectedEmployee?.nhis, [Validators.pattern(/^[0-9\s]*$/)]],
-      CRA: [
-        selectedEmployee?.cra,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      pension: [
-        selectedEmployee?.pension,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      grossIncome: [
-        selectedEmployee?.gross_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      // tslint:disable-next-line: max-line-length
+  initialiseSearch() {
+    this.searchForm = this.formBuilder.group({
+      approvalStatusId: [""],
       taxYear: [
-        selectedEmployee?.tax_year,
+        "",
         [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
+          Validators.pattern(/^(19|20)\d{2}$/),
           Validators.minLength(4),
           Validators.maxLength(4),
         ],
       ],
-      taxMonthId: [selectedEmployee?.tax_month, Validators.required],
-      // tslint:disable-next-line: max-line-length
-      BVN: [
-        selectedEmployee?.bvn,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      employeeTIN: [
-        selectedEmployee?.tin,
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-        ],
-      ],
-      // tslint:disable-next-line: max-line-length
-      phoneNumber: [
-        selectedEmployee?.phone,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      firstName: [selectedEmployee?.first_name, Validators.required],
-      surname: [selectedEmployee?.last_name, Validators.required],
-      contactAddress: [
-        selectedEmployee?.home_address,
-        [Validators.required, Validators.maxLength(80)],
-      ],
-      titleId: [selectedEmployee?.title],
-      designation: [selectedEmployee?.designation, Validators.required],
-      // annualBasic: [selectedEmployee.annual_basic, [Validators.required, Validators.pattern(/^[0-9\s]*$/)]],
+      objectionFromId: [""],
+      daterangeInput: [""],
     });
   }
 
-  initialiseForms() {
-    this.annualReturnForm = this.formBuilder.group({
-      // dateCreated: [''],
-      taxPayerID: [""],
-      basicIncome: [
-        "0",
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      pension: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHF: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHIS: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      CRA: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
-      rent: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      transport: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      otherIncome: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      lifeAssurance: [
-        "0",
-        [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
-      ],
-      monthlyIncome: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualGrossIncome: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualTaxPaid: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      months: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.maxLength(2),
-        ],
-      ],
-      firstName: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      middleName: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      surname: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      nationality: ["Nigerian", Validators.required],
-      designation: ["", Validators.required],
-      // corporateID: [''],
-    });
-
-    this.forwardScheduleForm = this.formBuilder.group({
-      scheduleYear: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(4),
-          Validators.maxLength(4),
-        ],
-      ],
-      // scheduleMonthId: ['', Validators.required],
-    });
-  }
-
-  getMonthName(monthId: string): string {
-    this.sess.getAllMonths();
-    if (monthId > "12") {
-      return "Invalid month";
-    }
-    var monthName = this.sess.getMonthName(monthId);
-    return monthName;
-  }
-
-  onSubmitAnnualReturn(formAllData: any) {
+  onForwardAppeal(formAllData: any) {
     this.submitted = true;
 
-    if (this.annualReturnForm.invalid) {
+    // stop the process here if form is invalid
+    if (this.forwardApealForm.invalid) {
       return;
     }
 
-    const obj = {
-      annual_return_upload_taxpayer_id: formAllData.taxPayerID,
-      basic: formAllData.basicIncome,
-      rent: formAllData.rent,
-      transport: formAllData.transport,
-      other_income: formAllData.otherIncome,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
-      pension: formAllData.pension,
-      nhis: formAllData.NHIS,
-      nhf: formAllData.NHF,
-      life_assurance: formAllData.lifeAssurance,
-      monthly_income: formAllData.monthlyIncome,
-      annual_gross_income: formAllData.annualGrossIncome,
-      annual_tax_paid: formAllData.annualTaxPaid,
-      months: formAllData.months,
-      // schedule_record_id: this.selectedScheduleRecordId,
+    let corporateId = localStorage.getItem("corporate_id");
 
-      first_name: formAllData.firstName,
-      middle_name: formAllData.middleName,
-      surname: formAllData.surname,
-      nationality: formAllData.nationality,
-      designation: formAllData.designation,
+    const obj = {
+      comment: formAllData.comment,
+      reassessment_id: this.selectedAppeal.reassessment_id,
+      corporate_id: corporateId,
+      business_id: this.businessId,
+      // submitted: true,
     };
 
-    console.log("annualReturnFormData: ", obj);
-    this.postUpdateAnnualReturn(obj);
+    console.log("appealFormFormData: ", obj);
+    this.postAppeal(obj);
   }
 
-  postUpdateAnnualReturn(jsonData: any) {
+  postAppeal(jsonData: any) {
     // this.spinnerService.show();
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/update`;
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -602,21 +366,28 @@ export class AnnualreturnsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("annualReturnResponseData: ", data);
-        this.submitted = false;
+        console.log("appealApiResponseData: ", data);
 
         if (data.status === true) {
+          // Rest form fithout errors
+          this.appealForm.reset();
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
+          });
+
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "Annual Return has been updated successfully!",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
             showConfirmButton: true,
             timer: 5000,
+            timerProgressBar: true,
           });
-
-          this.getAnnualReturns(this.businessId);
-          this.editEmployeeModalRef.close();
           // this.spinnerService.hide();
+          this.modalService.dismissAll();
         } 
         else {
           // this.spinnerService.hide();
@@ -625,19 +396,22 @@ export class AnnualreturnsComponent implements OnInit {
             icon: "error",
             title: "Oops...",
             text:
-              data.response != null ? data.response[0].message : data.message,
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
             showConfirmButton: true,
             timer: 5000,
+            timerProgressBar: true,
           });
         }
       });
   }
 
-  onSubmitSchedule(formAllData: any) {
+  submitAppealToAdmin(formAllData: any) {
     this.submitted = true;
 
     // stop the process here if form is invalid
-    if (this.forwardScheduleForm.invalid) {
+    if (this.submitApealForm.invalid) {
       return;
     }
 
@@ -645,28 +419,83 @@ export class AnnualreturnsComponent implements OnInit {
 
     const obj = {
       // comment: formAllData.comment,
-      due_date: formAllData.scheduleYear,
-      businesses: [
-        {
-          business_id: this.businessId,
-          corporate_id: corporateId,
-        },
-      ],
+      reassessment_id: this.selectedAppeal.reassessment_id,
+      corporate_id: corporateId,
+      business_id: this.businessId,
+      submitted: true,
+      message_title: formAllData.messageTitle,
+      message: formAllData.comment,
     };
 
-    console.log("scheduleFormData: ", obj);
-    this.postForwardSchedule(obj);
+    console.log("appealFormFormData: ", obj);
+    this.Appeal(obj);
   }
 
-  uploadAnnualReturn(modal: any) {
+  Appeal(jsonData: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("appealApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.appealForm.reset();
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+          // this.spinnerService.hide();
+          this.modalService.dismissAll();
+        } 
+        else {
+          // this.spinnerService.hide();
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        }
+      });
+  }
+
+  forwardAppeal(modal: any) {
+    this.showModal(modal);
+  }
+
+  submitAppeal(modal: any) {
     this.showModal(modal);
   }
 
   getBusinesses() {
     const obj = {};
     // this.spinnerService.show();
-   // this.apiUrl = environment.AUTHAPIURL + "businesses/index";
-   this.apiUrl = environment.AUTHAPIURL + "corporates/businesses?annual_return=1";
+    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -678,10 +507,9 @@ export class AnnualreturnsComponent implements OnInit {
       .subscribe((data) => {
         console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data;
-        // this.businessesData = data.response.data.filter(
-        //   (m) => m.taxpayer_role_id == 1 && m.employees_count > 0
-        // );
+        this.businessesData = data.response.data.filter(
+          (m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0
+        );
         // this.spinnerService.hide();
       });
   }
@@ -707,41 +535,43 @@ export class AnnualreturnsComponent implements OnInit {
 
   viewBusinessAnnualReturn(modal: any, data: any) {
     this.businessId = data.id;
-    this.getAnnualReturns(this.businessId);
+    let searchObj = null;
+    if (searchObj == null || searchObj == "") {
+      this.reassessmentAppealsData = "";
+      this.initialiseForms();
+      this.getReassessmentAppeals(this.businessId);
+    } else {
+      this.getReassessmentAppeals(this.businessId);
+    }
     this.showModal(modal);
   }
 
-  getAnnualReturns(businessId: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-uploads";
+  onSubmitSearch(formAllData: any) {
+    this.submitted = true;
 
-    let corporateId = localStorage.getItem("corporate_id");
+    // stop the process here if form is invalid
+    if (this.searchForm.invalid) {
+      return;
+    }
 
-    const objData = {
-      corporate_ids: [corporateId],
-      business_id: businessId,
+    this.searchObject = {
+      tax_year: formAllData.taxYear,
+      status: formAllData.approvalStatusId,
+      date_start:
+        this.daterange.start !== undefined ? this.daterange.start : null,
+      date_end: this.daterange.end !== undefined ? this.daterange.end : null,
+      application_id: formAllData.objectionFromId,
     };
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, objData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("annualReturnsData: ", data);
-        this.annualReturnsData =
-          data.response == null ? [] : data.response.reverse();
-        if (data.response?.length > 0) {
-          this.apidataEmpty = true;
-        }
-        // this.spinnerService.hide();
-      });
+    console.log("searchFormData: ", this.searchObject);
+    this.getReassessmentAppeals(this.businessId);
   }
 
-  forwardSchedule(modal: any) {
-    this.showModal(modal);
+  clearSearch() {
+    this.reassessmentAppealsData = "";
+    this.searchObject = {};
+    this.initialiseSearch();
+    this.getReassessmentAppeals(this.businessId);
   }
 
   showModal(modal: any) {
@@ -755,121 +585,6 @@ export class AnnualreturnsComponent implements OnInit {
     );
   }
 
-  postForwardSchedule(jsonData: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules/forward";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data);
-
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.forwardScheduleForm.reset();
-          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null);
-          });
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-          this.getAnnualReturns(this.businessId);
-        } else {
-          // this.spinnerService.hide();
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
-  }
-
-  deleteAnnualReturn(annualReturnId: number) {
-    const obj = {
-      id: annualReturnId,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
-    };
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/delete`;
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        this.httpClient
-          .post<any>(this.apiUrl, obj, { headers: reqHeader })
-          .subscribe((data) => {
-            console.log(data);
-
-            if (data.status == true) {
-              Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: "Annual Return Successfully Deleted",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-
-              this.getAnnualReturns(this.businessId);
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-                showConfirmButton: true,
-                timer: 5000,
-              });
-            }
-          });
-      }
-    });
-  }
-
-  getZipcodes() {
-    this.apiUrl = environment.AUTHAPIURL + "postalcodes";
-
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("zipcodes: ", data);
-      this.zipCodes = data.response;
-    });
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";
@@ -880,28 +595,4 @@ export class AnnualreturnsComponent implements OnInit {
     }
   }
 
-  calculateGrossIncome(event: any) {
-    // // console.log("test: ", this.editEmployeeForm.get('lifeAssurance').value);
-    // if (this.annualReturnForm.valid) {
-    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
-    //     this.annualReturnForm
-    //   );
-    // } else {
-    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
-    //     this.addEmployeeForm
-    //   );
-    // }
-  }
-  calculateTotalIncome(event: any) {
-
-  //   if (this.annualReturnForm.valid) {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.annualReturnForm
-  //     );
-  //   } else {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.addEmployeeForm
-  //     );
-  //   }
-  }
 }

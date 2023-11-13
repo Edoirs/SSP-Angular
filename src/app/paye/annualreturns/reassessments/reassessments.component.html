@@ -1,0 +1,639 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header"></div>
+    <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31">
+        <!-- <flash-messages></flash-messages> -->
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-secondary">
+          <div class="card-header custome">
+            <h3 class="card-title">List of Businesses</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="over-auto">
+              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+              <table
+                class="table table-bordered table-condensed"
+                *ngIf="businessesData"
+                datatable
+                [dtOptions]="dtOptions"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Business ID</th>
+                    <th>Business Name</th>
+                    <th>Sector</th>
+                    <th>Subsector</th>
+                    <th>Address</th>
+                    <th>LGA</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let mydata of businessesData; index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ mydata.business_id }}</td>
+                    <td>{{ mydata.business_name | titlecase }}</td>
+                    <td>{{ mydata.industry_sector_name }}</td>
+                    <td>{{ mydata.industry_subsector_name }}</td>
+                    <td>{{ mydata.business_address }}</td>
+                    <td>
+                      {{ mydata.lga_name ? mydata.lga_name : 'N/A' }}
+                    </td>
+  
+                    <td title="View">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        (click)="viewBusinessAnnualReturn(reassessment, mydata)"
+                      >
+                        <i class="nav-icon fas fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <!-- <div class="card-footer" *ngIf="apidataEmpty">
+            <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
+              class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
+          </div> -->
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <ng-template #reassessment let-modal>
+    <div class="card card-secondary">
+      <div class="card-header custome">
+        <h3 class="card-title">Annual Return Reassessments</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="over-auto">
+          <table
+            class="table table-bordered table-condensed"
+            *ngIf="reassessmentsData"
+            datatable
+            [dtOptions]="dtOptions"
+            width="100%"
+          >
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Taxpayer ID</th>
+                <th>Tax Year</th>
+                <th>Business ID</th>
+                <th>Reassessment ID</th>
+                <th>Invoice ID</th>
+                <th>Business Name</th>
+                <!-- <th>Date Generated</th> -->
+                <th>Total Payable(₦)</th>
+                <th>Amount Paid(₦)</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Date Reassessed</th>
+                <th style="width: 10%">View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of reassessmentsData; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ mydata.corporate?.taxpayer_id }}</td>
+                <td>{{ mydata.tax_year ? mydata.tax_year : "N/A"  }}</td>
+                <td>{{ mydata.business_id ? mydata.business_id : "N/A" }}</td>
+                <td>{{ mydata.reassessed_items[0]?.reassessment_id }}</td>
+                <td> {{ mydata?.invoice?.invoice_number == null ? "N/A" : mydata?.invoice?.invoice_number }}</td>
+                <td>{{ mydata.business ? (mydata.business.business_name | titlecase) : 'N/A'}}</td>
+                <td>{{ mydata.amount | number }}</td>
+                <td>{{ mydata.amount_paid | number }}</td>
+                <td>{{ mydata.message }}</td>
+                <!-- <td>
+                  <p
+                    *ngIf="mydata.status == 0; else appealed"
+                    [ngClass]="{
+                      'text-danger': mydata.payment_status == 0,
+                      'text-success': mydata.payment_status == 1
+                    }"
+                  >
+                    {{ mydata.payment_status == 0 ? "Unsettled" :  "Paid" }}
+                  </p>
+                  <ng-template #appealed
+                    ><p class="text-danger">Objected</p></ng-template
+                  >
+                </td> -->
+                <td *ngIf="mydata.invoice == null && mydata.payment_status == 0">
+                  <span class="text-primary" style="font-weight: 500"
+                    >No invoice</span
+                  >
+                </td> 
+                <td *ngIf="mydata.invoice != null && mydata.payment_status == 0">
+                  <span class="text-danger" style="font-weight: 600;">Unsettled</span>
+                </td>
+                <td *ngIf="mydata.payment_status == 1">
+                  <span class="text-success" style="font-weight: 600;">Settled</span>
+                </td>
+                <td *ngIf="mydata.payment_status == 2">
+                  <span class="text-warning" style="font-weight: 600;">Partially Settled</span>
+                </td>
+             
+                <!-- <td *ngIf="mydata.payment_status == null">
+                  <span class="text-primary" style="font-weight: 500"
+                    >No invoice</span
+                  >
+                </td> -->
+                <td style="width: 10%">
+                  {{ mydata.created_at | date: "dd MMM yyyy" }}
+                </td>
+                <td style="width: 10%" title="View">
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="viewReassessment(mymodal, mydata)"
+                  >
+                    <i class="nav-icon fas fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark button-login"
+          (click)="modal.close('Save click')"
+        >
+          Ok
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <span>
+        <h4 class="modal-title" id="modal-basic-title">Reassessment Details</h4>
+      </span>
+      <span *ngIf="managerRole || editorRole">
+        <button
+          type="button"
+          *ngIf="processInvoiceBtn"
+          (click)="processInvoice()"
+          class="btn btn-outline-dark button-login float-right"
+          style="margin: 10px 10px"
+          printSectionId="printAssessment"
+        >
+          <i class="fas fa-file-invoice"></i> Generate Invoice
+        </button>
+        <a
+          type="button"
+          *ngIf="previewInvoice"
+          href="{{ apiInvoice }}"
+          target="_blank"
+          class="btn mr-3 btn-outline-dark button-login float-right"
+          style="margin: 10px 5px"
+          printSectionId="printInvoice"
+          ngxPrint
+          ><i class="fas fa-file-alt"></i> Print Invoice</a
+        >
+        <a
+          type="button"
+          *ngIf="paymentUrl"
+          class="btn btn-outline-dark button-login mr-3"
+          target="_blank"
+         
+          (click)="payAssessmentPaymentItems(payAssessmentItemsModal)"
+          ><i class="fas fa-credit-card"></i> Make Payment</a
+        > 
+       
+      </span>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                          style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form [formGroup]="reassessmentForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="dateGenerated">Date Generated</label>
+              <input
+                type="text"
+                formControlName="dateGenerated"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['dateGenerated'].errors }"
+              />
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="status">Status</label>
+              <input
+                type="text"
+                formControlName="status"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['status'].errors }"
+              />
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="appealedStatus">Objection Status</label>
+              <input
+                type="text"
+                formControlName="appealedStatus"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['appealedStatus'].errors }"
+              />
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="assessmentId">Reassessment ID</label>
+              <input
+                type="text"
+                formControlName="assessmentId"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['assessmentId'].errors }"
+              />
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+               <label for="invoiceID">Invoice ID</label>
+               <input  type="text"  formControlName="invoiceID"  class="form-control"
+                [attr.disabled]="true" [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['invoiceID'].errors }"/>
+            </div>  
+               
+            <div class="form-group col-md-6">
+              <label for="comment">Comment</label>
+              <textarea
+                type="text"
+                formControlName="comment"
+                class="form-control"
+                rows="4"
+                readonly
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['comment'].errors }"
+              ></textarea>
+            </div>
+          </div>
+        </form>
+  
+        <div>
+          <div class="mt-5">
+            <h4 class="text-center">Reassessment Items</h4>
+            <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button> -->
+          </div>
+          <table
+            class="table table-bordered table-condensed"
+            *ngIf="reassessmentAppealsData"
+          >
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th style="max-width: 200px">Service Description</th>
+                <th>Amount(₦)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of reassessmentAppealsData; index as i">
+                <td>{{ i + 1 }}</td>
+                <td style="max-width: 200px">{{ mydata.item_description }}</td>
+                <td>{{ mydata.amount | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="submit"
+        *ngIf="!managerRole && roleID != '7'  && objectDisable"
+        (click)="generateAppeal(appealmodal)"
+       
+        class="btn btn button-login"
+      >
+        <i class="far fa-share-square"></i> Objection Reassessment
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  
+  <ng-template #appealmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Generate Objection</h4>
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                          style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="appealForm"
+          (ngSubmit)="onSubmitAppeal(appealForm.value)"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="invoiceNumber">Invoice Number</label>
+              <input
+                type="text"
+                formControlName="invoiceNumber"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['invoiceNumber'].errors['required']">
+                  Invoice Number is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="date">Date</label>
+              <input
+                type="text"
+                formControlName="date"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['date'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['date'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['date'].errors['required']">
+                  Reason is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="messageTitle">Reason for Objection<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label>
+              <input
+                type="text"
+                formControlName="messageTitle"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['messageTitle'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['messageTitle'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['messageTitle'].errors['required']">
+                  Reason is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="fileInput"
+                >Select File to Upload (jpeg, jpg, png)<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label
+              >
+              <div class="custom-file">
+                <input
+                  formControlName="myfile"
+                  multiple
+                  id="myfile"
+                  type="file"
+                  class="custom-file-input"
+                  (change)="onFileChange($event)"
+                  [ngClass]="{
+                    'is-invalid': submitted && appealForm.controls['myfile'].errors
+                  }"
+                  accept=".png,.jpg,.jpeg"
+                />
+                <label class="custom-file-label" for="customFile">{{
+                  filePath == []
+                    ? "Choose file (jpeg, jpg, png)"
+                    : filePath.join(", ")
+                }}</label>
+              </div>
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['myfile'].touched && appealForm.controls['myfile'].invalid"
+                class="text-danger">
+                <div *ngIf="appealForm.controls['myfile'].errors!['required']">File is required.</div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="message">Objection Description<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label>
+              <textarea
+                type="text"
+                formControlName="message"
+                class="form-control"
+                rows="4"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['message'].errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['message'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['message'].errors['required']">
+                  Objection Desription is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <table
+                class="table table-bordered table-condensed"
+                *ngIf="filePath.length > 0"
+              >
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>FIle name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody class="file-scroll">
+                  <tr *ngFor="let mydata of filePath; index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ mydata }}</td>
+                    <td>
+                      <a
+                        class="btn btn-sm btn-outline-danger"
+                        (click)="deleteFile(mydata)"
+                        >Delete</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn button-login">
+            <i class="far fa-share-square"></i> Generate Objection
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #payAssessmentItemsModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Pay Assessment Items for Invoice {{invoiceNumber}}</h4>
+    </div>
+  
+    <div class="modal-body">
+        <div class="container">
+            <div class="form-row">
+                <div class="col-md-12">
+                </div>
+            </div>
+  
+            <form [formGroup]="paymentItemsForm" (ngSubmit)="onSubmitPaymentItem(paymentItemsForm.value)">
+              <div   style="border-bottom: 1px solid #ced4da; margin-bottom: 15px; padding-top: 5px;">
+                <div class="form-group row" style="margin-top: 20px;">
+                  <label for="totaldueBalance" class="col-sm-3 col-form-label" >
+                      <b>Total Due Balance</b>
+                  </label>
+                  <div class="col-sm-3">
+                      <input type="text" formControlName="totaldueBalance" [(ngModel)]="totaldueBalance" class="form-control"
+                          placeholder="Total Due Balance" id="totaldueBalance" [attr.disabled]="true"
+                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; paymentItemsForm.controls['totaldueBalance'].errors }" />
+                  </div>
+              </div>
+              </div>
+               <div formArrayName="paymentItems"
+                    *ngFor="let payItemForm of paymentItemsFormGroup; let i = index;">
+                    <div [formGroupName]="i"
+                        style="border-bottom: 1px solid #ced4da; margin-bottom: 15px; padding-top: 5px;">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label [attr.for]="'assessmentItem' + i">Assessment Item
+                                </label>
+                                <input type="text" formControlName="assessmentItem" class="form-control"
+                                    placeholder="Assessment Item" [id]="'assessmentItem' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
+                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('assessmentItem')!.errors }" />
+                                <div *ngIf="submitted &amp;&amp; payItemForm.get('assessmentItem')!.errors"
+                                    class="text-danger">
+                                </div>
+                            </div>
+  
+                            <div class="form-group col-md-3">
+                                <label [attr.for]="'amountAssessed' + i">Amount Assessed
+                                </label>
+                                <input type="text" formControlName="amountAssessed" class="form-control" placeholder="Amount Assessed"
+                                    [id]="'amountAssessed' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
+                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('amountAssessed')!.errors }" />
+                                <div *ngIf="submitted &amp;&amp; payItemForm.get('amountAssessed')!.errors"
+                                    class="text-danger">
+                                </div>
+                            </div>
+  
+                            <div class="form-group col-md-3">
+                                <label [attr.for]="'amountToPay' + i">Amount to Pay<sup style="font-weight: 800;"
+                                    class="font-wegiht-bold text-danger">*</sup>
+                                </label>
+                                <input type="text" formControlName="amountToPay" class="form-control" placeholder="Amount to Pay"
+                                    [id]="'amountToPay' + payItemForm.get('paymentItemId')!.value"
+                                    (keyup)="calculateAmountAssessed(i); onChangeAmount($event.target, payItemForm.get('paymentItemId')!.value)"
+                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('amountToPay')!.errors }" />
+                                <div *ngIf="submitted &amp;&amp; payItemForm.get('amountToPay')!.errors" class="text-danger">
+                                    <div *ngIf="payItemForm.get('amountToPay')!.errors!['required']">
+                                      Amount to Pay is required, but can be 0.
+                                    </div>
+                                    <div *ngIf="payItemForm.get('amountToPay')!.errors!['pattern']">
+                                      Amount to Pay must be Number with only two digits are allowed after decimal.
+                                    </div>
+                                </div>
+                            </div>
+  
+                            <div hidden class="form-group col-md-3">
+                              <label [attr.for]="'itemID' + payItemForm.get('paymentItemId')!.value">Item ID</label>
+                              <input type="text" formControlName="paymentItemId" class="form-control" placeholder="Item ID" 
+                              [id]="'itemID' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
+                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('paymentItemId')!.errors }" />
+                            </div>
+                        </div>
+  
+                    </div>
+                </div>
+  
+                <div>
+                    <!-- <div class="form-row"> -->
+                    <div class="form-group row" style="margin-top: 40px;">
+                        <label for="totalAmountToPay" class="col-sm-3 col-form-label">
+                            <b>Total Amount to Pay</b>
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" formControlName="totalAmountToPay" class="form-control"
+                                placeholder="Total Amount Assessed" id="totalAmountToPay" [attr.disabled]="true"
+                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; paymentItemsForm.controls['totalAmountToPay'].errors }" />
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+  
+                <button type="submit" class="btn btn button-login">
+                    <i class="fas fa-plus-square"></i> Pay Assessment</button>
+            </form>
+        </div>
+    </div>
+  
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
+    </div>
+  </ng-template>

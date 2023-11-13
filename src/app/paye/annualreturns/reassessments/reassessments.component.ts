@@ -1,95 +1,127 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormArray, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
+import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
-import { UtilityService } from "src/app/utility.service";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
-  selector: 'app-annualreturnemployeesupload',
-  templateUrl: './annualreturnemployeesupload.component.html',
-  styleUrls: ['./annualreturnemployeesupload.component.css']
+  selector: 'app-reassessments',
+  templateUrl: './reassessments.component.html',
+  styleUrls: ['./reassessments.component.css']
 })
-export class AnnualreturnemployeesuploadComponent implements OnInit {
-  submitted: boolean = false;
+export class ReassessmentsComponent implements OnInit {
   apiUrl!: string;
-  isResponse!: number;
-  isMessage: any;
-  isError!: number;
-  file: any;
-  roleID: any;
-  sample_file: any;
-  myForm!: FormGroup;
-  filePath: any;
-  rowErr: string[] = [];
-  error: any;
-  rows: string[] = [];
-  title = "PAYE - Annual Return Employees";
-  businessesData: any;
-  selectedBusiness: any;
+  reassessmentsData: any;
   dtOptions: any = {};
   modalOptions!: NgbModalOptions;
   closeResult!: string;
+  reassessmentAppealsData: any[] = [];
+  appealForm!: FormGroup;
+  reassessmentForm!: FormGroup;
+  reassessmentId: any;
+  selectedReassessment: any;
+  submitted: boolean = false;
+  corporateId = localStorage.getItem("corporate_id");
+  date!: Date;
+  processInvoiceBtn: boolean = true;
+  previewInvoice!: boolean;
+  paymentUrl!: boolean;
+  apiInvoice: any;
+  apiPayment: any;
+  roleID!: any;
+  managerRole!: boolean;
+  editorRole!: boolean;
+  title = "PAYE - Reassessments Report";
+  invoiceNumber: any;
+  today!: Date;
+  file: any;
+  config: any;
+  files: {
+    filename: any;
+    file: any;
+  }[] = [];
+  filePath: string[] = [];
+  reassessmentStatus!: boolean;
+  businessesData: any;
+  selectedBusiness: any;
   businessId: any;
+  navigationUrl: any;
+  taxAmountDueToPay: any;
+  invoiceDataNumber:any;
+  searchObject: any = {};
+  partPaymentItems:any = [];
+  paymentItemsForm!: FormGroup;
+  paymentItemIDsArray: any[] = [];
+  paymentItemsData: any;
+  assessmentPaymentItems: any[] = [];
+  totaldueBalance:any;
+  validAmountAssessed:boolean =false;
+  payItemsArray: any[] = [];
+  objectDisable!: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
-    private titleService: Title,
-    // private spinnerService: Ng4LoadingSpinnerService,
     private httpClient: HttpClient,
+    private titleService: Title,
     private router: Router,
-    private route: ActivatedRoute,
-    // private component: DashboardComponent,
+    private datepipe: DatePipe,
     private sess: SessionService,
-    private utilityService: UtilityService,
     private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
+    // private component: DashboardComponent,
+    // private spinnerService: Ng4LoadingSpinnerService
+
   ) { }
 
   get f() {
-    return this.myForm.controls;
+    return this.appealForm.controls;
   }
-
 
   ngOnInit(): void {
     this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
-    this.getBusinesses();
-    this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 6) {
-      this.router.navigate(["/dashboard"]);
-    }
-
     this.initialiseForms();
+     /* Pagination Start */
+     this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+    };
+    this.getBusinesses(this.config.itemsPerPage, this.config.currentPage);
+    this.initialisePaymentItemsForm();
+    this.today = new Date();
 
-    this.sample_file =
-      environment.SAMPLE_FILE_URL + "new-annual-return-upload.xlsx";
+    console.log("token: ", localStorage.getItem("access_token"));
+    this.roleID = localStorage.getItem("role_id");
+    if (this.roleID === "5") {
+      this.managerRole = true;
+    } else if (this.roleID === "6") {
+      this.editorRole = true;
+    }
 
     this.modalOptions = {
       backdrop: true,
       centered: true,
       backdropClass: "customBackdrop",
       // size: 'lg'
-      size: "xl",
+      size: "lg",
     };
 
     this.dtOptions = {
       paging: true,
-      scrollX: true,
+      // scrollX: true,
       pagingType: "full_numbers",
       responsive: true,
       pageLength: 10,
@@ -106,14 +138,14 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-csv"> CSV</i>',
-          exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
+          exportOptions: { columns: [0, 1, 2, 3, 4] },
         },
         // tslint:disable-next-line: max-line-length
         {
           extend: "excel",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-excel"> Excel</i>',
-          exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
+          exportOptions: { columns: [0, 1, 2, 3, 4] },
         },
 
         {
@@ -123,7 +155,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
           orientation: "portrait",
           pageSize: "LEGAL",
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5],
+            columns: [0, 1, 2, 3, 4],
           },
 
           customize: function (doc: any) {
@@ -139,28 +171,67 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     };
   }
 
+  get paymentItemsFormGroup () {
+    return (this.paymentItemsForm.get('paymentItems') as FormArray).controls
+  }
+
+  // get paymentItemsFormGroup() {
+  //   return (this.paymentItemsForm.controls. as FormGroup).controls;
+  // }
+
+  initialisePaymentItemsForm() {
+    this.paymentItemsForm = this.formBuilder.group({
+      paymentItems: this.formBuilder.array([]),
+      totalAmountToPay: ["0"],
+      totaldueBalance:["0"]
+    });
+  }
   initialiseForms() {
-    this.myForm = this.formBuilder.group({
+    this.reassessmentForm = this.formBuilder.group({
+      dateGenerated: [""],
+      status: [""],
+      corporateId: [""],
+      comment: [""],
+      assessmentId: [""],
+      appealedStatus:[""],
+      invoiceID:[""]
+    });
+
+    // this.appealForm = this.formBuilder.group({
+    //   comment: ["", Validators.required],
+    // });
+
+    this.appealForm = this.formBuilder.group({
+      message: ["", [Validators.required]],
+      messageTitle: ["", [Validators.required]],
+      invoiceNumber: [""],
+      date: [""],
       myfile: ["", Validators.required],
     });
   }
 
-  getBusinesses() {
-    const obj = {};
+  getBusinesses(perpage: any, pageno: any) {
+    //const obj = {};
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+   // this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+   this.apiUrl = `${environment.AUTHAPIURL}businesses/index?page=${pageno}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
+    this.searchObject["page_no"] = pageno;
+    this.searchObject["per_page"] = perpage;
     this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data: any) => {
+      .post<any>(this.apiUrl,  this.searchObject, { headers: reqHeader })
+      .subscribe((data) => {
         console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter((m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0);
+        // this.businessesData = data.response.data.filter(
+        //   (m) => m.taxpayer_role_id == 1 && m.employees_count > 0
+        // );
+        this.businessesData = data.response.data;
         // this.spinnerService.hide();
       });
   }
@@ -176,7 +247,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
@@ -186,17 +257,326 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   viewBusinessAnnualReturn(modal: any, data: any) {
     this.businessId = data.id;
+    this.modalOptions.size = "xl";
+    this.getReassessments(this.businessId);
     this.showModal(modal);
   }
 
-  submit() {
+  getReassessments(businessId: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "reassessments-list";
+
+   // let corporateId = localStorage.getItem('corporate_id');
+
+    const objData = {
+      business_id: businessId,
+    };
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, objData, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("reassessmentsData: ", data);
+        this.reassessmentsData = data.response.data.reverse();
+
+        // this.spinnerService.hide();
+      });
+  }
+
+  viewReassessment(modal: any, selectedReassessment: any) {
+    console.log("selectedReassessment: ", selectedReassessment);
+    this.reassessmentId = selectedReassessment.id;
+    this.reassessmentStatus = selectedReassessment.status == 0 ? false : true;
+    this.modalOptions.size = "xl";
+    this.taxAmountDueToPay = selectedReassessment.tax_amount;
+    this.invoiceNumber = selectedReassessment?.invoice?.invoice_number;
+    
+    this.showModal(modal);
+
+    this.getSingleReassessment(this.reassessmentId);
+  }
+
+  loadSelectedAssessmentData(selectedReassessment: any) {
+    let interest = selectedReassessment.interest;
+    let penalty = selectedReassessment.penalty;
+    let totalUnderRemittance = selectedReassessment.amount;
+    let underRemittance = selectedReassessment?.annual_return?.under_remittance;
+
+    let reassessmentItems = [
+      { item_description: "Under Remittance", amount: underRemittance },
+      { item_description: "Penalty", amount: penalty },
+      { item_description: "Interest", amount: interest },
+      {
+        item_description: "Total Under Remittance",
+        amount: totalUnderRemittance,
+      },
+    ];
+
+    let reassessmentStatus =
+      selectedReassessment.payment_status == 0 ? "Unsettled" : "Settled";
+    let appealStatus =
+      selectedReassessment.status == 0 ? "Not Objected" : "Objected";
+
+    this.date = new Date(selectedReassessment.created_at);
+    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+    this.reassessmentForm = this.formBuilder.group({
+      dateGenerated: [latest_date],
+      status: [reassessmentStatus],
+      assessmentId: [selectedReassessment.id],
+      comment: [selectedReassessment.message],
+      appealedStatus: [appealStatus],
+      invoiceID:[selectedReassessment?.invoice?.invoice_number]
+    });
+
+    // this.reassessmentAppealsData = selectedReassessment.reassessed_items;
+    this.reassessmentAppealsData = reassessmentItems;
+  }
+
+  getSingleReassessment(reassessmentId: any) {
+    // this.spinnerService.show();
+    this.apiUrl =
+      environment.AUTHAPIURL +
+      "reassessments/" +
+      reassessmentId +
+      "?corporate_id" +
+      this.corporateId;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .get<any>(this.apiUrl, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("singleReassessmentData: ", data);
+        this.selectedReassessment = data.response;
+        // if (this.selectedReassessment.invoice != null) {
+        //   this.processInvoiceBtn = false;
+        //   this.previewInvoice = true;
+        //   this.paymentUrl = true;
+
+        //   this.apiInvoice = data.response.invoice.invoice_preview_url;
+        //   this.apiPayment = data.response.invoice.payment_url;
+        if (this.selectedReassessment?.invoice === null){
+          this.processInvoiceBtn = true;
+          this.previewInvoice = false;
+          this.paymentUrl = false;
+          this.objectDisable = true;
+        }
+         else if (this.selectedReassessment?.payment_status === 1) {
+            this.processInvoiceBtn = false;
+            this.previewInvoice = true;
+            this.paymentUrl = false;
+            this.objectDisable = false;
+            this.apiInvoice = data.response?.invoice?.invoice_preview_url;
+          } else if (this.selectedReassessment?.payment_status === 2){
+            this.processInvoiceBtn = false;
+            this.previewInvoice = true;
+            this.paymentUrl = true;
+            this.objectDisable = false;
+            this.invoiceNumber = data.response?.invoice?.invoice_number;
+            this.apiInvoice = data.response?.invoice?.invoice_preview_url;
+          }
+         
+        else if (this.selectedReassessment?.payment_status === 0){
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.objectDisable = true;
+          this.paymentUrl = true;
+          this.apiInvoice = data.response?.invoice?.invoice_preview_url;
+        }
+        this.invoiceNumber = data.response?.invoice?.invoice_number;
+        this.loadSelectedAssessmentData(this.selectedReassessment);
+
+        this.appealForm = this.formBuilder.group({
+          message: ["", [Validators.required]],
+          messageTitle: ["", [Validators.required]],
+          invoiceNumber: [this.invoiceNumber],
+          date: [this.datepipe.transform(this.today, "dd MMM yyyy")],
+          myfile: ["", Validators.required],
+        });
+
+        // this.spinnerService.hide();
+      });
+  }
+
+  generateAppeal(modal: any) {
+    this.showModal(modal);
+  }
+
+  getAssessmentPaymentItems() {
+    // this.spinnerService.show();
+    this.paymentItemIDsArray = [];
+    (<FormArray>this.paymentItemsForm.get("paymentItems")).clear();
+    this.apiUrl = `${environment.AUTHAPIURL}get_assessment/lists/for_payment`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    let requestObj = {
+      invoice_number: this.invoiceNumber
+    }
+
+    this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
+      console.log("paymentItemsData: ", data);
+      this.paymentItemsData = data.response ? data.response : [];
+      this.assessmentPaymentItems = data.response?.items;
+      this.totaldueBalance = data?.response?.amount - data?.response?.amount_paid;
+      // add items to group form
+      console.log("paymentItemsData: ", this.assessmentPaymentItems);
+      this.assessmentPaymentItems?.forEach((paymentItem) => {
+        this.paymentItemIDsArray.push(paymentItem.id);
+        (<FormArray>this.paymentItemsForm.get("paymentItems")).push(this.addPaymentItemFormGroup(paymentItem));
+      });
+
+      // this.spinnerService.hide();
+    });
+  } 
+
+  addPaymentItemFormGroup(paymentItem: any): FormGroup {
+    let paymentItemFormGroup = this.formBuilder.group({
+      amountAssessed: [paymentItem.amount_due],
+      amountToPay: ["", [Validators.required, Validators.pattern(/^(\d{1,19}|\d{0,19}\.\d{1,2})$/)]],
+      assessmentItem: [paymentItem.item_name],
+      paymentItemId: [paymentItem.id],
+    });
+
+    return paymentItemFormGroup;
+  }
+
+  payAssessmentPaymentItems(modal: any) {
+    this.getAssessmentPaymentItems();
+    this.submitted = false;
+    this.paymentItemsForm.reset({
+      'totalAmountToPay': '',
+    });
+    this.showModal(modal);
+  }
+
+  sendDataToCBS(objArray: any) {
     this.submitted = true;
 
-    if (this.myForm.invalid) {
+  
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs";
+
+    const requestObj = {
+      invoice_number: this.invoiceNumber,
+      assessment_items: objArray,
+    };
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.payForAssessment(requestObj);
+    // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
+    //     console.log("sendDataToCBS: ", data);
+    //     if (data.status == true) {
+    //       this.spinnerService.hide();
+    //       let requestId = data.response.request_id;
+
+    //       const requestObj = {
+    //         invoice_number: this.invoiceNumber,
+    //         request_id: requestId,
+    //       };
+
+    //       this.payForAssessment(requestObj);
+    //     }
+    //     else {
+    //       this.spinnerService.hide();
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "Oops..",
+    //         text: data.message,
+    //         showConfirmButton: true,
+    //         timer: 5000,
+    //       });
+    //     }
+    //   });
+  }
+
+  onSubmitPaymentItem(formAllData: any) {
+    this.submitted = true;
+
+    if (this.paymentItemsForm.invalid) {
       return;
     }
-    // tslint:disable-next-line: max-line-length
-    // In Angular 2+, it is very important to leave the Content-Type empty. If you set the 'Content-Type' to 'multipart/form-data' the upload will not work !
+    if(this.validAmountAssessed){
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please enter valid amount",
+        showConfirmButton: true,
+        timer: 5000,
+      });
+      return;
+     }
+    let paymentItemsArray: any[] = [];
+
+    formAllData.paymentItems.forEach((obj: any) => {
+      console.log("item: ", obj);
+
+      let testObj = {
+        item_id: obj.paymentItemId,
+        amount: Number(obj.amountToPay),
+      };
+
+      paymentItemsArray.push(testObj);
+    });
+
+    // 
+    this.sendDataToCBS(paymentItemsArray);
+  };
+
+  onclosePay(){
+    this.submitted = false; 
+  }
+
+  calculateAmountAssessed(index: any) { 
+     
+    let amountAssessed = 0;
+    this.paymentItemIDsArray.forEach((paymentItemId) => {
+      let itemID = "amountToPay" + paymentItemId;
+      let itemVal = Number((<HTMLInputElement>document.getElementById(itemID)).value);
+      amountAssessed = amountAssessed + itemVal;
+    });
+  
+    amountAssessed = Math.round((amountAssessed + Number.EPSILON) * 100) / 100;
+
+    // set amount assessed
+    this.setTotalAmountAssessed(amountAssessed);
+  }
+
+  setTotalAmountAssessed(amountAssessed: any) {
+    this.paymentItemsForm.controls["totalAmountToPay"].setValue(
+      amountAssessed
+    );
+  }
+  onSubmitAppeal(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.appealForm.invalid) {
+      return;
+    }
+
+    // let corporateId = localStorage.getItem('admin_corporate_id');
+    this.apiUrl = environment.AUTHAPIURL + "file/uploadMultiple";
+
+    const formData = new FormData();
+    for (var i = 0; i < this.files.length; i++) {
+      formData.append("file[]", this.files[i].file);
+    }
+
     const config = {
       headers: {
         Accept: "application/json",
@@ -204,130 +584,220 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       },
     };
 
-    const formData = new FormData();
-    formData.append("annual_returns", this.myForm.get("myfile")?.value);
-    formData.append("business_id", this.businessId);
-    this.apiUrl = environment.AUTHAPIURL;
     // this.spinnerService.show();
 
     this.httpClient
-      .post<any>(
-        this.apiUrl + "annual-return-schedules/import",
-        formData,
-        config
-      )
-      .subscribe((res: any) => {
-        console.log(res);
+      .post<any>(this.apiUrl, formData, config)
+      .subscribe((data) => {
+        console.log(data);
 
-        // Clear form Value Without any Error
-        this.myForm.reset();
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null);
-        });
+        if (data.status === true) {
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
+          });
 
-        if (res.status == true) {
+          this.files = [];
+          this.filePath = [];
+
+          const obj = {
+            message: formAllData.message,
+            message_title: formAllData.messageTitle,
+            reassessment_id: this.reassessmentId,
+            corporate_id: this.corporateId,
+            business_id: this.businessId,
+            comment: formAllData.message,
+            // submitted: true,
+            file_url: data.response.url,
+          };
+
+          console.log("appealFormFormData: ", obj);
+          this.postGenerateAppeal(obj);
+        } 
+        else {
           // this.spinnerService.hide();
-          this.modalService.dismissAll();
 
-          this.myForm.reset();
-          Object.keys(this.myForm.controls).forEach((key) => {
-            this.myForm.get(key)?.setErrors(null);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  postGenerateAppeal(jsonData: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("appealApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.appealForm.reset();
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
           });
 
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: res.message,
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          this.getReassessments(this.businessId);
+          // this.spinnerService.hide();
+          this.modalService.dismissAll();
+        } 
+        else {
+          // this.spinnerService.hide();
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  payForAssessment(requestObj: any) {
+    // this.spinnerService.show();
+    this.apiUrl = `${environment.AUTHAPIURL}payments`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
+        console.log("makePaymentForAssessment: ", data);
+        if (data.status == true) {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+          this.modalService.dismissAll();
+          this.navigationUrl = data.response.redirection_url;
+          this.goToLink(this.navigationUrl);
+        }
+        else {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "error",
+            title: "Oops..",
+            text:
+            data.response != null ? data.response[0].message : data.message,
+       
+            showConfirmButton: true,
+            timer: 5000,
+          });
+          
+        }
+      });
+  }
+
+  goToLink(url: string) {
+    window.open(url, "_blank");
+  }
+  processInvoice() {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "invoices";
+
+    const obj = {
+      reassessment_id: this.selectedReassessment.id,
+    };
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("invoice: ", data);
+
+        if (data.status == true) {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
           });
-          this.router.navigate(["/annualreturns"]);
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.paymentUrl = true;
+
+          this.apiInvoice = data.response.invoice_preview_url;
+          this.apiPayment = data.response.payment_url;
+          this.invoiceNumber = data.response.invoice_number;
         } 
         else {
           // this.spinnerService.hide();
-          if (res.response == null) {
-            this.reload();
-            Swal.fire({
-              icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            });
-          }
-          const regex = /_/g;
-
-          for (const key of Object.keys(res.response)) {
-            const row = res.response[key];
-
-            for (const error of row) {
-              let err = key.replace(regex, " " + ":");
-              this.error =
-                err.toUpperCase() +
-                " " +
-                (key.replace(regex, " ") + ":", error);
-              this.rows.push(this.error);
-              console.log(this.error);
-            }
-          }
-          this.reload();
-          if (this.rows.length < 12) {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 "> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
-          } else {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
-          }
+          Swal.fire({
+            icon: "error",
+            title: "Oops..",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
         }
       });
   }
 
   onFileChange(event: any) {
-    if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid file(s) extension",
-        text: "Selected file(s) not supported.",
-        showConfirmButton: true,
-        timer: 25000,
-      });
+    // if (event.target.files.length > 0) {
+    //   const file = event.target.files[0];
+    //   this.file = event.target.files[0];
+    //   this.appealForm.get("myfile").setValue(file);
+    // }
+    for (var i = 0; i < event.target.files.length; i++) {
+      this.filePath.push(event.target.files[i].name);
 
-      return false;
+      const fileObj = {
+        filename: event.target.files[i].name,
+        file: event.target.files[i],
+      };
+      this.files.push(fileObj);
     }
-
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.file = event.target.files[0];
-      this.filePath = event.target.files[0].name;
-      this.myForm.get("myfile")?.setValue(file);
-    }
-
-    return true;
   }
 
-  reload() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(["./"], { relativeTo: this.route });
+  deleteFile(file: any) {
+    const index = this.filePath.indexOf(file);
+    if (index > -1) {
+      this.filePath.splice(index, 1);
+    }
+
+    this.files = this.files.filter(function (obj) {
+      return obj.filename !== file;
+    });
   }
 
   showModal(modal: any) {
@@ -351,4 +821,20 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     }
   }
 
+  onChangeAmount(event: any, data: any){
+    this.payItemsArray = this.assessmentPaymentItems.filter(i => i.id === data);
+    if(event.value > this.payItemsArray[0].amount_due){
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Do not enter more than" + ' ' + this.payItemsArray[0].amount_due,
+      showConfirmButton: true,
+      timer: 5000,
+    });
+    this.validAmountAssessed = true;
+   }
+   else{
+    this.validAmountAssessed = false;
+   }
+  }
 }

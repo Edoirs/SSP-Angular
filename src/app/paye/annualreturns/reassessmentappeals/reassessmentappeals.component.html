@@ -1,0 +1,658 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header"></div>
+    <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31">
+        <!-- <flash-messages></flash-messages> -->
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-secondary">
+          <div class="card-header custome">
+            <h3 class="card-title">List of Businesses</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="over-auto">
+              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+              <table
+                class="table table-bordered table-condensed"
+                *ngIf="businessesData"
+                datatable
+                [dtOptions]="dtOptions"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Business ID</th>
+                    <th>Business Name</th>
+                    <th>Sector</th>
+                    <th>Subsector</th>
+                    <th>Address</th>
+                    <th>LGA</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let mydata of businessesData; index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ mydata.business_id }}</td>
+                    <td>{{ mydata.business_name | titlecase }}</td>
+                    <td>{{ mydata.industry_sector_name }}</td>
+                    <td>{{ mydata.industry_subsector_name }}</td>
+                    <td>{{ mydata.business_address }}</td>
+                    <td>
+                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    </td>
+  
+                    <td title="View">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        (click)="viewBusinessAnnualReturn(reassessment, mydata)"
+                      >
+                        <i class="nav-icon fas fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <!-- <div class="card-footer" *ngIf="apidataEmpty">
+            <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
+              class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
+          </div> -->
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <ng-template #reassessment let-modal>
+    <div class="card card-secondary">
+      <div class="card-header custome">
+        <h3 class="card-title">Reassessment Objections for {{ taxpayerId }}</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card">
+        <div class="card-body">
+          <form
+            [formGroup]="searchForm"
+            (ngSubmit)="onSubmitSearch(searchForm.value)"
+          >
+            <div class="form-row">
+              <div class="col-12 col-sm-6 col-md-6 col-lg-2 mt-1">
+                <input
+                  type="text"
+                  formControlName="taxYear"
+                  class="form-control font-12"
+                  id="taxYear"
+                  maxlength="4"
+                  placeholder="Tax Year Eg: 2019"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; searchForm.controls['taxYear'].errors }"
+                />
+                <div
+                  *ngIf="submitted &amp;&amp; searchForm.controls['taxYear'].errors"
+                  class="text-danger"
+                >
+                  <div *ngIf="searchForm.controls['taxYear'].errors['pattern']">
+                    Tax Year must be a valid year
+                  </div>
+                  <div *ngIf="searchForm.controls['taxYear'].errors['minlength']">
+                    Tax Year must be at least 4 digits
+                  </div>
+                  <div *ngIf="searchForm.controls['taxYear'].errors['maxlength']">
+                    Tax Year must not exceed 4 digits
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-12 col-sm-6 col-md-6 col-lg-2 mt-1">
+                <select
+                  type="text"
+                  name="objectionFromId"
+                  formControlName="objectionFromId"
+                  id="objectionFromId"
+                  class="form-control font-12"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; searchForm.controls['objectionFromId'].errors }"
+                >
+                  <option value="">Objection From</option>
+                  <option value="1">Self Service Portal</option>
+                  <option value="2">Admin Portal</option>
+                </select>
+              </div>
+  
+              <div class="col-12 col-sm-6 col-md-6 col-lg-2 mt-1">
+                <select
+                  type="text"
+                  name="approvalStatusId"
+                  formControlName="approvalStatusId"
+                  id="approvalStatusId"
+                  class="form-control font-12"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; searchForm.controls['approvalStatusId'].errors }"
+                >
+                  <option value="">Approval Status</option>
+                  <option value="0">In Progress</option>
+                  <option value="1">Approved</option>
+                  <option value="2">Rejected</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-3 mt-1">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      class="form-control icon-cal font-12"
+                      type="text"
+                      formControlName="daterangeInput"
+                      placeholder="Date From - Date To"
+                      daterangepicker
+                      (selected)="selectedDate($event, daterange)"
+                    />
+
+                    <!-- <input
+                      class="form-control icon-cal font-12"
+                      type="text"
+                      formControlName="daterangeInput"
+                      placeholder="Date From - Date To"
+                      daterangepicker
+                      [options]="options"
+                      (selected)="selectedDate($event, daterange)"
+                    /> -->
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-12 col-sm-6 col-md-6 col-lg-3 mt-1">
+                <button type="submit" class="btn button-login font-12 mr-3">
+                  <i class="fas fa-search"></i> Search
+                </button>
+                <button
+                  type="button"
+                  class="btn button-login font-12"
+                  style="margin-left: 10px"
+                  (click)="clearSearch()"
+                >
+                  <i class="fas fa-sync-alt"></i> Clear
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+      <div class="card-body">
+        <div class="over-auto">
+          <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+          <table
+            class="table table-bordered table-condensed"
+            *ngIf="reassessmentAppealsData != ''; else noContent"
+            datatable
+            [dtOptions]="dtOptions"
+            width="100%"
+          >
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Company Name</th>
+                <th>Taxpayer ID</th>
+                <th>Amount (₦)</th>
+                <th>Tax Year</th>
+                <th>Objection Date</th>
+                <th>Objection From</th>
+  
+                <th>Forwarded To</th>
+                <th>Approval Status</th>
+  
+                <!-- <th>Amount(₦)</th>
+                            <th>Year</th> -->
+                <th style="width: 10%">View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of reassessmentAppealsData; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ mydata.company_name }}</td>
+                <td>{{ mydata.taxpayer_id }}</td>
+  
+                <td>{{ mydata.amount | number }}</td>
+                <td>{{ mydata.year }}</td>
+                <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
+                <td>
+                  {{
+                    mydata.application_id == 1
+                      ? "Self Service Portal"
+                      : "Admin Portal"
+                  }}
+                </td>
+                <td>
+                  <p
+                    [ngClass]="{
+                      'text-danger': mydata.forwarded_to == 0,
+                      'text-primary': mydata.forwarded_to == 1,
+                      'text-success': mydata.forwarded_to == 2
+                    }"
+                  >
+                    {{
+                      mydata.forwarded_to == 0
+                        ? "Not forwaded"
+                        : mydata.forwarded_to == 1
+                        ? "Forwarded to Editor"
+                        : "Forwarded to Manager"
+                    }}
+                  </p>
+                </td>
+                <td>
+                  <p
+                    [ngClass]="{
+                      'text-warning': mydata.status == 0,
+                      'text-success': mydata.status == 1
+                    }"
+                  >
+                    {{
+                      mydata.status == 0
+                        ? "In Progress"
+                        : mydata.status == 1
+                        ? "Approved"
+                        : mydata.status == 2
+                        ? "Rejected"
+                        : "Invited for Meeting"
+                    }}
+                  </p>
+                </td>
+  
+                <td title="View">
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="viewReassessmentAppeal(mymodal, mydata)"
+                  >
+                    <i class="nav-icon fas fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noContent>
+          <div class="d-flex justify-content-center">
+            <h4 class="text-danger text-center">No data available in table</h4>
+          </div>
+        </ng-template>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark button-login"
+          (click)="modal.close('Save click')"
+        >
+          Ok
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <span>
+        <h4 class="modal-title" id="modal-basic-title">Objection Details</h4>
+      </span>
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <form [formGroup]="appealForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="reason">Objection Ground(s)</label>
+              <input
+                type="text"
+                formControlName="reason"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['reason'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['reason'].errors"
+                class="text-danger"
+              ></div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="dateAppealed">Date Objected</label>
+              <input
+                type="text"
+                formControlName="dateAppealed"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['dateAppealed'].errors }"
+              />
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="description">Objection Ground(s) Description</label>
+              <textarea
+                type="text"
+                formControlName="description"
+                class="form-control"
+                rows="4"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['description'].errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['description'].errors"
+                class="text-danger"
+              ></div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="approvalStatus">Reassessment ID</label>
+              <input
+                type="text"
+                formControlName="assessmentId"
+                class="form-control"
+                [attr.disabled]="true"
+              />
+  
+              <div class="mt-3">
+                <table class="table table-bordered table-condensed">
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>File name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="file-scroll">
+                    <tr *ngFor="let mydata of files; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td>File {{ i + 1 }}</td>
+                      <td>
+                        <a
+                          class="text-primary"
+                          href="{{ mydata.file_url }}"
+                          target="_blank"
+                          >View
+                        </a>
+                        ||
+                        <a
+                          class="text-success"
+                          href="{{ mydata.file_url }} "
+                          download
+                        >
+                          Download</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+  
+        <div class="row">
+          <div class="col-md-6 mt-4">
+            <form [formGroup]="appealForm">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="approvalStatus">Objection Status</label>
+                  <input
+                    type="text"
+                    formControlName="approvalStatus"
+                    class="form-control"
+                    [attr.disabled]="true"
+                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['approvalStatus'].errors }"
+                  />
+                </div>
+  
+                <div class="form-group col-md-12">
+                  <label for="comment">Objection Verdict</label>
+                  <textarea
+                    type="text"
+                    formControlName="comment"
+                    class="form-control"
+                    rows="4"
+                    [attr.disabled]="true"
+                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['comment'].errors }"
+                  ></textarea>
+                  <div
+                    *ngIf="submitted &amp;&amp; appealForm.controls['comment'].errors"
+                    class="text-danger"
+                  ></div>
+                </div>
+              </div>
+            </form>
+          </div>
+  
+          <form [formGroup]="inviteForm" class="col-md-6">
+            <div class="invite">
+              <h4>Invite for Meeting</h4>
+              <p class="text-danger" *ngIf="invites?.length == 0">
+                You've not been invited yet!
+              </p>
+              <p class="text-primary" *ngIf="invites?.length > 0">
+                You've been invited for a meeting!
+              </p>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inviteDate">Date</label>
+                  <input
+                    type="date"
+                    formControlName="inviteDate"
+                    class="form-control"
+                    [attr.disabled]="true"
+                  />
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label for="inviteTime">Time (e.g; hh:mm)</label>
+                  <input
+                    type="text"
+                    formControlName="inviteTime"
+                    maxlength="5"
+                    class="form-control"
+                    [attr.disabled]="true"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inviteMessage">Comments</label>
+                <textarea
+                  type="text"
+                  formControlName="inviteMessage"
+                  class="form-control"
+                  rows="3"
+                  [attr.disabled]="true"
+                ></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <!-- <button type="submit" (click)="forwardAppeal(appealmodal)" class="btn btn button-login"><i class="far fa-share-square"></i> Forward Appeal</button> -->
+      <button
+        type="submit"
+        *ngIf="managerRole"
+        (click)="submitAppeal(submitAppealmodal)"
+        [disabled]="appealSubmitted == 1"
+        class="btn btn button-login"
+      >
+        <i class="fas fa-share"></i> Submit Objection
+      </button>
+  
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click'); inviteChange()"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #appealmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Forward Objection</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                        style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="forwardApealForm"
+          (ngSubmit)="onForwardAppeal(forwardApealForm.value)"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-10">
+              <label for="comment">Comment</label>
+              <textarea
+                type="text"
+                formControlName="comment"
+                class="form-control"
+                rows="4"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardApealForm.controls['comment'].errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; forwardApealForm.controls['comment'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="forwardApealForm.controls['comment'].errors['required']">
+                  Comment is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button
+            type="submit"
+            *ngIf="managerRole"
+            [disabled]="disableEditor"
+            class="btn btn button-login"
+          >
+            <i class="far fa-share-square"></i> Forward to Editor
+          </button>
+          <button
+            type="submit"
+            *ngIf="editorRole"
+            class="btn btn button-login"
+            [disabled]="disableManager"
+          >
+            <i class="far fa-share-square"></i> Forward to Manager
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #submitAppealmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Submit Objection</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+    </div>
+  
+    <div class="modal-body">
+      <div class="container">
+        <div class="form-row">
+          <div class="col-md-12">
+            <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
+                        style="height:90px; width: 130px;"> -->
+          </div>
+        </div>
+  
+        <form
+          [formGroup]="submitApealForm"
+          (ngSubmit)="submitAppealToAdmin(submitApealForm.value)"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="messageTitle"
+                >Message Title<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="messageTitle"
+                formControlName="messageTitle"
+                class="form-control"
+                placeHolder="Message Title"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; submitApealForm.controls['messageTitle'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; submitApealForm.controls['messageTitle'].errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="submitApealForm.controls['messageTitle'].errors['required']"
+                >
+                  Message Title is required
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="comment">Message</label>
+              <textarea
+                type="text"
+                minlength="1"
+                formControlName="comment"
+                class="form-control"
+                rows="4"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; submitApealForm.controls['comment'].errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; submitApealForm.controls['comment'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="submitApealForm.controls['comment'].errors['required']">
+                  Comment is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn button-login">
+            <i class="fas fa-share"></i> Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>
+  

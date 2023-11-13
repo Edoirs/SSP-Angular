@@ -1,95 +1,104 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+// import { DashboardComponent } from "../../dashboard/dashboard.component";
+import { HttpClient } from "@angular/common/http";
+import { HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-// import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
-import { UtilityService } from "src/app/utility.service";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
-  selector: 'app-annualreturnemployeesupload',
-  templateUrl: './annualreturnemployeesupload.component.html',
-  styleUrls: ['./annualreturnemployeesupload.component.css']
+  selector: 'app-pendingprojection',
+  templateUrl: './pendingprojection.component.html',
+  styleUrls: ['./pendingprojection.component.css']
 })
-export class AnnualreturnemployeesuploadComponent implements OnInit {
-  submitted: boolean = false;
-  apiUrl!: string;
-  isResponse!: number;
-  isMessage: any;
-  isError!: number;
-  file: any;
-  roleID: any;
-  sample_file: any;
-  myForm!: FormGroup;
-  filePath: any;
-  rowErr: string[] = [];
-  error: any;
-  rows: string[] = [];
-  title = "PAYE - Annual Return Employees";
-  businessesData: any;
-  selectedBusiness: any;
+export class PendingprojectionComponent implements OnInit {
+  forwardProjectionForm!: FormGroup;
+  selectedProjection: any;
+  updateProjectionForm!: FormGroup;
   dtOptions: any = {};
+  roleID: any;
+  projectionData: any;
+  myForm!: FormGroup;
+  submitted: boolean = false;
+  managerRole = false;
+  files: any;
+  file: any;
+  apidata: any;
+  forwardedTo: any;
+  singleCorporate = [] as any;
+  apiUrl!: string;
+  corporateId = localStorage.getItem("corporate_id");
   modalOptions!: NgbModalOptions;
   closeResult!: string;
+  editorRole: boolean = false;
+  apidataEmpty: boolean = false;
+  disable: boolean = false;
+  isForwardedToEditor: boolean = false;
+  annualProjectionId: any;
+  comments = [] as any;
+  comment: any;
+  commentDate: any;
+  com: any;
+  apisingledata: any;
+  isForwarded!: boolean;
+  title = "PAYE - Pending Projections Report";
+  businessesData: any;
+  selectedBusiness: any;
   businessId: any;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private titleService: Title,
-    // private spinnerService: Ng4LoadingSpinnerService,
     private httpClient: HttpClient,
-    private router: Router,
+    private titleService: Title,
     private route: ActivatedRoute,
+    private router: Router,
     // private component: DashboardComponent,
-    private sess: SessionService,
-    private utilityService: UtilityService,
     private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
+    private formBuilder: FormBuilder,
+    private sess: SessionService,
+    // private spinnerService: Ng4LoadingSpinnerService
+
   ) { }
 
-  get f() {
-    return this.myForm.controls;
-  }
-
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
-    this.getBusinesses();
-    this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 6) {
-      this.router.navigate(["/dashboard"]);
-    }
-
-    this.initialiseForms();
-
-    this.sample_file =
-      environment.SAMPLE_FILE_URL + "new-annual-return-upload.xlsx";
+    this.getUnapprovedProjectionRecord();
 
     this.modalOptions = {
       backdrop: true,
       centered: true,
       backdropClass: "customBackdrop",
-      // size: 'lg'
       size: "xl",
+      // size: 'lg'
     };
 
+    this.roleID = localStorage.getItem("role_id");
+    if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
+      this.router.navigate(["/dashboard"]);
+    }
+
+    if (this.roleID === "5") {
+      this.managerRole = true;
+    }
+    if (this.roleID === "6") {
+      this.editorRole = true;
+    }
+
+    // this.getUnapprovedProjectionRecord();
     this.dtOptions = {
       paging: true,
-      scrollX: true,
       pagingType: "full_numbers",
       responsive: true,
       pageLength: 10,
@@ -97,23 +106,28 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       processing: true,
       ordering: false,
       info: true,
+      // dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
+        // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
         {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-csv"> CSV</i>',
-          exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4],
+          },
         },
-        // tslint:disable-next-line: max-line-length
         {
           extend: "excel",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-excel"> Excel</i>',
-          exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4],
+          },
         },
 
         {
@@ -123,7 +137,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
           orientation: "portrait",
           pageSize: "LEGAL",
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5],
+            columns: [0, 1, 2, 3, 4],
           },
 
           customize: function (doc: any) {
@@ -139,195 +153,199 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     };
   }
 
-  initialiseForms() {
-    this.myForm = this.formBuilder.group({
-      myfile: ["", Validators.required],
-    });
-  }
 
-  getBusinesses() {
-    const obj = {};
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+
+  getUnapprovedProjectionList(year: any, annualPID: any) {
+    this.forwardProjectionForm = this.formBuilder.group({
+      year: [this.selectedProjection.projection_year, Validators.required],
+      comment: ["", Validators.required],
+    });
+    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedList";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
+    const obj = {
+      projection_year: year,
+      annual_projection_id: annualPID,
+      // corporate_id: this.corporateId,
+    };
+    // this.spinnerService.show();
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data: any) => {
-        console.log("BusinessData: ", data);
+      .subscribe((data) => {
+        console.log(data);
+        if (data.status == false) {
+         
+        } else {
+          this.apidata = data.response.data.data;
+          if (data.response.comments) {
+            this.com = data.response.comments;
+            this.comments = this.com.filter(
+              (x: any) => x.projection_id == this.com[0].projection_id
+            );
+            if (this.apidata.length > 0) {
+              this.apidataEmpty = true;
 
-        this.businessesData = data.response.data.filter((m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0);
-        // this.spinnerService.hide();
-      });
-  }
+              this.annualProjectionId =
+                data.response.data.data[0].annual_projection_id;
 
-  getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
+              this.forwardedTo =
+                this.apidata[0].forwarded_to == 1
+                  ? "Projection Forwarded to Tax Office"
+                  : this.apidata[0].forwarded_to == 2
+                  ? "Projection Forwarded to Head of Station'"
+                  : "Not Forwarded";
+            }
+          } else if (this.apidata.length > 0) {
+            this.apidataEmpty = true;
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+            this.annualProjectionId =
+              data.response.data.data[0].annual_projection_id;
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data: any) => {
-        console.log("singleBusinessData: ", data);
-
-        this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
-      });
-  }
-
-  viewBusinessAnnualReturn(modal: any, data: any) {
-    this.businessId = data.id;
-    this.showModal(modal);
-  }
-
-  submit() {
-    this.submitted = true;
-
-    if (this.myForm.invalid) {
-      return;
-    }
-    // tslint:disable-next-line: max-line-length
-    // In Angular 2+, it is very important to leave the Content-Type empty. If you set the 'Content-Type' to 'multipart/form-data' the upload will not work !
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    };
-
-    const formData = new FormData();
-    formData.append("annual_returns", this.myForm.get("myfile")?.value);
-    formData.append("business_id", this.businessId);
-    this.apiUrl = environment.AUTHAPIURL;
-    // this.spinnerService.show();
-
-    this.httpClient
-      .post<any>(
-        this.apiUrl + "annual-return-schedules/import",
-        formData,
-        config
-      )
-      .subscribe((res: any) => {
-        console.log(res);
-
-        // Clear form Value Without any Error
-        this.myForm.reset();
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null);
-        });
-
-        if (res.status == true) {
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-
-          this.myForm.reset();
-          Object.keys(this.myForm.controls).forEach((key) => {
-            this.myForm.get(key)?.setErrors(null);
-          });
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: res.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-          this.router.navigate(["/annualreturns"]);
-        } 
-        else {
-          // this.spinnerService.hide();
-          if (res.response == null) {
-            this.reload();
+            this.forwardedTo =
+              this.apidata[0].forwarded_to == 1
+                ? "Projection Forwarded to Tax Office"
+                : this.apidata[0].forwarded_to == 2
+                ? "Projection Forwarded to Head of Station'"
+                : "Not Forwarded";
+          } else {
             Swal.fire({
               icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
+              title: "Oops...",
+              text: data.message,
               showConfirmButton: true,
               timer: 5000,
               timerProgressBar: true,
             });
           }
-          const regex = /_/g;
+        }
 
-          for (const key of Object.keys(res.response)) {
-            const row = res.response[key];
+        // this.spinnerService.hide();
+      });
+  }
 
-            for (const error of row) {
-              let err = key.replace(regex, " " + ":");
-              this.error =
-                err.toUpperCase() +
-                " " +
-                (key.replace(regex, " ") + ":", error);
-              this.rows.push(this.error);
-              console.log(this.error);
-            }
-          }
-          this.reload();
-          if (this.rows.length < 12) {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 "> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
+  getUnapprovedProjectionRecord() {
+    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedRecord";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    const obj = {
+      corporate_id: this.corporateId,
+      // business_id: businessId,
+    };
+
+    // this.spinnerService.show();
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log(data);
+        if (data.status == true) {
+          if (this.roleID === "5") {
+            this.apisingledata = data.response.filter(
+              (x: any) => x.forwarded_to != 0
+            );
           } else {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
+            this.apisingledata = data.response;
           }
+        } else {
+          this.apisingledata = [];
+        }
+
+        // this.spinnerService.hide();
+      });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  forwardProjection(modal: any) {
+    this.modalService.open(modal, this.modalOptions).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  onSubmitProjection(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.forwardProjectionForm.invalid) {
+      return;
+    }
+
+    const obj = {
+      comment: formAllData.comment,
+      annual_projection_id: this.annualProjectionId,
+      corporate_id: this.corporateId,
+      business_id: this.businessId,
+      projection_year: this.selectedProjection.projection_year,
+    };
+
+    console.log("FormData: ", obj);
+    this.postForwardProjection(obj);
+  }
+
+  postForwardProjection(jsonData: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "projections/forward";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .subscribe((data) => {
+        // console.log("ApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.forwardProjectionForm.reset();
+          Object.keys(this.forwardProjectionForm.controls).forEach((key) => {
+            this.forwardProjectionForm.get(key)?.setErrors(null);
+          });
+
+          // this.spinnerService.hide();
+          // this.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          this.modalService.dismissAll();
+          this.getUnapprovedProjectionRecord();
+        } else {
+          this.reload();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
         }
       });
-  }
-
-  onFileChange(event: any) {
-    if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid file(s) extension",
-        text: "Selected file(s) not supported.",
-        showConfirmButton: true,
-        timer: 25000,
-      });
-
-      return false;
-    }
-
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.file = event.target.files[0];
-      this.filePath = event.target.files[0].name;
-      this.myForm.get("myfile")?.setValue(file);
-    }
-
-    return true;
-  }
-
-  reload() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(["./"], { relativeTo: this.route });
   }
 
   showModal(modal: any) {
@@ -341,14 +359,165 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
+  viewProjection(modal: any, selectedProjection: any) {
+    console.log("selectedEmployee: ", selectedProjection);
+    this.selectedProjection = selectedProjection;
+    this.businessId = selectedProjection.business_primary_id;
+
+    this.showModal(modal);
+    this.getUnapprovedProjectionList(
+      this.selectedProjection.projection_year,
+      this.selectedProjection.annual_projection_id
+    );
+    if (this.selectedProjection.forwarded_to === "0") {
+      this.isForwardedToEditor = true;
     }
+    if (this.selectedProjection.forwarded_to === "1") {
+      this.isForwarded = false;
+      this.isForwardedToEditor = true;
+    }
+    if (this.selectedProjection.forwarded_to === "2") {
+      this.isForwardedToEditor = false;
+      this.isForwarded = true;
+    }
+  }
+
+  getSingleProjection(obj: any) {
+    // this.spinnerService.show();
+    this.apiUrl =
+      environment.AUTHAPIURL + "projections?corporate_id=" + this.corporateId;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .get<any>(this.apiUrl, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("singleProjectionData: ", data);
+        this.projectionData = data.response.data;
+        console.log(this.projectionData);
+        this.selectedProjection = data.response.data;
+        // this.spinnerService.hide();
+      });
+  }
+
+  approveProjection(modal: any) {
+    this.modalService.open(modal, this.modalOptions).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  postApproveProjection() {
+    this.apiUrl = environment.AUTHAPIURL + "projections/approve";
+    const obj = {
+      projection_year: this.selectedProjection.projection_year,
+      business_id: this.businessId,
+      corporate_id: this.corporateId,
+    };
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        // console.log("ApiResponseData: ", data);
+
+        if (data.status === true) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          this.modalService.dismissAll();
+          this.getUnapprovedProjectionRecord();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  onRevertProjection(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.forwardProjectionForm.invalid) {
+      return;
+    }
+
+    const obj = {
+      comment: formAllData.comment,
+      annual_projection_id: this.annualProjectionId,
+      corporate_id: this.corporateId,
+    };
+
+    console.log("FormData: ", obj);
+    this.postRevertProjection(obj);
+  }
+  postRevertProjection(jsonData: any) {
+    this.apiUrl = environment.AUTHAPIURL + "projections/forward";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .subscribe((data) => {
+        // console.log("ApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.forwardProjectionForm.reset();
+          Object.keys(this.forwardProjectionForm.controls).forEach((key) => {
+            this.forwardProjectionForm.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          this.modalService.dismissAll();
+          this.getUnapprovedProjectionRecord();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(["./"], { relativeTo: this.route });
   }
 
 }

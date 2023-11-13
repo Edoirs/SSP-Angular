@@ -6,7 +6,7 @@
     <!-- Main content -->
     <section class="content" data-select2-id="32">
       <div class="container-fluid" data-select2-id="31">
-        <flash-messages></flash-messages>
+        <!-- <flash-messages></flash-messages> -->
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-secondary">
           <div class="card-header custome">
@@ -105,7 +105,7 @@
                     (change)="onFileChange($event)"
                     accept=".xls,.xlsx"
                     [ngClass]="{
-                      'is-invalid': submitted && myForm.controls.myfile.errors
+                      'is-invalid': submitted && myForm.controls['myfile'].errors
                     }"
                   />
                   <label class="custom-file-label" for="customFile">{{
@@ -113,11 +113,9 @@
                   }}</label>
                 </div>
   
-                <div
-                  *ngIf="submitted &amp;&amp; myForm.controls.myfile.touched && f.myfile.invalid"
-                  class="text-danger"
-                >
-                  <div *ngIf="myForm.controls.myfile.errors.required">File is required.</div>
+                <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid"
+                  class="text-danger">
+                  <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
                 </div>
               </div>
             </div>

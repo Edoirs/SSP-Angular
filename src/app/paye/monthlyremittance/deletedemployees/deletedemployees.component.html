@@ -1,0 +1,77 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+  
+    </div>
+    <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <section class="content" data-select2-id="32">
+        <div class="container-fluid" data-select2-id="31">
+            <!-- <flash-messages></flash-messages> -->
+            <!-- SELECT2 EXAMPLE -->
+            <div class="card card-secondary">
+                <div class="card-header custome">
+                    <h3 class="card-title">Deleted Employees</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="over-auto">
+                        <table class="table table-bordered table-condensed" *ngIf="apidata;" datatable
+                            [dtOptions]="dtOptions" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>S/N</th>
+                                    <th>Taxpayer ID</th>
+                                    <th>Full Name</th>
+                                    <th>Designation</th>
+                                    <th>Gross Income (₦)</th>
+                                    <th>CRA (₦)</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Pension (₦)</th>
+                                    <th>TIN</th>
+                                    <th>BVN</th>
+                                    <th>NHIS (₦)</th>
+                                    <th>NHF (₦)</th>
+                                    <th>Zipcode</th>
+                                    <th>Date Deleted</th>
+                                    <th *ngIf="isEditor">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let mydata of apidata; index as i">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ mydata.taxpayer_id }}</td>
+                                    <td>{{ mydata.first_name | titlecase }} {{ mydata.last_name | titlecase }}</td>
+  
+                                    <td>{{ mydata.designation }}</td>
+                                    <td>{{ mydata.gross_income | number }}</td>
+                                    <td>{{ mydata.cra }}</td>
+                                    <td>{{ mydata.email }}</td>
+                                    <td>{{ mydata.phone }}</td>
+                                    <td>{{ mydata.pension | number }}</td>
+                                    <td>{{ mydata.tin }}</td>
+                                    <td>{{ mydata.bvn }}</td>
+                                    <td>{{ mydata.nhis }}</td>
+                                    <td>{{ mydata.nhf }}</td>
+                                    <td>{{ mydata.zip_code }}</td>
+                                    <td >{{ mydata.deleted_at | date:'dd MMM yyyy' }}</td>
+                              <td *ngIf="isEditor"><button class="btn btn-sm btn-outline-primary" (click)="restoreEmployee(mydata.id)" ><i class="nav-icon fas fa-undo"></i>
+                                            Restore </button></td>
+  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+  
+                </div>
+                <!-- /.card-body -->
+  
+            </div>
+  
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  

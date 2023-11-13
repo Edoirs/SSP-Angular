@@ -50,8 +50,21 @@ import { HeadictsettlementsComponent } from './headoficta/headictsettlements/hea
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { AnnualreturnemployeesuploadComponent } from './paye/annualreturns/annualreturnemployeesupload/annualreturnemployeesupload.component';
 import { AnnualreturnsComponent } from './paye/annualreturns/annualreturns/annualreturns.component';
-
-
+import { AnnualreturnschedulesComponent } from './paye/annualreturns/annualreturnschedules/annualreturnschedules.component';
+import { AnnualreturnassessmentsComponent } from './paye/annualreturns/annualreturnassessments/annualreturnassessments.component';
+import { ReassessmentsComponent } from './paye/annualreturns/reassessments/reassessments.component';
+import { ReassessmentappealsComponent } from './paye/annualreturns/reassessmentappeals/reassessmentappeals.component';
+import { UploadprojectionComponent } from './paye/annualprojection/uploadprojection/uploadprojection.component';
+import { PendingprojectionComponent } from './paye/annualprojection/pendingprojection/pendingprojection.component';
+import { ApprovedprojectionComponent } from './paye/annualprojection/approvedprojection/approvedprojection.component';
+import { EmployeescheduleComponent } from './paye/monthlyremittance/employeeschedule/employeeschedule.component';
+import { DeletedemployeesComponent } from './paye/monthlyremittance/deletedemployees/deletedemployees.component';
+import { SchedulesComponent } from './paye/monthlyremittance/schedules/schedules.component';
+import { AssessmentsComponent } from './paye/monthlyremittance/assessments/assessments.component';
+import { DisplayuserComponent } from './paye/users/displayuser/displayuser.component';
+import { AdduserComponent } from './paye/users/adduser/adduser.component';
+import { EditComponent } from './paye/users/edit/edit.component';
+import { CompanyprofileComponent } from './paye/profile/companyprofile/companyprofile.component';
 
 @NgModule({
   declarations: [
@@ -95,8 +108,23 @@ import { AnnualreturnsComponent } from './paye/annualreturns/annualreturns/annua
     SignUpComponent,
     AnnualreturnemployeesuploadComponent,
     AnnualreturnsComponent,
+    AnnualreturnschedulesComponent,
+    AnnualreturnassessmentsComponent,
+    ReassessmentsComponent,
+    ReassessmentappealsComponent,
+    UploadprojectionComponent,
+    PendingprojectionComponent,
+    ApprovedprojectionComponent,
+    EmployeescheduleComponent,
+    DeletedemployeesComponent,
+    SchedulesComponent,
+    AssessmentsComponent,
+    DisplayuserComponent,
+    AdduserComponent,
+    EditComponent,
+    CompanyprofileComponent,
+    
 
- 
   ],
   imports: [
     BrowserModule,

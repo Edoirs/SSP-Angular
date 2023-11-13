@@ -3,40 +3,40 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-  NgbModal,
-  ModalDismissReasons,
   NgbModalOptions,
+  ModalDismissReasons,
+  NgbModal,
 } from "@ng-bootstrap/ng-bootstrap";
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
+// import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { SessionService } from "src/app/session.service";
+import { UtilityService } from "src/app/utility.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-// import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
-import { Title } from "@angular/platform-browser";
-import { UtilityService } from "src/app/utility.service";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
-  selector: 'app-annualreturnemployeesupload',
-  templateUrl: './annualreturnemployeesupload.component.html',
-  styleUrls: ['./annualreturnemployeesupload.component.css']
+  selector: 'app-uploadprojection',
+  templateUrl: './uploadprojection.component.html',
+  styleUrls: ['./uploadprojection.component.css']
 })
-export class AnnualreturnemployeesuploadComponent implements OnInit {
-  submitted: boolean = false;
-  apiUrl!: string;
-  isResponse!: number;
-  isMessage: any;
-  isError!: number;
-  file: any;
-  roleID: any;
-  sample_file: any;
+export class UploadprojectionComponent implements OnInit {
   myForm!: FormGroup;
+  submitted: boolean = false;
+  files: any;
+  file: any;
+  apidata: any;
+  apiUrl!: string;
+  isResponse = 0;
+  isError = 0;
+  roleID: any;
+  isMessage = "";
+  corporateId = localStorage.getItem("corporate_id");
+  sample_file: any;
   filePath: any;
-  rowErr: string[] = [];
-  error: any;
   rows: string[] = [];
-  title = "PAYE - Annual Return Employees";
+  error: any;
+  errorRow!: string;
   businessesData: any;
   selectedBusiness: any;
   dtOptions: any = {};
@@ -45,39 +45,48 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   businessId: any;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private titleService: Title,
-    // private spinnerService: Ng4LoadingSpinnerService,
     private httpClient: HttpClient,
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal,
     // private component: DashboardComponent,
+    private formBuilder: FormBuilder,
     private sess: SessionService,
     private utilityService: UtilityService,
-    private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
+    // private spinnerService: Ng4LoadingSpinnerService
+
   ) { }
 
   get f() {
     return this.myForm.controls;
   }
 
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.sess.isCorporate();
-    this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
+    // this.spinnerService.show();
     this.getBusinesses();
     this.roleID = localStorage.getItem("role_id");
     if (this.roleID != 6) {
       this.router.navigate(["/dashboard"]);
     }
 
-    this.initialiseForms();
+    this.myForm = this.formBuilder.group({
+      myfile: ["", Validators.required],
+      year: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9\s]*$/),
+          Validators.minLength(4),
+          Validators.maxLength(4),
+        ],
+      ],
+    });
+    // this.spinnerService.hide();
 
-    this.sample_file =
-      environment.SAMPLE_FILE_URL + "new-annual-return-upload.xlsx";
+    this.sample_file = environment.SAMPLE_FILE_URL + "FileProjection-NEW.xlsx";
 
     this.modalOptions = {
       backdrop: true,
@@ -97,11 +106,20 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       processing: true,
       ordering: false,
       info: true,
+      //   columnDefs: [
+      //     {
+      //         //targets: [ 10 ],
+      //         visible: false,
+      //         searchable: false
+      //     }
+      // ],
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
+        // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+        // tslint:disable-next-line: max-line-length
         {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
@@ -139,12 +157,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     };
   }
 
-  initialiseForms() {
-    this.myForm = this.formBuilder.group({
-      myfile: ["", Validators.required],
-    });
-  }
-
   getBusinesses() {
     const obj = {};
     // this.spinnerService.show();
@@ -157,10 +169,10 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter((m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0);
+        this.businessesData = data.response.data;
         // this.spinnerService.hide();
       });
   }
@@ -169,29 +181,28 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     // this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    const config = {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    };
+
+    this.httpClient.get<any>(this.apiUrl, config).subscribe((data) => {
+      console.log("singleBusinessData: ", data);
+
+      this.selectedBusiness = data.response;
+      // this.spinnerService.hide();
     });
-
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data: any) => {
-        console.log("singleBusinessData: ", data);
-
-        this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
-      });
   }
 
-  viewBusinessAnnualReturn(modal: any, data: any) {
+  viewBusinessProjection(modal: any, data: any) {
     this.businessId = data.id;
     this.showModal(modal);
   }
 
   submit() {
     this.submitted = true;
-
     if (this.myForm.invalid) {
       return;
     }
@@ -205,18 +216,16 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     };
 
     const formData = new FormData();
-    formData.append("annual_returns", this.myForm.get("myfile")?.value);
+    // formData.append('employees', this.myForm.get('fileSource').value);
+    formData.append("projection", this.myForm.get("myfile")?.value);
+    formData.append("projection_year", this.myForm.get("year")?.value);
     formData.append("business_id", this.businessId);
     this.apiUrl = environment.AUTHAPIURL;
     // this.spinnerService.show();
 
     this.httpClient
-      .post<any>(
-        this.apiUrl + "annual-return-schedules/import",
-        formData,
-        config
-      )
-      .subscribe((res: any) => {
+      .post<any>(this.apiUrl + "projections", formData, config)
+      .subscribe((res) => {
         console.log(res);
 
         // Clear form Value Without any Error
@@ -227,82 +236,105 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
         if (res.status == true) {
           // this.spinnerService.hide();
-          this.modalService.dismissAll();
 
           this.myForm.reset();
           Object.keys(this.myForm.controls).forEach((key) => {
             this.myForm.get(key)?.setErrors(null);
           });
+          this.reload();
+          this.isResponse = 1;
+          this.isMessage = res.message;
+          this.filePath = null;
 
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: res.message,
+            text: this.isMessage,
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
           });
-          this.router.navigate(["/annualreturns"]);
-        } 
-        else {
+        } else {
           // this.spinnerService.hide();
-          if (res.response == null) {
-            this.reload();
-            Swal.fire({
-              icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            });
-          }
           const regex = /_/g;
 
-          for (const key of Object.keys(res.response)) {
-            const row = res.response[key];
+          if (res.response != null) {
+            for (const key of Object.keys(res.response)) {
+              const row = res.response[key];
+              console.log("row: ", row);
 
-            for (const error of row) {
-              let err = key.replace(regex, " " + ":");
-              this.error =
-                err.toUpperCase() +
-                " " +
-                (key.replace(regex, " ") + ":", error);
-              this.rows.push(this.error);
-              console.log(this.error);
+              for (const error of row) {
+                console.log(key.replace(regex, " ") + ":", error);
+                let err = key.replace(regex, " " + ":");
+                this.errorRow =
+                  err.toUpperCase() +
+                  " " +
+                  (key.replace(regex, " ") + ":", error);
+                this.rows.push(this.errorRow);
+                console.log(this.errorRow);
+              }
             }
           }
+
+          console.log("errors" + this.rows);
           this.reload();
-          if (this.rows.length < 12) {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 "> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
+          let apiReponse = res.response;
+          if (typeof apiReponse === "object" && apiReponse !== null) {
+            if (this.rows.length < 12) {
+              console.log("its less than 12");
+              Swal.fire({
+                icon: "warning",
+                title: res.message,
+                html:
+                  '<div class="text-left ml-3 "> ERROR: ' +
+                  this.rows.join("<br /> ERROR: ") +
+                  "</div>",
+                // text: this.rows.join('\n'),
+                showConfirmButton: true,
+              });
+            } else {
+              Swal.fire({
+                icon: "warning",
+                title: res.message,
+                html:
+                  '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
+                  this.rows.join("<br /> ERROR: ") +
+                  "</div>",
+                // text: this.rows.join('\n'),
+                showConfirmButton: true,
+              });
+            }
           } else {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
+            if (res.response.includes("failure")) {
+              console.log("its includes failure");
+
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: res.message,
+                showConfirmButton: true,
+                timer: 5000,
+                timerProgressBar: true,
+              });
+            }
           }
         }
       });
   }
 
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(["./"], { relativeTo: this.route });
+  }
+
   onFileChange(event: any) {
-    if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {
+    if (
+      !this.utilityService.validFileExtension(event.target.files, [
+        "xls",
+        "xlsx",
+      ])
+    ) {
       Swal.fire({
         icon: "error",
         title: "Invalid file(s) extension",
@@ -310,24 +342,14 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         showConfirmButton: true,
         timer: 25000,
       });
-
       return false;
     }
-
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.file = event.target.files[0];
       this.filePath = event.target.files[0].name;
       this.myForm.get("myfile")?.setValue(file);
     }
-
-    return true;
-  }
-
-  reload() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(["./"], { relativeTo: this.route });
   }
 
   showModal(modal: any) {
@@ -350,5 +372,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
 
 }

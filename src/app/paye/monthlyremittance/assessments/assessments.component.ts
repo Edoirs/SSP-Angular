@@ -1,59 +1,76 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormBuilder, FormArray ,FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
 
 
 @Component({
-  selector: 'app-annualreturns',
-  templateUrl: './annualreturns.component.html',
-  styleUrls: ['./annualreturns.component.css']
+  selector: 'app-assessments',
+  templateUrl: './assessments.component.html',
+  styleUrls: ['./assessments.component.css']
 })
-export class AnnualreturnsComponent implements OnInit {
+export class AssessmentsComponent implements OnInit {
+  apiUrl!: string;
+  assessmentsData: any = {};
+  objectDisable!: boolean;
+  dtOptions: any = {};
   modalOptions!: NgbModalOptions;
   closeResult!: string;
-  dtOptions: any = {};
-  annualReturnForm!: FormGroup;
-  forwardScheduleForm!: FormGroup;
+  previewInvoice: boolean = false;
+  paymentUrl: boolean = false;
+  assessmentEmployeesData: any;
+  assessmentForm!: FormGroup;
+  totalGrossIncome: any;
+  totalMonthlyTaxDue: any;
   submitted: boolean = false;
-  apiUrl!: string;
-  annualReturnsData: any;
-  showCreateSchedule: boolean = false;
-  months: { monthId: string; monthName: string }[] = [];
-  apidataEmpty: boolean = false;
+  selectedAssessment: any;
+  corporateLogo: any;
+  assessmentYear!: string;
+  assessmentMonth: any;
+  showPrintInvoice: boolean = false;
+  assessmentID: any;
+  apiPayment: any;
+  apiInvoice: any;
+  processInvoiceBtn: boolean = true;
+  roleID: any;
+  managerRole: boolean = false;
   date!: Date;
-  addEmployeeForm!: FormGroup;
-  selectedEmployee: any;
-  showSaveEmployee!: boolean;
-  showEditEmployee!: boolean;
-  selectedEmployeeId: any;
-  selectedScheduleRecordId: any;
-  editEmployeeModalRef: any;
-  corporateId: any;
-  title = "PAYE - Annual Returns Report";
-  zipCodes: any;
-  businessesData: any;
+  corporateID: any = localStorage.getItem("corporate_id");
+  title = "PAYE - Assessments Report";
   selectedBusiness: any;
+  businessesData: any;
   businessId: any;
-  disableEmployeeControl: any;
+  navigationUrl: any;
+  taxAmountDueToPay: any;
+  invoiceDataNumber:any;
+  payItemsArray: any[] = [];
+  partPaymentItems:any = [];
+  paymentItemsForm!: FormGroup;
+  paymentItemIDsArray: any[] = [];
+  paymentItemsData: any;
+  assessmentPaymentItems: any[] = [];
+  invoiceNumber: any;
+  totaldueBalance:any;
+  validAmountAssessed:boolean = false
 
   constructor(
-    private titleService: Title,
     private formBuilder: FormBuilder,
+    private titleService: Title,
     private httpClient: HttpClient,
     private router: Router,
+    private route: ActivatedRoute,
     private datepipe: DatePipe,
     private sess: SessionService,
     // private component: DashboardComponent,
@@ -62,35 +79,45 @@ export class AnnualreturnsComponent implements OnInit {
 
   ) { }
 
+  get paymentItemsFormGroup () {
+    return (this.paymentItemsForm.get('paymentItems') as FormArray).controls
+  }
+
   ngOnInit(): void {
     this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
+    this.initialisePaymentItemsForm();
     this.initialiseForms();
     this.getBusinesses();
-    let userRole = localStorage.getItem("role_id");
-    this.corporateId = localStorage.getItem("corporate_id");
-
-    if (userRole == "6") {
-      this.showCreateSchedule = true;
-      this.showEditEmployee = true;
-      this.disableEmployeeControl = null;
-    } else {
-      this.disableEmployeeControl = true;
+    this.roleID = localStorage.getItem("role_id");
+    if (this.roleID === "5" || this.roleID === "6") {
+      this.managerRole = true;
     }
-
+    this.intialiseTableProperties();
+    console.log("token: ", localStorage.getItem("access_token"));
+  }
+  initialisePaymentItemsForm() {
+    this.paymentItemsForm = this.formBuilder.group({
+      paymentItems: this.formBuilder.array([]),
+      totalAmountToPay: ["0"],
+      totaldueBalance:["0"]
+    });
+  }
+  intialiseTableProperties() {
     this.modalOptions = {
       backdrop: true,
       centered: true,
       backdropClass: "customBackdrop",
-      // size: "lg",
+      // size: 'lg'
       size: "xl",
     };
 
     this.dtOptions = {
       paging: true,
-      scrollX: true,
+      // scrollX: true,
+      search: false,
       pagingType: "full_numbers",
       responsive: true,
       pageLength: 10,
@@ -107,13 +134,14 @@ export class AnnualreturnsComponent implements OnInit {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-csv"> CSV</i>',
-          exportOptions: { columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ] },
+          exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
         },
+        // tslint:disable-next-line: max-line-length
         {
           extend: "excel",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-excel"> Excel</i>',
-          exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8 ] },
+          exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
         },
 
         {
@@ -123,7 +151,7 @@ export class AnnualreturnsComponent implements OnInit {
           orientation: "landscape",
           pageSize: "LEGAL",
           exportOptions: {
-            columns: [1, 2, 3, 4, 5, 6, 7, 8 ],
+            columns: [1, 2, 3, 4, 5, 6, 7],
           },
 
           customize: function (doc: any) {
@@ -139,551 +167,23 @@ export class AnnualreturnsComponent implements OnInit {
     };
   }
 
-  onSubmit(formAllData: any) {
-    this.submitted = true;
-
-    // stop the process here if form is invalid
-    if (this.addEmployeeForm.invalid) {
-      return;
-    }
-
-    let corporateId = localStorage.getItem("corporate_id");
-
-    const obj = {
-      id: this.selectedEmployee.id,
-      tin: formAllData.employeeTIN,
-      bvn: formAllData.BVN,
-      nhis: formAllData.NHIS,
-      nhf: formAllData.NHF,
-      designation: formAllData.designation,
-      title: formAllData.titleId,
-      first_name: formAllData.firstName,
-      last_name: formAllData.surname,
-      email: formAllData.emailAddress,
-      nationality: formAllData.nationality,
-      tax_year: formAllData.taxYear,
-      tax_month: formAllData.taxMonthId,
-      zip_code: formAllData.zipCode,
-      // annual_basic: formAllData.annualBasic,
-      cra: formAllData.CRA,
-      pension: formAllData.pension,
-      gross_income: formAllData.grossIncome,
-      other_income: formAllData.otherIncome,
-      phone: formAllData.phoneNumber,
-      start_month: formAllData.startMonthId,
-      home_address: formAllData.contactAddress,
-      corporate_id: corporateId,
-      business_id: this.businessId,
-    };
-
-    console.log("employeeFormData: ", obj);
-    this.postUpdateEmployee(obj);
-  }
-
-  getSingleEmployee(employeeId: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/" + employeeId;
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleEmployeeData: ", data);
-        this.loadSelectedEmployeeData(data.response);
-        this.selectedEmployee = data.response;
-        // this.spinnerService.hide();
-
-        if (data.response !== null) {
-          this.loadSelectedEmployeeData(data.response);
-          this.selectedEmployee = data.response;
-        } else {
-          Swal.fire({
-            icon: "info",
-            title: "Info",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
-  }
-
-  editAnnualReturn(modal: any, selectedAnnualReturn: any) {
-    console.log("selectedAnnualReturn: ", selectedAnnualReturn);
-    this.selectedEmployeeId = selectedAnnualReturn.employee_id;
-    this.selectedScheduleRecordId = selectedAnnualReturn.id;
-
-    this.annualReturnForm = this.formBuilder.group({
-      taxPayerID: [selectedAnnualReturn.taxpayer_id],
-
-      basicIncome: [
-        selectedAnnualReturn.basic,
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      pension: [ selectedAnnualReturn.pension, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHF: [ selectedAnnualReturn.nhf, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHIS: [ selectedAnnualReturn.nhis, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      CRA: [ selectedAnnualReturn.cra, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
-      rent: [
-         selectedAnnualReturn.rent,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      transport: [
-        selectedAnnualReturn.transport,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      otherIncome: [
-        selectedAnnualReturn.other_income,
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      lifeAssurance: [
-        selectedAnnualReturn.life_assurance,
-        [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
-      ],
-
-      monthlyIncome: [
-        selectedAnnualReturn.monthly_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualGrossIncome: [
-        selectedAnnualReturn.annual_gross_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualTaxPaid: [
-        selectedAnnualReturn.annual_tax_paid,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      months: [
-        selectedAnnualReturn.months,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.maxLength(2),
-        ],
-      ],
-      firstName: [
-        selectedAnnualReturn.first_name,
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      middleName: [
-        selectedAnnualReturn.middle_name,
-        [
-          // Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      surname: [
-        selectedAnnualReturn.surname,
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      nationality: [selectedAnnualReturn.nationality, Validators.required],
-      designation: [selectedAnnualReturn.designation, Validators.required],
-    });
-
-    this.editEmployeeModalRef = this.modalService.open(
-      modal,
-      this.modalOptions
-    );
-  }
-
-  postUpdateEmployee(jsonData: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/update";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("employeeResponseData: ", data);
-
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.addEmployeeForm.reset();
-
-          Object.keys(this.addEmployeeForm.controls).forEach((key) => {
-            this.addEmployeeForm.get(key)?.setErrors(null);
-          });
-          // this.formDirective.resetForm()
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Employee has been updated successfully!",
-            // text: data.response != null && data.response[0] != undefined ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-          //  this.getEmployees();
-          // this.reload();
-        } else {
-          // this.spinnerService.hide();
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-        }
-      });
-  }
-
-  loadSelectedEmployeeData(selectedEmployee: any) {
-    this.addEmployeeForm = this.formBuilder.group({
-      emailAddress: [
-        selectedEmployee?.email,
-        [Validators.required, Validators.maxLength(60), Validators.email],
-      ],
-      NSIRSTaxPayerID: [selectedEmployee?.taxpayer_id],
-      zipCode: [selectedEmployee?.zip_code, Validators.required],
-      nationality: [selectedEmployee?.nationality, Validators.required],
-      startMonthId: [selectedEmployee?.start_month, Validators.required],
-      otherIncome: [
-        selectedEmployee?.other_income,
-        [Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      NHF: [selectedEmployee?.nhf, [Validators.pattern(/^[0-9\s]*$/)]],
-      NHIS: [selectedEmployee?.nhis, [Validators.pattern(/^[0-9\s]*$/)]],
-      CRA: [
-        selectedEmployee?.cra,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      pension: [
-        selectedEmployee?.pension,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      grossIncome: [
-        selectedEmployee?.gross_income,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      // tslint:disable-next-line: max-line-length
-      taxYear: [
-        selectedEmployee?.tax_year,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(4),
-          Validators.maxLength(4),
-        ],
-      ],
-      taxMonthId: [selectedEmployee?.tax_month, Validators.required],
-      // tslint:disable-next-line: max-line-length
-      BVN: [
-        selectedEmployee?.bvn,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      employeeTIN: [
-        selectedEmployee?.tin,
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-        ],
-      ],
-      // tslint:disable-next-line: max-line-length
-      phoneNumber: [
-        selectedEmployee?.phone,
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      firstName: [selectedEmployee?.first_name, Validators.required],
-      surname: [selectedEmployee?.last_name, Validators.required],
-      contactAddress: [
-        selectedEmployee?.home_address,
-        [Validators.required, Validators.maxLength(80)],
-      ],
-      titleId: [selectedEmployee?.title],
-      designation: [selectedEmployee?.designation, Validators.required],
-      // annualBasic: [selectedEmployee.annual_basic, [Validators.required, Validators.pattern(/^[0-9\s]*$/)]],
-    });
-  }
-
   initialiseForms() {
-    this.annualReturnForm = this.formBuilder.group({
-      // dateCreated: [''],
+    this.assessmentForm = this.formBuilder.group({
+      dateGenerated: [""],
+      companyName: [""],
       taxPayerID: [""],
-      basicIncome: [
-        "0",
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      pension: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHF: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHIS: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      CRA: ["0", [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
-      rent: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      transport: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      otherIncome: [
-        "0",
-        [
-          // Validators.required,
-          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
-        ],
-      ],
-      lifeAssurance: [
-        "0",
-        [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
-      ],
-      monthlyIncome: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualGrossIncome: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      annualTaxPaid: [
-        "",
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
-      months: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.maxLength(2),
-        ],
-      ],
-      firstName: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      middleName: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      surname: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[a-zA-Z ]*"),
-          Validators.maxLength(30),
-        ],
-      ],
-      nationality: ["Nigerian", Validators.required],
-      designation: ["", Validators.required],
-      // corporateID: [''],
-    });
-
-    this.forwardScheduleForm = this.formBuilder.group({
-      scheduleYear: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(4),
-          Validators.maxLength(4),
-        ],
-      ],
-      // scheduleMonthId: ['', Validators.required],
+      phoneNumber: [""],
+      balance: [""],
+      address: [""],
+      invoiceID: [""]
+      // corporateId: [''],
     });
   }
 
-  getMonthName(monthId: string): string {
-    this.sess.getAllMonths();
-    if (monthId > "12") {
-      return "Invalid month";
-    }
-    var monthName = this.sess.getMonthName(monthId);
-    return monthName;
-  }
-
-  onSubmitAnnualReturn(formAllData: any) {
-    this.submitted = true;
-
-    if (this.annualReturnForm.invalid) {
-      return;
-    }
-
-    const obj = {
-      annual_return_upload_taxpayer_id: formAllData.taxPayerID,
-      basic: formAllData.basicIncome,
-      rent: formAllData.rent,
-      transport: formAllData.transport,
-      other_income: formAllData.otherIncome,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
-      pension: formAllData.pension,
-      nhis: formAllData.NHIS,
-      nhf: formAllData.NHF,
-      life_assurance: formAllData.lifeAssurance,
-      monthly_income: formAllData.monthlyIncome,
-      annual_gross_income: formAllData.annualGrossIncome,
-      annual_tax_paid: formAllData.annualTaxPaid,
-      months: formAllData.months,
-      // schedule_record_id: this.selectedScheduleRecordId,
-
-      first_name: formAllData.firstName,
-      middle_name: formAllData.middleName,
-      surname: formAllData.surname,
-      nationality: formAllData.nationality,
-      designation: formAllData.designation,
-    };
-
-    console.log("annualReturnFormData: ", obj);
-    this.postUpdateAnnualReturn(obj);
-  }
-
-  postUpdateAnnualReturn(jsonData: any) {
-    // this.spinnerService.show();
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/update`;
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("annualReturnResponseData: ", data);
-        this.submitted = false;
-
-        if (data.status === true) {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Annual Return has been updated successfully!",
-            showConfirmButton: true,
-            timer: 5000,
-          });
-
-          this.getAnnualReturns(this.businessId);
-          this.editEmployeeModalRef.close();
-          // this.spinnerService.hide();
-        } 
-        else {
-          // this.spinnerService.hide();
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
-  }
-
-  onSubmitSchedule(formAllData: any) {
-    this.submitted = true;
-
-    // stop the process here if form is invalid
-    if (this.forwardScheduleForm.invalid) {
-      return;
-    }
-
-    let corporateId = localStorage.getItem("corporate_id");
-
-    const obj = {
-      // comment: formAllData.comment,
-      due_date: formAllData.scheduleYear,
-      businesses: [
-        {
-          business_id: this.businessId,
-          corporate_id: corporateId,
-        },
-      ],
-    };
-
-    console.log("scheduleFormData: ", obj);
-    this.postForwardSchedule(obj);
-  }
-
-  uploadAnnualReturn(modal: any) {
+  viewBusinessAssessments(modal: any, selectedBusiness: any) {
     this.showModal(modal);
-  }
-
-  getBusinesses() {
-    const obj = {};
-    // this.spinnerService.show();
-   // this.apiUrl = environment.AUTHAPIURL + "businesses/index";
-   this.apiUrl = environment.AUTHAPIURL + "corporates/businesses?annual_return=1";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("BusinessData: ", data);
-
-        this.businessesData = data.response.data;
-        // this.businessesData = data.response.data.filter(
-        //   (m) => m.taxpayer_role_id == 1 && m.employees_count > 0
-        // );
-        // this.spinnerService.hide();
-      });
+    this.businessId = selectedBusiness.id;
+    this.getAssessments(this.businessId);
   }
 
   getSingleBusiness(businessId: any) {
@@ -705,22 +205,10 @@ export class AnnualreturnsComponent implements OnInit {
       });
   }
 
-  viewBusinessAnnualReturn(modal: any, data: any) {
-    this.businessId = data.id;
-    this.getAnnualReturns(this.businessId);
-    this.showModal(modal);
-  }
-
-  getAnnualReturns(businessId: any) {
+  getBusinesses() {
+    const obj = {};
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-uploads";
-
-    let corporateId = localStorage.getItem("corporate_id");
-
-    const objData = {
-      corporate_ids: [corporateId],
-      business_id: businessId,
-    };
+    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -728,20 +216,421 @@ export class AnnualreturnsComponent implements OnInit {
     });
 
     this.httpClient
-      .post<any>(this.apiUrl, objData, { headers: reqHeader })
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("annualReturnsData: ", data);
-        this.annualReturnsData =
-          data.response == null ? [] : data.response.reverse();
-        if (data.response?.length > 0) {
-          this.apidataEmpty = true;
+        console.log("BusinessData: ", data);
+
+        this.businessesData = data.response.data.filter(
+          (m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0
+        );
+        // this.spinnerService.hide();
+      });
+  }
+
+  getAssessments(businessId: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "assessments-list";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    let corporateId = localStorage.getItem("corporate_id");
+
+    const obj = {
+      corporate_id: corporateId,
+      business_id: businessId,
+    };
+    this.assessmentsData = "";
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("assessmentsData: ", data);
+        this.assessmentsData = data.response == null ? [] : data.response.data;
+        // this.spinnerService.hide();
+      });
+  }
+
+  viewAssessment(modal: any, selectedAssessment: any) {
+    console.log("selectedAssessment: ", selectedAssessment);
+    this.assessmentYear = this.getTaxYear(selectedAssessment.due_date);
+    this.assessmentMonth = this.getTaxMonth(selectedAssessment.due_date);
+    this.totalMonthlyTaxDue = selectedAssessment.monthly_tax_due;
+    this.invoiceDataNumber = selectedAssessment.invoice_number;
+    this.invoiceNumber = selectedAssessment.invoice_number;
+    this.showModal(modal);
+    this.getSingleAssessment(selectedAssessment.id);
+    this.assessmentID = selectedAssessment.id;
+  }
+
+  loadSelectedAssessmentData(selectedAssessment: any) {
+    this.date = new Date(selectedAssessment.created_at);
+    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+
+    if (selectedAssessment.invoice == null) {
+      this.assessmentForm = this.formBuilder.group({
+        dateGenerated: [latest_date],
+        dueDate: [selectedAssessment.due_date],
+        totalMonthlyTax: [selectedAssessment.monthly_tax_due],
+        assessmentStatus: ["No Invoice"],
+        companyName: [selectedAssessment.corporate.company_name],
+        cacNumber: [selectedAssessment.corporate.cac_number],
+        taxPayerID: [selectedAssessment.corporate.taxpayer_id],
+        phoneNumber: [selectedAssessment.corporate.phone],
+        address: [selectedAssessment.corporate.contact_address],
+        balance: [selectedAssessment.monthly_tax_due],
+        amountPaid: [0],
+        invoiceID: [selectedAssessment?.invoice?.invoice_number],
+      });
+    } else {
+      let assessmentStatus =
+        selectedAssessment.invoice.payment_status == 0
+          ? "Unsettled"
+          : "Settled";
+      this.assessmentForm = this.formBuilder.group({
+        dateGenerated: [latest_date],
+        dueDate: [selectedAssessment.due_date],
+        totalMonthlyTax: [selectedAssessment.monthly_tax_due],
+        assessmentStatus: [assessmentStatus],
+        companyName: [selectedAssessment.corporate.company_name],
+        cacNumber: [selectedAssessment.corporate.cac_number],
+        taxPayerID: [selectedAssessment.corporate.taxpayer_id],
+        address: [selectedAssessment.corporate.contact_address],
+        phoneNumber: [selectedAssessment.corporate.phone],
+        balance: [
+          selectedAssessment.invoice.amount_due -
+            selectedAssessment.invoice.amount_paid,
+        ],
+        amountPaid: [selectedAssessment.invoice.amount_paid],
+        invoiceID: [selectedAssessment?.invoice?.invoice_number],
+      });
+    }
+
+    this.corporateLogo = selectedAssessment.corporate.corporate_logo;
+  }
+
+  payForAssessment(requestObj: any) {
+    // this.spinnerService.show();
+    this.apiUrl = `${environment.AUTHAPIURL}payments`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
+        console.log("makePaymentForAssessment: ", data);
+        if (data.status == true) {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+          this.modalService.dismissAll();
+          this.navigationUrl = data.response.redirection_url;
+          this.goToLink(this.navigationUrl);
+        }
+        else {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "error",
+            title: "Oops..",
+            text:
+            data.response != null ? data.response[0].message : data.message,
+       
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+  getAssessmentPaymentItems() {
+    // this.spinnerService.show();
+    this.paymentItemIDsArray = [];
+    (<FormArray>this.paymentItemsForm.get("paymentItems")).clear();
+    this.apiUrl = `${environment.AUTHAPIURL}get_assessment/lists/for_payment`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    let requestObj = {
+      invoice_number: this.invoiceNumber
+    }
+
+    this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
+      console.log("paymentItemsData: ", data);
+      this.paymentItemsData = data.response ? data.response : [];
+      this.assessmentPaymentItems = data.response?.items;
+      this.totaldueBalance = data?.response?.monthly_tax_due - data?.response?.amount_paid;
+      // add items to group form
+      console.log("paymentItemsData: ", this.assessmentPaymentItems);
+      this.assessmentPaymentItems.forEach((paymentItem) => {
+        this.paymentItemIDsArray.push(paymentItem.id);
+        (<FormArray>this.paymentItemsForm.get("paymentItems")).push(this.addPaymentItemFormGroup(paymentItem));
+      });
+
+      // this.spinnerService.hide();
+    });
+  } 
+
+  addPaymentItemFormGroup(paymentItem: any): FormGroup {
+    let paymentItemFormGroup = this.formBuilder.group({
+      amountAssessed: [paymentItem.amount_due],
+      amountToPay: ["", [Validators.required, Validators.pattern(/^(\d{1,19}|\d{0,19}\.\d{1,2})$/)]],
+      assessmentItem: [paymentItem.item_name],
+      paymentItemId: [paymentItem.id],
+    });
+
+    return paymentItemFormGroup;
+  }
+
+  payAssessmentPaymentItems(modal: any) {
+    this.getAssessmentPaymentItems();
+    this.submitted = false;
+    this.paymentItemsForm.reset({
+      'totalAmountToPay': '',
+    });
+    this.showModal(modal);
+  }
+
+  sendDataToCBS(objArray: any) {
+    this.submitted = true;
+
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs";
+
+    const requestObj = {
+      invoice_number: this.invoiceNumber,
+      assessment_items: objArray,
+    };
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.payForAssessment(requestObj);
+    // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
+    //     console.log("sendDataToCBS: ", data);
+    //     if (data.status == true) {
+    //       this.spinnerService.hide();
+    //       let requestId = data.response.request_id;
+
+    //       const requestObj = {
+    //         invoice_number: this.invoiceNumber,
+    //         request_id: requestId,
+    //       };
+
+    //       this.payForAssessment(requestObj);
+    //     }
+    //     else {
+    //       this.spinnerService.hide();
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "Oops..",
+    //         text: data.message,
+    //         showConfirmButton: true,
+    //         timer: 5000,
+    //       });
+    //     }
+    //   });
+  }
+
+  onSubmitPaymentItem(formAllData: any) {
+    this.submitted = true;
+
+    if (this.paymentItemsForm.invalid) {
+      return;
+    }
+ if(this.validAmountAssessed){
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Please enter valid amount",
+      showConfirmButton: true,
+      timer: 5000,
+    });
+    return;
+   }
+    let paymentItemsArray: any[] = [];
+
+    formAllData.paymentItems.forEach((obj: any) => {
+      console.log("item: ", obj);
+
+      let testObj = {
+        item_id: obj.paymentItemId,
+        amount: Number(obj.amountToPay),
+      };
+
+      paymentItemsArray.push(testObj);
+    });
+
+    // 
+    this.sendDataToCBS(paymentItemsArray);
+  };
+
+  onclosePay(){
+    this.submitted = false; 
+  }
+  calculateAmountAssessed(index: any) { 
+     
+    let amountAssessed = 0;
+    this.paymentItemIDsArray.forEach((paymentItemId) => {
+      let itemID = "amountToPay" + paymentItemId;
+      let itemVal = Number((<HTMLInputElement>document.getElementById(itemID)).value);
+      amountAssessed = amountAssessed + itemVal;
+    });
+  
+    amountAssessed = Math.round((amountAssessed + Number.EPSILON) * 100) / 100;
+
+    // set amount assessed
+    this.setTotalAmountAssessed(amountAssessed);
+  }
+
+  setTotalAmountAssessed(amountAssessed: any) {
+    this.paymentItemsForm.controls["totalAmountToPay"].setValue(
+      amountAssessed
+    );
+  }
+  goToLink(url: string) {
+    window.open(url, "_blank");
+  }
+  processInvoice() {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "invoices";
+
+    const obj = {
+      assessment_id: this.assessmentID,
+    };
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("invoice: ", data);
+        this.invoiceNumber = data.response?.invoice_number;
+        if (data.status == true) {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.paymentUrl = true;
+          this.invoiceDataNumber = data.response.invoice_number;
+          this.apiInvoice = data.response.invoice_preview_url;
+          this.apiPayment = data.response.payment_url;
+          this.modalService.dismissAll();
+          this.getBusinesses();
+        } 
+        else {
+          // this.spinnerService.hide();
+          Swal.fire({
+            icon: "error",
+            title: "Oops..",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        }
+      });
+  }
+
+  getSingleAssessment(assessmentId: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "assessments/" + assessmentId;
+
+    const obj = {
+      corporate_id: localStorage.getItem("corporate_id"),
+      business_id: this.businessId,
+    };
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("singleAssessmentData: ", data);
+        this.selectedAssessment = data.response;
+        this.assessmentEmployeesData = data.response.schedule.schedule_records;
+        this.invoiceNumber = this.selectedAssessment?.invoice?.invoice_number;
+        this.loadSelectedAssessmentData(this.selectedAssessment);
+
+        if (data.response.invoice == null) {
+          this.processInvoiceBtn = true;
+          this.previewInvoice = false;
+          this.paymentUrl = false;
+          this.objectDisable = true;
+        } else if (data.response.invoice.payment_status === 0) {
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.paymentUrl = true;
+          this.objectDisable = true;
+          this.apiInvoice = data.response.invoice.invoice_preview_url;
+          this.apiPayment = data.response.invoice.payment_url;
+        } else if (data.response.invoice.payment_status === 2) {
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.paymentUrl = true;
+          this.objectDisable = false;
+          this.apiInvoice = data.response.invoice.invoice_preview_url;
+          this.apiPayment = data.response.invoice.payment_url;
+        }
+        else if (data.response.invoice.payment_status === 1) {
+          this.processInvoiceBtn = false;
+          this.previewInvoice = true;
+          this.paymentUrl = false;
+          this.objectDisable = false;
+          this.apiInvoice = data.response.invoice.invoice_preview_url;
         }
         // this.spinnerService.hide();
       });
   }
 
-  forwardSchedule(modal: any) {
-    this.showModal(modal);
+  getTaxYear(taxDueDate: string): string {
+    var taxYear = taxDueDate.split("-", 3)[0];
+    return taxYear;
+  }
+
+  getTaxMonth(taxDueDate: string): string {
+    var taxMonth = taxDueDate.split("-", 3)[1];
+    this.sess.getAllMonths();
+    var monthName = this.sess.getMonthName(taxMonth);
+    return monthName;
+  }
+
+  getEmployeesCount(employees: []): Number {
+    if (employees == null || undefined) {
+      return 0;
+    }
+
+    var employeesCount = employees.length;
+    return employeesCount;
+  }
+
+
+
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(["./"], { relativeTo: this.route });
   }
 
   showModal(modal: any) {
@@ -755,121 +644,6 @@ export class AnnualreturnsComponent implements OnInit {
     );
   }
 
-  postForwardSchedule(jsonData: any) {
-    // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules/forward";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data);
-
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.forwardScheduleForm.reset();
-          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null);
-          });
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-          this.getAnnualReturns(this.businessId);
-        } else {
-          // this.spinnerService.hide();
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
-  }
-
-  deleteAnnualReturn(annualReturnId: number) {
-    const obj = {
-      id: annualReturnId,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
-    };
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/delete`;
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        this.httpClient
-          .post<any>(this.apiUrl, obj, { headers: reqHeader })
-          .subscribe((data) => {
-            console.log(data);
-
-            if (data.status == true) {
-              Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: "Annual Return Successfully Deleted",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-
-              this.getAnnualReturns(this.businessId);
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-                showConfirmButton: true,
-                timer: 5000,
-              });
-            }
-          });
-      }
-    });
-  }
-
-  getZipcodes() {
-    this.apiUrl = environment.AUTHAPIURL + "postalcodes";
-
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("zipcodes: ", data);
-      this.zipCodes = data.response;
-    });
-  }
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";
@@ -880,28 +654,21 @@ export class AnnualreturnsComponent implements OnInit {
     }
   }
 
-  calculateGrossIncome(event: any) {
-    // // console.log("test: ", this.editEmployeeForm.get('lifeAssurance').value);
-    // if (this.annualReturnForm.valid) {
-    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
-    //     this.annualReturnForm
-    //   );
-    // } else {
-    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
-    //     this.addEmployeeForm
-    //   );
-    // }
+  onChangeAmount(event: any, data: any){
+    this.payItemsArray = this.assessmentPaymentItems.filter(i => i.id === data);
+     if(event > this.payItemsArray[0].amount_due){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Do not enter more than" + ' ' + this.payItemsArray[0].amount_due,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        this.validAmountAssessed = true;
+       }
+   else{
+    this.validAmountAssessed = false;
+   }
   }
-  calculateTotalIncome(event: any) {
 
-  //   if (this.annualReturnForm.valid) {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.annualReturnForm
-  //     );
-  //   } else {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.addEmployeeForm
-  //     );
-  //   }
-  }
 }

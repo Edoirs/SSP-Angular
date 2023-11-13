@@ -1,42 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import {
-  NgbModal,
   ModalDismissReasons,
+  NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
+import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
-import { UtilityService } from "src/app/utility.service";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
-  selector: 'app-annualreturnemployeesupload',
-  templateUrl: './annualreturnemployeesupload.component.html',
-  styleUrls: ['./annualreturnemployeesupload.component.css']
+  selector: 'app-annualreturnassessments',
+  templateUrl: './annualreturnassessments.component.html',
+  styleUrls: ['./annualreturnassessments.component.css']
 })
-export class AnnualreturnemployeesuploadComponent implements OnInit {
-  submitted: boolean = false;
+export class AnnualreturnassessmentsComponent implements OnInit {
   apiUrl!: string;
-  isResponse!: number;
-  isMessage: any;
-  isError!: number;
-  file: any;
-  roleID: any;
-  sample_file: any;
+  assessmentsData: any;
+  assessmentEmployeesData: any;
   myForm!: FormGroup;
-  filePath: any;
-  rowErr: string[] = [];
-  error: any;
-  rows: string[] = [];
-  title = "PAYE - Annual Return Employees";
+  assessmentForm!: FormGroup;
+  reassessmentForm!: FormGroup;
+  totalGrossIncome: any;
+  totalMonthlyTaxDue: any;
+  objectDisable!: boolean;
+  submitted: boolean = false;
+  selectedAssessment: any;
+  assessmentId: any;
+  months: { monthId: string; monthName: string }[] = [];
+  date!: Date;
+  title = "PAYE - Annual Return Report";
   businessesData: any;
   selectedBusiness: any;
   dtOptions: any = {};
@@ -50,18 +50,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     // private spinnerService: Ng4LoadingSpinnerService,
     private httpClient: HttpClient,
     private router: Router,
-    private route: ActivatedRoute,
+    private datepipe: DatePipe,
     // private component: DashboardComponent,
     private sess: SessionService,
-    private utilityService: UtilityService,
-    private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
+    private modalService: NgbModal
+
   ) { }
-
-  get f() {
-    return this.myForm.controls;
-  }
-
 
   ngOnInit(): void {
     this.sess.isCorporate();
@@ -69,15 +63,9 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     this.getBusinesses();
-    this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 6) {
-      this.router.navigate(["/dashboard"]);
-    }
-
+    // this.getAllMonths();
     this.initialiseForms();
-
-    this.sample_file =
-      environment.SAMPLE_FILE_URL + "new-annual-return-upload.xlsx";
+    console.log("token: ", localStorage.getItem("access_token"));
 
     this.modalOptions = {
       backdrop: true,
@@ -97,11 +85,20 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       processing: true,
       ordering: false,
       info: true,
+      //   columnDefs: [
+      //     {
+      //         //targets: [ 10 ],
+      //         visible: false,
+      //         searchable: false
+      //     }
+      // ],
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
+        // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+        // tslint:disable-next-line: max-line-length
         {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
@@ -140,9 +137,199 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   }
 
   initialiseForms() {
-    this.myForm = this.formBuilder.group({
-      myfile: ["", Validators.required],
+    this.assessmentForm = this.formBuilder.group({
+      dateGenerated: [""],
+      dueDate: [""],
+      annualReturnID: [""],
+      assessmentStatus: [""],
+      approvalStatus: [""],
+      corporateId: [""],
+      annualTaxDue: [""],
     });
+
+    this.reassessmentForm = this.formBuilder.group({
+      comment: [""],
+    });
+  }
+
+  getAllMonths() {
+    this.months = [
+      { monthId: "01", monthName: "January" },
+      { monthId: "02", monthName: "February" },
+      { monthId: "03", monthName: "March" },
+      { monthId: "04", monthName: "April" },
+      { monthId: "05", monthName: "May" },
+      { monthId: "06", monthName: "June" },
+      { monthId: "07", monthName: "July" },
+      { monthId: "08", monthName: "August" },
+      { monthId: "09", monthName: "September" },
+      { monthId: "10", monthName: "October" },
+      { monthId: "11", monthName: "November" },
+      { monthId: "12", monthName: "December" },
+    ];
+  }
+
+  getMonthName(monthId: string): string {
+    var monthName = this.months.filter((m) => m.monthId == monthId)[0]
+      .monthName;
+    return monthName;
+  }
+
+  getAssessments(businessId: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "annual-assessments";
+
+    let corporateId = localStorage.getItem("corporate_id");
+
+    const objData = {
+      corporate_ids: [corporateId],
+      business_id: businessId,
+    };
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, objData, { headers: reqHeader })
+      .subscribe((data: any) => {
+        console.log("assessmentsData: ", data);
+        this.assessmentsData =
+          data.response == null ? [] : data.response.data.reverse();
+        // this.spinnerService.hide();
+      });
+  }
+
+  viewAssessment(modal: any, selectedAssessment: any) {
+    console.log("selectedAssessment: ", selectedAssessment);
+    this.assessmentId = selectedAssessment.id;
+    this.showModal(modal);
+
+    this.getSingleAssessment(selectedAssessment.id);
+  }
+
+  loadSelectedAssessmentData(selectedAssessment: any) {
+    let assessmentStatus =
+      selectedAssessment.status == 0 ? "In Active" : "Active";
+    let approvalStatus =
+      selectedAssessment.revenue_board_approval_status == 0
+        ? "In Progress"
+        : "Approved";
+
+    this.date = new Date(selectedAssessment.created_at);
+    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+    this.assessmentForm = this.formBuilder.group({
+      dateGenerated: [latest_date],
+      dueDate: [selectedAssessment.due_date],
+      annualReturnID: [selectedAssessment.annual_return_id],
+      assessmentStatus: [assessmentStatus],
+      approvalStatus: [approvalStatus],
+      corporateId: [selectedAssessment.corporate_id],
+      annualTaxDue: [selectedAssessment.annual_tax_due],
+    });
+
+    this.assessmentEmployeesData = selectedAssessment.annualReturnRecords;
+  }
+
+  getSingleAssessment(assessmentId: any) {
+    // this.spinnerService.show();
+    this.apiUrl =
+      environment.AUTHAPIURL + "annual-return-assessments/" + assessmentId;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .get<any>(this.apiUrl, { headers: reqHeader })
+      .subscribe((data: any) => {
+        console.log("singleAssessmentData: ", data);
+        this.selectedAssessment = data.response;
+        this.loadSelectedAssessmentData(this.selectedAssessment);
+        // this.spinnerService.hide();
+      });
+  }
+
+  generateReassessment(modal: any) {
+    this.showModal(modal);
+  }
+
+  onSubmitReassessment(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.reassessmentForm.invalid) {
+      return;
+    }
+
+    let corporateId = localStorage.getItem("corporate_id");
+
+    const obj = {
+      comment: formAllData.comment,
+      annual_return_assessment_id: this.assessmentId,
+      corporate_id: corporateId,
+      business_id: this.businessId,
+      approved: true,
+    };
+
+    console.log("reassessmentFormData: ", obj);
+    this.postGenerateReassessment(obj);
+  }
+
+  postGenerateReassessment(jsonData: any) {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + "reassessments";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("reassessmentApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.reassessmentForm.reset();
+          Object.keys(this.reassessmentForm.controls).forEach((key) => {
+            this.reassessmentForm.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+
+          this.getAssessments(this.businessId);
+          // this.spinnerService.hide();
+          this.modalService.dismissAll();
+        } else {
+          // this.spinnerService.hide();
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        }
+      });
   }
 
   getBusinesses() {
@@ -157,10 +344,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter((m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0);
+        this.businessesData = data.response.data.filter(
+          (m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0
+        );
         // this.spinnerService.hide();
       });
   }
@@ -176,7 +365,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
@@ -186,148 +375,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   viewBusinessAnnualReturn(modal: any, data: any) {
     this.businessId = data.id;
+    this.getAssessments(this.businessId);
     this.showModal(modal);
-  }
-
-  submit() {
-    this.submitted = true;
-
-    if (this.myForm.invalid) {
-      return;
-    }
-    // tslint:disable-next-line: max-line-length
-    // In Angular 2+, it is very important to leave the Content-Type empty. If you set the 'Content-Type' to 'multipart/form-data' the upload will not work !
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    };
-
-    const formData = new FormData();
-    formData.append("annual_returns", this.myForm.get("myfile")?.value);
-    formData.append("business_id", this.businessId);
-    this.apiUrl = environment.AUTHAPIURL;
-    // this.spinnerService.show();
-
-    this.httpClient
-      .post<any>(
-        this.apiUrl + "annual-return-schedules/import",
-        formData,
-        config
-      )
-      .subscribe((res: any) => {
-        console.log(res);
-
-        // Clear form Value Without any Error
-        this.myForm.reset();
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null);
-        });
-
-        if (res.status == true) {
-          // this.spinnerService.hide();
-          this.modalService.dismissAll();
-
-          this.myForm.reset();
-          Object.keys(this.myForm.controls).forEach((key) => {
-            this.myForm.get(key)?.setErrors(null);
-          });
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: res.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
-          this.router.navigate(["/annualreturns"]);
-        } 
-        else {
-          // this.spinnerService.hide();
-          if (res.response == null) {
-            this.reload();
-            Swal.fire({
-              icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            });
-          }
-          const regex = /_/g;
-
-          for (const key of Object.keys(res.response)) {
-            const row = res.response[key];
-
-            for (const error of row) {
-              let err = key.replace(regex, " " + ":");
-              this.error =
-                err.toUpperCase() +
-                " " +
-                (key.replace(regex, " ") + ":", error);
-              this.rows.push(this.error);
-              console.log(this.error);
-            }
-          }
-          this.reload();
-          if (this.rows.length < 12) {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 "> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
-          } else {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                this.rows.join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.rows.join('\n'),
-              showConfirmButton: true,
-            });
-          }
-        }
-      });
-  }
-
-  onFileChange(event: any) {
-    if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid file(s) extension",
-        text: "Selected file(s) not supported.",
-        showConfirmButton: true,
-        timer: 25000,
-      });
-
-      return false;
-    }
-
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.file = event.target.files[0];
-      this.filePath = event.target.files[0].name;
-      this.myForm.get("myfile")?.setValue(file);
-    }
-
-    return true;
-  }
-
-  reload() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(["./"], { relativeTo: this.route });
   }
 
   showModal(modal: any) {
