@@ -44,13 +44,13 @@ export class LoginComponent {
           "",
           [
             Validators.required,
-            Validators.minLength(11),
-            Validators.maxLength(11),
+            // Validators.minLength(11),
+            // Validators.maxLength(11),
             // Validators.pattern(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/),
           ],
         ],
         password: ["", [Validators.required]],
-        rememberMe: [false, []],
+        // rememberMe: [false, []],
         taxTypeId: ["", Validators.required],
         // captcha: ['', Validators.required],
       });
@@ -118,6 +118,7 @@ export class LoginComponent {
       this.submitted = true;
   
       if (this.loginForm.invalid) {
+        console.log("Here is we!");
         return;
       }
 
