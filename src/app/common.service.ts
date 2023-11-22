@@ -210,6 +210,7 @@ export class CommonService {
       return data;
     }));
   }
+  
   getLocalGovernment() {
     this.apiUrl = environment.AUTHAPIURL + "common/local-governments";
 

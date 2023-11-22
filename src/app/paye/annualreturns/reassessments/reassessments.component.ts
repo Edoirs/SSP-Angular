@@ -99,7 +99,9 @@ export class ReassessmentsComponent implements OnInit {
       currentPage: 1,
       itemsPerPage: 10,
     };
-    this.getBusinesses(this.config.itemsPerPage, this.config.currentPage);
+
+    this.getBusinesses();
+    // this.getBusinesses(this.config.itemsPerPage, this.config.currentPage);
     this.initialisePaymentItemsForm();
     this.today = new Date();
 
@@ -210,30 +212,22 @@ export class ReassessmentsComponent implements OnInit {
     });
   }
 
-  getBusinesses(perpage: any, pageno: any) {
-    //const obj = {};
+  getBusinesses() {
+    const obj = {};
     // this.spinnerService.show();
-   // this.apiUrl = environment.AUTHAPIURL + "businesses/index";
-   this.apiUrl = `${environment.AUTHAPIURL}businesses/index?page=${pageno}`;
+    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.searchObject["page_no"] = pageno;
-    this.searchObject["per_page"] = perpage;
-    this.httpClient
-      .post<any>(this.apiUrl,  this.searchObject, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("BusinessData: ", data);
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
 
-        // this.businessesData = data.response.data.filter(
-        //   (m) => m.taxpayer_role_id == 1 && m.employees_count > 0
-        // );
-        this.businessesData = data.response.data;
-        // this.spinnerService.hide();
-      });
+      this.businessesData = data.response.data;
+      // this.spinnerService.hide();
+    });
   }
 
   getSingleBusiness(businessId: any) {

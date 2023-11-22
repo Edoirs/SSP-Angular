@@ -266,7 +266,7 @@ export class CompanyprofileComponent implements OnInit {
   }
 
   getEmployees() {
-    this.apiUrl = environment.AUTHAPIURL + "employees-list";
+    this.apiUrl = environment.AUTHAPIURL + "Employee/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -275,15 +275,14 @@ export class CompanyprofileComponent implements OnInit {
 
     let corporateId = localStorage.getItem("corporate_id");
 
-    const obj = {
-      corporate_ids: [corporateId],
-      business_id: "",
-    };
+    // const obj = {
+    //   corporate_ids: [corporateId],
+    //   business_id: "",
+    // };
 
-    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data: any) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
       console.log('employeesData: ', data);
       this.employeesCount = data.response.data?.length;
-
     });
   }
 

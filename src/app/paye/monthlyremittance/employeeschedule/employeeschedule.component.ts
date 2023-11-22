@@ -677,7 +677,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   getZipcodes() {
-    this.apiUrl = environment.AUTHAPIURL + "postalcodes";
+    this.apiUrl = environment.AUTHAPIURL + "LocalGovtPostalCode/getall";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("zipcodes: ", data);
@@ -686,7 +686,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   getStateLocalGovts() {
-    this.apiUrl = `${environment.AUTHAPIURL}local-governments`;
+    this.apiUrl = `${environment.AUTHAPIURL}LocalGovernmentArea/getall`;
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       this.stateLocalGovts = data.response;
@@ -716,23 +716,19 @@ export class EmployeescheduleComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("BusinessData: ", data);
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter(
-          (m: any) => m.taxpayer_role_id == 1
-        );
-        // this.spinnerService.hide();
-      });
+      this.businessesData = data.response.data;
+      // this.spinnerService.hide();
+    });
   }
 
   getSingleBusiness(businessId: any) {
@@ -807,31 +803,28 @@ export class EmployeescheduleComponent implements OnInit {
 
   getEmployees(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees-list";
+    this.apiUrl = environment.AUTHAPIURL + "Employee/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    let corporateId = localStorage.getItem("corporate_id");
+    // let corporateId = localStorage.getItem("corporate_id");
 
-    const obj = {
-      corporate_id: corporateId,
-      business_id: businessId,
-    };
+    // const obj = {
+    //   corporate_id: corporateId,
+    //   business_id: businessId,
+    // };
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("employeesData: ", data);
-        this.employeesData =
-          data.response.data == null ? [] : data.response.data.reverse();
-        if (data.response.data.length > 0) {
-          this.apidataEmpty = true;
-        }
-        // this.spinnerService.hide();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("employeesData: ", data);
+      this.employeesData = data.response.data == null ? [] : data.response.data.reverse();
+      if (data.response.data.length > 0) {
+        this.apidataEmpty = true;
+      }
+      // this.spinnerService.hide();
+    });
   }
 
   forwardSchedule(modal: any) {

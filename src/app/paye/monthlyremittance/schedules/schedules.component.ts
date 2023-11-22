@@ -429,7 +429,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   getZipcodes() {
-    this.apiUrl = environment.AUTHAPIURL + "postalcodes";
+    this.apiUrl = environment.AUTHAPIURL + "LocalGovtPostalCode/getall";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("zipcodes: ", data);
@@ -438,7 +438,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   getStateLocalGovts() {
-    this.apiUrl = `${environment.AUTHAPIURL}local-governments`;
+    this.apiUrl = `${environment.AUTHAPIURL}LocalGovernmentArea/getall`;
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       this.stateLocalGovts = data.response;
@@ -718,23 +718,19 @@ export class SchedulesComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("BusinessData: ", data);
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter(
-          (m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0
-        );
-        // this.spinnerService.hide();
-      });
+      this.businessesData = data.response.data;
+      // this.spinnerService.hide();
+    });
   }
 
   getSingleBusiness(businessId: any) {

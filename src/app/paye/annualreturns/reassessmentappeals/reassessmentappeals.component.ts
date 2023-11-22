@@ -495,23 +495,19 @@ export class ReassessmentappealsComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/index";
+    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("BusinessData: ", data);
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
 
-        this.businessesData = data.response.data.filter(
-          (m: any) => m.taxpayer_role_id == 1 && m.employees_count > 0
-        );
-        // this.spinnerService.hide();
-      });
+      this.businessesData = data.response.data;
+      // this.spinnerService.hide();
+    });
   }
 
   getSingleBusiness(businessId: any) {
