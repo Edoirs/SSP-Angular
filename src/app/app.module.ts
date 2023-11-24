@@ -28,25 +28,9 @@ import { ForgotpasswordComponent } from './auth/forgotpassword/forgotpassword.co
 import { AboutusComponent } from './webpages/aboutus/aboutus.component';
 import { ContactusComponent } from './webpages/contactus/contactus.component';
 import { FaqsComponent } from './webpages/faqs/faqs.component';
-import { SuperadminComponent } from './__inc/menuitem/superadmin/superadmin.component';
-import { RegistrationoffcrComponent } from './__inc/menuitem/registrationoffcr/registrationoffcr.component';
-import { HeadofbillingComponent } from './__inc/menuitem/headofbilling/headofbilling.component';
-import { HeadmanageadminComponent } from './headoficta/headmanageadmin/headmanageadmin.component';
-import { HeadmyprofileComponent } from './headoficta/headmyprofile/headmyprofile.component';
-import { HeadchangepasswordComponent } from './headoficta/headchangepassword/headchangepassword.component';
-import { HeadtariffsComponent } from './headoficta/headtariffs/headtariffs.component';
-import { HeadbillstructureComponent } from './headoficta/headbillstructure/headbillstructure.component';
-import { HeadconsumerlistingComponent } from './headoficta/headconsumerlisting/headconsumerlisting.component';
-import { HeadgeneratedbillsComponent } from './headoficta/headgeneratedbills/headgeneratedbills.component';
-import { HeadpayhistoryComponent } from './headoficta/headpayhistory/headpayhistory.component';
-import { HeadcreatebillComponent } from './headoficta/headcreatebill/headcreatebill.component';
-import { HeadBillPaymentComponent } from './headoficta/head-bill-payment/head-bill-payment.component';
 
-import { BillingofficerComponent } from './__inc/menuitem/billingofficer/billingofficer.component';
-import { HeadprofilerequestsComponent } from './headoficta/headprofilerequests/headprofilerequests.component';
 import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.component';
 import { NumbersOnlyDirective } from './numbers-only.directive';
-import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { AnnualreturnemployeesuploadComponent } from './paye/annualreturns/annualreturnemployeesupload/annualreturnemployeesupload.component';
 import { AnnualreturnsComponent } from './paye/annualreturns/annualreturns/annualreturns.component';
@@ -87,24 +71,8 @@ import { CompanyprofileComponent } from './paye/profile/companyprofile/companypr
     AboutusComponent,
     ContactusComponent,
     FaqsComponent,
-    SuperadminComponent,
-    RegistrationoffcrComponent,
-    HeadofbillingComponent,
-    HeadmanageadminComponent,
-    HeadmyprofileComponent,
-    HeadchangepasswordComponent,
-    HeadtariffsComponent,
-    HeadbillstructureComponent,
-    HeadconsumerlistingComponent,
-    HeadgeneratedbillsComponent,
-    HeadpayhistoryComponent,
-    HeadcreatebillComponent,
-    HeadBillPaymentComponent,
-    BillingofficerComponent,
-    HeadprofilerequestsComponent,
     PrivacypolicyComponent,
     NumbersOnlyDirective,
-    HeadictsettlementsComponent,
     SignUpComponent,
     AnnualreturnemployeesuploadComponent,
     AnnualreturnsComponent,

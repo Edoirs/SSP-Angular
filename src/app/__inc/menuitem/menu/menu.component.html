@@ -19,9 +19,43 @@
 
     <li class="nav-item">
       <a  class="nav-link">
-        <i class="nav-icon fas fa-plus-square"></i>
+        <i class="nav-icon fas fa-file-invoice"></i>
         <p>
-          Water Corporation
+          PAYE
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+
+          <ul class="nav nav-treeview" style="display: none;">
+
+            <li class="nav-item">
+              <a [routerLink]="['/assessments']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-calendar-alt nav-icon"></i>
+                <p>Monthly Remittance</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="fas fa-exchange-alt nav-icon"></i>
+                <p>Form H1 (Annual Return)</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-chart-bar nav-icon"></i>
+                <p>Form H3 (Projections)</p>
+              </a>
+            </li>
+
+          </ul>
+
+    </li>
+
+    <li class="nav-item">
+      <a  class="nav-link">
+        <i class="nav-icon fas fa-file-invoice"></i>
+        <p>
+          Reports
           <i class="fas fa-angle-left right"></i>
         </p>
       </a>
@@ -30,16 +64,14 @@
 
             <li class="nav-item">
               <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Reports</p>
+                <i class="fas fa-line-chart nav-icon"></i>
+                <p>Transaction History</p>
               </a>
             </li>
 
           </ul>
 
     </li>
-
-
 
 
     <!-- <li class="nav-item">
