@@ -188,7 +188,7 @@ export class AssessmentsComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -222,7 +222,7 @@ export class AssessmentsComponent implements OnInit {
       // this.spinnerService.hide();
     });
   }
-  
+
   getAssessments(businessId: any) {
     // this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + "assessments-list";

@@ -177,7 +177,7 @@ export class UploadprojectionComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const config = {
       headers: {
