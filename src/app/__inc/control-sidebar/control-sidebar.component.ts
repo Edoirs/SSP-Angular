@@ -6,33 +6,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./control-sidebar.component.css']
 })
 export class ControlSidebarComponent {
-  roleID: any;
-  isRegistrationOfficer!:boolean
-  isSuperAdmin!:boolean
-  isbillingOfficer!:boolean
-  isheadbillingOfficer!:boolean
-  isCustomer!:boolean
+//   roleID: any;
+//   isRegistrationOfficer!:boolean
+//   isSuperAdmin!:boolean
+//   isbillingOfficer!:boolean
+//   isheadbillingOfficer!:boolean
+//   isCustomer!:boolean
 
-  constructor() { }
+//   constructor() { }
 
-  ngOnInit(): void {
-  this.roleID = localStorage.getItem('niswasec_role_id');
+//   ngOnInit(): void {
+//   this.roleID = localStorage.getItem('niswasec_role_id');
 
-  if (this.roleID == 1) {
-    this.isRegistrationOfficer = true;
-  }
-  if (this.roleID == 	2) {
-    this.isheadbillingOfficer = true;
-  }
-  if (this.roleID == 	3) {
-    this.isbillingOfficer = true;
-  }
-  if (this.roleID == 4) {
-    this.isSuperAdmin = true;
-  }
+//   if (this.roleID == 1) {
+//     this.isRegistrationOfficer = true;
+//   }
+//   if (this.roleID == 	2) {
+//     this.isheadbillingOfficer = true;
+//   }
+//   if (this.roleID == 	3) {
+//     this.isbillingOfficer = true;
+//   }
+//   if (this.roleID == 4) {
+//     this.isSuperAdmin = true;
+//   }
 
-  if (this.roleID == 7) {
-    this.isCustomer = true;
-  }
-}
+//   if (this.roleID == 7) {
+//     this.isCustomer = true;
+//   }
+// }
 }

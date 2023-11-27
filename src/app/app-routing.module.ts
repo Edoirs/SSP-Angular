@@ -5,23 +5,11 @@ import { ForgotpasswordComponent } from './auth/forgotpassword/forgotpassword.co
 import { LoginComponent } from './auth/login/login.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { ResetpasswordComponent } from './auth/resetpassword/resetpassword.component';
-import { HeadBillPaymentComponent } from './headoficta/head-bill-payment/head-bill-payment.component';
-import { HeadbillstructureComponent } from './headoficta/headbillstructure/headbillstructure.component';
-import { HeadchangepasswordComponent } from './headoficta/headchangepassword/headchangepassword.component';
-import { HeadconsumerlistingComponent } from './headoficta/headconsumerlisting/headconsumerlisting.component';
-import { HeadcreatebillComponent } from './headoficta/headcreatebill/headcreatebill.component';
-import { HeadgeneratedbillsComponent } from './headoficta/headgeneratedbills/headgeneratedbills.component';
-import { HeadmanageadminComponent } from './headoficta/headmanageadmin/headmanageadmin.component';
-import { HeadmyprofileComponent } from './headoficta/headmyprofile/headmyprofile.component';
-import { HeadpayhistoryComponent } from './headoficta/headpayhistory/headpayhistory.component';
-import { HeadtariffsComponent } from './headoficta/headtariffs/headtariffs.component';
 import { AboutusComponent } from './webpages/aboutus/aboutus.component';
 import { ContactusComponent } from './webpages/contactus/contactus.component';
 import { FaqsComponent } from './webpages/faqs/faqs.component';
 import { HomeComponent } from './webpages/home/home.component';
-import { HeadprofilerequestsComponent } from './headoficta/headprofilerequests/headprofilerequests.component';
 import { PrivacypolicyComponent } from './webpages/privacypolicy/privacypolicy.component';
-import { HeadictsettlementsComponent } from './headoficta/headictsettlements/headictsettlements.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AnnualreturnemployeesuploadComponent } from './paye/annualreturns/annualreturnemployeesupload/annualreturnemployeesupload.component';
@@ -58,18 +46,7 @@ const routes: Routes = [
   { path: "privacypolicy", component: PrivacypolicyComponent },
 
 
-  { path: "headmanageadmin", component: HeadmanageadminComponent },
-  { path: "headmyprofile", component: HeadmyprofileComponent },
-  { path: "headchangepassword", component: HeadchangepasswordComponent },
-  { path: "headtariffs", component: HeadtariffsComponent },
-  { path: "headbillstructure", component: HeadbillstructureComponent },
-  { path: "headconsumer", component: HeadconsumerlistingComponent },
-  { path: "headgeneratedbills", component: HeadgeneratedbillsComponent },
-  { path: "headbills", component: HeadcreatebillComponent },
-  { path: "headbillspayment", component: HeadBillPaymentComponent },
-  { path: "headpaymenthistory", component: HeadpayhistoryComponent },
-  { path: "headprofilerequest", component: HeadprofilerequestsComponent },
-  { path: "headsettlement", component: HeadictsettlementsComponent },
+
 
   { path: "assessments", component: AssessmentsComponent },
   { path: "deletedemployees", component: DeletedemployeesComponent },
