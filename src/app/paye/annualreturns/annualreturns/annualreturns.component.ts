@@ -182,7 +182,7 @@ export class AnnualreturnsComponent implements OnInit {
 
   getSingleEmployee(employeeId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/" + employeeId;
+    this.apiUrl = environment.AUTHAPIURL + "Employee/GetbyId/" + employeeId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -707,23 +707,21 @@ export class AnnualreturnsComponent implements OnInit {
 
   getAnnualReturns(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-uploads";
+    this.apiUrl = environment.AUTHAPIURL + "AnnualReturn/getall";
 
     let corporateId = localStorage.getItem("corporate_id");
 
-    const objData = {
-      corporate_ids: [corporateId],
-      business_id: businessId,
-    };
+    // const objData = {
+    //   corporate_ids: [corporateId],
+    //   business_id: businessId,
+    // };
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, objData, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.post<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
         console.log("annualReturnsData: ", data);
         this.annualReturnsData =
           data.response == null ? [] : data.response.reverse();

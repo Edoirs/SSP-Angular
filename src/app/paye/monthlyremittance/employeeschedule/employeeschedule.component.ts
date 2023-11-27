@@ -696,7 +696,7 @@ export class EmployeescheduleComponent implements OnInit {
 
   getSingleEmployee(employeeId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "employees/" + employeeId;
+    this.apiUrl = environment.AUTHAPIURL + "Employee/GetbyId/" + employeeId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
