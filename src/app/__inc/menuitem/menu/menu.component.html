@@ -21,7 +21,7 @@
       <a  class="nav-link">
         <i class="nav-icon fas fa-file-invoice"></i>
         <p>
-          PAYE
+          Monthly Remittance
           <i class="fas fa-angle-left right"></i>
         </p>
       </a>
@@ -29,24 +29,113 @@
           <ul class="nav nav-treeview" style="display: none;">
 
             <li class="nav-item">
+              <a [routerLink]="['/employeeschedule']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Employees</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/deletedemployees']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Deleted Employees</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/schedules']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Schedules</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a [routerLink]="['/assessments']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-calendar-alt nav-icon"></i>
-                <p>Monthly Remittance</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="fas fa-exchange-alt nav-icon"></i>
-                <p>Form H1 (Annual Return)</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-chart-bar nav-icon"></i>
-                <p>Form H3 (Projections)</p>
+                <i class="far fa-circle nav-icon"></i>
+                <p>Assessments</p>
               </a>
             </li>
 
+          </ul>
+
+    </li>
+    <li class="nav-item">
+      <a  class="nav-link">
+        <i class="nav-icon fa fa-exchange"></i>
+        <p>
+          Form H1 (Annual Return)
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+
+          <ul class="nav nav-treeview" style="display: none;">
+
+            <li class="nav-item">
+              <a [routerLink]="['/annualreturnassessments']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Form H1 Filling</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/annualreturnemployeesupload']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Uploaded Form H1</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/annualreturnschedules']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Form h1 Schedules</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/annualreturns']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Filled Form H1</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/reassessments']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reassessments</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/reassessmentappeals']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Objections</p>
+              </a>
+            </li>
+
+          </ul>
+
+    </li>
+    <li class="nav-item">
+      <a  class="nav-link">
+        <i class="nav-icon fas fa-chart-bar"></i>
+        <p>
+          Form H3 (Projections)
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+
+          <ul class="nav nav-treeview" style="display: none;">
+
+            <li class="nav-item">
+              <a [routerLink]="['/uploadprojection']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Upload Form H3</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/pendingprojection']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pending Form H3</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/approvedprojection']" [routerLinkActive]="['active']" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Filled Form</p>
+              </a>
+            </li>
           </ul>
 
     </li>
