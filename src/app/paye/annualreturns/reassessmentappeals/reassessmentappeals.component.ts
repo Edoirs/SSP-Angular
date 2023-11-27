@@ -512,7 +512,7 @@ export class ReassessmentappealsComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",

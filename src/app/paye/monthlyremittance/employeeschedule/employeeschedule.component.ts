@@ -733,7 +733,7 @@ export class EmployeescheduleComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     // this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + "businesses/" + businessId;
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -1046,7 +1046,7 @@ export class EmployeescheduleComponent implements OnInit {
 
     console.log("employeeFormData: ", obj);
     // this.postCreateEmployee(obj);
-    this.apiUrl = environment.AUTHAPIURL + "employees";
+    this.apiUrl = environment.AUTHAPIURL + "Employee/AddEmployee";
 
     if (this.isEdit) {
       obj["id"] = this.selectedEmployee.id;
