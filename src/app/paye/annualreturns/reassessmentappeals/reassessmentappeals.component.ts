@@ -71,7 +71,7 @@ export class ReassessmentappealsComponent implements OnInit {
   ) { }
 
   ngOnInit(searchObj = null): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -213,8 +213,8 @@ export class ReassessmentappealsComponent implements OnInit {
       .subscribe((data) => {
         console.log("reassessmentAppealsData: ", data);
         this.reassessmentAppealsData =
-          data.response == null ? [] : data.response.data.reverse();
-        this.taxpayerId = data.response.data[0]?.taxpayer_id;
+          data.response == null ? [] : data.data.reverse();
+        this.taxpayerId = data.data[0]?.taxpayer_id;
         // this.spinnerService.hide();
       });
   }
@@ -505,7 +505,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }

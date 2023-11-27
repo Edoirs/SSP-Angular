@@ -70,7 +70,7 @@ export class PendingprojectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -85,9 +85,9 @@ export class PendingprojectionComponent implements OnInit {
     };
 
     this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-      this.router.navigate(["/dashboard"]);
-    }
+    // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
+    //   this.router.navigate(["/dashboard"]);
+    // }
 
     if (this.roleID === "5") {
       this.managerRole = true;
@@ -180,7 +180,7 @@ export class PendingprojectionComponent implements OnInit {
         if (data.status == false) {
          
         } else {
-          this.apidata = data.response.data.data;
+          this.apidata = data.data;
           if (data.response.comments) {
             this.com = data.response.comments;
             this.comments = this.com.filter(
@@ -190,7 +190,7 @@ export class PendingprojectionComponent implements OnInit {
               this.apidataEmpty = true;
 
               this.annualProjectionId =
-                data.response.data.data[0].annual_projection_id;
+                data.data[0].annual_projection_id;
 
               this.forwardedTo =
                 this.apidata[0].forwarded_to == 1
@@ -203,7 +203,7 @@ export class PendingprojectionComponent implements OnInit {
             this.apidataEmpty = true;
 
             this.annualProjectionId =
-              data.response.data.data[0].annual_projection_id;
+              data.data[0].annual_projection_id;
 
             this.forwardedTo =
               this.apidata[0].forwarded_to == 1
@@ -396,9 +396,9 @@ export class PendingprojectionComponent implements OnInit {
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
         console.log("singleProjectionData: ", data);
-        this.projectionData = data.response.data;
+        this.projectionData = data.data;
         console.log(this.projectionData);
-        this.selectedProjection = data.response.data;
+        this.selectedProjection = data.data;
         // this.spinnerService.hide();
       });
   }

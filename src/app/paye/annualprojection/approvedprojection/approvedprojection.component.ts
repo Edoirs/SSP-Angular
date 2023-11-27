@@ -52,7 +52,7 @@ export class ApprovedprojectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -62,10 +62,12 @@ export class ApprovedprojectionComponent implements OnInit {
       backdropClass: "customBackdrop",
       size: "xl",
     };
+
     this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-      this.router.navigate(["/dashboard"]);
-    }
+
+    // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
+    //   this.router.navigate(["/dashboard"]);
+    // }
 
     this.getApprovedProjectionRecord();
     this.dtOptions = {

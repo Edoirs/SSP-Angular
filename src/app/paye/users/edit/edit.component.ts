@@ -42,14 +42,15 @@ export class EditComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     // this.component.checkIfEditorExist();
     // Check User Login
     this.sess.checkLogin();
     this.roleID = localStorage.getItem('role_id');
-    if (this.roleID != 5) {
-      this.router.navigate(['/dashboard']);
-    }
+
+    // if (this.roleID != 5) {
+    //   this.router.navigate(['/dashboard']);
+    // }
 
     // this.roleID = localStorage.getItem('role_id');
     // if (this.roleID != 5) {

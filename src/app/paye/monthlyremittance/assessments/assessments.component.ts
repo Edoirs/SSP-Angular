@@ -84,7 +84,7 @@ export class AssessmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -218,7 +218,7 @@ export class AssessmentsComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }
@@ -243,7 +243,7 @@ export class AssessmentsComponent implements OnInit {
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log("assessmentsData: ", data);
-        this.assessmentsData = data.response == null ? [] : data.response.data;
+        this.assessmentsData = data.data == null ? [] : data.data;
         // this.spinnerService.hide();
       });
   }

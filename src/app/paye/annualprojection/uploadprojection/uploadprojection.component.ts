@@ -62,15 +62,16 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     // this.spinnerService.show();
     this.getBusinesses();
+
     this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 6) {
-      this.router.navigate(["/dashboard"]);
-    }
+    // if (this.roleID != 6) {
+    //   this.router.navigate(["/dashboard"]);
+    // }
 
     this.myForm = this.formBuilder.group({
       myfile: ["", Validators.required],
@@ -170,7 +171,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }

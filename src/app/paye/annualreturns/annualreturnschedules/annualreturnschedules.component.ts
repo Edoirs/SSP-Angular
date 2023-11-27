@@ -69,7 +69,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -400,8 +400,8 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
-      // this.spinnerService.hide();
+      this.businessesData = data.data;
+      // this.spinnerService.hide()
     });
   }
 
@@ -451,7 +451,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
       .subscribe((data) => {
         console.log("schedulesData: ", data);
         this.schedulesData =
-          data.response == null ? [] : data.response.data.reverse();
+          data.response == null ? [] : data.data.reverse();
         // this.spinnerService.hide();
       });
   }

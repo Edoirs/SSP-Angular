@@ -80,7 +80,7 @@ export class SchedulesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -423,7 +423,7 @@ export class SchedulesComponent implements OnInit {
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log("schedulesData: ", data);
-        this.schedulesData = data.response == null ? [] : data.response.data;
+        this.schedulesData = data.response == null ? [] : data.data;
         // this.spinnerService.hide();
       });
   }
@@ -728,7 +728,7 @@ export class SchedulesComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }

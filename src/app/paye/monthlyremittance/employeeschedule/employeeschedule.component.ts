@@ -85,7 +85,7 @@ export class EmployeescheduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -726,7 +726,7 @@ export class EmployeescheduleComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }
@@ -819,8 +819,8 @@ export class EmployeescheduleComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("employeesData: ", data);
-      this.employeesData = data.response.data == null ? [] : data.response.data.reverse();
-      if (data.response.data.length > 0) {
+      this.employeesData = data.data == null ? [] : data.data.reverse();
+      if (data.data.length > 0) {
         this.apidataEmpty = true;
       }
       // this.spinnerService.hide();

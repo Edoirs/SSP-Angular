@@ -13,7 +13,7 @@ export class UtilityService {
 
   constructor(
     private httpClient: HttpClient,
-    private decimalPipe: DecimalPipe
+    // private decimalPipe: DecimalPipe
   ) {
     this.getTaxOffices();
   }

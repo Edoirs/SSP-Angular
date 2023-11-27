@@ -39,19 +39,19 @@ export class AdduserComponent implements OnInit {
 
   ngOnInit(): void {
     //this.component.checkIfEditorExist()
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.sess.checkLogin();
     // Check User Login
 
     this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 5) {
-      this.router.navigate(["/dashboard"]);
-    }
+    // if (this.roleID != 5) {
+    //   this.router.navigate(["/dashboard"]);
+    // }
 
     this.roleID = localStorage.getItem("role_id");
-    if (this.roleID != 5) {
-      this.router.navigate(["/logout"]);
-    }
+    // if (this.roleID != 5) {
+    //   this.router.navigate(["/logout"]);
+    // }
 
     // this.getRole();
     this.getApplication();

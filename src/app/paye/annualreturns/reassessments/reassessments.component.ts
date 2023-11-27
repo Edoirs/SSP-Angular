@@ -89,7 +89,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -225,7 +225,7 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.response.data;
+      this.businessesData = data.data;
       // this.spinnerService.hide();
     });
   }
@@ -275,7 +275,7 @@ export class ReassessmentsComponent implements OnInit {
       .post<any>(this.apiUrl, objData, { headers: reqHeader })
       .subscribe((data) => {
         console.log("reassessmentsData: ", data);
-        this.reassessmentsData = data.response.data.reverse();
+        this.reassessmentsData = data.data.reverse();
 
         // this.spinnerService.hide();
       });

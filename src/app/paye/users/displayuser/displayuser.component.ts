@@ -41,7 +41,7 @@ export class DisplayuserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -50,6 +50,7 @@ export class DisplayuserComponent implements OnInit {
     // if (this.roleID != 1) {
     //   this.router.navigate(['/logout']);
     //  }
+
     if (this.roleID === "5") {
       this.managerRole = true;
     }
@@ -125,7 +126,7 @@ export class DisplayuserComponent implements OnInit {
       .post<any>(this.apiUrl, {}, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
-        this.apidata = data.response.data;
+        this.apidata = data.data;
         // this.spinnerService.hide();
       });
   }

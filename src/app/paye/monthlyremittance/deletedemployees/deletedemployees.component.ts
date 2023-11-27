@@ -39,7 +39,7 @@ export class DeletedemployeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
@@ -48,6 +48,7 @@ export class DeletedemployeesComponent implements OnInit {
     // if (this.roleID != 1) {
     //   this.router.navigate(['/logout']);
     //  }
+    
     if (this.roleID === "5") {
       this.managerRole = true;
     }

@@ -163,10 +163,11 @@ export class LoginComponent {
       }
 
       if (data.status == true) {
-        localStorage.setItem("token", data?.token);
-        localStorage.setItem("email", data?.email);
-        localStorage.setItem("name", data?.name);
-        localStorage.setItem("companyId", data?.companyId);
+        let loginData = data.data;
+        localStorage.setItem("access_token", loginData?.token);
+        localStorage.setItem("email", loginData?.email);
+        localStorage.setItem("name", loginData?.name);
+        localStorage.setItem("companyId", loginData?.companyId);
         this.companyId = formAllData.companyId;
         // this.goToOtp();
         this.router.navigate(["/dashboard"])

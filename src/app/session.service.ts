@@ -103,7 +103,7 @@ export class SessionService {
 
   public checkLogin() {
     this.validtoken = localStorage.getItem("access_token");
-    this.application_id = localStorage.getItem("application_id");
+    // this.application_id = localStorage.getItem("application_id");
 
     console.log("token: ", this.validtoken);
     // tslint:disable-next-line: triple-equals

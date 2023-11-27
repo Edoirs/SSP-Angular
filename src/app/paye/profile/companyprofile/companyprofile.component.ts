@@ -48,17 +48,15 @@ export class CompanyprofileComponent implements OnInit {
    }
 
    ngOnInit(): void {
-    this.sess.isCorporate();
+    // this.sess.isCorporate();
     // this.component.checkIfEditorExist();
     // Check User Login
     this.sess.checkLogin();
     this.roleID = localStorage.getItem("role_id");
 
-    if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-      this.router.navigate(["/dashboard"]);
-    }
-
-
+    // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
+    //   this.router.navigate(["/dashboard"]);
+    // }
 
     this.userID = localStorage.getItem("id");
     this.corporateID = localStorage.getItem("corporate_id");
@@ -282,7 +280,7 @@ export class CompanyprofileComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
       console.log('employeesData: ', data);
-      this.employeesCount = data.response.data?.length;
+      this.employeesCount = data.data?.length;
     });
   }
 
