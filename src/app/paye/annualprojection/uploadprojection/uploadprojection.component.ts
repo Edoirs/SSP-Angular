@@ -65,7 +65,7 @@ export class UploadprojectionComponent implements OnInit {
     // this.sess.isCorporate();
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.getBusinesses();
 
     this.roleID = localStorage.getItem("role_id");
@@ -85,7 +85,7 @@ export class UploadprojectionComponent implements OnInit {
         ],
       ],
     });
-    // this.spinnerService.hide();
+    // this.ngxService.stop();
 
     this.sample_file = environment.SAMPLE_FILE_URL + "FileProjection-NEW.xlsx";
 
@@ -160,7 +160,7 @@ export class UploadprojectionComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -172,12 +172,12 @@ export class UploadprojectionComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const config = {
@@ -191,7 +191,7 @@ export class UploadprojectionComponent implements OnInit {
       console.log("singleBusinessData: ", data);
 
       this.selectedBusiness = data.response;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
@@ -220,7 +220,7 @@ export class UploadprojectionComponent implements OnInit {
     formData.append("projection_year", this.myForm.get("year")?.value);
     formData.append("business_id", this.businessId);
     this.apiUrl = environment.AUTHAPIURL;
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     this.httpClient
       .post<any>(this.apiUrl + "projections", formData, config)
@@ -234,7 +234,7 @@ export class UploadprojectionComponent implements OnInit {
         });
 
         if (res.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           this.myForm.reset();
           Object.keys(this.myForm.controls).forEach((key) => {
@@ -254,7 +254,7 @@ export class UploadprojectionComponent implements OnInit {
             timerProgressBar: true,
           });
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           const regex = /_/g;
 
           if (res.response != null) {

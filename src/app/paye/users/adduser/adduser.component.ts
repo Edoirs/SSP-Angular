@@ -160,7 +160,7 @@ export class AdduserComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data: any) => {
@@ -172,7 +172,7 @@ export class AdduserComponent implements OnInit {
         });
 
         if (data.status === true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.initialiseForms();
           Swal.fire({
             icon: "success",
@@ -183,7 +183,7 @@ export class AdduserComponent implements OnInit {
             timerProgressBar: true,
           });
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",

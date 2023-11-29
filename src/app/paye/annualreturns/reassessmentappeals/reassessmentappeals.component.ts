@@ -193,7 +193,7 @@ export class ReassessmentappealsComponent implements OnInit {
   }
 
   getReassessmentAppeals(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals/list";
 
     const reqHeader = new HttpHeaders({
@@ -215,7 +215,7 @@ export class ReassessmentappealsComponent implements OnInit {
         this.reassessmentAppealsData =
           data.response == null ? [] : data.data.reverse();
         this.taxpayerId = data.data[0]?.taxpayer_id;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -280,7 +280,7 @@ export class ReassessmentappealsComponent implements OnInit {
   this.inviteForm.reset();
 }
   getSingleReassessmentAppeal(reassessmentId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "reassessment-appeals/" + reassessmentId;
 
@@ -296,7 +296,7 @@ export class ReassessmentappealsComponent implements OnInit {
         this.selectedAppeal = data.response;
         this.files = data.response.files;
         this.loadSelectedAppealData(this.selectedAppeal);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -355,7 +355,7 @@ export class ReassessmentappealsComponent implements OnInit {
   }
 
   postAppeal(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
 
     const reqHeader = new HttpHeaders({
@@ -386,11 +386,11 @@ export class ReassessmentappealsComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true,
           });
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -432,7 +432,7 @@ export class ReassessmentappealsComponent implements OnInit {
   }
 
   Appeal(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
 
     const reqHeader = new HttpHeaders({
@@ -463,11 +463,11 @@ export class ReassessmentappealsComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true,
           });
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -494,7 +494,7 @@ export class ReassessmentappealsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -506,12 +506,12 @@ export class ReassessmentappealsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -525,7 +525,7 @@ export class ReassessmentappealsComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 

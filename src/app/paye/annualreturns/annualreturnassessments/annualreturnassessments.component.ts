@@ -176,7 +176,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   getAssessments(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "annual-assessments";
 
     let corporateId = localStorage.getItem("corporate_id");
@@ -197,7 +197,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
         console.log("assessmentsData: ", data);
         this.assessmentsData =
           data.response == null ? [] : data.data.reverse();
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -233,7 +233,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   getSingleAssessment(assessmentId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "annual-return-assessments/" + assessmentId;
 
@@ -248,7 +248,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
         console.log("singleAssessmentData: ", data);
         this.selectedAssessment = data.response;
         this.loadSelectedAssessmentData(this.selectedAssessment);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -279,7 +279,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   postGenerateReassessment(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessments";
 
     const reqHeader = new HttpHeaders({
@@ -312,10 +312,10 @@ export class AnnualreturnassessmentsComponent implements OnInit {
           });
 
           this.getAssessments(this.businessId);
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -334,7 +334,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -346,12 +346,12 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -365,7 +365,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 

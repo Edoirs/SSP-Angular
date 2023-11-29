@@ -125,7 +125,7 @@ export class CompanyprofileComponent implements OnInit {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
-    // this.spinnerService.show();
+    // this.ngxService.start();
     console.log("getCompanyData");
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
@@ -134,7 +134,7 @@ export class CompanyprofileComponent implements OnInit {
         this.apidata = data.response;
         console.log(this.apidata.company_name)
         this.corporateLogo = data.response.corporate_logo;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -173,7 +173,7 @@ export class CompanyprofileComponent implements OnInit {
           },
         };
 
-        // this.spinnerService.show();
+        // this.ngxService.start();
         this.httpClient
           .post<any>(this.apiUrl, formData, config)
           .subscribe((data: any) => {
@@ -197,7 +197,7 @@ export class CompanyprofileComponent implements OnInit {
               this.postData(company);
             } 
             else {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
 
               Swal.fire({
                 icon: "error",
@@ -222,7 +222,7 @@ export class CompanyprofileComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data: any) => {
@@ -235,7 +235,7 @@ export class CompanyprofileComponent implements OnInit {
             this.companyProfileForm.get(key)?.setErrors(null);
           });
           this.getCompanyData();
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           // this.flashMessage.show(data.response, { cssClass: 'alert-success', timeout: 5000 });
           Swal.fire({
             icon: "success",
@@ -246,7 +246,7 @@ export class CompanyprofileComponent implements OnInit {
             timerProgressBar: true,
           });
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",

@@ -148,7 +148,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -160,12 +160,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -179,7 +179,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -207,7 +207,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     formData.append("annual_returns", this.myForm.get("myfile")?.value);
     formData.append("business_id", this.businessId);
     this.apiUrl = environment.AUTHAPIURL;
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     this.httpClient
       .post<any>(
@@ -225,7 +225,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         });
 
         if (res.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
 
           this.myForm.reset();
@@ -244,7 +244,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
           this.router.navigate(["/annualreturns"]);
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           if (res.response == null) {
             this.reload();
             Swal.fire({

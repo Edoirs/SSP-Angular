@@ -404,7 +404,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   getSchedules(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "schedules-list";
 
     const reqHeader = new HttpHeaders({
@@ -424,7 +424,7 @@ export class SchedulesComponent implements OnInit {
       .subscribe((data) => {
         console.log("schedulesData: ", data);
         this.schedulesData = data.response == null ? [] : data.data;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -433,7 +433,7 @@ export class SchedulesComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("zipcodes: ", data);
-      this.zipCodes = data.response;
+      this.zipCodes = data.data;
     });
   }
 
@@ -441,13 +441,13 @@ export class SchedulesComponent implements OnInit {
     this.apiUrl = `${environment.AUTHAPIURL}LocalGovernmentArea/getall`;
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      this.stateLocalGovts = data.response;
+      this.stateLocalGovts = data.data;
       console.log("stateLocalGovts: ", data);
     });
   }
 
   getSingleSchedule(scheduleId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.scheduleEmployeesData = "";
     this.commentsData = "";
     this.apiUrl =
@@ -475,7 +475,7 @@ export class SchedulesComponent implements OnInit {
         this.selectedSchedule = data.response;
         this.schedule = data.response.schedule;
         this.loadSelectedScheduleData(this.schedule);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -516,7 +516,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   postForwardSchedule(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "schedules/forward";
 
     const reqHeader = new HttpHeaders({
@@ -549,11 +549,11 @@ export class SchedulesComponent implements OnInit {
           });
 
           this.getSchedules(this.businessId);
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -596,7 +596,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   postGenerateAssessment(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "assessments";
 
     const reqHeader = new HttpHeaders({
@@ -631,11 +631,11 @@ export class SchedulesComponent implements OnInit {
           });
 
           this.getSchedules(this.businessId);
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -682,7 +682,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   getSingleEmployee(employeeId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Employee/GetbyId/" + employeeId;
     // this.apiUrl = environment.AUTHAPIURL + 'employees/' + employeeId + '?corporate_id=' + corporateId;
 
@@ -711,13 +711,13 @@ export class SchedulesComponent implements OnInit {
           });
         }
 
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -729,12 +729,12 @@ export class SchedulesComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -748,7 +748,7 @@ export class SchedulesComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -877,7 +877,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   postUpdateEmployee(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "employees/update";
 
     const reqHeader = new HttpHeaders({
@@ -902,10 +902,10 @@ export class SchedulesComponent implements OnInit {
 
           this.getSingleSchedule(this.selectedScheduleId);
           this.editEmployeeModalRef.close();
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -951,7 +951,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   processInvoice(assessmentId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "invoices";
 
     const obj = {

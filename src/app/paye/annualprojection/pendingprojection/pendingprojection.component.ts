@@ -172,7 +172,7 @@ export class PendingprojectionComponent implements OnInit {
       annual_projection_id: annualPID,
       // corporate_id: this.corporateId,
     };
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
@@ -223,7 +223,7 @@ export class PendingprojectionComponent implements OnInit {
           }
         }
 
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -240,7 +240,7 @@ export class PendingprojectionComponent implements OnInit {
       // business_id: businessId,
     };
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
@@ -257,7 +257,7 @@ export class PendingprojectionComponent implements OnInit {
           this.apisingledata = [];
         }
 
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -303,7 +303,7 @@ export class PendingprojectionComponent implements OnInit {
   }
 
   postForwardProjection(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "projections/forward";
 
     const reqHeader = new HttpHeaders({
@@ -323,7 +323,7 @@ export class PendingprojectionComponent implements OnInit {
             this.forwardProjectionForm.get(key)?.setErrors(null);
           });
 
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           // this.reload();
           Swal.fire({
             icon: "success",
@@ -383,7 +383,7 @@ export class PendingprojectionComponent implements OnInit {
   }
 
   getSingleProjection(obj: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "projections?corporate_id=" + this.corporateId;
 
@@ -399,7 +399,7 @@ export class PendingprojectionComponent implements OnInit {
         this.projectionData = data.data;
         console.log(this.projectionData);
         this.selectedProjection = data.data;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 

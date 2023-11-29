@@ -389,7 +389,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -401,12 +401,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide()
+      // this.ngxService.stop()
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -420,7 +420,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -431,7 +431,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   getSchedules(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules-list";
 
     const reqHeader = new HttpHeaders({
@@ -452,12 +452,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
         console.log("schedulesData: ", data);
         this.schedulesData =
           data.response == null ? [] : data.data.reverse();
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
   getSingleSchedule(scheduleId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "annual-return-schedules/" + scheduleId;
 
@@ -473,7 +473,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
         this.selectedSchedule = data.response;
         this.isFiled = this.selectedSchedule.annual_return_assessment_status;
         this.loadSelectedScheduleData(this.selectedSchedule);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -518,7 +518,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   postForwardSchedule(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules/forward";
 
     const reqHeader = new HttpHeaders({
@@ -550,11 +550,11 @@ export class AnnualreturnschedulesComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
           this.getSchedules(this.businessId);
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -597,7 +597,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   postGenerateAssessment(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "annual-return-assessments";
 
     const reqHeader = new HttpHeaders({
@@ -630,10 +630,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
           });
 
           this.getSchedules(this.businessId);
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -752,7 +752,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   postUpdateAnnualReturn(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/update`;
 
     const reqHeader = new HttpHeaders({
@@ -777,10 +777,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
           this.getSingleSchedule(this.selectedScheduleId);
           this.editEmployeeModalRef.close();
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",

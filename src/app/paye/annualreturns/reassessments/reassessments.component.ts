@@ -214,7 +214,7 @@ export class ReassessmentsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -226,12 +226,12 @@ export class ReassessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -245,7 +245,7 @@ export class ReassessmentsComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -257,7 +257,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   getReassessments(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessments-list";
 
    // let corporateId = localStorage.getItem('corporate_id');
@@ -277,7 +277,7 @@ export class ReassessmentsComponent implements OnInit {
         console.log("reassessmentsData: ", data);
         this.reassessmentsData = data.data.reverse();
 
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -331,7 +331,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   getSingleReassessment(reassessmentId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL +
       "reassessments/" +
@@ -395,7 +395,7 @@ export class ReassessmentsComponent implements OnInit {
           myfile: ["", Validators.required],
         });
 
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -404,7 +404,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   getAssessmentPaymentItems() {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.paymentItemIDsArray = [];
     (<FormArray>this.paymentItemsForm.get("paymentItems")).clear();
     this.apiUrl = `${environment.AUTHAPIURL}get_assessment/lists/for_payment`;
@@ -430,7 +430,7 @@ export class ReassessmentsComponent implements OnInit {
         (<FormArray>this.paymentItemsForm.get("paymentItems")).push(this.addPaymentItemFormGroup(paymentItem));
       });
 
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   } 
 
@@ -458,7 +458,7 @@ export class ReassessmentsComponent implements OnInit {
     this.submitted = true;
 
   
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs";
 
     const requestObj = {
@@ -475,7 +475,7 @@ export class ReassessmentsComponent implements OnInit {
     // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
     //     console.log("sendDataToCBS: ", data);
     //     if (data.status == true) {
-    //       this.spinnerService.hide();
+    //       this.ngxService.stop();
     //       let requestId = data.response.request_id;
 
     //       const requestObj = {
@@ -486,7 +486,7 @@ export class ReassessmentsComponent implements OnInit {
     //       this.payForAssessment(requestObj);
     //     }
     //     else {
-    //       this.spinnerService.hide();
+    //       this.ngxService.stop();
     //       Swal.fire({
     //         icon: "error",
     //         title: "Oops..",
@@ -578,7 +578,7 @@ export class ReassessmentsComponent implements OnInit {
       },
     };
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     this.httpClient
       .post<any>(this.apiUrl, formData, config)
@@ -608,7 +608,7 @@ export class ReassessmentsComponent implements OnInit {
           this.postGenerateAppeal(obj);
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -622,7 +622,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   postGenerateAppeal(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
 
     const reqHeader = new HttpHeaders({
@@ -654,11 +654,11 @@ export class ReassessmentsComponent implements OnInit {
           });
 
           this.getReassessments(this.businessId);
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -675,7 +675,7 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   payForAssessment(requestObj: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = `${environment.AUTHAPIURL}payments`;
 
     const reqHeader = new HttpHeaders({
@@ -686,7 +686,7 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
         console.log("makePaymentForAssessment: ", data);
         if (data.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "success",
             title: "Success",
@@ -699,7 +699,7 @@ export class ReassessmentsComponent implements OnInit {
           this.goToLink(this.navigationUrl);
         }
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops..",
@@ -718,7 +718,7 @@ export class ReassessmentsComponent implements OnInit {
     window.open(url, "_blank");
   }
   processInvoice() {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "invoices";
 
     const obj = {
@@ -735,7 +735,7 @@ export class ReassessmentsComponent implements OnInit {
         console.log("invoice: ", data);
 
         if (data.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "success",
             title: "Success",
@@ -753,7 +753,7 @@ export class ReassessmentsComponent implements OnInit {
           this.invoiceNumber = data.response.invoice_number;
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops..",

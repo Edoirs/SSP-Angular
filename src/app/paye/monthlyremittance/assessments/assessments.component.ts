@@ -187,7 +187,7 @@ export class AssessmentsComponent implements OnInit {
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -201,13 +201,13 @@ export class AssessmentsComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -219,12 +219,12 @@ export class AssessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getAssessments(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "assessments-list";
 
     const reqHeader = new HttpHeaders({
@@ -244,7 +244,7 @@ export class AssessmentsComponent implements OnInit {
       .subscribe((data) => {
         console.log("assessmentsData: ", data);
         this.assessmentsData = data.data == null ? [] : data.data;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -307,7 +307,7 @@ export class AssessmentsComponent implements OnInit {
   }
 
   payForAssessment(requestObj: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = `${environment.AUTHAPIURL}payments`;
 
     const reqHeader = new HttpHeaders({
@@ -318,7 +318,7 @@ export class AssessmentsComponent implements OnInit {
     this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
         console.log("makePaymentForAssessment: ", data);
         if (data.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "success",
             title: "Success",
@@ -331,7 +331,7 @@ export class AssessmentsComponent implements OnInit {
           this.goToLink(this.navigationUrl);
         }
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops..",
@@ -345,7 +345,7 @@ export class AssessmentsComponent implements OnInit {
       });
   }
   getAssessmentPaymentItems() {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.paymentItemIDsArray = [];
     (<FormArray>this.paymentItemsForm.get("paymentItems")).clear();
     this.apiUrl = `${environment.AUTHAPIURL}get_assessment/lists/for_payment`;
@@ -371,7 +371,7 @@ export class AssessmentsComponent implements OnInit {
         (<FormArray>this.paymentItemsForm.get("paymentItems")).push(this.addPaymentItemFormGroup(paymentItem));
       });
 
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   } 
 
@@ -398,7 +398,7 @@ export class AssessmentsComponent implements OnInit {
   sendDataToCBS(objArray: any) {
     this.submitted = true;
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs";
 
     const requestObj = {
@@ -415,7 +415,7 @@ export class AssessmentsComponent implements OnInit {
     // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
     //     console.log("sendDataToCBS: ", data);
     //     if (data.status == true) {
-    //       this.spinnerService.hide();
+    //       this.ngxService.stop();
     //       let requestId = data.response.request_id;
 
     //       const requestObj = {
@@ -426,7 +426,7 @@ export class AssessmentsComponent implements OnInit {
     //       this.payForAssessment(requestObj);
     //     }
     //     else {
-    //       this.spinnerService.hide();
+    //       this.ngxService.stop();
     //       Swal.fire({
     //         icon: "error",
     //         title: "Oops..",
@@ -498,7 +498,7 @@ export class AssessmentsComponent implements OnInit {
     window.open(url, "_blank");
   }
   processInvoice() {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "invoices";
 
     const obj = {
@@ -515,7 +515,7 @@ export class AssessmentsComponent implements OnInit {
         console.log("invoice: ", data);
         this.invoiceNumber = data.response?.invoice_number;
         if (data.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "success",
             title: "Success",
@@ -534,7 +534,7 @@ export class AssessmentsComponent implements OnInit {
           this.getBusinesses();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops..",
@@ -548,7 +548,7 @@ export class AssessmentsComponent implements OnInit {
   }
 
   getSingleAssessment(assessmentId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "assessments/" + assessmentId;
 
     const obj = {
@@ -596,7 +596,7 @@ export class AssessmentsComponent implements OnInit {
           this.objectDisable = false;
           this.apiInvoice = data.response.invoice.invoice_preview_url;
         }
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 

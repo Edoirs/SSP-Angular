@@ -124,13 +124,13 @@ export class DeletedemployeesComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
         this.apidata = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -160,12 +160,12 @@ export class DeletedemployeesComponent implements OnInit {
       confirmButtonText: "Yes, restore it!",
     }).then((result) => {
       if (result.value) {
-        // this.spinnerService.show();
+        // this.ngxService.start();
         this.httpClient
           .post<any>(this.apiUrl, obj, { headers: reqHeader })
           .subscribe((data) => {
             if (data.status == true) {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "success",
                 title: "Restored",
@@ -175,10 +175,10 @@ export class DeletedemployeesComponent implements OnInit {
                 timerProgressBar: true,
               });
               this.getDeletedEmployees();
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
             } 
             else {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "error",
                 title: "An error occurred",

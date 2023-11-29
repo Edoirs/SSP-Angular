@@ -121,13 +121,13 @@ export class DisplayuserComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, {}, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
         this.apidata = data.data;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
@@ -150,14 +150,14 @@ export class DisplayuserComponent implements OnInit {
     };
 
     this.apiUrl = environment.AUTHAPIURL + "users/update";
-    // this.spinnerService.show(); // show the spinner
+    // this.ngxService.start(); // show the spinner
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
         this.apidata = data.response;
         this.getUserData();
-        // this.spinnerService.hide(); // hide the spinner if success
+        // this.ngxService.stop(); // hide the spinner if success
       });
   }
 
@@ -187,7 +187,7 @@ export class DisplayuserComponent implements OnInit {
           .delete<any>(this.apiUrl, { headers: reqHeader })
           .subscribe((data) => {
             if (data.status == true) {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "success",
                 title: "Deleted",
@@ -199,7 +199,7 @@ export class DisplayuserComponent implements OnInit {
               this.getUserData();
             } 
             else {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "error",
                 title: "An error occurred",

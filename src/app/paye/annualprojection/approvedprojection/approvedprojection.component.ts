@@ -184,13 +184,13 @@ export class ApprovedprojectionComponent implements OnInit {
       corporate_id: this.corporateId,
       // business_id: this.businessId,
     };
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
         this.apidata = data.status == false ? [] : data.response;
       });
   }
@@ -208,12 +208,12 @@ export class ApprovedprojectionComponent implements OnInit {
       corporate_id: this.corporateId,
       business_id: businessId,
     };
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
         this.apisingledata = data.response;
         this.companyName = this.apisingledata[0].company_name;
         this.projectionYear = this.apisingledata[0].projection_year;
@@ -258,7 +258,7 @@ export class ApprovedprojectionComponent implements OnInit {
   }
 
   getSingleProjection(projectionId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "projections/approved/" + projectionId;
 
@@ -274,7 +274,7 @@ export class ApprovedprojectionComponent implements OnInit {
         this.projectionData = data.response;
         console.log(this.projectionData);
         this.selectedProjection = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 

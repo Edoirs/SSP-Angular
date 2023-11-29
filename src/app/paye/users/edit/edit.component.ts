@@ -90,12 +90,12 @@ export class EditComponent implements OnInit {
 
   getApplication() {
     this.apiUrl = environment.AUTHAPIURL + 'applications/1/roles';
-    // this.spinnerService.show();
+    // this.ngxService.start();
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
       console.log(res.response);
       this.applications = res.response;
       this.roles = res.response;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
       const arr = [];
       for (const obj of this.applications) {
         // console.log(obj);
@@ -154,7 +154,7 @@ export class EditComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true
           });
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.router.navigate(['/displayuser']);
         }
         else {
@@ -178,11 +178,11 @@ export class EditComponent implements OnInit {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
       console.log(data);
       this.userRecord = data.response;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 }

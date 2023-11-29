@@ -110,7 +110,7 @@ export class EmployeescheduleComponent implements OnInit {
 
     console.log("showEditEmployee: ", this.showEditEmployee);
     console.log("token: ", localStorage.getItem("access_token"));
-    // this.spinnerService.hide();
+    // this.ngxService.stop();
 
     this.modalOptions = {
       backdrop: true,
@@ -186,7 +186,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   initialiseAddForm() {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.addEmployeeForm = this.formBuilder.group({
       emailAddress: [
         "",
@@ -336,7 +336,7 @@ export class EmployeescheduleComponent implements OnInit {
       
     });
 
-    // this.spinnerService.hide();
+    // this.ngxService.stop();
   }
 
   initialiseEditForms() {
@@ -681,7 +681,7 @@ export class EmployeescheduleComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("zipcodes: ", data);
-      this.zipCodes = data.response;
+      this.zipCodes = data.data;
     });
   }
 
@@ -689,13 +689,13 @@ export class EmployeescheduleComponent implements OnInit {
     this.apiUrl = `${environment.AUTHAPIURL}LocalGovernmentArea/getall`;
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      this.stateLocalGovts = data.response;
+      this.stateLocalGovts = data.data;
       console.log("stateLocalGovts: ", data);
     });
   }
 
   getSingleEmployee(employeeId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Employee/GetbyId/" + employeeId;
 
     const reqHeader = new HttpHeaders({
@@ -709,13 +709,13 @@ export class EmployeescheduleComponent implements OnInit {
         console.log("singleEmployeeData: ", data);
         this.loadSelectedEmployeeData(data.response);
         this.selectedEmployee = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
   getBusinesses() {
     const obj = {};
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/getall";
 
     const reqHeader = new HttpHeaders({
@@ -727,12 +727,12 @@ export class EmployeescheduleComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -744,12 +744,12 @@ export class EmployeescheduleComponent implements OnInit {
         console.log("singleBusinessData: ", data);
 
         this.selectedBusiness = data.response;
-        // this.spinnerService.hide();
+        // this.ngxService.stop();
       });
   }
 
   postUpdateEmployee(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "employees/update";
     console.log("Okay");
     const reqHeader = new HttpHeaders({
@@ -780,13 +780,13 @@ export class EmployeescheduleComponent implements OnInit {
             timerProgressBar: true,
           });
           document.getElementById("closeUpdateModal")!.click();
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
           this.getEmployees(this.businessId);
           this.reload();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -802,7 +802,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   getEmployees(businessId: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Employee/getall";
 
     const reqHeader = new HttpHeaders({
@@ -823,7 +823,7 @@ export class EmployeescheduleComponent implements OnInit {
       if (data.data.length > 0) {
         this.apidataEmpty = true;
       }
-      // this.spinnerService.hide();
+      // this.ngxService.stop();
     });
   }
 
@@ -855,7 +855,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   postForwardSchedule(jsonData: any) {
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "schedules/forward";
 
     const reqHeader = new HttpHeaders({
@@ -884,12 +884,12 @@ export class EmployeescheduleComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.modalService.dismissAll();
           this.getEmployees(this.businessId);
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -931,12 +931,12 @@ export class EmployeescheduleComponent implements OnInit {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        // this.spinnerService.show();
+        // this.ngxService.start();
         this.httpClient
           .post<any>(this.apiUrl, obj, { headers: reqHeader })
           .subscribe((data) => {
             if (data.status == true) {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "success",
                 title: "Deleted",
@@ -946,11 +946,11 @@ export class EmployeescheduleComponent implements OnInit {
                 timerProgressBar: true,
               });
               this.getEmployees(this.businessId);
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               this.modalService.dismissAll();
             } 
             else {
-              // this.spinnerService.hide();
+              // this.ngxService.stop();
               Swal.fire({
                 icon: "error",
                 title: "An error occurred",
@@ -1061,12 +1061,12 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.spinnerService.show();
+    // this.ngxService.start();
     this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
         console.log("employeeResponseData: ", data);
 
         if (data.status === true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           // Rest form fithout errors
           !this.isEdit && this.addEmployeeForm.reset();
           // this.addEmployeeForm.get("nationality").setValue("Nigerian");
@@ -1089,7 +1089,7 @@ export class EmployeescheduleComponent implements OnInit {
           this.reload();
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -1107,7 +1107,7 @@ export class EmployeescheduleComponent implements OnInit {
  
   postCreateEmployee(jsonData: any) {
     this.apiUrl = environment.AUTHAPIURL + "employees";
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -1120,7 +1120,7 @@ export class EmployeescheduleComponent implements OnInit {
         console.log("employeeResponseData: ", data);
 
         if (data.status === true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           // Rest form fithout errors
           this.addEmployeeForm.reset();
           this.addEmployeeForm.get("nationality")?.setValue("Nigerian");
@@ -1141,7 +1141,7 @@ export class EmployeescheduleComponent implements OnInit {
           this.router.navigate(["/employeeschedule"]);
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -1224,7 +1224,7 @@ export class EmployeescheduleComponent implements OnInit {
     formData.append("employees", this.uploadForm.get("myfile")!.value);
     formData.append("business_id", this.businessId);
     this.apiUrl = environment.AUTHAPIURL;
-    // this.spinnerService.show();
+    // this.ngxService.start();
 
     this.httpClient
       .post<any>(this.apiUrl + "employees/import", formData, config)
@@ -1236,7 +1236,7 @@ export class EmployeescheduleComponent implements OnInit {
           this.uploadForm.get(key)?.setErrors(null);
         });
         if (res.status == true) {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
 
           this.uploadForm.reset();
           Object.keys(this.uploadForm.controls).forEach((key) => {
@@ -1265,7 +1265,7 @@ export class EmployeescheduleComponent implements OnInit {
           }
         } 
         else {
-          // this.spinnerService.hide();
+          // this.ngxService.stop();
           this.uploadForm.reset();
           Object.keys(this.uploadForm.controls).forEach((key) => {
             this.uploadForm.get(key)?.setErrors(null);
