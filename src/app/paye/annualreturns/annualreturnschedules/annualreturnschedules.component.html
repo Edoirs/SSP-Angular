@@ -51,7 +51,7 @@
 
                   <td title="View">
                     <button
-                      class="btn btn-sm btn-outline-primary"
+                      class="btn btn-sm btn-outline-success"
                       (click)="
                         viewBusinessAnnualReturn(annualReturnModal, mydata)
                       "
@@ -142,7 +142,7 @@
 
               <td style="width: 10%" title="View">
                 <button
-                  class="btn btn-sm btn-outline-primary"
+                  class="btn btn-sm btn-outline-success"
                   (click)="viewSchedule(mymodal, mydata)"
                 >
                   <i class="nav-icon fas fa-eye"></i>
@@ -279,7 +279,7 @@
               <td>{{ mydata.months }}</td>
               <td *ngIf="showEditEmployee">
                 <button
-                  class="btn btn-sm btn-outline-primary"
+                  class="btn btn-sm btn-outline-success"
                   [disabled]="assessmentGenerated"
                   (click)="editEmployee(annualreturnmodal, mydata)"
                 >

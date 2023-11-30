@@ -51,7 +51,7 @@
   
                     <td title="View">
                       <button
-                        class="btn btn-sm btn-outline-primary"
+                        class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessEmployees(employees, mydata)"
                       >
                         <i class="nav-icon fas fa-eye"></i>
@@ -82,8 +82,8 @@
         <div>
           <button
             type="submit"
-            class="btn btn-primary role float-right"
-            style="font-size: 12px; padding: 5px; margin-top: -3px"
+            class="btn btn-outline-success text-white role float-right mx-2"
+            style="font-size: 12px; padding: 5px; margin-top: -3px;"
             (click)="viewAddEmployee(addEmployee); isEdit = false; showSaveEmployee = true"
           >
             <i class="fas fa-plus-square"></i> Add Employee
@@ -91,7 +91,7 @@
   
           <button
             type="submit"
-            class="btn btn-primary role float-right"
+            class="btn btn-outline-success text-white role float-right mx-2"
             style="font-size: 12px; padding: 5px; margin-top: -3px"
             (click)="viewUploadEmployee(uploadModal)"
           >
@@ -150,13 +150,13 @@
                 <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
                 <td title="View">
                   <!-- <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     (click)="viewEmployee(updateEmployee, mydata)"
                   >
                     <i class="nav-icon fas fa-eye"></i>
                   </button> -->
                   <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     (click)="viewEmployee(addEmployee, mydata)"
                   >
                     <i class="nav-icon fas fa-eye"></i>
@@ -164,13 +164,13 @@
                 </td>
                 <td title="Edit" *ngIf="showEditEmployee">
                   <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     (click)="editEmployee(addEmployee, mydata); isEdit = true; showSaveEmployee = true;"
                   >
                     <i class="nav-icon fas fa-edit"></i>
                   </button>
                   <!-- <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     (click)="editEmployee(updateEmployee, mydata)"
                   >
                     <i class="nav-icon fas fa-edit"></i>

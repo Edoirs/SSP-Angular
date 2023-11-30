@@ -1,8 +1,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="parent">
   <div class="content-wrapper" id="smp-dashboard">
-    <!-- Content Header (Page header) 
-  <div class="content-header pt-0 mt-0">
+  <!-- <div class="content-header pt-0 mt-0">
      <div class="container-fluid">
      <div class="row mb-2">
          <div class="col-sm-6">
@@ -15,7 +14,6 @@
           </ol>
         </div> 
       </div>
-      /.row 
     </div>
   </div> -->
 
@@ -113,193 +111,7 @@
             </div>
           </div>
 
-          <!-- <div class="row" id="graph-stats">
-            <div class="col-sm-6">
-              <div class="graph-card">
-                <div class="d-flex">
-                  <span class="stats-title1">Total Tax Paid from Inception</span>                  
-                </div>
-                <div class="stats-graph">
-                  <canvas baseChart [data]="barChartData"> </canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="graph-card">
-                <div class="d-flex">
-                  <span class="stats-title">invoice Information</span>
-                  <div class="chart-key">
-                    <span class="key-1">
-                  <i class="fa fa-circle" aria-hidden="true"></i>
-                  Paid Invoice
-                </span>
-
-                <span class="key-2">
-                  <i class="fa fa-circle" aria-hidden="true"></i>
-                  Unpaid Invoice
-                </span>
-                  </div>
-                </div>
-                <div class="stats-graph">
-                  <canvas baseChart [data]="salesData" [type]="'line'" [options]="chartOptions">
-                  </canvas>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- <div id="dtable">
-            <div class="card-body">
-              <div class="col-12 mt-2 mb-4"></div>
-              <div class="col-auto mbm-30">
-                <div class="row">
-                  <div id="show-entries">
-                  Show &nbsp;
-                  <select>
-                    <option>10</option>
-                    <option>30</option>
-                    <option>50</option>
-                    <option>100</option>
-                    <option>500</option>
-                    <option>1000</option>
-                  </select>
-                  &nbsp; entries
-                </div>
-                </div>
-              </div>
-
-              <div class="table-responsive">
-                <table *ngIf="!latestCustomersData" class="table table-bordered table-sm row-border hover"
-                  id="example2">
-                  <thead style="white-space: nowrap">
-                    <tr>
-                      <th>#</th>
-                      <th>Consumer Ref.</th>
-                      <th>Registered Name</th>
-                      <th>Consumer Category</th>
-                      <th>Registration Date</th>
-                      <th>Tariff</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody style="white-space: nowrap">
-                    <tr>
-                      <td>1</td>
-                      <td>CTI96447</td>
-                      <td>Uzodimma Akeem</td>
-                      <td>Corporate</td>
-                      <td>12-08-2019</td>
-                      <td>Metered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>CTI23675</td>
-                      <td>Matthew Balms</td>
-                      <td>Individual</td>
-                      <td>12-08-2012</td>
-                      <td>Unmetered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>CTI41486</td>
-                      <td>Hapreet Prince</td>
-                      <td>Individual</td>
-                      <td>12-08-2019</td>
-                      <td>Metered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>CTI25169</td>
-                      <td>Andrew Philip</td>
-                      <td>Corporate</td>
-                      <td>10-08-2019</td>
-                      <td>Metered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>CTI78460</td>
-                      <td>Bridget Kate</td>
-                      <td>Individual</td>
-                      <td>09-05-2018</td>
-                      <td>Unmetered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>CTI07076</td>
-                      <td>Uzodimma Akeem</td>
-                      <td>Corporate</td>
-                      <td>12-08-2022</td>
-                      <td>Metered</td>
-                      <td style="width: 10%">
-                        <button class="btn btn-sm btn-outline-success">
-                          <i class="nav-icon fas fa-eye"></i> View
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <table class="table table-bordered table-sm row-border hover   " id="example2"
-                  *ngIf="latestCustomersData" datatable [dtOptions]="dtOptions">
-                  <thead style="white-space: nowrap;">
-                    <tr>
-                      <th>S/N</th>
-                      <th>Consumer Id</th>
-                      <th>Consumer Name</th>
-                      <th>Category</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-
-                    </tr>
-                  </thead>
-                  <tbody style="white-space: nowrap;">
-                    <tr *ngFor="let mydata of latestCustomersData; let i = index">
-                      <td>{{ i + 1 }}</td>
-                      <td>{{ mydata.reference}} </td>
-                      <td>{{ mydata.first_name | titlecase }} {{ mydata.last_name | titlecase }} </td>
-                      <td>{{ mydata.consumer_sub_category_name}}</td>
-                      <td>{{ mydata.email}} </td>
-                      <td>{{ mydata.phone}} </td>
-
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="row m-0 mt-3">
-                  <div class="col-sm-6">
-                    <div id="page_info" class="record-show-text-bottom"></div>
-                  </div>
-                </div>
-                <div>
-                  <pagination-controls class="float-right"> </pagination-controls>
-                </div>
-              </div>
-            </div>
-          </div> -->
+          
         </div>
       </div>
       <div class="content">
@@ -309,7 +121,7 @@
               <div class="card">
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Total Tax Paid from Inception</h3>
+                    <h3 class="card-title text-white">Total Tax Paid from Inception</h3>
                     <a href="javascript:void(0);">View Report</a>
                   </div>
                 </div>
@@ -349,7 +161,7 @@
               <div class="card">
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Invoice Reports</h3>
+                    <h3 class="card-title text-white">Invoice Reports</h3>
                     <a href="javascript:void(0);">View Report</a>
                   </div>
                 </div>
@@ -382,13 +194,6 @@
                       <option value="2">Feb</option>
                       <option value="3">Mar</option>
                     </select>
-                    <!-- <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This year
-                    </span>
-
-                    <span>
-                      <i class="fas fa-square text-gray"></i> Last year
-                    </span> -->
                   </div>
                 </div>
               </div>

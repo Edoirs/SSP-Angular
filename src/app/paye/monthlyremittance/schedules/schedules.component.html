@@ -49,7 +49,7 @@
   
                     <td title="View">
                       <button
-                        class="btn btn-sm btn-outline-primary"
+                        class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessSchedules(schedulesModal, mydata)"
                       >
                         <i class="nav-icon fas fa-eye"></i>
@@ -142,7 +142,7 @@
                 <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
                 <td title="View">
                   <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     (click)="viewSchedule(mymodal, mydata)"
                   >
                     <i class="nav-icon fas fa-eye"></i>
@@ -281,7 +281,7 @@
                 <td>{{ mydata.cra | number }}</td>
                 <td *ngIf="showEditEmployee">
                   <button
-                    class="btn btn-sm btn-outline-primary"
+                    class="btn btn-sm btn-outline-success"
                     [disabled]="assessmentGenerated"
                     (click)="editEmployee(addemployeemodal, mydata)"
                   >
