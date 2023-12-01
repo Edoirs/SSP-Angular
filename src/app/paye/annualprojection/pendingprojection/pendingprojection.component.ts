@@ -251,7 +251,7 @@ export class PendingprojectionComponent implements OnInit {
               (x: any) => x.forwarded_to != 0
             );
           } else {
-            this.apisingledata = data.response;
+            this.apisingledata = data.data;
           }
         } else {
           this.apisingledata = [];

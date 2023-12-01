@@ -112,7 +112,7 @@ export class DashboardComponent {
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
-        this.dashboardData = data.response;
+        this.dashboardData = data.data;
         this.latestCustomersData = this.dashboardData.latest_consumers;
         this.chart = data.response.chart.consumers_by_year;
       });

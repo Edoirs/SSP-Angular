@@ -214,7 +214,7 @@ export class ApprovedprojectionComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         // this.ngxService.stop();
-        this.apisingledata = data.response;
+        this.apisingledata = data.data;
         this.companyName = this.apisingledata[0].company_name;
         this.projectionYear = this.apisingledata[0].projection_year;
       });
@@ -271,7 +271,7 @@ export class ApprovedprojectionComponent implements OnInit {
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
         console.log("singleProjectionData: ", data);
-        this.projectionData = data.response;
+        this.projectionData = data.data;
         console.log(this.projectionData);
         this.selectedProjection = data.response;
         // this.ngxService.stop();
