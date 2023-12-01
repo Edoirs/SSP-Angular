@@ -1,24 +1,15 @@
 <nav class="menu-items">
-    <ul
-      class="nav nav-pills nav-sidebar flex-column"
-      data-widget="treeview"
-      role="menu"
-      data-accordion="false"
-    >
+  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
     <li class="nav-item menu-open">
-      <a
-        [routerLink]="['/dashboard']"
-        [routerLinkActive]="['active']"
-        class="nav-link active"
-      >
+      <a [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>Dashboard</p>
       </a>
     </li>
 
     <li class="nav-item">
-      <a  class="nav-link">
+      <a class="nav-link">
         <i class="nav-icon fas fa-file-invoice"></i>
         <p>
           Monthly Remittance
@@ -26,38 +17,38 @@
         </p>
       </a>
 
-          <ul class="nav nav-treeview" style="display: none;">
+      <ul class="nav nav-treeview" style="display: none;">
 
-            <li class="nav-item">
-              <a [routerLink]="['/employeeschedule']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Employees</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/deletedemployees']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Deleted Employees</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/schedules']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Schedules</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/assessments']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Assessments</p>
-              </a>
-            </li>
+        <li class="nav-item">
+          <a [routerLink]="['/employeeschedule']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Employees</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/deletedemployees']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Deleted Employees</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/schedules']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Schedules</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/assessments']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Assessments</p>
+          </a>
+        </li>
 
-          </ul>
+      </ul>
 
     </li>
     <li class="nav-item">
-      <a  class="nav-link">
+      <a class="nav-link">
         <i class="nav-icon fa fa-exchange"></i>
         <p>
           Form H1 (Annual Return)
@@ -65,50 +56,50 @@
         </p>
       </a>
 
-          <ul class="nav nav-treeview" style="display: none;">
+      <ul class="nav nav-treeview" style="display: none;">
 
-            <li class="nav-item">
-              <a [routerLink]="['/annualreturnassessments']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Form H1 Filling</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/annualreturnemployeesupload']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Uploaded Form H1</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/annualreturnschedules']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Form h1 Schedules</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/annualreturns']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Filled Form H1</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/reassessments']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Reassessments</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/reassessmentappeals']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Objections</p>
-              </a>
-            </li>
+        <li class="nav-item">
+          <a [routerLink]="['/annualreturnassessments']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Form H1 Filling</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/annualreturnemployeesupload']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Uploaded Form H1</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/annualreturnschedules']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Form h1 Schedules</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/annualreturns']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Filled Form H1</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/reassessments']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Reassessments</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/reassessmentappeals']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Objections</p>
+          </a>
+        </li>
 
-          </ul>
+      </ul>
 
     </li>
     <li class="nav-item">
-      <a  class="nav-link">
+      <a class="nav-link">
         <i class="nav-icon fas fa-chart-bar"></i>
         <p>
           Form H3 (Projections)
@@ -116,32 +107,32 @@
         </p>
       </a>
 
-          <ul class="nav nav-treeview" style="display: none;">
+      <ul class="nav nav-treeview" style="display: none;">
 
-            <li class="nav-item">
-              <a [routerLink]="['/uploadprojection']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Upload Form H3</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/pendingprojection']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Pending Form H3</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/approvedprojection']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Filled Form</p>
-              </a>
-            </li>
-          </ul>
+        <li class="nav-item">
+          <a [routerLink]="['/uploadprojection']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Upload Form H3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/pendingprojection']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Pending Form H3</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/approvedprojection']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Filled Form</p>
+          </a>
+        </li>
+      </ul>
 
     </li>
 
     <li class="nav-item">
-      <a  class="nav-link">
+      <a class="nav-link">
         <i class="nav-icon fas fa-file-invoice"></i>
         <p>
           Reports
@@ -149,47 +140,25 @@
         </p>
       </a>
 
-          <ul class="nav nav-treeview" style="display: none;">
+      <ul class="nav nav-treeview" style="display: none;">
 
-            <li class="nav-item">
-              <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
-                <i class="fas fa-line-chart nav-icon"></i>
-                <p>Transaction History</p>
-              </a>
-            </li>
+        <li class="nav-item">
+          <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
+            <i class="fas fa-line-chart nav-icon"></i>
+            <p>Transaction History</p>
+          </a>
+        </li>
 
-          </ul>
+      </ul>
 
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/logout']" class="nav-link">
+        <i class=" nav-icon fa fa-sign-out"></i>
+        <p> Logout</p>
+      </a>
     </li>
 
 
-    <!-- <li class="nav-item">
-      <a class="nav-link">
-        <i class="fa fa-hospital-o"></i>
-        <p>
-          Health
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a [routerLink]="['/facility']" [routerLinkActive]="['active']" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Facility</p>
-          </a>
-        </li>
-      </ul>
-    </li> -->
-
-
-
-      <li class="nav-item">
-        <a [routerLink]="['/logout']" class="nav-link">
-          <p><i class="fa fa-power-off"></i> Logout</p>
-        </a>
-      </li>
-
-
-    </ul>
-  </nav>
-
+  </ul>
+</nav>

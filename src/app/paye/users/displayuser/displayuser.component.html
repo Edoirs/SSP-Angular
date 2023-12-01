@@ -72,7 +72,7 @@
                     </td>
 
                     <td *ngIf="managerRole" title="View">
-                      <button *ngIf="mydata.role_id !=5; else other_content_edit" [routerLink]="['/edit', mydata.id]" class="btn btn-outline-primary"  ><i class="nav-icon fas fa-edit"></i></button>
+                      <button *ngIf="mydata.role_id !=5; else other_content_edit" [routerLink]="['/edit', mydata.id]" class="btn btn-outline-success"  ><i class="nav-icon fas fa-edit"></i></button>
                       <ng-template #other_content_edit><button class="btn btn-outline-danger" disabled><i class="nav-icon fas fa-edit"></i></button></ng-template>
                     </td>
 

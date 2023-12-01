@@ -2993,7 +2993,8 @@ a.read_more.tp_one span {
   border-radius: none;
   padding: 0px;
   border: 0px;
-  background: transparent;
+  background-color: #00773B !important;
+  border-bottom: 1px solid #00773B !important;
 }
 
 .card {
