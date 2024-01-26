@@ -1,3 +1,4 @@
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -64,6 +65,7 @@ export class SchedulesComponent implements OnInit {
   selectedBusiness: any;
   businessId: any;
   truthy: boolean = true;
+  companyId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,9 +76,7 @@ export class SchedulesComponent implements OnInit {
     private sess: SessionService,
     private utilityService: UtilityService,
     private modalService: NgbModal,
-    // private component: DashboardComponent,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(): void {
@@ -85,17 +85,21 @@ export class SchedulesComponent implements OnInit {
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     this.initialiseForms();
-    this.getBusinesses();
     this.getZipcodes();
     this.getStateLocalGovts();
     console.log("token: ", localStorage.getItem("access_token"));
     var userRole = localStorage.getItem("role_id");
     this.corporateId = localStorage.getItem("corporate_id");
 
-    if (userRole == "5") {
-      this.showGenerateAssessment = true;
-      this.managerRole = true;
-    }
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    this.getBusinesses();
+
+    this.showGenerateAssessment = true;
+    // if (userRole == "5") {
+    //   this.showGenerateAssessment = true;
+    //   this.managerRole = true;
+    // }
 
     if (userRole == "6") {
       this.editorRole = true;
@@ -370,8 +374,7 @@ export class SchedulesComponent implements OnInit {
   loadSelectedScheduleData(selectedSchedule: any) {
     // this.scheduleEmployeesData = '';
     let status = selectedSchedule.status == 0 ? "In Active" : "Active";
-    let assessmentStatus =
-      selectedSchedule.assessment_status == 0 ? "Still Open" : "Case Closed";
+    let assessmentStatus = selectedSchedule.assessment_status == 0 ? "Still Open" : "Case Closed";
     let forwardedTo =
       selectedSchedule.forwarded_to == 0
         ? "Schedule Not forwarded"
@@ -394,18 +397,22 @@ export class SchedulesComponent implements OnInit {
     if (forwardedTo === "Schedule Forwarded to Manager") {
       this.forwardedTrue = true;
     }
+
     if (assessmentStatus === "Case Closed") {
       this.assessmentStatusTrue = true;
     }
+    else {
+      this.assessmentStatusTrue = false;
+    }
 
+    console.log("assessmentStatusTrue: ", this.assessmentStatusTrue);
     this.commentsData = this.selectedSchedule.comments;
-    this.scheduleEmployeesData =
-      this.selectedSchedule.schedule_records.reverse();
+    // this.scheduleEmployeesData = this.selectedSchedule.schedule_records.reverse();
   }
 
   getSchedules(businessId: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "schedules-list";
+    this.apiUrl = environment.AUTHAPIURL + "Schedule/getall";
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -414,18 +421,16 @@ export class SchedulesComponent implements OnInit {
 
     let corporateId = localStorage.getItem("corporate_id");
 
-    const obj = {
-      corporate_id: corporateId,
-      business_id: businessId,
-    };
+    // const obj = {
+    //   corporate_id: corporateId,
+    //   business_id: businessId,
+    // };
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("schedulesData: ", data);
-        this.schedulesData = data.response == null ? [] : data.data;
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("schedulesData: ", data);
+      this.schedulesData = data.data == null ? [] : data.data;
+      // this.ngxService.stop();
+    });
   }
 
   getZipcodes() {
@@ -450,33 +455,28 @@ export class SchedulesComponent implements OnInit {
     // this.ngxService.start();
     this.scheduleEmployeesData = "";
     this.commentsData = "";
-    this.apiUrl =
-      environment.AUTHAPIURL +
-      "schedules/" +
-      scheduleId +
-      "?corporate_id=" +
-      this.corporateId +
-      "&business_id=" +
-      this.businessId;
+    this.apiUrl = `${environment.AUTHAPIURL}Schedule/GetbyId/${scheduleId}`;
+    // this.apiUrl = environment.AUTHAPIURL + "schedules/" + scheduleId + "?corporate_id=" + this.corporateId +
+    //   "&business_id=" +
+    //   this.businessId;
 
     // const obj = {
     //   corporate_id: this.corporateId,
     //   business_id: this.businessId,
     // };
+
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleScheduleData: ", data);
-        this.selectedSchedule = data.response;
-        this.schedule = data.response.schedule;
-        this.loadSelectedScheduleData(this.schedule);
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("singleScheduleData: ", data);
+      this.selectedSchedule = data.data;
+      this.schedule = data.data.schedule;
+      this.loadSelectedScheduleData(this.schedule);
+      // this.ngxService.stop();
+    });
   }
 
   forwardSchedule(modal: any) {
@@ -717,8 +717,8 @@ export class SchedulesComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -729,7 +729,7 @@ export class SchedulesComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 

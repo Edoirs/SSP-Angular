@@ -1,3 +1,4 @@
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
@@ -69,6 +70,7 @@ export class EmployeescheduleComponent implements OnInit {
   isEdit: boolean = false;
   isDisabled: boolean = false;
   updateId: any;
+  companyId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,8 +82,7 @@ export class EmployeescheduleComponent implements OnInit {
     private sess: SessionService,
     private utilityService: UtilityService,
     private modalService: NgbModal,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(): void {
@@ -92,14 +93,17 @@ export class EmployeescheduleComponent implements OnInit {
     this.initialiseEditForms();
     // this.getEmployees();
     this.getZipcodes();
-    this.getBusinesses();
     this.getStateLocalGovts();
     this.userRole = localStorage.getItem("role_id");
     console.log("userRole: ", this.userRole);
 
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    this.getBusinesses();
+
     if (this.userRole == 6) {
       this.editorRole = true;
-      this.showCreateSchedule = true;
+      // this.showCreateSchedule = true;
       this.showEditEmployee = true;
       this.showDeleteEmployee = true;
       this.showSaveEmployee = true;
@@ -108,6 +112,7 @@ export class EmployeescheduleComponent implements OnInit {
       this.disableEmployeeControl = true;
     }
 
+    console.log("showEditEmployee: ", this.showEditEmployee);
     console.log("showEditEmployee: ", this.showEditEmployee);
     console.log("token: ", localStorage.getItem("access_token"));
     // this.ngxService.stop();
@@ -509,16 +514,16 @@ export class EmployeescheduleComponent implements OnInit {
       tax_year: formAllData.taxYear,
       tax_month: formAllData.taxMonthId,
       zip_code: formAllData.zipCode,
-      cra: formAllData.CRA,
+      // cra: formAllData.CRA,
       pension: formAllData.pension,
-      gross_income: formAllData.grossIncome,
+      gross_income: formAllData.grossIncome.toString(),
       phone: formAllData.phoneNumber,
       start_month: formAllData.startMonthId,
       home_address: formAllData.contactAddress,
-      corporate_id: corporateId,
-      business_id: this.businessId,
+      corporate_id: corporateId == null ? "" : corporateId,
+      business_id: this.businessId.toString(),
       life_assurance: formAllData.lifeAssurance,
-      total_income: formAllData.totalIncome,
+      total_income: formAllData.totalIncome.toString(),
       taxpayer_id: formAllData.NSIRSTaxPayerID,
       lga_code: formAllData.localGovernmentId,
       nin: formAllData.nin,
@@ -541,7 +546,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   viewEmployee(modal: any, selectedEmployee: any) {
-    // console.log("selectedEmployee: ", selectedEmployee);
+    console.log("selectedEmployee: ", selectedEmployee);
     this.submitted = false;
     this.showSaveEmployee = false;
     this.initialiseAddForm();
@@ -695,7 +700,7 @@ export class EmployeescheduleComponent implements OnInit {
   }
 
   getSingleEmployee(employeeId: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Employee/GetbyId/" + employeeId;
 
     const reqHeader = new HttpHeaders({
@@ -703,20 +708,18 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
         console.log("singleEmployeeData: ", data);
-        this.loadSelectedEmployeeData(data.response);
-        this.selectedEmployee = data.response;
-        // this.ngxService.stop();
+        this.loadSelectedEmployeeData(data.data);
+        this.selectedEmployee = data.data;
+        this.ngxService.stop();
       });
   }
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -727,7 +730,7 @@ export class EmployeescheduleComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 
@@ -863,8 +866,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
         console.log("scheduleApiResponseData: ", data);
 
@@ -1019,17 +1021,17 @@ export class EmployeescheduleComponent implements OnInit {
       email: formAllData.emailAddress,
       nationality: formAllData.nationality,
       zip_code: formAllData.zipCode,
-      cra: formAllData.CRA,
+      cra: formAllData.CRA.toString(),
       taxpayer_id: formAllData.existingTaxId,
       pension: formAllData.pension,
-      gross_income: formAllData.grossIncome,
+      gross_income: formAllData.grossIncome.toString(),
       phone: this.isEdit ? this.selectedEmployee.phone : formAllData.phoneNumber,
       start_month: formAllData.startMonthId,
-      corporate_id: corporateId,
+      corporate_id: corporateId == null ? "6" : corporateId,
       home_address: formAllData.contactAddress,
-      business_id: this.businessId,
+      business_id: this.businessId.toString(),
       life_assurance: formAllData.lifeAssurance,
-      total_income: formAllData.totalIncome,
+      total_income: formAllData.totalIncome.toString(),
       lga_code: formAllData.localGovernmentId,
       nin: this.isEdit ? this.selectedEmployee.nin : formAllData.nin,
       basic: formAllData.basicIncome,
@@ -1042,6 +1044,7 @@ export class EmployeescheduleComponent implements OnInit {
       id: "",
       tax_year: "",
       tax_month: "",
+      deleted_at: "0"
     };
 
     console.log("employeeFormData: ", obj);
@@ -1051,7 +1054,7 @@ export class EmployeescheduleComponent implements OnInit {
     if (this.isEdit) {
       obj["id"] = this.selectedEmployee.id;
       obj["tax_year"] = formAllData.taxYear;
-      obj["cra"] = formAllData.CRA;
+      // obj["cra"] = formAllData.CRA;
       obj["tax_month"] = formAllData.taxMonthId;
       this.apiUrl = environment.AUTHAPIURL + "employees/update";
     }
@@ -1061,12 +1064,12 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.ngxService.start();
+    this.ngxService.start();
     this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
         console.log("employeeResponseData: ", data);
 
         if (data.status === true) {
-          // this.ngxService.stop();
+          this.ngxService.stop();
           // Rest form fithout errors
           !this.isEdit && this.addEmployeeForm.reset();
           // this.addEmployeeForm.get("nationality").setValue("Nigerian");
@@ -1089,7 +1092,7 @@ export class EmployeescheduleComponent implements OnInit {
           this.reload();
         } 
         else {
-          // this.ngxService.stop();
+          this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",

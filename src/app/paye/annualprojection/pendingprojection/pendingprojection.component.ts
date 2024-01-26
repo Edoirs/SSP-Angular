@@ -14,6 +14,7 @@ import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -55,6 +56,19 @@ export class PendingprojectionComponent implements OnInit {
   businessesData: any;
   selectedBusiness: any;
   businessId: any;
+  companyId: any;
+  annualReturnsData: any;
+  editEmployeeModalRef: any;
+  RIN: any;
+  NIN: any;
+  JTBTIN: any;
+  homeAddress: any;
+  phoneNumber: any;
+  totalMonthsPaid: any;
+  CRA: any;
+  annualReturnForm: any;
+  disableEmployeeControl: any;
+  fileFormH3Form: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -66,7 +80,7 @@ export class PendingprojectionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sess: SessionService,
     // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit() {
@@ -74,7 +88,12 @@ export class PendingprojectionComponent implements OnInit {
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
-    this.getUnapprovedProjectionRecord();
+    this.initialiseForm();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    this.getBusinesses();
+    // this.getUnapprovedProjectionRecord();
 
     this.modalOptions = {
       backdrop: true,
@@ -153,8 +172,316 @@ export class PendingprojectionComponent implements OnInit {
     };
   }
 
+  initialiseForm() {
+    
+  }
+
+  getBusinesses() {
+    const obj = {};
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
+
+      this.businessesData = data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  viewBusinessProjection(modal: any, data: any) {
+    this.businessId = data.business_id;
+    // this.companyId = data.company_id;
+    this.getAnnualReturns(this.businessId, this.companyId);
+    this.showModal(modal);
+  }
+
+  getAnnualReturns(businessId: any, companyId: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("annualReturnsData: ", data);
+      this.annualReturnsData = data == null ? [] : data;
+      if (data?.length > 0) {
+        this.apidataEmpty = true;
+      }
+      this.ngxService.stop();
+    });
+  }
+
+  editAnnualReturn(modal: any, selectedAnnualReturn: any) {
+    console.log("selectedAnnualReturn: ", selectedAnnualReturn);
+    // this.selectedEmployeeId = selectedAnnualReturn.employee_id;
+    // this.selectedScheduleRecordId = selectedAnnualReturn.id;
+
+    this.RIN = selectedAnnualReturn.rin;
+    this.NIN = selectedAnnualReturn.nin;
+    this.JTBTIN = selectedAnnualReturn.jtbtin;
+    this.homeAddress = selectedAnnualReturn.homeaddress;
+    this.phoneNumber = selectedAnnualReturn.phonenumber;
+    this.totalMonthsPaid = selectedAnnualReturn.totalmonthspaid;
+    this.CRA = selectedAnnualReturn.consolidatedreliefallowancecra;
+
+    this.annualReturnForm = this.formBuilder.group({
+      taxPayerID: [selectedAnnualReturn.taxPayerId],
+
+      basicIncome: [
+        selectedAnnualReturn.basic,
+        [
+          Validators.required,
+          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
+        ],
+      ],
+      pension: [ selectedAnnualReturn.pension, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      NHF: [ selectedAnnualReturn.nhf, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      NHIS: [ selectedAnnualReturn.nhis, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      CRA: [ selectedAnnualReturn.cra, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
+      rent: [
+         selectedAnnualReturn.rent,
+        [
+          // Validators.required,
+          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
+        ],
+      ],
+      transport: [
+        selectedAnnualReturn.transport,
+        [
+          // Validators.required,
+          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
+        ],
+      ],
+      otherIncome: [
+        selectedAnnualReturn.otherIncome,
+        [
+          // Validators.required,
+          Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
+        ],
+      ],
+      lifeAssurance: [
+        selectedAnnualReturn.lifeassurance,
+        [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
+      ],
+
+      monthlyIncome: [
+        selectedAnnualReturn.totalmonthspaid,
+        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
+      ],
+      annualGrossIncome: [
+        selectedAnnualReturn.annual_gross_income,
+        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
+      ],
+      annualTaxPaid: [
+        selectedAnnualReturn.annualtaxpaid,
+        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
+      ],
+      months: [
+        selectedAnnualReturn.months,
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9\s]*$/),
+          Validators.maxLength(2),
+        ],
+      ],
+      firstName: [
+        selectedAnnualReturn.firstname,
+        [
+          Validators.required,
+          Validators.pattern("[a-zA-Z ]*"),
+          Validators.maxLength(30),
+        ],
+      ],
+      middleName: [
+        selectedAnnualReturn.othername,
+        [
+          // Validators.required,
+          Validators.pattern("[a-zA-Z ]*"),
+          Validators.maxLength(30),
+        ],
+      ],
+      surname: [
+        selectedAnnualReturn.surname,
+        [
+          Validators.required,
+          Validators.pattern("[a-zA-Z ]*"),
+          Validators.maxLength(30),
+        ],
+      ],
+      nationality: [selectedAnnualReturn.nationality, Validators.required],
+      designation: [selectedAnnualReturn.designation, Validators.required],
+    });
+
+    this.editEmployeeModalRef = this.modalService.open(modal, this.modalOptions);
+  }
+
+  onSubmitAnnualReturn(formAllData: any) {
+    this.submitted = true;
+
+    if (this.annualReturnForm.invalid) {
+      return;
+    }
+
+    const obj = {
+      taxPayerId: formAllData.taxPayerID,
+      basic: formAllData.basicIncome,
+      rent: formAllData.rent,
+      transport: formAllData.transport,
+      otherIncome: formAllData.otherIncome,
+      companyId: this.companyId,
+      businessId: this.businessId,
+      pension: formAllData.pension,
+      nhis: formAllData.NHIS,
+      nhf: formAllData.NHF,
+      lifeassurance: formAllData.lifeAssurance,
+      monthly_income: formAllData.monthlyIncome,
+      annual_gross_income: formAllData.annualGrossIncome,
+      // annual_tax_paid: formAllData.annualTaxPaid,
+      months: formAllData.months,
+      // schedule_record_id: this.selectedScheduleRecordId,
+
+      firstname: formAllData.firstName,
+      othername: formAllData.middleName,
+      surname: formAllData.surname,
+      nationality: formAllData.nationality,
+      designation: formAllData.designation,
+
+      annualtaxpaid: formAllData.annualTaxPaid,
+      rin: this.RIN,
+      jtbtin: this.JTBTIN,
+      nin: this.NIN,
+      homeaddress: this.homeAddress,
+      totalmonthspaid: this.totalMonthsPaid,
+      phonenumber: this.phoneNumber,
+      consolidatedreliefallowancecra: "0",
+      // consolidatedreliefallowancecra: this.CRA,
+    };
+
+    console.log("annualReturnFormData: ", obj);
+    this.postUpdateAnnualReturn(obj);
+  }
+
+  postUpdateAnnualReturn(jsonData: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/update-TaxpayerH1`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.put<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
+        console.log("annualReturnResponseData: ", data);
+        this.submitted = false;
+
+        if (data.status === true) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Annual Return has been updated successfully!",
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          this.getAnnualReturns(this.businessId, this.companyId);
+          this.editEmployeeModalRef.close();
+          this.ngxService.stop();
+        } 
+        else {
+          this.ngxService.stop();
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null ? data.response[0].message : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  deleteAnnualReturn(taxpayerId: number) {
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}/bytaxpayerId/${taxpayerId}`;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        this.httpClient.delete<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+            console.log(data);
+            if (data.status == true) {
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Employee Details Successfully Deleted",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              this.getAnnualReturns(this.businessId, this.companyId);
+            } 
+            else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+                showConfirmButton: true,
+                timer: 5000,
+              });
+            }
+          });
+      }
+    });
+  }
 
 
+
+  calculateGrossIncome(event: any) {
+    // // console.log("test: ", this.editEmployeeForm.get('lifeAssurance').value);
+    // if (this.annualReturnForm.valid) {
+    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
+    //     this.annualReturnForm
+    //   );
+    // } else {
+    //   this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
+    //     this.addEmployeeForm
+    //   );
+    // }
+  }
+  calculateTotalIncome(event: any) {
+
+  //   if (this.annualReturnForm.valid) {
+  //     this.utilityService.calculateTotalIncome(
+  //       this.annualReturnForm
+  //     );
+  //   } else {
+  //     this.utilityService.calculateTotalIncome(
+  //       this.addEmployeeForm
+  //     );
+  //   }
+  }
+  
   getUnapprovedProjectionList(year: any, annualPID: any) {
     this.forwardProjectionForm = this.formBuilder.group({
       year: [this.selectedProjection.projection_year, Validators.required],
@@ -416,6 +743,7 @@ export class PendingprojectionComponent implements OnInit {
 
   postApproveProjection() {
     this.apiUrl = environment.AUTHAPIURL + "projections/approve";
+
     const obj = {
       projection_year: this.selectedProjection.projection_year,
       business_id: this.businessId,
@@ -427,11 +755,8 @@ export class PendingprojectionComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
         // console.log("ApiResponseData: ", data);
-
         if (data.status === true) {
           Swal.fire({
             icon: "success",
@@ -443,7 +768,8 @@ export class PendingprojectionComponent implements OnInit {
 
           this.modalService.dismissAll();
           this.getUnapprovedProjectionRecord();
-        } else {
+        } 
+        else {
           Swal.fire({
             icon: "error",
             title: "Oops...",

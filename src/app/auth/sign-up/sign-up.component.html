@@ -37,7 +37,7 @@
                   <div class="login__field input-group">
                     <i class="login__icon fa fa-hashtag"></i>
                     <input type="text" id="RIN" name="RIN" placeholder="Enter RIN" class="login__input border-end-0"
-                      formControlName="RIN"
+                      formControlName="RIN" (keyup)="getCompanyDetails($event)"
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; createUserForm.controls['RIN'].errors }" />
                     <div class="input-group-append">
                       <div class="input-group-text border border-0 bg-transparent">
@@ -95,7 +95,7 @@
                     <div *ngIf="submitted &amp;&amp; createUserForm.controls['address'].errors"
                       class="form-text text-danger">
                       <div *ngIf="createUserForm.controls['address'].errors['required']">
-                        Email is required
+                        Address is required
                       </div>
                       <!-- <div *ngIf="createUserForm.controls['address'].errors['pattern']">
                           Please enter a valid email

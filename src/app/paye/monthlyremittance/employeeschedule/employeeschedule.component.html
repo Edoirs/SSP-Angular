@@ -30,8 +30,8 @@
                     <th>Subsector</th>
                     <th>Address</th>
                     <th>LGA</th>
-                    <th>Employees Count</th>
-                    <th>Taxpayer Role</th>
+                    <!-- <th>Employees Count</th>
+                    <th>Taxpayer Role</th> -->
                     <th>View</th>
                   </tr>
                 </thead>
@@ -40,15 +40,14 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
+                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
+                    <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
+                    <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
                     <td>
                       {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
                     </td>
-                    <td>{{ mydata.employees_count }}</td>
-                    <td>{{ mydata.taxpayer_role }}</td>
-  
+                    <!-- <td>{{ mydata.employees_count }}</td>
+                    <td>{{ mydata.taxpayer_role }}</td> --> 
                     <td title="View">
                       <button
                         class="btn btn-sm btn-outline-success"
@@ -75,10 +74,8 @@
   </div>
   
   <ng-template #employees let-modal>
-    <div class="card card-secondary">
-      <div class="card-header custome">
-        <h3 class="card-title">Monthly Remittance Employees</h3>
-  
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Monthly Remittance Employees</h4>
         <div>
           <button
             type="submit"
@@ -92,122 +89,118 @@
           <button
             type="submit"
             class="btn btn-outline-success text-white role float-right mx-2"
-            style="font-size: 12px; padding: 5px; margin-top: -3px"
+            style="font-size: 12px; padding: 5px; margin-top: -3px;"
             (click)="viewUploadEmployee(uploadModal)"
           >
             <i class="fas fa-file-upload"></i> Bulk Upload
           </button>
         </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="container" *ngIf="showListOfEmployees">
+        <table
+          class="table table-bordered table-condensed"
+          *ngIf="employeesData"
+          datatable
+          [dtOptions]="dtOptions"
+          width="100%">
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th>Taxpayer ID</th>
+              <th>Full Name</th>
+              <!-- <th>Designation</th> -->
+              <!-- <th>Phone</th> -->
+              <th>Total Income (₦)</th>
+              <th>Pension (₦)</th>
+              <th>NHIS (₦)</th>
+              <th>NHF (₦)</th>
+              <th>Life Assurance (₦)</th>
+              <th>Gross Income (₦)</th>
+              <th>CRA (₦)</th>
+              <th>Date Created</th>
+              <th>View</th>
+              <th *ngIf="showEditEmployee">Edit</th>
+              <th *ngIf="showDeleteEmployee">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mydata of employeesData; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ mydata.taxpayer_id }}</td>
+              <td>
+                {{ mydata.first_name | titlecase }}
+                {{ mydata.last_name | titlecase }}
+              </td>
+
+              <!-- <td>{{ mydata.designation }}</td> -->
+              <!-- <td>{{ mydata.phone }}</td> -->
+              <td>{{ mydata.total_income | number }}</td>
+              <td>{{ mydata.pension | number }}</td>
+              <td>{{ mydata.nhis | number }}</td>
+              <td>{{ mydata.nhf | number }}</td>
+              <td>{{ mydata.life_assurance | number }}</td>
+              <td>{{ mydata.gross_income | number }}</td>
+              <td>{{ mydata.cra | number }}</td>
+              <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
+              <td title="View">
+                <!-- <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="viewEmployee(updateEmployee, mydata)"
+                >
+                  <i class="nav-icon fas fa-eye"></i>
+                </button> -->
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="viewEmployee(addEmployee, mydata)"
+                >
+                  <i class="nav-icon fas fa-eye"></i>
+                </button>
+              </td>
+              <td title="Edit" *ngIf="showEditEmployee">
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="editEmployee(addEmployee, mydata); isEdit = true; showSaveEmployee = true;"
+                >
+                  <i class="nav-icon fas fa-edit"></i>
+                </button>
+                <!-- <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="editEmployee(updateEmployee, mydata)"
+                >
+                  <i class="nav-icon fas fa-edit"></i>
+                </button> -->
+              </td>
+
+              <td *ngIf="showDeleteEmployee" title="Delete">
+                <button
+                  (click)="deleteEmployee(mydata.id)"
+                  class="btn btn-sm btn-danger"
+                >
+                  <i class="nav-icon far fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <!-- /.card-header -->
-      <div class="card-body">
-        <div *ngIf="showListOfEmployees" class="over-auto">
-          <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-          <table
-            class="table table-bordered table-condensed"
-            *ngIf="employeesData"
-            datatable
-            [dtOptions]="dtOptions"
-            width="100%">
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Taxpayer ID</th>
-                <th>Full Name</th>
-                <th>Designation</th>
-                <th>Phone</th>
-                <th>Total Income (₦)</th>
-                <th>Pension (₦)</th>
-                <th>NHIS (₦)</th>
-                <th>NHF (₦)</th>
-                <th>Life Assurance (₦)</th>
-                <th>Gross Income (₦)</th>
-                <th>CRA (₦)</th>
-                <th>Date Created</th>
-                <th>View</th>
-                <th *ngIf="showEditEmployee">Edit</th>
-                <th *ngIf="showDeleteEmployee">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let mydata of employeesData; index as i">
-                <td>{{ i + 1 }}</td>
-                <td>{{ mydata.taxpayer_id }}</td>
-                <td>
-                  {{ mydata.first_name | titlecase }}
-                  {{ mydata.last_name | titlecase }}
-                </td>
-  
-                <td>{{ mydata.designation }}</td>
-                <td>{{ mydata.phone }}</td>
-                <td>{{ mydata.total_income | number }}</td>
-                <td>{{ mydata.pension | number }}</td>
-                <td>{{ mydata.nhis | number }}</td>
-                <td>{{ mydata.nhf | number }}</td>
-                <td>{{ mydata.life_assurance | number }}</td>
-                <td>{{ mydata.gross_income | number }}</td>
-                <td>{{ mydata.cra | number }}</td>
-                <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
-                <td title="View">
-                  <!-- <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="viewEmployee(updateEmployee, mydata)"
-                  >
-                    <i class="nav-icon fas fa-eye"></i>
-                  </button> -->
-                  <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="viewEmployee(addEmployee, mydata)"
-                  >
-                    <i class="nav-icon fas fa-eye"></i>
-                  </button>
-                </td>
-                <td title="Edit" *ngIf="showEditEmployee">
-                  <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="editEmployee(addEmployee, mydata); isEdit = true; showSaveEmployee = true;"
-                  >
-                    <i class="nav-icon fas fa-edit"></i>
-                  </button>
-                  <!-- <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="editEmployee(updateEmployee, mydata)"
-                  >
-                    <i class="nav-icon fas fa-edit"></i>
-                  </button> -->
-                </td>
-  
-                <td *ngIf="showDeleteEmployee" title="Delete">
-                  <button
-                    (click)="deleteEmployee(mydata.id)"
-                    class="btn btn-sm btn-danger"
-                  >
-                    <i class="nav-icon far fa-trash-alt"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- /.card-body -->
-      <div class="card-footer" *ngIf="apidataEmpty">
-        <button
-          *ngIf="showCreateSchedule"
-          type="submit"
-          (click)="forwardSchedule(schedulemodal)"
-          class="btn btn button-login"
-        >
-          <i class="fas fa-plus-square"></i> Create Schedule
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-dark button-login float-right"
-          (click)="modal.close('Save click')"
-        >
-          Ok
-        </button>
-      </div>
+    </div>
+
+    <div class="modal-footer" *ngIf="apidataEmpty">
+      <button 
+        type="submit"
+        (click)="forwardSchedule(schedulemodal)"
+        class="btn btn button-login">
+        <i class="fas fa-plus-square"></i> Create Schedule
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login float-right"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
     </div>
   </ng-template>
   
@@ -374,17 +367,13 @@
   </ng-template>
   
   <ng-template #addEmployee let-modal>
-    <div class="card card-secondary">
-      <div class="card-header custome">
-        <h3 class="card-title">
-          <!-- showSaveEmployee  -->
-          {{ (showSaveEmployee) ? (isEdit ? "Edit" : "Add") : ''  }} Employee Details And
-          Monthly Income
-        </h3>
-        <!-- <h3 class="card-title">Add New Employee And Monthly Income</h3> -->
-      </div>
-      <!-- /.card-header -->
-      <div class="card-body">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"> {{ (showSaveEmployee) ? (isEdit ? "Edit" : "Add") : ''  }} Employee Details And
+        Monthly Income</h4>
+    </div>
+
+    <div class="modal-body">
+      <div class="container">
         <form
           [formGroup]="addEmployeeForm"
           (ngSubmit)="onSubmit(addEmployeeForm.value)"
@@ -1231,17 +1220,16 @@
           </button>
         </form>
       </div>
-      <!-- /.card-body -->
-      <div class="modal-footer">
-        <button
-          type="button"
-          id="closeCreateModal"
-          class="btn btn-outline-dark button-login"
-          (click)="modal.close('Save click')"
-        >
-          Ok
-        </button>
-      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        id="closeCreateModal"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')">
+        Ok
+      </button>
     </div>
   </ng-template>
   

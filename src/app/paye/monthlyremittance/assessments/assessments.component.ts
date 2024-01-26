@@ -10,10 +10,10 @@ import {
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -64,6 +64,7 @@ export class AssessmentsComponent implements OnInit {
   invoiceNumber: any;
   totaldueBalance:any;
   validAmountAssessed:boolean = false
+  companyId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,8 +76,7 @@ export class AssessmentsComponent implements OnInit {
     private sess: SessionService,
     // private component: DashboardComponent,
     private modalService: NgbModal,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   get paymentItemsFormGroup () {
@@ -90,7 +90,11 @@ export class AssessmentsComponent implements OnInit {
     this.sess.checkLogin();
     this.initialisePaymentItemsForm();
     this.initialiseForms();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
     this.getBusinesses();
+    
     this.roleID = localStorage.getItem("role_id");
     if (this.roleID === "5" || this.roleID === "6") {
       this.managerRole = true;
@@ -207,8 +211,8 @@ export class AssessmentsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -219,7 +223,7 @@ export class AssessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 

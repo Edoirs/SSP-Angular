@@ -10,10 +10,10 @@ import {
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { DatePipe } from "@angular/common";
-// import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 @Component({
   selector: 'app-annualreturnschedules',
@@ -54,6 +54,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
   selectedBusiness: any;
   businessId: any;
   title = "PAYE - Annual Return Schedules Report";
+  companyId: any;
+  annualReturnsData: any;
+  apidataEmpty: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,17 +67,19 @@ export class AnnualreturnschedulesComponent implements OnInit {
     private sess: SessionService,
     // private component: DashboardComponent,
     private modalService: NgbModal,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(): void {
-    // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
-    // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     this.getAllMonths();
-    this.getBusinesses();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    // this.getBusinesses();
+    this.getSchedules();
+
     this.initialiseForms();
     console.log("token: ", localStorage.getItem("access_token"));
     var userRole = localStorage.getItem("role_id");
@@ -248,10 +253,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
       forwardedTo: [""],
       annualReturnStatus: [""],
       dateForwarded: [""],
-      status: [""],
       dueDate: [""],
-      corporateId: [""],
-      createdAt: [""],
     });
 
     this.annualReturnForm = this.formBuilder.group({
@@ -336,20 +338,16 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.selectedScheduleId = selectedSchedule.id;
     this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
 
-    this.getSingleSchedule(selectedSchedule.id);
-    var array = selectedSchedule.due_date.split("-", 3);
-    var dueDateYear = array[0];
-    // var dueDateMonth = array[1];
+    this.getAnnualReturns(selectedSchedule.businessId, selectedSchedule.taxYear);
 
-    this.assessmentForm = this.formBuilder.group({
-      assessmentYear: [dueDateYear],
-      // assessmentMonthId: [dueDateMonth],
-    });
+    let status = selectedSchedule.filedStatus == "1" ? "Filed" : selectedSchedule.filedStatus == "2" ? "Approved" : "Rejected";
+    let dateForwarded = this.datepipe.transform(selectedSchedule.datetcreated, "dd MMM yyyy");
 
-    this.forwardScheduleForm = this.formBuilder.group({
-      scheduleYear: [dueDateYear],
-      // scheduleMonthId: [dueDateMonth],
-      // comment: ['', Validators.required],
+    this.scheduleForm = this.formBuilder.group({
+      forwardedTo: ["Forwarded to Manager"],
+      annualReturnStatus: [status],
+      dateForwarded: [dateForwarded],
+      dueDate: [selectedSchedule.dueDate],
     });
   }
 
@@ -389,8 +387,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
+    // this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -400,13 +399,13 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.data;
-      // this.ngxService.stop()
+      this.businessesData = data;
+      this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -414,50 +413,64 @@ export class AnnualreturnschedulesComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleBusinessData: ", data);
-
-        this.selectedBusiness = data.response;
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("singleBusinessData: ", data);
+      this.selectedBusiness = data.response;
+      this.ngxService.stop();
+    });
   }
 
   viewBusinessAnnualReturn(modal: any, data: any) {
     this.businessId = data.id;
-    this.getSchedules(this.businessId);
+    // this.getSchedules(this.businessId);
     this.showModal(modal);
   }
 
-  getSchedules(businessId: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules-list";
+  getSchedules() {
+    const obj = {};
+    this.ngxService.start();
+    // this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    let corporateId = localStorage.getItem("corporate_id");
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("schedulesData: ", data);
 
-    const obj = {
-      corporate_ids: [corporateId],
-      business_id: businessId,
-    };
-
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("schedulesData: ", data);
-        this.schedulesData =
-          data.response == null ? [] : data.data.reverse();
-        // this.ngxService.stop();
-      });
+      this.schedulesData = data.data;
+      this.ngxService.stop();
+    });
   }
 
+  // getSchedules(businessId: any) {
+  //   this.ngxService.start();
+  //   this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules-list";
+
+  //   const reqHeader = new HttpHeaders({
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + localStorage.getItem("access_token"),
+  //   });
+
+  //   let corporateId = localStorage.getItem("corporate_id");
+
+  //   const obj = {
+  //     corporate_ids: [corporateId],
+  //     business_id: businessId,
+  //   };
+
+  //   this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
+  //     console.log("schedulesData: ", data);
+  //     this.schedulesData =
+  //       data.response == null ? [] : data.data.reverse();
+  //     this.ngxService.stop();
+  //   });
+  // }
+
   getSingleSchedule(scheduleId: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl =
       environment.AUTHAPIURL + "annual-return-schedules/" + scheduleId;
 
@@ -466,15 +479,32 @@ export class AnnualreturnschedulesComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleScheduleData: ", data);
-        this.selectedSchedule = data.response;
-        this.isFiled = this.selectedSchedule.annual_return_assessment_status;
-        this.loadSelectedScheduleData(this.selectedSchedule);
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("singleScheduleData: ", data);
+      this.selectedSchedule = data.response;
+      this.isFiled = this.selectedSchedule.annual_return_assessment_status;
+      this.loadSelectedScheduleData(this.selectedSchedule);
+      this.ngxService.stop();
+    });
+  }
+
+  getAnnualReturns(businessId: any, year: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("annualReturnsData: ", data);
+      this.annualReturnsData = data.data == null ? [] : data.data;
+      if (data.data?.length > 0) {
+        this.apidataEmpty = true;
+      }
+      this.ngxService.stop();
+    });
   }
 
   forwardSchedule(modal: any) {
@@ -552,7 +582,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
           // this.ngxService.stop();
           this.modalService.dismissAll();
-          this.getSchedules(this.businessId);
+          // this.getSchedules(this.businessId);
         } else {
           // this.ngxService.stop();
 
@@ -567,7 +597,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true,
           });
-          this.getSchedules(this.businessId);
+          // this.getSchedules(this.businessId);
         }
       });
   }
@@ -629,7 +659,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          this.getSchedules(this.businessId);
+          // this.getSchedules(this.businessId);
           // this.ngxService.stop();
           this.modalService.dismissAll();
         } else {

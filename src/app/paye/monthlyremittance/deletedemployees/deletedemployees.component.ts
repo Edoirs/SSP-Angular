@@ -1,3 +1,4 @@
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Title } from "@angular/platform-browser";
@@ -31,9 +32,7 @@ export class DeletedemployeesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sess: SessionService,
-    // private component: DashboardComponent,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { 
     this.userID = this.route.snapshot.params['id'];
   }
@@ -115,23 +114,23 @@ export class DeletedemployeesComponent implements OnInit {
   }
 
   getDeletedEmployees() {
-    this.apiUrl = environment.AUTHAPIURL + "employees-deleted";
-    const obj = {
-      corporate_id: this.corporateId,
-    };
+    this.apiUrl = environment.AUTHAPIURL + "Employee/getalldeleted";
+
+    // const obj = {
+    //   corporate_id: this.corporateId,
+    // };
+
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    // this.ngxService.start();
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log(data);
-        this.apidata = data.response;
-        // this.ngxService.stop();
-      });
+    this.ngxService.start();
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("deletedEmployees", data);
+      this.apidata = data.data;
+      this.ngxService.stop();
+    });
   }
 
   restoreEmployee(id: number) {

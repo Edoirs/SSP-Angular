@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -70,6 +71,7 @@ export class ReassessmentsComponent implements OnInit {
   validAmountAssessed:boolean =false;
   payItemsArray: any[] = [];
   objectDisable!: boolean;
+  companyId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -79,9 +81,7 @@ export class ReassessmentsComponent implements OnInit {
     private datepipe: DatePipe,
     private sess: SessionService,
     private modalService: NgbModal,
-    // private component: DashboardComponent,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   get f() {
@@ -100,7 +100,10 @@ export class ReassessmentsComponent implements OnInit {
       itemsPerPage: 10,
     };
 
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
     this.getBusinesses();
+    
     // this.getBusinesses(this.config.itemsPerPage, this.config.currentPage);
     this.initialisePaymentItemsForm();
     this.today = new Date();
@@ -214,8 +217,8 @@ export class ReassessmentsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -226,7 +229,7 @@ export class ReassessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 
@@ -555,6 +558,7 @@ export class ReassessmentsComponent implements OnInit {
       amountAssessed
     );
   }
+  
   onSubmitAppeal(formAllData: any) {
     this.submitted = true;
 

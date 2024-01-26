@@ -1,88 +1,114 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header"></div>
-    <!-- /.content-header -->
-  
-    <!-- Main content -->
-    <section class="content" data-select2-id="32">
-      <div class="container-fluid" data-select2-id="31">
-        <!-- <flash-messages></flash-messages> -->
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-secondary">
-          <div class="card-header custome">
-            <h3 class="card-title">List of Businesses</h3>
+  <!-- Content Header (Page header) -->
+  <div class="content-header"></div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+      <!-- <flash-messages></flash-messages> -->
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">List of Businesses</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="over-auto">
+            <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+            <table class="table table-bordered table-condensed" *ngIf="businessesData" datatable [dtOptions]="dtOptions"
+              width="100%">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Business ID</th>
+                  <th>Business Name</th>
+                  <th>Business Address</th>
+                  <th>No of Employees</th>
+                  <th>Upload</th>
+                  <th>Delete</th>
+                  <th>Create Schedule</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mydata of businessesData; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ mydata.businessID }}</td>
+                  <td>{{ mydata.businessName | titlecase }}</td>
+                  <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
+
+                  <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
+                  <td title="View">
+                    <button class="btn btn-sm btn-outline-success" (click)="
+                          uploadEmployees(uploadEmployeesModal, mydata)
+                        ">
+                      <i class="nav-icon fas fa-upload"></i>
+                    </button>
+                  </td>
+                  <td title="View">
+                    <button class="btn btn-sm btn-outline-success" (click)="
+                          deleteBusiness(mydata)">
+                      <i class="nav-icon far fa-trash-alt"></i>
+                    </button>
+                  </td>
+                  <td title="View">
+                    <button class="btn btn-sm btn-outline-success" (click)="
+                          createSchedule(annualReturnModal, mydata)">
+                      <i class="nav-icon fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="over-auto">
-              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-              <table
-                class="table table-bordered table-condensed"
-                *ngIf="businessesData"
-                datatable
-                [dtOptions]="dtOptions"
-                width="100%"
-              >
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    <th>Business ID</th>
-                    <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
-                    <th>Address</th>
-                    <!-- <th>Employees Count</th> -->
-                    <th>LGA</th>
-                    <th>View</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let mydata of businessesData; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
-                    <!-- <td>{{ mydata.employees_count }}</td> -->
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-  
-                    <td title="View">
-                      <button
-                        class="btn btn-sm btn-outline-success"
-                        (click)="
-                          viewBusinessAnnualReturn(annualReturnModal, mydata)
-                        "
-                      >
-                        <i class="nav-icon fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- /.card-body -->
-          <!-- <div class="card-footer" *ngIf="apidataEmpty">
+        </div>
+        <!-- /.card-body -->
+        <!-- <div class="card-footer" *ngIf="apidataEmpty">
             <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
               class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
           </div> -->
-        </div>
       </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ng-template #uploadEmployeesModal let-modal>
+  <div class="modal-header">
+    <span>
+      <h4 class="modal-title" id="modal-basic-title">Upload Form H1</h4>
+    </span>
   </div>
-  
-  <ng-template #annualReturnModal let-modal>
-    <div class="card card-secondary">
-      <div class="card-header custome">
-        <h3 class="card-title">Upload Annual Return Employees</h3>
-      </div>
-      <!-- /.card-header -->
-      <div class="card-body">
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="uploadCorporateForm" style="margin-bottom: 30px;">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="businessName" class="input-label pull-left">Business Name
+            </label>
+            <input type="text" formControlName="businessName" class="form-control" id="businessName"
+              placeholder="Business Name" [attr.disabled]="true"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors }" />
+
+            <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors" class="text-danger">
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="businessID" class="input-label pull-left">Business ID
+            </label>
+            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.disabled]="true"
+              placeholder="Business ID"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors }" />
+            <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors" class="text-danger">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div>
         <div class="alert alert-success" role="alert" *ngIf="isResponse == 1">
           {{ isMessage }}
         </div>
@@ -90,62 +116,549 @@
         <div class="alert alert-danger" role="alert" *ngIf="isError == 1">
           {{ isMessage }}
         </div>
-        <div class="modal-body">
-          <form [formGroup]="myForm" (ngSubmit)="submit()">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="fileInput">Select File to Upload </label>
   
-                <div class="custom-file">
-                  <input
-                    formControlName="myfile"
-                    id="myfile"
-                    type="file"
-                    class="custom-file-input"
-                    (change)="onFileChange($event)"
-                    accept=".xls,.xlsx"
-                    [ngClass]="{
+        <form [formGroup]="myForm" (ngSubmit)="submit()">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="fileInput">Select File to Upload </label>
+  
+              <div class="custom-file">
+                <input formControlName="myfile" id="myfile" type="file" class="custom-file-input"
+                  (change)="onFileChange($event)" accept=".xls,.xlsx" [ngClass]="{
                       'is-invalid': submitted && myForm.controls['myfile'].errors
-                    }"
-                  />
-                  <label class="custom-file-label" for="customFile">{{
-                    filePath == null ? "Choose file (xlsx or xls)" : filePath
+                    }" />
+                <label class="custom-file-label" for="customFile">{{
+                  filePath == null ? "Choose file (xlsx or xls)" : filePath
                   }}</label>
-                </div>
+              </div>
   
-                <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid"
-                  class="text-danger">
-                  <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
-                </div>
+              <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid"
+                class="text-danger">
+                <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
               </div>
             </div>
-  
-            <button
-              type="submit"
-              class="btn btn button-login"
-              [disabled]="file == null"
-            >
-              Upload File
-            </button>
-          </form>
-  
-          <div class="login-remeber">
-            <a href="{{ sample_file }}" target="_blank">
-              Download annual return employee template here</a
-            >
           </div>
+  
+          <button type="submit" class="btn btn button-login" style="border: 1px solid;" [disabled]="file == null">
+            Upload File
+          </button>
+        </form>
+  
+        <div class="login-remeber">
+          <a href="{{ sample_file }}" target="_blank">
+            Download annual return employee template here</a>
         </div>
       </div>
-      <!-- /.card-body -->
-      <div class="card-footer">
-        <button
-          type="button"
-          class="btn btn-outline-dark button-login"
-          (click)="modal.close('Save click')"
-        >
-          Ok
-        </button>
-      </div>
+
     </div>
-  </ng-template>
-  
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
+      Ok
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #scheduleModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Schedule</h4>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="forwardScheduleForm" (ngSubmit)="onSubmitSchedule(forwardScheduleForm.value)">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="scheduleYear">Schedule Year</label>
+            <input
+              type="text"
+              formControlName="scheduleYear"
+              maxlength="4"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors }"
+            />
+            <div
+              *ngIf="submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors"
+              class="text-danger"
+            >
+              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['required']">
+                Filing Year is required
+              </div>
+              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['minlength']">
+                Filing Year must be at least 4 characters long.
+              </div>
+              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['maxlength']">
+                Filing Year must be 4 characters long.
+              </div>
+              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['pattern']">
+                Filing Year must be Number Only
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn button-login" style="border: 1px solid;">
+          <i class="fas fa-save"></i> Save Schedule
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark button-login"
+      (click)="modal.close('Save click')"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #annualReturnModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">List of Annual Returns</h4>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="corporateForm" style="margin-bottom: 30px;">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="businessName" class="input-label pull-left">Business Name
+            </label>
+            <input type="text" formControlName="businessName" class="form-control" id="businessName"
+              placeholder="Business Name" [attr.disabled]="true"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessName'].errors }" />
+
+            <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessName'].errors" class="text-danger">
+            </div>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="businessID" class="input-label pull-left">Business ID
+            </label>
+            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.disabled]="true"
+              placeholder="Business ID"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessID'].errors }" />
+            <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessID'].errors" class="text-danger">
+            </div>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="companyName" class="input-label pull-left">Company Name
+            </label>
+            <input type="text" formControlName="companyName" class="form-control" id="companyName"
+              placeholder="Company Name" [attr.disabled]="true"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyName'].errors }" />
+
+            <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyName'].errors" class="text-danger">
+            </div>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="companyID" class="input-label pull-left">Company ID
+            </label>
+            <input type="text" formControlName="companyID" class="form-control" id="companyID" placeholder="Company ID"
+              [attr.disabled]="true"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyID'].errors }" />
+            <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyID'].errors" class="text-danger">
+
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div>
+        <table class="table table-bordered table-condensed" *ngIf="annualReturnsData" datatable [dtOptions]="dtOptions"
+        width="100%">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Taxpayer ID</th>
+            <th>Firstname</th>
+            <th>Surname</th>
+
+            <th>Designation</th>
+            <th>Nationality</th>
+            <th>Total Income (₦)</th>
+            <th>Annual Tax Paid (₦)</th>
+            <th>Months</th>
+
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mydata of annualReturnsData; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ mydata.rin }}</td>
+            <td>
+              {{ mydata.firstname == null ? "N/A" : mydata.firstname | titlecase }}
+            </td>
+            <td>
+              {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
+            </td>
+
+            <td>{{ mydata.designation == null ? "N/A" : mydata.designation | titlecase }}</td>
+            <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
+
+            <td>{{ mydata.pension | number }}</td>
+            <td>{{ mydata.annualtaxpaid | number }}</td>
+            <td>{{ mydata.totalmonthspaid | number }}</td>
+            <!-- <td>{{ mydata.lifeassurance | number }}</td> -->
+
+            <td title="Edit">
+              <button class="btn btn-sm btn-outline-success" (click)="editAnnualReturn(annualReturnDetailsModal, mydata)">
+                <i class="nav-icon fas fa-edit"></i>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-success" (click)="deleteAnnualReturn(mydata.id)">
+                <i class="nav-icon far fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+        *ngIf="apidataEmpty"
+        type="submit"
+        (click)="forwardSchedule(scheduleModal)"
+        [disabled]="annualReturnsData == null"
+        class="btn btn button-login" style="border: 1px solid;">
+        <i class="fas fa-plus-square"></i> Create Schedule
+      </button>
+
+    <button type="button" class="btn btn-outline-dark button-login float-right" (click)="modal.close('Save click')">
+      Ok
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #annualReturnDetailsModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Annual Return Details</h4>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="annualReturnForm" (ngSubmit)="onSubmitAnnualReturn(annualReturnForm.value)">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="taxPayerID">Taxpayer ID</label>
+            <input type="text" formControlName="taxPayerID" class="form-control" [attr.disabled]="true"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors" class="text-danger">
+              <!-- <div *ngIf="annualReturnForm.controls.taxPayerID.errors['required']">First Name is required</div> -->
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="basicIncome">Basic Income<sup style="font-weight: 800"
+                class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="basicIncome" class="form-control" (keyup)="calculateTotalIncome($event)"
+              placeholder="Basic Income"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['basicIncome'].errors['required']">
+                Basic Income required
+              </div>
+              <div *ngIf="annualReturnForm.controls['basicIncome'].errors['pattern']">
+                Basic Income must be Number with only two digits allowed after
+                the decimal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="firstName">Firstname
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['firstName'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['firstName'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['firstName'].errors['required']">
+                First Name is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['firstName'].errors['pattern']">
+                First Name cannot contain numeric value
+              </div>
+              <div *ngIf="annualReturnForm.controls['firstName'].errors['maxlength']">
+                First Name must be at most 30 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="rent">Rent</label>
+            <input type="text" formControlName="rent" class="form-control" placeholder="Rent"
+              (keyup)="calculateTotalIncome($event)"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['rent'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['rent'].errors" class="text-danger">
+              <!-- <div *ngIf="annualReturnForm.controls.rent.errors['required']">
+                    Rent required
+                  </div> -->
+              <div *ngIf="annualReturnForm.controls['rent'].errors['pattern']">
+                Rent must be Number with only two digits allowed after the
+                decimal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="middleName">Middle Name</label>
+            <input type="text" formControlName="middleName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['middleName'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['middleName'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['middleName'].errors['required']">
+                Middle Name is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['middleName'].errors['pattern']">
+                Middle Name cannot contain numeric value
+              </div>
+              <div *ngIf="annualReturnForm.controls['middleName'].errors['maxlength']">
+                Middle Name must be at most 30 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="transport">Transport
+            </label>
+            <input type="text" formControlName="transport" class="form-control" (keyup)="calculateTotalIncome($event)"
+              placeholder="transport"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['transport'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['transport'].errors" class="text-danger">
+              <!-- <div *ngIf="annualReturnForm.controls.transport.errors['required']">
+                    Transport required
+                  </div> -->
+              <div *ngIf="annualReturnForm.controls['transport'].errors['pattern']">
+                Transport must be Number with only two digits allowed after the
+                decimal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="surname">Surname
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="surname" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['surname'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['surname'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['surname'].errors['required']">
+                Surname is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['surname'].errors['pattern']">
+                Surname cannot contain numeric value
+              </div>
+              <div *ngIf="annualReturnForm.controls['surname'].errors['maxlength']">
+                Surname must be at most 30 characters
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="otherIncome">Other Income
+            </label>
+            <input type="text" formControlName="otherIncome" class="form-control" (keyup)="calculateTotalIncome($event)"
+              placeholder="Other Income"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors" class="text-danger">
+              <!-- <div *ngIf="annualReturnForm.controls['transport'].otherIncome.errors['required']">
+                      otherIncome required
+                    </div> -->
+              <div *ngIf="annualReturnForm.controls['otherIncome'].errors['pattern']">
+                Other Income must be Number with only two digits allowed after
+                the decimal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="NHF">National Housing Fund (NHF)</label>
+            <input type="text" formControlName="NHF" class="form-control" (keyup)="calculateGrossIncome($event)"
+              placeholder="National Housing Fund" [attr.disabled]="disableEmployeeControl"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['NHF'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['NHF'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['NHF'].errors['pattern']">
+                National Housing Fund must be Number with only two digits
+                allowed after the decimal
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
+            <input type="text" formControlName="NHIS" class="form-control" (keyup)="calculateGrossIncome($event)"
+              placeholder="National Health Insurance Scheme" [attr.disabled]="disableEmployeeControl"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['NHIS'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['NHIS'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['NHIS'].errors['pattern']">
+                National Health Insurance Scheme must be Number with only two
+                digits allowed after the decimal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="pension">Pension<sup class="ml-1 font-wegiht-bold text-danger"></sup></label>
+            <input type="text" formControlName="pension" class="form-control" placeholder="Pension"
+              [attr.disabled]="disableEmployeeControl" (keyup)="calculateGrossIncome($event)"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['pension'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['pension'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['pension'].errors['required']">
+                Pension is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['pension'].errors['pattern']">
+                Pension must be Number with only two digits allowed after the
+                decimal
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="lifeAssurance">Life Assurance</label>
+            <input type="text" formControlName="lifeAssurance" class="form-control" placeholder="Life Assurance"
+              (keyup)="calculateGrossIncome($event)" [attr.disabled]="disableEmployeeControl"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['lifeAssurance'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['lifeAssurance'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['lifeAssurance'].errors['pattern']">
+                Life Assurance must be numbers with only two digits allowed
+                after the decimal
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="monthlyIncome">Monthly Income (₦)
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="monthlyIncome" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['monthlyIncome'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['monthlyIncome'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['monthlyIncome'].errors['required']">
+                Monthly Income is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['monthlyIncome'].errors['pattern']">
+                Monthly Income must be Number Only
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="annualGrossIncome">Annual Gross (₦)
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="annualGrossIncome" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['annualGrossIncome'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['annualGrossIncome'].errors" class="text-danger">
+              <div *ngIf="
+                    annualReturnForm.controls['annualGrossIncome'].errors['required']
+                  ">
+                Annual Gross Income is required
+              </div>
+              <div *ngIf="
+                    annualReturnForm.controls['annualGrossIncome'].errors['pattern']
+                  ">
+                Annual Gross Income must be Number Only
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="annualTaxPaid">Annual Tax Paid (₦)
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="annualTaxPaid" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['annualTaxPaid'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['annualTaxPaid'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['annualTaxPaid'].errors['required']">
+                Annual Tax Paid is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['annualTaxPaid'].errors['pattern']">
+                Annual Tax Paid must be Number Only
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="months">Months
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="months" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['months'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['months'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['months'].errors['required']">
+                Months is required
+              </div>
+              <div *ngIf="annualReturnForm.controls['months'].errors['pattern']">
+                Months must be Number Only
+              </div>
+              <div *ngIf="annualReturnForm.controls['months'].errors['maxlength']">
+                Months must be at most 2 characters
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="designation">Designation
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="designation" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['designation'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['designation'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['designation'].errors['required']">
+                Designation is required
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="nationality">Nationality
+              <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
+            </label>
+            <input type="text" formControlName="nationality" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['nationality'].errors }" />
+            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['nationality'].errors" class="text-danger">
+              <div *ngIf="annualReturnForm.controls['nationality'].errors['required']">
+                Nationality is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn button-login" style="border: 1px solid;">
+          Save Annual Return
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
+      Ok
+    </button>
+  </div>
+</ng-template>

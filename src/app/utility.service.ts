@@ -1,3 +1,4 @@
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Injectable } from '@angular/core';
 import { environment } from "./../environments/environment.prod";
 import { HttpClient } from "@angular/common/http";
@@ -10,12 +11,168 @@ import { DecimalPipe } from "@angular/common";
 export class UtilityService {
   apiUrl: any;
   taxTaxOffices: any;
+  businessCategorData: any;
+  businessSectorData: any;
+  businessOperationData: any;
+  businessStructureData: any;
+  businessSubsectorData: any;
+  businessTypeData: any;
+  economicActivityData: any;
+  genderData: any;
+  localGovernmentsData: any;
+  nationalityData: any;
+  taxOfficesData: any;
+  titleData: any;
+  zoneData: any;
 
   constructor(
     private httpClient: HttpClient,
-    // private decimalPipe: DecimalPipe
+    private ngxService: NgxUiLoaderService
   ) {
     this.getTaxOffices();
+  }
+
+  getBusinessCategory() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-category";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessCategorData: ", data);
+      this.businessCategorData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getBusinessSector() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-Sector";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessSectorData: ", data);
+      this.businessSectorData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getBusinessOperation() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-operation";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessOperationData: ", data);
+      this.businessOperationData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getBusinessStructure() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-structure";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessStructureData: ", data);
+      this.businessStructureData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getBusinessSubsector() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "get-business-subsector";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessSubsectorData: ", data);
+      this.businessSubsectorData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getBusinessType() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-type";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("businessTypeData: ", data);
+      this.businessTypeData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getEconomicActivity() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-economic-activity";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("economicActivityData: ", data);
+      this.economicActivityData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getGender() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-gender";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("genderData: ", data);
+      this.genderData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getLocalGovernments() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-lga";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("localGovernmentsData: ", data);
+      this.localGovernmentsData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getNationality() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-nationality";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("nationalityData: ", data);
+      this.nationalityData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getTaxOffices() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-tax-office";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("taxOfficesData: ", data);
+      this.taxOfficesData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getTitles() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-title";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("titleData: ", data);
+      this.titleData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
+  }
+
+  getZones() {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Utility/get-zone";
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("zoneData: ", data);
+      this.zoneData = data.data == null ? [] : data.data;
+      this.ngxService.stop();
+    });
   }
 
   calculateGrossIncome(addEmployeeForm: any) {
@@ -128,14 +285,14 @@ export class UtilityService {
     return taxOffice;
   }
 
-  getTaxOffices() {
-    this.apiUrl = environment.AUTHAPIURL + "tax-offices";
+  // getTaxOffices() {
+  //   this.apiUrl = environment.AUTHAPIURL + "tax-offices";
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data: any) => {
-      console.log("taxTaxOffices: ", data);
-      this.taxTaxOffices = data.response;
-    });
-  }
+  //   this.httpClient.get<any>(this.apiUrl).subscribe((data: any) => {
+  //     console.log("taxTaxOffices: ", data);
+  //     this.taxTaxOffices = data.response;
+  //   });
+  // }
 
   calculateAmountTaxDue(totalIncome: number) {
     // let totalIncome = Number(reassessmentForm.get('estimatedTotalIncome').value);

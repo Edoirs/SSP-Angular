@@ -40,9 +40,9 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
+                    <td>{{ mydata.industry_sector_name ? mydata.industry_sector_name : 'N/A' }}</td>
+                    <td>{{ mydata.industry_subsector_name ? mydata.industry_subsector_name : 'N/A' }}</td>
+                    <td>{{ mydata.business_address ? mydata.business_address : 'N/A' }}</td>
                     <td>
                       {{ mydata.lga_name ? mydata.lga_name : 'N/A' }}
                     </td>

@@ -172,7 +172,7 @@ export class LoginComponent {
         // this.goToOtp();
         this.router.navigate(["/dashboard"])
       }
-      else if (data.status != true && this.defaultPwd != false) {
+      else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -182,6 +182,16 @@ export class LoginComponent {
           timerProgressBar: true,
         });
       }
+      // else if (data.status != true && this.defaultPwd != false) {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Oops...",
+      //     text: data.message,
+      //     showConfirmButton: true,
+      //     timer: 5000,
+      //     timerProgressBar: true,
+      //   });
+      // }
     });
   }
 

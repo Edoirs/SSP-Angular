@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class AnnualreturnsComponent implements OnInit {
   dtOptions: any = {};
   annualReturnForm!: FormGroup;
   forwardScheduleForm!: FormGroup;
+  corporateForm!: FormGroup;
   submitted: boolean = false;
   apiUrl!: string;
   annualReturnsData: any;
@@ -48,6 +50,14 @@ export class AnnualreturnsComponent implements OnInit {
   selectedBusiness: any;
   businessId: any;
   disableEmployeeControl: any;
+  companyId: any;
+  RIN: any;
+  NIN: any;
+  JTBTIN: any;
+  homeAddress: any;
+  phoneNumber: any;
+  totalMonthsPaid: any;
+  CRA: any;
 
   constructor(
     private titleService: Title,
@@ -58,8 +68,7 @@ export class AnnualreturnsComponent implements OnInit {
     private sess: SessionService,
     // private component: DashboardComponent,
     private modalService: NgbModal,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(): void {
@@ -68,7 +77,11 @@ export class AnnualreturnsComponent implements OnInit {
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     this.initialiseForms();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
     this.getBusinesses();
+
     let userRole = localStorage.getItem("role_id");
     this.corporateId = localStorage.getItem("corporate_id");
 
@@ -189,9 +202,7 @@ export class AnnualreturnsComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
         console.log("singleEmployeeData: ", data);
         this.loadSelectedEmployeeData(data.response);
         this.selectedEmployee = data.response;
@@ -217,8 +228,16 @@ export class AnnualreturnsComponent implements OnInit {
     this.selectedEmployeeId = selectedAnnualReturn.employee_id;
     this.selectedScheduleRecordId = selectedAnnualReturn.id;
 
+    this.RIN = selectedAnnualReturn.rin;
+    this.NIN = selectedAnnualReturn.nin;
+    this.JTBTIN = selectedAnnualReturn.jtbtin;
+    this.homeAddress = selectedAnnualReturn.homeaddress;
+    this.phoneNumber = selectedAnnualReturn.phonenumber;
+    this.totalMonthsPaid = selectedAnnualReturn.totalmonthspaid;
+    this.CRA = selectedAnnualReturn.consolidatedreliefallowancecra;
+
     this.annualReturnForm = this.formBuilder.group({
-      taxPayerID: [selectedAnnualReturn.taxpayer_id],
+      taxPayerID: [selectedAnnualReturn.taxPayerId],
 
       basicIncome: [
         selectedAnnualReturn.basic,
@@ -246,19 +265,19 @@ export class AnnualreturnsComponent implements OnInit {
         ],
       ],
       otherIncome: [
-        selectedAnnualReturn.other_income,
+        selectedAnnualReturn.otherIncome,
         [
           // Validators.required,
           Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
         ],
       ],
       lifeAssurance: [
-        selectedAnnualReturn.life_assurance,
+        selectedAnnualReturn.lifeassurance,
         [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
       ],
 
       monthlyIncome: [
-        selectedAnnualReturn.monthly_income,
+        selectedAnnualReturn.totalmonthspaid,
         [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
       ],
       annualGrossIncome: [
@@ -266,7 +285,7 @@ export class AnnualreturnsComponent implements OnInit {
         [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
       ],
       annualTaxPaid: [
-        selectedAnnualReturn.annual_tax_paid,
+        selectedAnnualReturn.annualtaxpaid,
         [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
       ],
       months: [
@@ -278,7 +297,7 @@ export class AnnualreturnsComponent implements OnInit {
         ],
       ],
       firstName: [
-        selectedAnnualReturn.first_name,
+        selectedAnnualReturn.firstname,
         [
           Validators.required,
           Validators.pattern("[a-zA-Z ]*"),
@@ -286,7 +305,7 @@ export class AnnualreturnsComponent implements OnInit {
         ],
       ],
       middleName: [
-        selectedAnnualReturn.middle_name,
+        selectedAnnualReturn.othername,
         [
           // Validators.required,
           Validators.pattern("[a-zA-Z ]*"),
@@ -305,14 +324,11 @@ export class AnnualreturnsComponent implements OnInit {
       designation: [selectedAnnualReturn.designation, Validators.required],
     });
 
-    this.editEmployeeModalRef = this.modalService.open(
-      modal,
-      this.modalOptions
-    );
+    this.editEmployeeModalRef = this.modalService.open(modal, this.modalOptions);
   }
 
   postUpdateEmployee(jsonData: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "employees/update";
 
     const reqHeader = new HttpHeaders({
@@ -320,9 +336,7 @@ export class AnnualreturnsComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
         console.log("employeeResponseData: ", data);
 
         if (data.status === true) {
@@ -343,13 +357,13 @@ export class AnnualreturnsComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          // this.ngxService.stop();
+          this.ngxService.stop();
           this.modalService.dismissAll();
           //  this.getEmployees();
           // this.reload();
-        } else {
-          // this.ngxService.stop();
-
+        } 
+        else {
+          this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -369,12 +383,12 @@ export class AnnualreturnsComponent implements OnInit {
         selectedEmployee?.email,
         [Validators.required, Validators.maxLength(60), Validators.email],
       ],
-      NSIRSTaxPayerID: [selectedEmployee?.taxpayer_id],
+      NSIRSTaxPayerID: [selectedEmployee?.taxpayerId],
       zipCode: [selectedEmployee?.zip_code, Validators.required],
       nationality: [selectedEmployee?.nationality, Validators.required],
       startMonthId: [selectedEmployee?.start_month, Validators.required],
       otherIncome: [
-        selectedEmployee?.other_income,
+        selectedEmployee?.otherIncome,
         [Validators.pattern(/^[0-9\s]*$/)],
       ],
       NHF: [selectedEmployee?.nhf, [Validators.pattern(/^[0-9\s]*$/)]],
@@ -430,8 +444,8 @@ export class AnnualreturnsComponent implements OnInit {
           Validators.maxLength(11),
         ],
       ],
-      firstName: [selectedEmployee?.first_name, Validators.required],
-      surname: [selectedEmployee?.last_name, Validators.required],
+      firstName: [selectedEmployee?.firstname, Validators.required],
+      surname: [selectedEmployee?.surname, Validators.required],
       contactAddress: [
         selectedEmployee?.home_address,
         [Validators.required, Validators.maxLength(80)],
@@ -543,6 +557,13 @@ export class AnnualreturnsComponent implements OnInit {
       ],
       // scheduleMonthId: ['', Validators.required],
     });
+
+    this.corporateForm = this.formBuilder.group({
+      companyName: [""],
+      companyID: [""],
+      businessName: [""],
+      businessID: [""],
+    });
   }
 
   getMonthName(monthId: string): string {
@@ -562,28 +583,38 @@ export class AnnualreturnsComponent implements OnInit {
     }
 
     const obj = {
-      annual_return_upload_taxpayer_id: formAllData.taxPayerID,
+      taxPayerId: formAllData.taxPayerID,
       basic: formAllData.basicIncome,
       rent: formAllData.rent,
       transport: formAllData.transport,
-      other_income: formAllData.otherIncome,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
+      otherIncome: formAllData.otherIncome,
+      companyId: this.companyId,
+      businessId: this.businessId,
       pension: formAllData.pension,
       nhis: formAllData.NHIS,
       nhf: formAllData.NHF,
-      life_assurance: formAllData.lifeAssurance,
+      lifeassurance: formAllData.lifeAssurance,
       monthly_income: formAllData.monthlyIncome,
       annual_gross_income: formAllData.annualGrossIncome,
-      annual_tax_paid: formAllData.annualTaxPaid,
+      // annual_tax_paid: formAllData.annualTaxPaid,
       months: formAllData.months,
       // schedule_record_id: this.selectedScheduleRecordId,
 
-      first_name: formAllData.firstName,
-      middle_name: formAllData.middleName,
+      firstname: formAllData.firstName,
+      othername: formAllData.middleName,
       surname: formAllData.surname,
       nationality: formAllData.nationality,
       designation: formAllData.designation,
+
+      annualtaxpaid: formAllData.annualTaxPaid,
+      rin: this.RIN,
+      jtbtin: this.JTBTIN,
+      nin: this.NIN,
+      homeaddress: this.homeAddress,
+      totalmonthspaid: this.totalMonthsPaid,
+      phonenumber: this.phoneNumber,
+      consolidatedreliefallowancecra: "0",
+      // consolidatedreliefallowancecra: this.CRA,
     };
 
     console.log("annualReturnFormData: ", obj);
@@ -591,17 +622,15 @@ export class AnnualreturnsComponent implements OnInit {
   }
 
   postUpdateAnnualReturn(jsonData: any) {
-    // this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/update`;
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/update-TaxpayerH1`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.put<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
         console.log("annualReturnResponseData: ", data);
         this.submitted = false;
 
@@ -614,12 +643,12 @@ export class AnnualreturnsComponent implements OnInit {
             timer: 5000,
           });
 
-          this.getAnnualReturns(this.businessId);
+          this.getAnnualReturns(this.businessId, this.companyId);
           this.editEmployeeModalRef.close();
-          // this.ngxService.stop();
+          this.ngxService.stop();
         } 
         else {
-          // this.ngxService.stop();
+          this.ngxService.stop();
 
           Swal.fire({
             icon: "error",
@@ -641,126 +670,29 @@ export class AnnualreturnsComponent implements OnInit {
       return;
     }
 
-    let corporateId = localStorage.getItem("corporate_id");
-
+    // let corporateId = localStorage.getItem("corporate_id");
     const obj = {
-      // comment: formAllData.comment,
-      due_date: formAllData.scheduleYear,
-      businesses: [
-        {
-          business_id: this.businessId,
-          corporate_id: corporateId,
-        },
-      ],
+      taxYear: formAllData.scheduleYear,
+      businessId: this.businessId,
+      companyId: this.companyId,
     };
 
     console.log("scheduleFormData: ", obj);
-    this.postForwardSchedule(obj);
+    // this.postForwardSchedule(obj);
+    this.postFileFormH1(obj);
   }
 
-  uploadAnnualReturn(modal: any) {
-    this.showModal(modal);
-  }
-
-  getBusinesses() {
-    const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+  postFileFormH1(jsonData: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/FileFormH1`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("BusinessData: ", data);
-
-      this.businessesData = data.data;
-      // this.ngxService.stop();
-    });
-  }
-
-  getSingleBusiness(businessId: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleBusinessData: ", data);
-
-        this.selectedBusiness = data.response;
-        // this.ngxService.stop();
-      });
-  }
-
-  viewBusinessAnnualReturn(modal: any, data: any) {
-    this.businessId = data.id;
-    this.getAnnualReturns(this.businessId);
-    this.showModal(modal);
-  }
-
-  getAnnualReturns(businessId: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "AnnualReturn/getall";
-
-    let corporateId = localStorage.getItem("corporate_id");
-
-    // const objData = {
-    //   corporate_ids: [corporateId],
-    //   business_id: businessId,
-    // };
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient.post<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-        console.log("annualReturnsData: ", data);
-        this.annualReturnsData =
-          data.response == null ? [] : data.response.reverse();
-        if (data.response?.length > 0) {
-          this.apidataEmpty = true;
-        }
-        // this.ngxService.stop();
-      });
-  }
-
-  forwardSchedule(modal: any) {
-    this.showModal(modal);
-  }
-
-  showModal(modal: any) {
-    this.modalService.open(modal, this.modalOptions).result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
-  }
-
-  postForwardSchedule(jsonData: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules/forward";
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
         console.log("scheduleApiResponseData: ", data);
-
         if (data.status === true) {
           // Rest form fithout errors
           this.forwardScheduleForm.reset();
@@ -780,12 +712,12 @@ export class AnnualreturnsComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          // this.ngxService.stop();
+          this.ngxService.stop();
           this.modalService.dismissAll();
-          this.getAnnualReturns(this.businessId);
-        } else {
-          // this.ngxService.stop();
-
+          this.getAnnualReturns(this.businessId, this.companyId);
+        } 
+        else {
+          this.ngxService.stop();
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -800,19 +732,163 @@ export class AnnualreturnsComponent implements OnInit {
       });
   }
 
-  deleteAnnualReturn(annualReturnId: number) {
-    const obj = {
-      id: annualReturnId,
-      corporate_id: this.corporateId,
-      business_id: this.businessId,
-    };
+
+  uploadAnnualReturn(modal: any) {
+    this.showModal(modal);
+  }
+
+  getBusinesses() {
+    const obj = {};
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.apiUrl = `${environment.AUTHAPIURL}annual-return-records/delete`;
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
+
+      this.businessesData = data.data;
+      this.ngxService.stop();
+    });
+  }
+
+
+
+  getSingleBusiness(businessId: any) {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient
+      .get<any>(this.apiUrl, { headers: reqHeader })
+      .subscribe((data) => {
+        console.log("singleBusinessData: ", data);
+
+        this.selectedBusiness = data.response;
+        this.ngxService.stop();
+      });
+  }
+
+  viewBusinessAnnualReturn(modal: any, data: any) {
+    this.businessId = data.business_id;
+    this.loadSelectedBusinessData(data);
+    this.getAnnualReturns(this.businessId, this.companyId);
+    this.showModal(modal);
+  }
+
+  loadSelectedBusinessData(selectedBusiness: any) {
+    this.corporateForm = this.formBuilder.group({
+      companyName: [selectedBusiness?.company_name],
+      companyID: [this.companyId],
+      businessName: [selectedBusiness?.business_name],
+      businessID: [selectedBusiness?.business_id],
+    });
+  }
+
+  getAnnualReturns(businessId: any, companyId: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getalluplaodedformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}`;
+    // this.apiUrl = `${environment.AUTHAPIURL}FormH/get-uploadedH1bybusinessId/${businessId}/bycompanyId/${this.companyId}`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      console.log("annualReturnsData: ", data);
+      this.annualReturnsData = data == null ? [] : data;
+      if (data?.length > 0) {
+        this.apidataEmpty = true;
+      }
+      this.ngxService.stop();
+    });
+  }
+
+  forwardSchedule(modal: any) {
+    this.showModal(modal);
+  }
+
+  fileFormH1(modal: any) {
+    this.showModal(modal);
+  }
+
+  showModal(modal: any) {
+    this.modalService.open(modal, this.modalOptions).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  postForwardSchedule(jsonData: any) {
+    this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules/forward";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
+        console.log("scheduleApiResponseData: ", data);
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.forwardScheduleForm.reset();
+          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
+            this.forwardScheduleForm.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+
+          this.ngxService.stop();
+          this.modalService.dismissAll();
+          this.getAnnualReturns(this.businessId, this.companyId);
+        } 
+        else {
+          this.ngxService.stop();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  
+  deleteAnnualReturn(taxpayerId: number) {
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/delete-TaxpayerH1bybusinessId/${this.businessId}/bycompanyId/${this.companyId}/bytaxpayerId/${taxpayerId}`;
 
     Swal.fire({
       title: "Are you sure?",
@@ -824,11 +900,8 @@ export class AnnualreturnsComponent implements OnInit {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        this.httpClient
-          .post<any>(this.apiUrl, obj, { headers: reqHeader })
-          .subscribe((data) => {
+        this.httpClient.delete<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
             console.log(data);
-
             if (data.status == true) {
               Swal.fire({
                 icon: "success",
@@ -837,9 +910,9 @@ export class AnnualreturnsComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1500,
               });
-
-              this.getAnnualReturns(this.businessId);
-            } else {
+              this.getAnnualReturns(this.businessId, this.companyId);
+            } 
+            else {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",

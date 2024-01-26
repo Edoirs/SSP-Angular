@@ -11,37 +11,40 @@ import Swal from 'sweetalert2';
 })
 export class LogoutComponent {
 
-  
-    apiUrl: any;
-  
-    constructor( private router: Router, private http: HttpClient, private ngxService: NgxUiLoaderService) { }
-  
-    ngOnInit(): void {
-      this.logOut();
-    }
-  
-    public logOut() {
-      //this.ngxService.start();
-  
-      // localStorage.clear();
-      Object.keys(localStorage)
-      .filter(x =>
-        x.startsWith('niswasec_'))
-      .forEach(x =>
-        localStorage.removeItem(x))
-      this.apiUrl = environment.AUTHAPIURL + "users/logout";
-      const reqHeader = new HttpHeaders({
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + localStorage.getItem("niswasec_access_token"),
-      });
-      
-      this.http.post<any>(this.apiUrl,  { headers: reqHeader }).subscribe((data) => {console.log(data);
-  
-  
-     });
+
+  apiUrl: any;
+
+  constructor(private router: Router, private http: HttpClient, private ngxService: NgxUiLoaderService) { }
+
+  ngOnInit(): void {
+    this.logOut();
+  }
+
+  public logOut() {
+    //this.ngxService.start();
+
     // localStorage.clear();
-    Object.keys(localStorage).filter(x =>
-      x.startsWith('niswasec_')).forEach(x => localStorage.removeItem(x))
+    // Object.keys(localStorage)
+    //   .filter(x =>
+    //     x.startsWith('niswasec_'))
+    //   .forEach(x =>
+    //     localStorage.removeItem(x))
+    
+    // this.apiUrl = environment.AUTHAPIURL + "users/logout";
+    // const reqHeader = new HttpHeaders({
+    //   "Content-Type": "application/json",
+    //   "Authorization": "Bearer " + localStorage.getItem("niswasec_access_token"),
+    // });
+
+    // this.http.post<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+    //   console.log(data);
+    // });
+
+    // localStorage.clear();
+    // Object.keys(localStorage).filter(x =>
+    //   x.startsWith('niswasec_')).forEach(x => localStorage.removeItem(x));
+
+    localStorage.clear();
     this.router.navigate(["/login"]);
   }
-  }
+}

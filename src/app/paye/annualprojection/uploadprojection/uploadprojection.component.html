@@ -13,8 +13,6 @@
         <div class="card card-secondary">
           <div class="card-header custome">
             <h3 class="card-title">List of Businesses</h3>
-  
-  
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -28,28 +26,30 @@
                     <th>S/N</th>
                     <th>Business ID</th>
                     <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
-                    <th>Address</th>
-                    <th>LGA</th>
-                    <th>View</th>
+                    <th>Business Address</th>
+                    <th>Upload</th>
+                    <th>File Form H3</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name}}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
-                    <td>{{ mydata.lga_name }}</td>
+                    <td>{{ mydata.businessID }}</td>
+                    <td>{{ mydata.businessName | titlecase }}</td>
+                    <td>{{ mydata.businessAddress ? mydata.businessAddress : 'N/A' }}</td>
   
                     <td title="View"><button class="btn btn-sm btn-outline-success"
-                        (click)="viewBusinessProjection(fileProjectionModal, mydata)"><i
-                          class="nav-icon fas fa-eye"></i>
-                      </button></td>
-  
+                        (click)="viewBusinessProjection(uploadProjectionModal, mydata)">
+                        <i class="nav-icon fas fa-upload"></i>
+                      </button>
+                    </td>
+                    <td title="File Form H3">
+                      <button class="btn btn-sm btn-outline-success" (click)="
+                            fileFormH3(fileFormH3Modal, mydata)
+                          ">
+                        <i class="nav-icon fas fa-eye"></i>
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -68,65 +68,118 @@
   </div>
   
   
-  <ng-template #fileProjectionModal let-modal>
-    <div class="card card-secondary">
-      <div class="card-header custome">
-        <h3 class="card-title">Upload Projection</h3>
-  
-      </div>
-      <!-- /.card-header -->
-      <div class="card-body">
-        <div class="modal-body">
-          <form [formGroup]="myForm" (ngSubmit)="submit()">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="myfile">Select File to Upload<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
-  
-                <div class="custom-file">
-                  <input formControlName="myfile" id="myfile" type="file" class="custom-file-input" (change)="onFileChange($event)"
-                  [ngClass]="{ 'is-invalid': submitted && myForm.controls['myfile'].errors }" accept=".xls,.xlsx" >
-                  <label class="custom-file-label" for="customFile">{{filePath == null ? 'Choose file(xlsx or xls)' : filePath}}</label>
-                </div>
-  
-                <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid" class="text-danger">
-                  <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
-                </div>
-  
-              </div>
-              <div class="form-group col-md-4 ml-5">
-                <label for="year">Projection Year<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
-                <input type="text" pattern="[^\s]+" formControlName="year" maxlength="4" class="form-control"
-                  placeholder="Projection Year Eg: 2019"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; myForm.controls['year'].errors }" />
-                <div *ngIf="submitted &amp;&amp; myForm.controls['year'].errors" class="text-danger">
-                  <div *ngIf="myForm.controls['year'].errors['required']">Projection Year is
-                    required</div>
-                  <div *ngIf="myForm.controls['year'].errors['minlength']">Projection Year must
-                    be at least 4 characters long.</div>
-                  <div *ngIf="myForm.controls['year'].errors['maxLength']">Projection Year must
-                    be 4 characters long.</div>
-                  <div *ngIf="myForm.controls['year'].errors['pattern']">Projection Year must be
-                    Number Only</div>
-                </div>
-              </div>
-  
+  <ng-template #uploadProjectionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Upload Projection</h4>
+  </div>
+
+    <div class="modal-body">
+      <form [formGroup]="myForm" (ngSubmit)="submit()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="myfile">Select File to Upload<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
+
+            <div class="custom-file">
+              <input formControlName="myfile" id="myfile" type="file" class="custom-file-input" (change)="onFileChange($event)"
+              [ngClass]="{ 'is-invalid': submitted && myForm.controls['myfile'].errors }" accept=".xls,.xlsx" >
+              <label class="custom-file-label" for="customFile">{{filePath == null ? 'Choose file(xlsx or xls)' : filePath}}</label>
             </div>
-  
-            <button  type="submit" [disabled]="file==null " class="btn btn button-login">Upload File</button>
-          </form>
-  
-          <div class="login-remeber">
-            <a href="{{sample_file}}" target="_blank">
-              Download employee template here</a>
+
+            <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid" class="text-danger">
+              <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
+            </div>
           </div>
+
+          <!-- <div class="form-group col-md-4 ml-5">
+            <label for="year">Projection Year<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
+            <input type="text" pattern="[^\s]+" formControlName="year" maxlength="4" class="form-control"
+              placeholder="Projection Year Eg: 2019"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; myForm.controls['year'].errors }" />
+            <div *ngIf="submitted &amp;&amp; myForm.controls['year'].errors" class="text-danger">
+              <div *ngIf="myForm.controls['year'].errors['required']">Projection Year is
+                required</div>
+              <div *ngIf="myForm.controls['year'].errors['minlength']">Projection Year must
+                be at least 4 characters long.</div>
+              <div *ngIf="myForm.controls['year'].errors['maxLength']">Projection Year must
+                be 4 characters long.</div>
+              <div *ngIf="myForm.controls['year'].errors['pattern']">Projection Year must be
+                Number Only</div>
+            </div>
+          </div> -->
         </div>
+
+        <button  type="submit" [disabled]="file==null " class="btn btn button-login">Upload File</button>
+      </form>
+
+      <div class="login-remeber">
+        <a href="{{sample_file}}" target="_blank">
+          Download employee template here</a>
       </div>
+    </div>
+
+    <div class="modal-footer ">
+      <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
+    </div>
+  </ng-template>
+
+  <ng-template #fileFormH3Modal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">File Form H3</h4>
+    </div>
   
-      <div class="card-footer ">
-        <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
+    <div class="modal-body">
+      <div class="container">
+        <form [formGroup]="fileFormH3Form" (ngSubmit)="onSubmitFileFormH3(fileFormH3Form.value)">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="scheduleYear">Filing Year</label>
+              <input
+                type="text"
+                formControlName="scheduleYear"
+                maxlength="4"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; fileFormH3Form.controls['scheduleYear'].errors }" />
+              <div
+                *ngIf="submitted &amp;&amp; fileFormH3Form.controls['scheduleYear'].errors"
+                class="text-danger">
+                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['required']">
+                  Filing Year is required
+                </div>
+                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['minlength']">
+                  Filing Year must be at least 4 characters long.
+                </div>
+                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['maxlength']">
+                  Filing Year must be 4 characters long.
+                </div>
+                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['pattern']">
+                  Filing Year must be Number Only
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn button-login" style="border: 1px solid;">
+            <!-- <i class="fas fa-save"></i> Save Schedule -->
+            <i class="fas fa-save"></i> File Form H3
+          </button>
+        </form>       
       </div>
-    </div> 
-  
-  
+    </div>
+
+    <div class="modal-footer">
+      <!-- <button
+        type="button"
+        (click)="postApproveProjection()"
+        class="btn btn button-login mr-3">
+        Approve
+      </button> -->
+
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')">
+        Cancel
+      </button>
+    </div>
   </ng-template>
   

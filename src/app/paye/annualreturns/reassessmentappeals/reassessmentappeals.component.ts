@@ -10,11 +10,9 @@ import {
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-// import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 import { DatePipe } from "@angular/common";
-// import { TRANSITION_END_EVENTS } from "src/assets/plugins/filterizr/utils";
-// import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -56,6 +54,7 @@ export class ReassessmentappealsComponent implements OnInit {
   businessesData: any;
   selectedBusiness: any;
   businessId: any;
+  companyId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,8 +65,7 @@ export class ReassessmentappealsComponent implements OnInit {
     private datepipe: DatePipe,
     private sess: SessionService,
     private modalService: NgbModal,
-    // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit(searchObj = null): void {
@@ -75,17 +73,12 @@ export class ReassessmentappealsComponent implements OnInit {
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
     this.getBusinesses();
+
     this.initialiseSearch();
-
-    // if (searchObj == null || searchObj == "") {
-    //   this.reassessmentAppealsData = "";
-    //   this.initialiseForms();
-    //   this.getReassessmentAppeals(this.businessId);
-    // } else {
-    //   this.getReassessmentAppeals(this.businessId);
-    // }
-
     this.roleID = localStorage.getItem("role_id");
 
     if (this.roleID === "5") {
@@ -494,8 +487,8 @@ export class ReassessmentappealsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -506,7 +499,7 @@ export class ReassessmentappealsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 

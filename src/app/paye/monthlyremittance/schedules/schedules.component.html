@@ -40,9 +40,9 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
+                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
+                    <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
+                    <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
                     <td>
                       {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
                     </td>
@@ -73,96 +73,101 @@
   </div>
   
   <ng-template #schedulesModal let-modal>
-    <div class="card card-secondary">
-      <div class="card-header custome">
-        <h3 class="card-title">Monthly Remittance Schedules</h3>
-      </div>
+    <div class="modal-header">
+      <!-- <div class="card-header custome"> -->
+        <h4 class="modal-title" id="modal-basic-title">Monthly Remittance Schedules</h4>
+      <!-- </div> -->
       <!-- /.card-header -->
-      <div class="card-body">
-        <div class="over-auto">
-          <table
-            class="table table-bordered table-condensed"
-            *ngIf="schedulesData"
-            datatable
-            [dtOptions]="dtOptions"
-            width="100%"
-          >
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Forwarded To</th>
-                <th>Date Forwarded</th>
-                <th>Tax Month</th>
-                <th>Tax Year</th>
-                <!-- <th style="width: 8%">Gross Income</th> -->
-                <th>Assessment Status</th>
-                <!-- <th>Status</th> -->
-                <th>Date Created</th>
-                <th>View</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let mydata of schedulesData; index as i">
-                <td>{{ i + 1 }}</td>
-                <td>
-                  <p
-                    [ngClass]="{
-                      'text-danger': mydata.forwarded_to == 0,
-                      'text-primary': mydata.forwarded_to == 1,
-                      'text-success': mydata.forwarded_to == 2
-                    }"
-                  >
-                    {{
-                      mydata.forwarded_to == 0
-                        ? "Schedule Not forwarded"
-                        : mydata.forwarded_to == 1
-                        ? "Sent back to Editor"
-                        : "Forwarded to Manager"
-                    }}
-                  </p>
-                </td>
-  
-                <td>{{ mydata.date_forwarded | date: "dd MMM yyyy" }}</td>
-                <td>{{ mydata.due_date | date: "MMMM" }}</td>
-                <td>{{ mydata.due_date | date: "y" }}</td>
-                <td>
-                  <p
-                    [ngClass]="{
-                      'text-danger': mydata.assessment_status == 0,
-                      'text-success': mydata.assessment_status == 1
-                    }"
-                  >
-                    {{
-                      mydata.assessment_status == 0 ? "Still Open" : "Case Closed"
-                    }}
-                  </p>
-                </td>
-                <!-- <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td> -->
-  
-                <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
-                <td title="View">
-                  <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="viewSchedule(mymodal, mydata)"
-                  >
-                    <i class="nav-icon fas fa-eye"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
       <!-- /.card-body -->
-      <div class="card-footer">
-        <button
-          type="button"
-          class="btn btn-outline-dark button-login"
-          (click)="modal.close('Save click')"
+    </div>
+
+    <div class="modal-body">
+      <div class="container">
+        <table
+          class="table table-bordered table-condensed"
+          *ngIf="schedulesData"
+          datatable
+          [dtOptions]="dtOptions"
+          width="100%"
         >
-          Ok
-        </button>
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th>Forwarded To</th>
+              <th>Date Forwarded</th>
+              <th>Tax Month</th>
+              <th>Tax Year</th>
+              <!-- <th style="width: 8%">Gross Income</th> -->
+              <th>Assessment Status</th>
+              <!-- <th>Status</th> -->
+              <th>Date Created</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mydata of schedulesData; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <p
+                  [ngClass]="{
+                    'text-danger': mydata.forwarded_to == 0,
+                    'text-primary': mydata.forwarded_to == 1,
+                    'text-success': mydata.forwarded_to == 2
+                  }"
+                >
+                  {{
+                    mydata.forwarded_to == 0
+                      ? "Schedule Not forwarded"
+                      : mydata.forwarded_to == 1
+                      ? "Sent back to Editor"
+                      : "Forwarded to Manager"
+                  }}
+                </p>
+              </td>
+
+              <td>{{ mydata.date_forwarded | date: "dd MMM yyyy" }}</td>
+              <td>{{ mydata.due_date | date: "MMMM" }}</td>
+              <td>{{ mydata.due_date | date: "y" }}</td>
+              <td>
+                <p
+                  [ngClass]="{
+                    'text-danger': mydata.assessment_status == 0,
+                    'text-primary': mydata.assessment_status == 1,
+                    'text-success': mydata.assessment_status == 2
+                  }"
+                >
+                  {{
+                    mydata.assessment_status == 0 ? "Still Open" : "Case Closed"
+                  }}
+                </p>
+              </td>
+              <!-- <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td> -->
+
+              <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
+              <td title="View">
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="viewSchedule(mymodal, mydata)"
+                >
+                  <i class="nav-icon fas fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <!-- <div class="over-auto">
+
+      </div> -->
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')">
+        Ok
+      </button>
     </div>
   </ng-template>
   

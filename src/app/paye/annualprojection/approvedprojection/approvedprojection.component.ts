@@ -11,6 +11,7 @@ import {
 import { SessionService } from "src/app/session.service";
 import { environment } from "src/environments/environment";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -31,13 +32,19 @@ export class ApprovedprojectionComponent implements OnInit {
   modalOptions!: NgbModalOptions;
   closeResult!: string;
   projectionData: any;
-  apisingledata: any;
+  fileDetailsData: any;
   companyName: any;
   projectionYear: any;
   title = "PAYE - Filed Projections Report";
   businessesData: any;
   selectedBusiness: any;
   businessId: any;
+  companyId: any;
+  // annualReturnsData: any;
+  apidataEmpty: boolean = false;
+  assessmentsData: any;
+  singleAssessmentData: any;
+  assessmentEmployeesData: any;
 
   constructor(
     private titleService: Title,
@@ -48,13 +55,12 @@ export class ApprovedprojectionComponent implements OnInit {
     private modalService: NgbModal,
     private sess: SessionService,
     // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   ngOnInit() {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
-    // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     this.modalOptions = {
       backdrop: true,
@@ -65,11 +71,11 @@ export class ApprovedprojectionComponent implements OnInit {
 
     this.roleID = localStorage.getItem("role_id");
 
-    // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-    //   this.router.navigate(["/dashboard"]);
-    // }
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    this.getBusinesses();
+    // this.getApprovedProjectionRecord();
 
-    this.getApprovedProjectionRecord();
     this.dtOptions = {
       paging: true,
       pagingType: "full_numbers",
@@ -172,51 +178,87 @@ export class ApprovedprojectionComponent implements OnInit {
     };
   }
 
-  getApprovedProjectionRecord() {
-    this.apiUrl = environment.AUTHAPIURL + "projections/approvedRecord";
+  getBusinesses() {
+    // const obj = {};
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    const obj = {
-      corporate_id: this.corporateId,
-      // business_id: this.businessId,
-    };
-    // this.ngxService.start();
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+      console.log("BusinessData: ", data);
 
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log(data);
-        // this.ngxService.stop();
-        this.apidata = data.status == false ? [] : data.response;
-      });
+      this.businessesData = data.data;
+      this.ngxService.stop();
+    });
   }
 
-  getApprovedProjectionList(year: any, annualPID: any, businessId: any) {
-    this.apiUrl = environment.AUTHAPIURL + "projections/approvedList";
 
+  // viewProjection(modal: any, data: any) {
+  //   this.businessId = data.business_id;
+  //   // this.companyId = data.company_id;
+  //   this.getAssessments();
+  //   this.showModal(modal);
+  // }
+
+  // getAssessments() {
+  //   this.ngxService.start();
+  //   this.apiUrl = `${environment.AUTHAPIURL}FormH/get-FiledH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}`;
+
+  //   const reqHeader = new HttpHeaders({
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + localStorage.getItem("access_token"),
+  //   });
+
+  //   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
+  //     console.log("assessmentsData: ", data);
+  //     this.assessmentsData = data == null ? [] : data;
+  //     this.ngxService.stop();
+  //   });
+  // }
+
+  // viewAssessment(modal: any, selectedAssessment: any) {
+  //   console.log("selectedAssessment: ", selectedAssessment);
+  //   this.showModal(modal);
+  //   this.getSingleAssessment(selectedAssessment.id);
+  // }
+  
+  // getSingleAssessment(assessmentId: any) {
+  //   this.ngxService.start();
+  //   this.apiUrl = `${environment.AUTHAPIURL}FormH/get-FiledH3byId/${assessmentId}`;
+
+  //   const reqHeader = new HttpHeaders({
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + localStorage.getItem("access_token"),
+  //   });
+
+  //   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
+  //     console.log("singleAssessmentData: ", data);
+  //     this.assessmentEmployeesData = data == null ? [] : data;
+  //     this.ngxService.stop();
+  //   });
+  // }
+
+ 
+  getApprovedProjections(businessId: any, year: any) {
+    this.apiUrl = environment.AUTHAPIURL + "projections/approvedList";
+        this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`;
+
+    this.ngxService.start();
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
-    const obj = {
-      projection_year: year,
-      annual_projection_id: annualPID,
-      corporate_id: this.corporateId,
-      business_id: businessId,
-    };
-    // this.ngxService.start();
-    this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
-      .subscribe((data) => {
+
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
         console.log(data);
-        // this.ngxService.stop();
-        this.apisingledata = data.data;
-        this.companyName = this.apisingledata[0].company_name;
-        this.projectionYear = this.apisingledata[0].projection_year;
+        this.ngxService.stop();
+        this.fileDetailsData = data.data;
+        // this.companyName = this.fileDetailsData[0].company_name;
+        // this.projectionYear = this.fileDetailsData[0].projection_year;
       });
   }
 
@@ -241,41 +283,37 @@ export class ApprovedprojectionComponent implements OnInit {
     }
   }
 
-  viewProjection(modal: any, selectedProjection: any) {
-    console.log("selectedEmployee: ", selectedProjection);
-    this.getSingleProjection(selectedProjection.projection_id);
+  // viewProjection(modal: any, selectedProjection: any) {
+  //   console.log("selectedEmployee: ", selectedProjection);
+  //   this.getSingleProjection(selectedProjection.projection_id);
+  //   this.showModal(modal);
+  // }
+
+  viewApprovedProjection(modal: any, data: any) {
+    console.log("selectedEmployee: ", data);
+    this.getApprovedProjections(data.businessId, data.taxYear);
     this.showModal(modal);
   }
 
-  viewApprovedProjection(modal: any, selectedProjection: any) {
-    console.log("selectedEmployee: ", selectedProjection);
-    this.getApprovedProjectionList(
-      selectedProjection.projection_year,
-      selectedProjection.annual_projection_id,
-      selectedProjection.business_primary_id
-    );
-    this.showModal(modal);
-  }
+  // getSingleProjection(projectionId: any) {
+  //   // this.ngxService.start();
+  //   this.apiUrl =
+  //     environment.AUTHAPIURL + "projections/approved/" + projectionId;
 
-  getSingleProjection(projectionId: any) {
-    // this.ngxService.start();
-    this.apiUrl =
-      environment.AUTHAPIURL + "projections/approved/" + projectionId;
+  //   const reqHeader = new HttpHeaders({
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + localStorage.getItem("access_token"),
+  //   });
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
-
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
-        console.log("singleProjectionData: ", data);
-        this.projectionData = data.data;
-        console.log(this.projectionData);
-        this.selectedProjection = data.response;
-        // this.ngxService.stop();
-      });
-  }
+  //   this.httpClient
+  //     .get<any>(this.apiUrl, { headers: reqHeader })
+  //     .subscribe((data) => {
+  //       console.log("singleProjectionData: ", data);
+  //       this.projectionData = data.data;
+  //       console.log(this.projectionData);
+  //       this.selectedProjection = data.response;
+  //       // this.ngxService.stop();
+  //     });
+  // }
 
 }

@@ -26,27 +26,37 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    <th>Tax Year</th>
                     <th>Business ID</th>
                     <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
-                    <th>Address</th>
-                    <th>LGA</th>
-                    <th >View</th>
+                    <th>Taxpayer ID</th>
+                    <th>Sum Assessment</th>
+                    <th>H1 Tax Paid</th>
+                    <th>Under Remittance</th>
+                    <th>Total Under Remittance</th>
+                    <th>Status</th>
+                    <th>Date Filled</th>
+                    <th>Date Reassessed</th>
+                    <th>View & Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
+                    <td>{{ '2024' }}</td>
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name}}</td>
-                    <td>{{ mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address }}</td>
                     <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
-  
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+
                     <td title="View"><button class="btn btn-sm btn-outline-success"
-                        (click)="viewBusinessAnnualReturn(annualReturnModal, mydata)"><i class="nav-icon fas fa-eye"></i>
+                        (click)="viewBusinessAnnualReturn(assessmentDetailsModal, mydata)"><i class="nav-icon fas fa-eye"></i>
                       </button></td>
   
                   </tr>
@@ -65,210 +75,342 @@
     </section>
     <!-- /.content -->
   </div>
-  
-  
-  <ng-template #annualReturnModal let-modal >
-    <div class="card card-secondary">
-        <div class="card-header custome">
-            <h3 class="card-title">Filed Annual Return</h3>
+    
+  <ng-template #assessmentDetailsModal let-modal>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Assessment Details</h4>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <div class="over-auto">
-                <table class="table table-bordered table-condensed" *ngIf="assessmentsData;" datatable
-                    [dtOptions]="dtOptions" width="100%">
-                    <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Date Filed</th>
-                            <!-- <th>Annual Return ID</th> -->
-                            <th>Tax Year</th>
-                            <th>Annual Tax Paid (₦)</th>
-                            <!-- <th>Status</th> -->
-                            <th>Revenue Approval Status</th>
-                            <!-- <th>Corporate ID</th> -->
-                            <th>View</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let mydata of assessmentsData; index as i">
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ mydata.created_at | date:'dd MMM yyyy' }}</td>
-                            <!-- <td>{{ mydata.annual_return_id }}</td> -->
-                            <td>{{ mydata.due_date | date:'MMMM, y' }}</td>
-                            <td>{{ mydata.annual_tax_due | number }}</td>
-                            <!-- <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td> -->
-                            <!-- <td>{{ mydata.revenue_board_approval_status == 0 ? "In Progress" : "Approved" }}</td> -->
-                            <td><p [ngClass]="{'text-warning': mydata.revenue_board_approval_status == 0, 'text-success': mydata.revenue_board_approval_status == 1, 'text-primary': mydata.revenue_board_approval_status == 2} ">
-                              {{ mydata.revenue_board_approval_status == 0 ? "Pending" : mydata.revenue_board_approval_status == 1 ? "Closed" : "Reassessed" }}
-                            </p></td>
-                            <!-- <td>{{ mydata.corporate_id }}</td> -->
-  
-                            <td style="width: 10%" title="View">
-                                <button class="btn btn-sm btn-outline-success"
-                                    (click)="viewAssessment(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i>
-  
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-  
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
-        </div>
-    </div>
-  </ng-template>
-  
-  <ng-template #mymodal let-modal>
-      <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Assessment Details</h4>
-          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-              </button> -->
-      </div>
-  
-      <div class="modal-body">
-          <div class="container">
-  
-              <div class="form-row">
-                  <div class="col-md-12">
-                      <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
-                          style="height:90px; width: 130px;"> -->
-                  </div>
-              </div>
-  
-              <form [formGroup]="assessmentForm">
-  
+    
+        <div class="modal-body">
+            <div class="container">
+                <form [formGroup]="assessmentForm">
                   <div class="form-row">
                       <div class="form-group col-md-6">
-                          <label for="annualReturnID">Annual Return ID</label>
-                          <input type="text" formControlName="annualReturnID" class="form-control" [attr.disabled]="true"
-                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['annualReturnID'].errors }" />
+                          <label for="businessName">Business Name</label>
+                          <input type="text" formControlName="businessName" class="form-control" [attr.disabled]="true"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['businessName'].errors }" />
                       </div>
   
                       <div class="form-group col-md-6">
-                        <label for="annualTaxDue">Annual Tax Paid</label>
-                        <input type="text" formControlName="annualTaxDue" class="form-control" [attr.disabled]="true"
-                            [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['annualTaxDue'].errors }" />
+                        <label for="businessRIN">Business RIN</label>
+                        <input type="text" formControlName="businessRIN" class="form-control" [attr.disabled]="true"
+                            [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['businessRIN'].errors }" />
                     </div>
-  
                   </div>
   
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="dateGenerated">Date Generated</label>
+                        <input type="text" formControlName="dateGenerated" class="form-control" [attr.disabled]="true"
+                            [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['dateGenerated'].errors }" />
+                    </div>
+                
+                    <div class="form-group col-md-6">
+                        <label for="dueDate">Due Date</label>
+                        <input type="text" formControlName="dueDate" class="form-control" [attr.disabled]="true"
+                            [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['dueDate'].errors }" />
+                    </div>                
+                </div>
+  
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="annualReturnID">Annual Return ID</label>
+                            <input type="text" formControlName="annualReturnID" class="form-control" [attr.disabled]="true"
+                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['annualReturnID'].errors }" />
+                        </div>
+    
+                        <div class="form-group col-md-6">
+                          <label for="assessmentStatus">Assessment Status</label>
+                          <input type="text" formControlName="assessmentStatus" class="form-control" [attr.disabled]="true"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['assessmentStatus'].errors }" />
+                      </div>
+                    </div>
+    
                   <div class="form-row">
                       <div class="form-group col-md-6">
                           <label for="approvalStatus">Approval Status</label>
                           <input type="text" formControlName="approvalStatus" class="form-control" [attr.disabled]="true"
                               [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['approvalStatus'].errors }" />
                       </div>
-  
-  
-                  </div>
-              </form>
-  
-              <div>
-                  <table class="table table-bordered table-condensed" *ngIf="assessmentEmployeesData;" datatable
-                      [dtOptions]="dtOptions" width="100%">
-                      <thead>
-                          <tr>
-                              <th>S/N</th>
-                              <!-- <th>Date Created</th> -->
-                              <th>Taxpayer ID</th>
-  
-                              <th>Full Name</th>
-                              <!-- <th>First Name</th> -->
-                              <!-- <th>Middle Name</th> -->
-                              <!-- <th>Surname</th> -->
-                              <!-- <th>Designation</th> -->
-                              <th>Nationality</th>
-  
-                              <!-- <th>Monthly Income (₦)</th> -->
-                              <th>Total Income (₦)</th>
-                              <!-- <th>Annual Gross Income (₦)</th> -->
-                              <th>Annual Tax Paid (₦)</th>
-                              <th>Expected Annual Tax (₦)</th>
-                              <th>Under Remitted Tax (₦)</th>
-                              <th>Month(s)</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let mydata of assessmentEmployeesData; index as i">
-                              <td>{{ i + 1 }}</td>
-                              <!-- <td>{{ mydata.created_at | date}}</td> -->
-                              <td>{{ mydata.taxpayer_id}}</td>
-  
-                              <td>{{ mydata.first_name | titlecase }} {{ mydata.middle_name | titlecase }} {{ mydata.surname | titlecase }}</td>
-                              <!-- <td>{{ mydata.first_name | titlecase }}</td> -->
-                              <!-- <td>{{ mydata.middle_name | titlecase }}</td> -->
-                              <!-- <td>{{ mydata.surname | titlecase }}</td> -->
-                              <!-- <td>{{ mydata.designation | titlecase }}</td> -->
-                              <td>{{ mydata.nationality | titlecase }}</td>
-  
-                              <!-- <td>{{ mydata.monthly_income | number }}</td> -->
-                              <!-- <td>{{ mydata.annual_gross_income | number }}</td> -->
-                              <td>{{ mydata.total_income | number:'1.2-2' }}</td>
-                              <td>{{ mydata.annual_tax_paid | number:'1.2-2' }}</td>
-                              <td>{{ mydata.expected_annual_tax | number:'1.2-2' }}</td>
-                              <td>{{ mydata.under_remittance | number:'1.2-2' }}</td>
-                              <td>{{ mydata.months }}</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-  
-          </div>
-      </div>
-  
-      <div class="modal-footer">
-          <!-- <button type="submit" (click)="generateReassessment(reassessmentmodal)" class="btn btn button-login">Generate Reassessment</button> -->
-          <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
-      </div>
-  </ng-template>
-  
-  
-  <ng-template #reassessmentmodal let-modal>
-      <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Generate Reassessment</h4>
-          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-              </button> -->
-      </div>
-  
-      <div class="modal-body">
-          <div class="container">
-  
-              <div class="form-row">
-                  <div class="col-md-12">
-                      <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
-                          style="height:90px; width: 130px;"> -->
-                  </div>
-              </div>
-  
-              <form [formGroup]="reassessmentForm" (ngSubmit)="onSubmitReassessment(reassessmentForm.value)">
-                  <div class="form-row">
+                  
                       <div class="form-group col-md-6">
-                          <label for="comment">Comment</label>
-                          <textarea type="text" formControlName="comment" class="form-control" rows="4"
-                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['comment'].errors }"></textarea>
-                          <div *ngIf="submitted &amp;&amp; reassessmentForm.controls['comment'].errors"
-                              class="text-danger">
-                              <div *ngIf="reassessmentForm.controls['comment'].errors['required']">Comment is required
-                              </div>
-                          </div>
-                      </div>
-  
+                          <label for="annualTaxDue">Annual Tax Paid</label>
+                          <input type="text" formControlName="annualTaxDue" class="form-control" [attr.disabled]="true"
+                              [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['annualTaxDue'].errors }" />
+                      </div>                
                   </div>
+                </form>
+    
+                <div>
+                    <table class="table table-bordered table-condensed" *ngIf="assessmentEmployeesData;" datatable
+                        [dtOptions]="dtOptions" width="100%">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Taxpayer ID</th>
+                                <th>Full Name</th>
+                                <th>Form Annual Gross  (₦)</th>
+    
+                                <th>Schedule Annual Gross (₦)</th>
+                                <th>Schedule Tax (₦)</th>
   
-                  <!-- <button type="submit" class="btn btn button-login">Generate Reassessment</button> -->
-              </form>
+                                <th>Annual Tax Paid (₦)</th>
+                                <th>Tax Difference (₦)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mydata of assessmentEmployeesData; index as i">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ mydata.taxpayer_id}}</td>
+    
+                                <td>{{ mydata.first_name | titlecase }} {{ mydata.middle_name | titlecase }} {{ mydata.surname | titlecase }}</td>
+                                <td>{{ mydata.nationality | titlecase }}</td>
+                                <td>{{ mydata.total_income | number:'1.2-2' }}</td>
+                                <td>{{ mydata.annual_tax_paid | number:'1.2-2' }}</td>
+                                <td>{{ mydata.expected_annual_tax | number:'1.2-2' }}</td>
+                                <td>{{ mydata.under_remittance | number:'1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+      <div>
+        <div class="modal-header">
+            <span>
+              <h4 class="modal-title" id="modal-basic-title">Reassessment Details</h4>
+            </span>
+            <!-- <span *ngIf="managerRole || editorRole">
+              <button
+                type="button"
+                *ngIf="processInvoiceBtn"
+                (click)="processInvoice()"
+                class="btn btn-outline-dark button-login float-right"
+                style="margin: 10px 10px"
+                printSectionId="printAssessment">
+                <i class="fas fa-file-invoice"></i> Generate Invoice
+              </button>
+              <a
+                type="button"
+                *ngIf="previewInvoice"
+                href="{{ apiInvoice }}"
+                target="_blank"
+                class="btn mr-3 btn-outline-dark button-login float-right"
+                style="margin: 10px 5px"
+                printSectionId="printInvoice"
+                ngxPrint><i class="fas fa-file-alt"></i> Print Invoice</a>
+              <a
+                type="button"
+                *ngIf="paymentUrl"
+                class="btn btn-outline-dark button-login mr-3"
+                target="_blank"
+                (click)="payAssessmentPaymentItems(payAssessmentItemsModal)"
+                ><i class="fas fa-credit-card"></i> Make Payment</a> 
+            </span> -->
           </div>
+        
+          <div class="modal-body">
+            <div class="container">  
+              <form [formGroup]="reassessmentForm">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="dateGenerated">Date Generated</label>
+                    <input
+                      type="text"
+                      formControlName="dateGenerated"
+                      class="form-control"
+                      [attr.disabled]="true"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['dateGenerated'].errors }"
+                    />
+                  </div>
+        
+                  <div class="form-group col-md-6">
+                    <label for="paymentStatus">Payment Status</label>
+                    <input
+                      type="text"
+                      formControlName="paymentStatus"
+                      class="form-control"
+                      [attr.disabled]="true"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; reassessmentForm.controls['paymentStatus'].errors }" />
+                  </div>
+                </div>          
+              </form>
+        
+              <div>
+                <div class="mt-5">
+                  <h4 class="text-center">Reassessment Items</h4>
+                </div>
+                <table class="table table-bordered table-condensed" *ngIf="reassessmentAppealsData">
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th style="max-width: 200px">Service Description</th>
+                      <th>Amount(₦)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let mydata of reassessmentAppealsData; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td style="max-width: 200px">{{ mydata.item_description }}</td>
+                      <td>{{ mydata.amount | number:'1.2-2' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      
       </div>
   
-      <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
-      </div>
+    <div class="modal-footer">
+        <button type="submit" *ngIf="objectDisable" (click)="generateAppeal(appealmodal)" class="btn btn button-login">
+            <i class="far fa-share-square"></i> Objection Reassessment
+        </button>
+    
+        <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
+    </div>
   </ng-template>
+    
+  <ng-template #appealmodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Generate Objection</h4>
+    </div>
   
+    <div class="modal-body">
+      <div class="container">  
+        <form [formGroup]="appealForm" (ngSubmit)="onSubmitAppeal(appealForm.value)">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="invoiceNumber">Invoice Number</label>
+              <input
+                type="text"
+                formControlName="invoiceNumber"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['invoiceNumber'].errors['required']">
+                  Invoice Number is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="date">Date</label>
+              <input
+                type="text"
+                formControlName="date"
+                class="form-control"
+                [attr.disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['date'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['date'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['date'].errors['required']">
+                  Reason is required
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="messageTitle">Reason for Objection<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label>
+              <input
+                type="text"
+                formControlName="messageTitle"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['messageTitle'].errors }"
+              />
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['messageTitle'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['messageTitle'].errors['required']">
+                  Reason is required
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-group col-md-6">
+              <label for="fileInput"
+                >Select File to Upload (jpeg, jpg, png)<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label
+              >
+              <div class="custom-file">
+                <input
+                  formControlName="myfile"
+                  multiple
+                  id="myfile"
+                  type="file"
+                  class="custom-file-input"
+                  (change)="onFileChange($event)"
+                  [ngClass]="{
+                    'is-invalid': submitted && appealForm.controls['myfile'].errors
+                  }"
+                  accept=".png,.jpg,.jpeg"
+                />
+                <label class="custom-file-label" for="customFile">{{
+                  filePath == []
+                    ? "Choose file (jpeg, jpg, png)"
+                    : filePath.join(", ")
+                }}</label>
+              </div>
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['myfile'].touched && appealForm.controls['myfile'].invalid"
+                class="text-danger">
+                <div *ngIf="appealForm.controls['myfile'].errors!['required']">File is required.</div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="message">Objection Description<sup style="font-weight: 800"
+                class="font-wegiht-bold text-danger">*</sup></label>
+              <textarea
+                type="text"
+                formControlName="message"
+                class="form-control"
+                rows="4"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['message'].errors }"
+              ></textarea>
+              <div
+                *ngIf="submitted &amp;&amp; appealForm.controls['message'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="appealForm.controls['message'].errors['required']">
+                  Objection Desription is required
+                </div>
+              </div>
+            </div>          
+          </div>
+  
+          <button type="submit" class="btn btn button-login">
+            <i class="far fa-share-square"></i> Generate Objection
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        (click)="modal.close('Save click')"
+      >
+        Ok
+      </button>
+    </div>
+  </ng-template>

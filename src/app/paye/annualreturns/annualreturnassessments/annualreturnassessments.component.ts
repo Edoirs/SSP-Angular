@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { DatePipe } from "@angular/common";
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 import { Title } from "@angular/platform-browser";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -25,9 +26,12 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   apiUrl!: string;
   assessmentsData: any;
   assessmentEmployeesData: any;
+  reassessmentAppealsData: any;
   myForm!: FormGroup;
   assessmentForm!: FormGroup;
   reassessmentForm!: FormGroup;
+  appealForm!: FormGroup;
+
   totalGrossIncome: any;
   totalMonthlyTaxDue: any;
   objectDisable!: boolean;
@@ -43,6 +47,10 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   modalOptions!: NgbModalOptions;
   closeResult!: string;
   businessId: any;
+  companyId: any = 1;
+  files: any;
+  filePath: string[] = [];
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,16 +61,24 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     private datepipe: DatePipe,
     // private component: DashboardComponent,
     private sess: SessionService,
-    private modalService: NgbModal
-
+    private modalService: NgbModal,
+    private ngxService: NgxUiLoaderService
   ) { }
+
+  get f() {
+    return this.appealForm.controls;
+  }
 
   ngOnInit(): void {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
+
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
     this.getBusinesses();
+
     // this.getAllMonths();
     this.initialiseForms();
     console.log("token: ", localStorage.getItem("access_token"));
@@ -143,12 +159,22 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       annualReturnID: [""],
       assessmentStatus: [""],
       approvalStatus: [""],
-      corporateId: [""],
+      businessName: [""],
+      businessRIN: [""],
       annualTaxDue: [""],
     });
 
     this.reassessmentForm = this.formBuilder.group({
-      comment: [""],
+      paymentStatus: [""],
+      dateGenerated: [""],
+    });
+
+    this.appealForm = this.formBuilder.group({
+      message: ["", [Validators.required]],
+      messageTitle: ["", [Validators.required]],
+      invoiceNumber: [""],
+      date: [""],
+      myfile: ["", Validators.required],
     });
   }
 
@@ -170,62 +196,48 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   getMonthName(monthId: string): string {
-    var monthName = this.months.filter((m) => m.monthId == monthId)[0]
-      .monthName;
+    var monthName = this.months.filter((m) => m.monthId == monthId)[0].monthName;
     return monthName;
   }
 
-  getAssessments(businessId: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "annual-assessments";
-
-    let corporateId = localStorage.getItem("corporate_id");
-
-    const objData = {
-      corporate_ids: [corporateId],
-      business_id: businessId,
-    };
+  getAssessments() {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/get-FiledH1bybusinessId/${this.businessId}/bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, objData, { headers: reqHeader })
-      .subscribe((data: any) => {
-        console.log("assessmentsData: ", data);
-        this.assessmentsData =
-          data.response == null ? [] : data.data.reverse();
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
+      console.log("assessmentsData: ", data);
+      this.assessmentsData = data == null ? [] : data;
+      this.ngxService.stop();
+    });
   }
 
   viewAssessment(modal: any, selectedAssessment: any) {
     console.log("selectedAssessment: ", selectedAssessment);
     this.assessmentId = selectedAssessment.id;
     this.showModal(modal);
-
     this.getSingleAssessment(selectedAssessment.id);
   }
 
   loadSelectedAssessmentData(selectedAssessment: any) {
-    let assessmentStatus =
-      selectedAssessment.status == 0 ? "In Active" : "Active";
-    let approvalStatus =
-      selectedAssessment.revenue_board_approval_status == 0
-        ? "In Progress"
-        : "Approved";
+    let assessmentStatus = selectedAssessment.status == 0 ? "In Active" : "Active";
+    let approvalStatus = selectedAssessment.revenue_board_approval_status == 0 ? "In Progress" : "Approved";
 
     this.date = new Date(selectedAssessment.created_at);
     let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+
     this.assessmentForm = this.formBuilder.group({
       dateGenerated: [latest_date],
       dueDate: [selectedAssessment.due_date],
       annualReturnID: [selectedAssessment.annual_return_id],
       assessmentStatus: [assessmentStatus],
       approvalStatus: [approvalStatus],
-      corporateId: [selectedAssessment.corporate_id],
+      businessName: [selectedAssessment.corporate_id],
+      businessRIN: [selectedAssessment.corporate_id],
       annualTaxDue: [selectedAssessment.annual_tax_due],
     });
 
@@ -233,23 +245,21 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   getSingleAssessment(assessmentId: any) {
-    // this.ngxService.start();
-    this.apiUrl =
-      environment.AUTHAPIURL + "annual-return-assessments/" + assessmentId;
+    this.ngxService.start();
+    // this.apiUrl = environment.AUTHAPIURL + "annual-return-assessments/" + assessmentId;
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/get-FiledH1byId/${assessmentId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data: any) => {
-        console.log("singleAssessmentData: ", data);
-        this.selectedAssessment = data.response;
-        this.loadSelectedAssessmentData(this.selectedAssessment);
-        // this.ngxService.stop();
-      });
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
+      console.log("singleAssessmentData: ", data);
+      this.selectedAssessment = data.response;
+      this.loadSelectedAssessmentData(this.selectedAssessment);
+      this.ngxService.stop();
+    });
   }
 
   generateReassessment(modal: any) {
@@ -287,9 +297,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
         console.log("reassessmentApiResponseData: ", data);
 
         if (data.status === true) {
@@ -311,7 +319,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
             timerProgressBar: true,
           });
 
-          this.getAssessments(this.businessId);
+          this.getAssessments();
           // this.ngxService.stop();
           this.modalService.dismissAll();
         } else {
@@ -334,8 +342,8 @@ export class AnnualreturnassessmentsComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -346,12 +354,12 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       console.log("BusinessData: ", data);
 
       this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const reqHeader = new HttpHeaders({
@@ -359,21 +367,155 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
-      .subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
         console.log("singleBusinessData: ", data);
-
         this.selectedBusiness = data.response;
-        // this.ngxService.stop();
+        this.ngxService.stop();
       });
   }
 
   viewBusinessAnnualReturn(modal: any, data: any) {
-    this.businessId = data.id;
-    this.getAssessments(this.businessId);
+    // this.businessId = data.id;
+    this.businessId = data.business_id;
+    // this.companyId = data.company_id;
+    this.getAssessments();
     this.showModal(modal);
   }
+
+  generateAppeal(modal: any) {
+    this.showModal(modal);
+  }
+
+  onSubmitAppeal(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.appealForm.invalid) {
+      return;
+    }
+
+    // let corporateId = localStorage.getItem('admin_corporate_id');
+    this.apiUrl = environment.AUTHAPIURL + "file/uploadMultiple";
+
+    const formData = new FormData();
+    for (var i = 0; i < this.files.length; i++) {
+      formData.append("file[]", this.files[i].file);
+    }
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    };
+
+    // this.ngxService.start();
+
+    this.httpClient.post<any>(this.apiUrl, formData, config).subscribe((data) => {
+        console.log(data);
+        if (data.status === true) {
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
+          });
+
+          this.files = [];
+          this.filePath = [];
+
+          const obj = {
+            message: formAllData.message,
+            message_title: formAllData.messageTitle,
+            // reassessment_id: this.reassessmentId,
+            // corporate_id: this.corporateId,
+            business_id: this.businessId,
+            comment: formAllData.message,
+            // submitted: true,
+            file_url: data.response.url,
+          };
+
+          console.log("appealFormFormData: ", obj);
+          this.postGenerateAppeal(obj);
+        } 
+        else {
+          // this.ngxService.stop();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  postGenerateAppeal(jsonData: any) {
+    // this.ngxService.start();
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
+        console.log("appealApiResponseData: ", data);
+
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.appealForm.reset();
+          Object.keys(this.appealForm.controls).forEach((key) => {
+            this.appealForm.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+
+          // this.getReassessments(this.businessId);
+          // this.ngxService.stop();
+          this.modalService.dismissAll();
+        } 
+        else {
+          // this.ngxService.stop();
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
+        }
+      });
+  }
+
+  onFileChange(event: any) {
+    // if (event.target.files.length > 0) {
+    //   const file = event.target.files[0];
+    //   this.file = event.target.files[0];
+    //   this.appealForm.get("myfile").setValue(file);
+    // }
+    for (var i = 0; i < event.target.files.length; i++) {
+      this.filePath.push(event.target.files[i].name);
+
+      const fileObj = {
+        filename: event.target.files[i].name,
+        file: event.target.files[i],
+      };
+      this.files.push(fileObj);
+    }
+  }
+
 
   showModal(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(

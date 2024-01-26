@@ -10,58 +10,49 @@
       <!-- SELECT2 EXAMPLE -->
       <div class="card card-secondary">
         <div class="card-header custome">
-          <h3 class="card-title">List of Businesses</h3>
+          <h3 class="card-title">Form H1 Schedules</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <div class="over-auto">
             <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-            <table
-              class="table table-bordered table-condensed"
-              *ngIf="businessesData"
-              datatable
-              [dtOptions]="dtOptions"
-              width="100%"
-            >
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Business ID</th>
-                  <th>Business Name</th>
-                  <th>Sector</th>
-                  <th>Subsector</th>
-                  <th>Address</th>
-                  <th>Employees Count</th>
-                  <th>LGA</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let mydata of businessesData; index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ mydata.business_id }}</td>
-                  <td>{{ mydata.business_name | titlecase }}</td>
-                  <td>{{ mydata.industry_sector_name }}</td>
-                  <td>{{ mydata.industry_subsector_name }}</td>
-                  <td>{{ mydata.business_address }}</td>
-                  <td>{{ mydata.employees_count }}</td>
-                  <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                  </td>
-
-                  <td title="View">
-                    <button
-                      class="btn btn-sm btn-outline-success"
-                      (click)="
-                        viewBusinessAnnualReturn(annualReturnModal, mydata)
-                      "
-                    >
-                      <i class="nav-icon fas fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <table class="table table-bordered table-condensed" *ngIf="schedulesData" datatable [dtOptions]="dtOptions"
+            width="100%">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Business ID</th>
+                <th>Business Name</th>
+                <th>Taxpayer ID</th>
+                <th>Employee Count</th>
+                <th>Tax Year</th>
+                <th>Forwarded To</th>
+                <th>Date Forwarded</th>
+                <th>Due Date</th>
+                <th>Annual Return Status</th>
+                <th>View & Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of schedulesData; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ mydata.businessId }}</td>
+                <td>{{ mydata.businessName | titlecase }}</td>
+                <td>{{ mydata.taxPayerId == null ? "N/A" : mydata.taxPayerId }}</td>
+                <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
+                <td>{{ mydata.taxYear }}</td>
+                <td>{{ mydata.noOfEmployees }}</td>
+                <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
+                <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>   
+                <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
+                <td style="width: 10%" title="View">
+                  <button class="btn btn-sm btn-outline-success" (click)="viewSchedule(mymodal, mydata)">
+                    <i class="nav-icon fas fa-eye"></i>
+                  </button>
+                </td>              
+              </tr>
+            </tbody>
+          </table>
           </div>
         </div>
         <!-- /.card-body -->
@@ -141,10 +132,7 @@
               <!-- <td>{{ mydata.corporate_id }}</td> -->
 
               <td style="width: 10%" title="View">
-                <button
-                  class="btn btn-sm btn-outline-success"
-                  (click)="viewSchedule(mymodal, mydata)"
-                >
+                <button class="btn btn-sm btn-outline-success" (click)="viewSchedule(mymodal, mydata)">
                   <i class="nav-icon fas fa-eye"></i>
                 </button>
               </td>
@@ -169,21 +157,16 @@
 <ng-template #mymodal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Schedule Details</h4>
-    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-              <span aria-hidden="true">&times;</span>
-            </button> -->
   </div>
 
   <div class="modal-body">
     <div class="container">
       <div class="form-row">
         <div class="col-md-12">
-          <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
-                        style="height:90px; width: 130px;"> -->
         </div>
       </div>
 
-      <form [formGroup]="scheduleForm">
+      <form [formGroup]="scheduleForm" style="margin-bottom: 20px;">
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="forwardedTo">Forwarded To</label>
@@ -191,7 +174,7 @@
               type="text"
               formControlName="forwardedTo"
               class="form-control"
-              [attr.disabled]="true"
+              [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; scheduleForm.controls['forwardedTo'].errors }"
             />
           </div>
@@ -202,7 +185,7 @@
               type="text"
               formControlName="annualReturnStatus"
               class="form-control"
-              [attr.disabled]="true"
+              [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; scheduleForm.controls['annualReturnStatus'].errors }"
             />
           </div>
@@ -215,18 +198,18 @@
               type="text"
               formControlName="dateForwarded"
               class="form-control"
-              [attr.disabled]="true"
+              [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; scheduleForm.controls['dateForwarded'].errors }"
             />
           </div>
 
           <div class="form-group col-md-6">
-            <label for="dueDate">Assessment Year</label>
+            <label for="dueDate">Due Date</label>
             <input
               type="text"
               formControlName="dueDate"
               class="form-control"
-              [attr.disabled]="true"
+              [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; scheduleForm.controls['dueDate'].errors }"
             />
           </div>
@@ -234,105 +217,77 @@
       </form>
 
       <div>
-        <table
-          class="table table-bordered table-condensed"
-          *ngIf="scheduleEmployeesData"
-          datatable
-          [dtOptions]="dtOptions"
-          width="100%"
-        >
-          <thead>
-            <tr>
-              <th>S/N</th>
-              <th>Taxpayer ID</th>
-              <th>First Name</th>
-              <th>Middle Name</th>
-              <th>Surname</th>
-              <th>Designation</th>
-              <th>Nationality</th>
-              <th>Monthly Income</th>
-              <th>Annual Gross Income</th>
-              <!-- <th style="width: 8%">Gross Income</th> -->
-              <th>Annual Tax Paid (₦)</th>
-              <th>Month(s)</th>
-              <th *ngIf="showEditEmployee">Edit</th>
-              <th *ngIf="showEditEmployee">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mydata of scheduleEmployeesData; index as i">
-              <td>{{ i + 1 }}</td>
-              <td>{{ mydata.taxpayer_id }}</td>
-              <td>{{ mydata.first_name | titlecase }}</td>
-              <td>
-                {{ mydata.middle_name ? (mydata.middle_name | titlecase) : 'N/A'}}
-              </td>
+        <table class="table table-bordered table-condensed" *ngIf="annualReturnsData" datatable [dtOptions]="dtOptions"
+        width="100%">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Taxpayer ID</th>
+            <th>Firstname</th>
+            <!-- <th>Surname</th> -->
 
-              <td>{{ mydata.surname | titlecase }}</td>
-              <td>{{ mydata.designation | titlecase }}</td>
-              <td>{{ mydata.nationality | titlecase }}</td>
-              <td>
-                {{ mydata.monthly_income ? (mydata.monthly_income | number) : 'N/A'}}
-              </td>
-              <td>{{ mydata.annual_gross_income | number }}</td>
-              <td>{{ mydata.annual_tax_paid | number }}</td>
-              <td>{{ mydata.months }}</td>
-              <td *ngIf="showEditEmployee">
-                <button
-                  class="btn btn-sm btn-outline-success"
-                  [disabled]="assessmentGenerated"
-                  (click)="editEmployee(annualreturnmodal, mydata)"
-                >
-                  <i class="nav-icon fas fa-edit"></i> Edit
-                </button>
-              </td>
-              <td *ngIf="showEditEmployee">
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="deleteAnnualReturn(mydata.id)"
-                >
-                  <i class="nav-icon far fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <th>Designation</th>
+            <th>Nationality</th>
+            <th>Total Income (₦)</th>
+            <th>Annual Tax Paid (₦)</th>
+            <th>Months</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mydata of annualReturnsData; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ mydata.rin }}</td>
+            <td>
+              {{ mydata.fullName == null ? "N/A" : mydata.fullName | titlecase }}
+            </td>
+            <!-- <td>
+              {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
+            </td> -->
+
+            <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td>
+            <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
+
+            <td>{{ mydata.pension | number }}</td>
+            <td>{{ mydata.annualtaxpaid | number }}</td>
+            <td>{{ mydata.totalmonthspaid | number }}</td>
+          </tr>
+        </tbody>
+      </table>
       </div>
     </div>
   </div>
 
   <div class="modal-footer">
-    <button
+    <!-- <button
       *ngIf="managerRole"
       type="submit"
       (click)="forwardSchedule(schedulemodal)"
       [disabled]="forwardedToEditor || isFiled == 1"
-      class="btn btn button-login"
-    >
+      class="btn btn button-login" style="border: 1px solid;">
       <i class="fas fa-backward"></i> Back to Editor
     </button>
+
     <button
       type="submit"
       (click)="forwardSchedule(schedulemodal)"
       [disabled]="forwardedToManager || isFiled == 1"
-      class="btn btn button-login"
-    >
+      class="btn btn button-login" style="border: 1px solid;">
       <i class="fas fa-forward"></i> Forward to Manager
-    </button>
-    <button
+    </button> -->
+
+    <!-- <button
       *ngIf="showGenerateAssessment"
       [disabled]="isFiled == 1"
       type="submit"
       (click)="generateAssessment(assessmentmodal)"
-      class="btn btn button-login"
-    >
+      class="btn btn button-login" style="border: 1px solid;">
       <i class="far fa-share-square"></i> File Annual Return
-    </button>
+    </button> -->
+
     <button
       type="button"
       class="btn btn-outline-dark button-login"
-      (click)="modal.close('Save click')"
-    >
+      (click)="modal.close('Save click')">
       Ok
     </button>
   </div>
@@ -418,20 +373,15 @@
   </div>
 </ng-template>
 
-<ng-template #assessmentmodal let-modal>
+<ng-template #fileAnnualReturnModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">File Annual Return</h4>
-    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-              <span aria-hidden="true">&times;</span>
-            </button> -->
   </div>
 
   <div class="modal-body">
     <div class="container">
       <div class="form-row">
         <div class="col-md-12">
-          <!-- <img src="assets/dist/img/login-user-img.png" class="rounded float-left" alt="User Image"
-                        style="height:90px; width: 130px;"> -->
         </div>
       </div>
 
@@ -480,10 +430,16 @@
         <button
           type="submit"
           [disabled]="isFiled == 1"
-          class="btn btn button-login"
-        >
+          class="btn btn button-login">
           <i class="far fa-share-square"></i> File Annual Return
         </button>
+
+        <!-- <button
+        type="submit"
+        [disabled]="isFiled == 1"
+        class="btn btn button-login">
+        <i class="far fa-share-square"></i> File Annual Return
+      </button> -->
       </form>
     </div>
   </div>

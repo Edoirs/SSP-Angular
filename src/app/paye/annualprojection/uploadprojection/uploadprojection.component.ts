@@ -13,6 +13,7 @@ import { SessionService } from "src/app/session.service";
 import { UtilityService } from "src/app/utility.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -43,6 +44,9 @@ export class UploadprojectionComponent implements OnInit {
   modalOptions!: NgbModalOptions;
   closeResult!: string;
   businessId: any;
+  companyId: any;
+  fileFormH3Form!: FormGroup;
+
 
   constructor(
     private httpClient: HttpClient,
@@ -54,7 +58,7 @@ export class UploadprojectionComponent implements OnInit {
     private sess: SessionService,
     private utilityService: UtilityService,
     // private spinnerService: Ng4LoadingSpinnerService
-
+    private ngxService: NgxUiLoaderService
   ) { }
 
   get f() {
@@ -66,16 +70,27 @@ export class UploadprojectionComponent implements OnInit {
     // this.component.checkIfEditorExist();
     this.sess.checkLogin();
     // this.ngxService.start();
-    this.getBusinesses();
 
+    this.companyId = localStorage.getItem("companyId");
+    console.log("companyId: ", this.companyId);
+    this.getBusinesses();
     this.roleID = localStorage.getItem("role_id");
-    // if (this.roleID != 6) {
-    //   this.router.navigate(["/dashboard"]);
-    // }
 
     this.myForm = this.formBuilder.group({
       myfile: ["", Validators.required],
-      year: [
+      // year: [
+      //   "",
+      //   [
+      //     Validators.required,
+      //     Validators.pattern(/^[0-9\s]*$/),
+      //     Validators.minLength(4),
+      //     Validators.maxLength(4),
+      //   ],
+      // ],
+    });
+
+    this.fileFormH3Form = this.formBuilder.group({
+      scheduleYear: [
         "",
         [
           Validators.required,
@@ -84,6 +99,7 @@ export class UploadprojectionComponent implements OnInit {
           Validators.maxLength(4),
         ],
       ],
+      // scheduleMonthId: ['', Validators.required],
     });
     // this.ngxService.stop();
 
@@ -107,27 +123,17 @@ export class UploadprojectionComponent implements OnInit {
       processing: true,
       ordering: false,
       info: true,
-      //   columnDefs: [
-      //     {
-      //         //targets: [ 10 ],
-      //         visible: false,
-      //         searchable: false
-      //     }
-      // ],
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
       buttons: [
-        // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
-        // tslint:disable-next-line: max-line-length
         {
           extend: "csv",
           className: "btn btn-outline-dark export-btn",
           text: '<i class="fas fa-file-csv"> CSV</i>',
           exportOptions: { columns: [0, 1, 2, 3, 4, 5] },
         },
-        // tslint:disable-next-line: max-line-length
         {
           extend: "excel",
           className: "btn btn-outline-dark export-btn",
@@ -160,8 +166,8 @@ export class UploadprojectionComponent implements OnInit {
 
   getBusinesses() {
     const obj = {};
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/getall";
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallformh3bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -171,13 +177,13 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.data;
-      // this.ngxService.stop();
+      this.businessesData = data;
+      this.ngxService.stop();
     });
   }
 
   getSingleBusiness(businessId: any) {
-    // this.ngxService.start();
+    this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
 
     const config = {
@@ -191,12 +197,14 @@ export class UploadprojectionComponent implements OnInit {
       console.log("singleBusinessData: ", data);
 
       this.selectedBusiness = data.response;
-      // this.ngxService.stop();
+      this.ngxService.stop();
     });
   }
 
   viewBusinessProjection(modal: any, data: any) {
-    this.businessId = data.id;
+    this.businessId = data.business_id;
+    // this.companyId = data.company_id;
+    // this.businessId = data.id;
     this.showModal(modal);
   }
 
@@ -215,18 +223,15 @@ export class UploadprojectionComponent implements OnInit {
     };
 
     const formData = new FormData();
-    // formData.append('employees', this.myForm.get('fileSource').value);
-    formData.append("projection", this.myForm.get("myfile")?.value);
-    formData.append("projection_year", this.myForm.get("year")?.value);
-    formData.append("business_id", this.businessId);
-    this.apiUrl = environment.AUTHAPIURL;
-    // this.ngxService.start();
+    formData.append("File", this.myForm.get("myfile")?.value);
+    // formData.append("year", this.myForm.get("year")?.value);
+    formData.append('CompanyId', this.companyId);
+    formData.append("BusinessId", this.businessId);
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/UploadH3`;
 
-    this.httpClient
-      .post<any>(this.apiUrl + "projections", formData, config)
-      .subscribe((res) => {
+    this.ngxService.start();
+    this.httpClient.post<any>(this.apiUrl, formData, config).subscribe((res) => {
         console.log(res);
-
         // Clear form Value Without any Error
         this.myForm.reset();
         Object.keys(this.myForm.controls).forEach((key) => {
@@ -234,8 +239,8 @@ export class UploadprojectionComponent implements OnInit {
         });
 
         if (res.status == true) {
-          // this.ngxService.stop();
-
+          this.ngxService.stop();
+          this.modalService.dismissAll();
           this.myForm.reset();
           Object.keys(this.myForm.controls).forEach((key) => {
             this.myForm.get(key)?.setErrors(null);
@@ -253,70 +258,94 @@ export class UploadprojectionComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true,
           });
-        } else {
-          // this.ngxService.stop();
-          const regex = /_/g;
-
-          if (res.response != null) {
-            for (const key of Object.keys(res.response)) {
-              const row = res.response[key];
-              console.log("row: ", row);
-
-              for (const error of row) {
-                console.log(key.replace(regex, " ") + ":", error);
-                let err = key.replace(regex, " " + ":");
-                this.errorRow =
-                  err.toUpperCase() +
-                  " " +
-                  (key.replace(regex, " ") + ":", error);
-                this.rows.push(this.errorRow);
-                console.log(this.errorRow);
-              }
-            }
-          }
-
-          console.log("errors" + this.rows);
+        } 
+        else {
+          this.ngxService.stop();
           this.reload();
-          let apiReponse = res.response;
-          if (typeof apiReponse === "object" && apiReponse !== null) {
-            if (this.rows.length < 12) {
-              console.log("its less than 12");
-              Swal.fire({
-                icon: "warning",
-                title: res.message,
-                html:
-                  '<div class="text-left ml-3 "> ERROR: ' +
-                  this.rows.join("<br /> ERROR: ") +
-                  "</div>",
-                // text: this.rows.join('\n'),
-                showConfirmButton: true,
-              });
-            } else {
-              Swal.fire({
-                icon: "warning",
-                title: res.message,
-                html:
-                  '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                  this.rows.join("<br /> ERROR: ") +
-                  "</div>",
-                // text: this.rows.join('\n'),
-                showConfirmButton: true,
-              });
-            }
-          } else {
-            if (res.response.includes("failure")) {
-              console.log("its includes failure");
+            Swal.fire({
+              icon: "error",
+              title: "Validation not passed",
+              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
+              text: res.message,
+              showConfirmButton: true,
+              timer: 5000,
+              timerProgressBar: true,
+          });
+        }
+      });
+  }
 
-              Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: res.message,
-                showConfirmButton: true,
-                timer: 5000,
-                timerProgressBar: true,
-              });
-            }
-          }
+  fileFormH3(modal: any, data: any) {
+    this.businessId = data.business_id;
+    this.showModal(modal);
+  }
+
+  onSubmitFileFormH3(formAllData: any) {
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.fileFormH3Form.invalid) {
+      return;
+    }
+
+    // let corporateId = localStorage.getItem("corporate_id");
+    const obj = {
+      taxYear: formAllData.scheduleYear,
+      businessId: this.businessId,
+      companyId: this.companyId,
+    };
+
+    console.log("scheduleFormData: ", obj);
+    // this.postForwardSchedule(obj);
+    this.postFileFormH3(obj);
+  }
+
+  postFileFormH3(jsonData: any) {
+    this.ngxService.start();
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/FileFormH3`;
+
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
+        console.log("scheduleApiResponseData: ", data);
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.fileFormH3Form.reset();
+          Object.keys(this.fileFormH3Form.controls).forEach((key) => {
+            this.fileFormH3Form.get(key)?.setErrors(null);
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+
+          this.ngxService.stop();
+          this.modalService.dismissAll();
+          // this.getAnnualReturns(this.businessId, this.companyId);
+        } 
+        else {
+          this.ngxService.stop();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          });
         }
       });
   }
