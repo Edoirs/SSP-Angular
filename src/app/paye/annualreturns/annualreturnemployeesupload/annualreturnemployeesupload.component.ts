@@ -242,7 +242,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   loadUploadCorporateForm(selectedBusiness: any) {
     this.uploadCorporateForm = this.formBuilder.group({
       businessName: [selectedBusiness?.businessName],
-      businessID: [selectedBusiness?.businessID],
+      businessID: [selectedBusiness?.businessRIN],
     });
   }
 
@@ -338,6 +338,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         if (res.status == true) {
           this.ngxService.stop();
           this.modalService.dismissAll();
+          this.getBusinesses();
 
           this.myForm.reset();
           Object.keys(this.myForm.controls).forEach((key) => {
@@ -446,7 +447,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       companyName: [this.companyName],
       companyID: [this.companyId],
       businessName: [selectedBusiness?.businessName],
-      businessID: [selectedBusiness?.businessID],
+      businessID: [selectedBusiness?.businessRIN],
     });
   }
 

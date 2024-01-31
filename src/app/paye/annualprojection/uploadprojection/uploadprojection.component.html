@@ -27,7 +27,9 @@
                     <th>Business ID</th>
                     <th>Business Name</th>
                     <th>Business Address</th>
+                    <th>No of Employees</th>
                     <th>Upload</th>
+                    <th>Delete</th>
                     <th>File Form H3</th>
                   </tr>
                 </thead>
@@ -37,10 +39,17 @@
                     <td>{{ mydata.businessID }}</td>
                     <td>{{ mydata.businessName | titlecase }}</td>
                     <td>{{ mydata.businessAddress ? mydata.businessAddress : 'N/A' }}</td>
-  
+                    <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
+
                     <td title="View"><button class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessProjection(uploadProjectionModal, mydata)">
                         <i class="nav-icon fas fa-upload"></i>
+                      </button>
+                    </td>
+                    <td title="View">
+                      <button class="btn btn-sm btn-outline-success" (click)="
+                            deleteBusiness(mydata)">
+                        <i class="nav-icon far fa-trash-alt"></i>
                       </button>
                     </td>
                     <td title="File Form H3">

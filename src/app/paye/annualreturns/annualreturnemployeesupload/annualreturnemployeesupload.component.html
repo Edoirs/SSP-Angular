@@ -21,7 +21,7 @@
               <thead>
                 <tr>
                   <th>S/N</th>
-                  <th>Business ID</th>
+                  <th>Business RIN </th>
                   <th>Business Name</th>
                   <th>Business Address</th>
                   <th>No of Employees</th>
@@ -89,7 +89,7 @@
             <label for="businessName" class="input-label pull-left">Business Name
             </label>
             <input type="text" formControlName="businessName" class="form-control" id="businessName"
-              placeholder="Business Name" [attr.disabled]="true"
+              placeholder="Business Name" [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors }" />
 
             <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors" class="text-danger">
@@ -97,10 +97,10 @@
           </div>
 
           <div class="form-group col-md-6">
-            <label for="businessID" class="input-label pull-left">Business ID
+            <label for="businessID" class="input-label pull-left">Business RIN
             </label>
-            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.disabled]="true"
-              placeholder="Business ID"
+            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.readonly]="true"
+              placeholder="Business RIN"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors }" />
             <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors" class="text-danger">
             </div>
@@ -237,10 +237,10 @@
           </div>
 
           <div class="form-group col-md-3">
-            <label for="businessID" class="input-label pull-left">Business ID
+            <label for="businessID" class="input-label pull-left">Business RIN
             </label>
             <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.disabled]="true"
-              placeholder="Business ID"
+              placeholder="Business RIN"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessID'].errors }" />
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessID'].errors" class="text-danger">
             </div>
@@ -258,9 +258,9 @@
           </div>
 
           <div class="form-group col-md-3">
-            <label for="companyID" class="input-label pull-left">Company ID
+            <label for="companyID" class="input-label pull-left">Company RIN
             </label>
-            <input type="text" formControlName="companyID" class="form-control" id="companyID" placeholder="Company ID"
+            <input type="text" formControlName="companyID" class="form-control" id="companyID" placeholder="Company RIN"
               [attr.disabled]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyID'].errors }" />
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyID'].errors" class="text-danger">
@@ -301,10 +301,10 @@
               {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
             </td>
 
-            <td>{{ mydata.designation == null ? "N/A" : mydata.designation | titlecase }}</td>
+            <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td>
             <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
 
-            <td>{{ mydata.pension | number }}</td>
+            <td>{{ mydata.rent + mydata.transport + mydata.basic + mydata.otherIncome | number }}</td>
             <td>{{ mydata.annualtaxpaid | number }}</td>
             <td>{{ mydata.totalmonthspaid | number }}</td>
             <!-- <td>{{ mydata.lifeassurance | number }}</td> -->

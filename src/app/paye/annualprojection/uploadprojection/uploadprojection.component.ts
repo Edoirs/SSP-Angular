@@ -275,6 +275,57 @@ export class UploadprojectionComponent implements OnInit {
       });
   }
 
+  deleteBusiness(data: any) {
+    this.businessId = data.businessID;
+    this.deleteEmployeesRecords();
+    // this.showModal(modal);
+  }
+
+  deleteEmployeesRecords() {
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}`;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.value) {
+        this.httpClient.delete<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+            console.log(data);
+            if (data.status == true) {
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Employees Successfully Deleted",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              this.getBusinesses();
+            } 
+            else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+                showConfirmButton: true,
+                timer: 5000,
+              });
+            }
+          });
+      }
+    });
+  }
+
+
   fileFormH3(modal: any, data: any) {
     this.businessId = data.business_id;
     this.showModal(modal);
