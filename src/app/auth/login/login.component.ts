@@ -166,8 +166,9 @@ export class LoginComponent {
         let loginData = data.data;
         localStorage.setItem("access_token", loginData?.token);
         localStorage.setItem("email", loginData?.email);
-        localStorage.setItem("name", loginData?.name);
+        localStorage.setItem("companyName", loginData?.name);
         localStorage.setItem("companyId", loginData?.companyId);
+        localStorage.setItem("companyRIN", loginData?.comanyRin);
         this.companyId = formAllData.companyId;
         // this.goToOtp();
         this.router.navigate(["/dashboard"])

@@ -276,6 +276,16 @@ export class UtilityService {
     return grossIncomeIncorrectDA;
   }
 
+  calculateAnnualGross(selectedForm: any) {
+    let bi = Number(selectedForm.get("rent").value);
+    let ei = Number(selectedForm.get("transport").value);
+    let cf = Number(selectedForm.get("basicIncome").value);
+    let oi = Number(selectedForm.get("otherIncome").value);
+
+    let totalIncome = bi + ei + cf + oi;
+      selectedForm.controls["annualGrossIncome"].setValue(totalIncome);
+  }
+
   getTaxOfficeById(taxOfficeId: any) {
     if (taxOfficeId == null) {
       return "NOT UNDER ANY TAX OFFICE";

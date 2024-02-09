@@ -375,9 +375,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   viewBusinessAnnualReturn(modal: any, data: any) {
-    // this.businessId = data.id;
     this.businessId = data.business_id;
-    // this.companyId = data.company_id;
     this.getAssessments();
     this.showModal(modal);
   }

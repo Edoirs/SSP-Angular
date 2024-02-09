@@ -276,7 +276,7 @@
         <thead>
           <tr>
             <th>S/N</th>
-            <th>Taxpayer ID</th>
+            <th>Taxpayer RIN</th>
             <th>Firstname</th>
             <th>Surname</th>
 
@@ -353,7 +353,7 @@
       <form [formGroup]="annualReturnForm" (ngSubmit)="onSubmitAnnualReturn(annualReturnForm.value)">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="taxPayerID">Taxpayer ID</label>
+            <label for="taxPayerID">Taxpayer RIN</label>
             <input type="text" formControlName="taxPayerID" class="form-control" [attr.disabled]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors }" />
             <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors" class="text-danger">
@@ -365,7 +365,7 @@
             <label for="basicIncome">Basic Income<sup style="font-weight: 800"
                 class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
-            <input type="text" formControlName="basicIncome" class="form-control" (keyup)="calculateTotalIncome($event)"
+            <input type="text" formControlName="basicIncome" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="Basic Income"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors }" />
             <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors" class="text-danger">
@@ -403,7 +403,7 @@
           <div class="form-group col-md-6">
             <label for="rent">Rent</label>
             <input type="text" formControlName="rent" class="form-control" placeholder="Rent"
-              (keyup)="calculateTotalIncome($event)"
+              (keyup)="calculateAnnualGross($event)"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['rent'].errors }" />
             <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['rent'].errors" class="text-danger">
               <!-- <div *ngIf="annualReturnForm.controls.rent.errors['required']">
@@ -438,7 +438,7 @@
           <div class="form-group col-md-6">
             <label for="transport">Transport
             </label>
-            <input type="text" formControlName="transport" class="form-control" (keyup)="calculateTotalIncome($event)"
+            <input type="text" formControlName="transport" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="transport"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['transport'].errors }" />
             <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['transport'].errors" class="text-danger">
@@ -475,7 +475,7 @@
           <div class="form-group col-md-6">
             <label for="otherIncome">Other Income
             </label>
-            <input type="text" formControlName="otherIncome" class="form-control" (keyup)="calculateTotalIncome($event)"
+            <input type="text" formControlName="otherIncome" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="Other Income"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors }" />
             <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors" class="text-danger">
@@ -547,7 +547,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <!-- <div class="form-group col-md-6">
             <label for="monthlyIncome">Monthly Income (₦)
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
@@ -561,7 +561,7 @@
                 Monthly Income must be Number Only
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="form-group col-md-6">
             <label for="annualGrossIncome">Annual Gross (₦)

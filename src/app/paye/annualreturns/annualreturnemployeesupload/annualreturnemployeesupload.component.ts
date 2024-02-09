@@ -63,6 +63,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   selectedScheduleRecordId: any;
   disableEmployeeControl: any = false;
   companyName: any;
+  companyRIN: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -94,6 +95,9 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.companyName = localStorage.getItem("companyName");
     console.log("companyName: ", this.companyName);
+
+    this.companyRIN = localStorage.getItem("companyRIN");
+    console.log("companyRIN: ", this.companyRIN);
 
     this.getBusinesses();
     this.roleID = localStorage.getItem("role_id");
@@ -193,7 +197,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     });
 
     this.uploadCorporateForm = this.formBuilder.group({
-      companyName: [""],
+      businessName: [""],
       companyID: [""],
     });
   }
@@ -445,7 +449,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   loadSelectedBusinessData(selectedBusiness: any) {
     this.corporateForm = this.formBuilder.group({
       companyName: [this.companyName],
-      companyID: [this.companyId],
+      companyID: [this.companyRIN],
       businessName: [selectedBusiness?.businessName],
       businessID: [selectedBusiness?.businessRIN],
     });
@@ -453,6 +457,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   getAnnualReturns(businessId: any, companyId: any) {
     this.ngxService.start();
+    this.annualReturnsData = "";
     this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getalluplaodedformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}`;
     // this.apiUrl = `${environment.AUTHAPIURL}FormH/get-uploadedH1bybusinessId/${businessId}/bycompanyId/${this.companyId}`;
 
@@ -463,10 +468,15 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("annualReturnsData: ", data);
-      this.annualReturnsData = data == null ? [] : data;
+      this.annualReturnsData = data;
+
       if (data?.length > 0) {
         this.apidataEmpty = true;
       }
+      else {
+        this.apidataEmpty = false;
+      }
+
       this.ngxService.stop();
     });
   }
@@ -483,9 +493,10 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.phoneNumber = selectedAnnualReturn.phonenumber;
     this.totalMonthsPaid = selectedAnnualReturn.totalmonthspaid;
     this.CRA = selectedAnnualReturn.consolidatedreliefallowancecra;
+    let annualGross = selectedAnnualReturn.rent + selectedAnnualReturn.basic + selectedAnnualReturn.transport + selectedAnnualReturn.otherIncome;
 
     this.annualReturnForm = this.formBuilder.group({
-      taxPayerID: [selectedAnnualReturn.taxPayerId],
+      taxPayerID: [selectedAnnualReturn.rin],
 
       basicIncome: [
         selectedAnnualReturn.basic,
@@ -524,12 +535,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)],
       ],
 
-      monthlyIncome: [
-        selectedAnnualReturn.totalmonthspaid,
-        [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
-      ],
+      // monthlyIncome: [
+      //   selectedAnnualReturn.totalmonthspaid,
+      //   [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
+      // ],
       annualGrossIncome: [
-        selectedAnnualReturn.annual_gross_income,
+        annualGross,
         [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
       ],
       annualTaxPaid: [
@@ -537,7 +548,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         [Validators.required, Validators.pattern(/^[0-9\s]*$/)],
       ],
       months: [
-        selectedAnnualReturn.months,
+        selectedAnnualReturn.totalmonthspaid,
         [
           Validators.required,
           Validators.pattern(/^[0-9\s]*$/),
@@ -583,7 +594,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     }
 
     const obj = {
-      taxPayerId: formAllData.taxPayerID,
+      // taxPayerId: formAllData.taxPayerID,
       basic: formAllData.basicIncome,
       rent: formAllData.rent,
       transport: formAllData.transport,
@@ -594,7 +605,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       nhis: formAllData.NHIS,
       nhf: formAllData.NHF,
       lifeassurance: formAllData.lifeAssurance,
-      monthly_income: formAllData.monthlyIncome,
+      // monthly_income: formAllData.monthlyIncome,
       annual_gross_income: formAllData.annualGrossIncome,
       // annual_tax_paid: formAllData.annualTaxPaid,
       months: formAllData.months,
@@ -623,7 +634,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   postUpdateAnnualReturn(jsonData: any) {
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH/update-TaxpayerH1`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/update-TaxpayerH1`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -722,6 +733,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     //   );
     // }
   }
+
   calculateTotalIncome(event: any) {
 
   //   if (this.annualReturnForm.valid) {
@@ -734,6 +746,19 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   //     );
   //   }
   }
+
+  calculateAnnualGross(event: any) {
+      if (this.annualReturnForm.valid) {
+        this.utilityService.calculateAnnualGross(
+          this.annualReturnForm
+        );
+      } 
+      // else {
+      //   this.utilityService.calculateTotalIncome(
+      //     this.addEmployeeForm
+      //   );
+      // }
+    }
 
   onFileChange(event: any) {
     if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {

@@ -340,14 +340,16 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
     this.getAnnualReturns(selectedSchedule.businessId, selectedSchedule.taxYear);
 
-    let status = selectedSchedule.filedStatus == "1" ? "Filed" : selectedSchedule.filedStatus == "2" ? "Approved" : "Rejected";
+    let filedStatus = selectedSchedule.filedStatus.trim();
+    let status = filedStatus == "1" ? "Filed" : filedStatus == "2" ? "Approved" : "Rejected";
     let dateForwarded = this.datepipe.transform(selectedSchedule.datetcreated, "dd MMM yyyy");
+    let dateDue = this.datepipe.transform(selectedSchedule.dueDate, "dd MMM yyyy");
 
     this.scheduleForm = this.formBuilder.group({
       forwardedTo: ["Forwarded to Manager"],
       annualReturnStatus: [status],
       dateForwarded: [dateForwarded],
-      dueDate: [selectedSchedule.dueDate],
+      dueDate: [dateDue],
     });
   }
 
@@ -388,8 +390,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
-    // this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh3WithcompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -415,7 +416,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("singleBusinessData: ", data);
-      this.selectedBusiness = data.response;
+      this.selectedBusiness = data;
       this.ngxService.stop();
     });
   }
@@ -429,8 +430,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   getSchedules() {
     const obj = {};
     this.ngxService.start();
-    // this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh3WithcompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",

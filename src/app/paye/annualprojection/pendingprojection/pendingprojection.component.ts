@@ -179,7 +179,7 @@ export class PendingprojectionComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallformh3WithcompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -189,13 +189,13 @@ export class PendingprojectionComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data.data;
+      this.businessesData = data;
       this.ngxService.stop();
     });
   }
 
   viewBusinessProjection(modal: any, data: any) {
-    this.businessId = data.business_id;
+    this.businessId = data.businessID;
     // this.companyId = data.company_id;
     this.getAnnualReturns(this.businessId, this.companyId);
     this.showModal(modal);

@@ -20,7 +20,7 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Business ID</th>
+                    <th>Business RIN</th>
                     <th>Business Name</th>
                     <th>Annual Projection ID</th>
                     <th>Company Name</th>
@@ -33,8 +33,8 @@
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
+                    <td>{{ mydata.businessRIN }}</td>
+                    <td>{{ mydata.businessName | titlecase }}</td>
                     <td>{{ mydata.industry_sector_name ? mydata.industry_sector_name : 'N/A' }}</td>
                     <td>{{ mydata.industry_subsector_name ? mydata.industry_subsector_name : 'N/A' }}</td>
                     <td>{{ mydata.business_address ? mydata.business_address : 'N/A' }}</td>

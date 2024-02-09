@@ -21,9 +21,9 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Business ID</th>
+                <th>Business RIN</th>
                 <th>Business Name</th>
-                <th>Taxpayer ID</th>
+                <th>Taxpayer RIN</th>
                 <th>Employee Count</th>
                 <th>Tax Year</th>
                 <th>Forwarded To</th>
@@ -38,7 +38,7 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{ mydata.businessId }}</td>
                 <td>{{ mydata.businessName | titlecase }}</td>
-                <td>{{ mydata.taxPayerId == null ? "N/A" : mydata.taxPayerId }}</td>
+                <td>{{ mydata.rin == null ? "N/A" : mydata.rin }}</td>
                 <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
                 <td>{{ mydata.taxYear }}</td>
                 <td>{{ mydata.noOfEmployees }}</td>
@@ -222,7 +222,7 @@
         <thead>
           <tr>
             <th>S/N</th>
-            <th>Taxpayer ID</th>
+            <th>Taxpayer RIN</th>
             <th>Firstname</th>
             <!-- <th>Surname</th> -->
 
