@@ -33,7 +33,7 @@
               <tbody>
                 <tr *ngFor="let mydata of businessesData; index as i">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ mydata.businessID }}</td>
+                  <td>{{ mydata.businessRIN }}</td>
                   <td>{{ mydata.businessName | titlecase }}</td>
                   <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
 
@@ -229,7 +229,7 @@
             <label for="businessName" class="input-label pull-left">Business Name
             </label>
             <input type="text" formControlName="businessName" class="form-control" id="businessName"
-              placeholder="Business Name" [attr.disabled]="true"
+              placeholder="Business Name" [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessName'].errors }" />
 
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessName'].errors" class="text-danger">
@@ -239,7 +239,7 @@
           <div class="form-group col-md-3">
             <label for="businessID" class="input-label pull-left">Business RIN
             </label>
-            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.disabled]="true"
+            <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.readonly]="true"
               placeholder="Business RIN"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessID'].errors }" />
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessID'].errors" class="text-danger">
@@ -250,7 +250,7 @@
             <label for="companyName" class="input-label pull-left">Company Name
             </label>
             <input type="text" formControlName="companyName" class="form-control" id="companyName"
-              placeholder="Company Name" [attr.disabled]="true"
+              placeholder="Company Name" [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyName'].errors }" />
 
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyName'].errors" class="text-danger">
@@ -261,7 +261,7 @@
             <label for="companyID" class="input-label pull-left">Company RIN
             </label>
             <input type="text" formControlName="companyID" class="form-control" id="companyID" placeholder="Company RIN"
-              [attr.disabled]="true"
+              [attr.readonly]="true"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyID'].errors }" />
             <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyID'].errors" class="text-danger">
 

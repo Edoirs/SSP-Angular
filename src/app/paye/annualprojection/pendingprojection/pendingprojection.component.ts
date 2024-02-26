@@ -798,6 +798,7 @@ export class PendingprojectionComponent implements OnInit {
     console.log("FormData: ", obj);
     this.postRevertProjection(obj);
   }
+
   postRevertProjection(jsonData: any) {
     this.apiUrl = environment.AUTHAPIURL + "projections/forward";
 
@@ -838,6 +839,13 @@ export class PendingprojectionComponent implements OnInit {
           });
         }
       });
+  }
+
+  generateAssessment(modal: any) {
+    // this.businessId = data.businessID;
+    // this.loadSelectedBusinessData(data);
+    // this.getAnnualReturns(this.businessId, this.companyId);
+    this.showModal(modal);
   }
 
   reload() {

@@ -22,11 +22,11 @@
                     <th>S/N</th>
                     <th>Business RIN</th>
                     <th>Business Name</th>
-                    <th>Annual Projection ID</th>
                     <th>Company Name</th>
                     <th>Projection Year</th>
                     <th>Forwarded To</th>
                     <th>Date Forwarded</th>
+                    <th>No of Employees</th>
                     <th>View</th>
                   </tr>  
                 </thead>
@@ -35,11 +35,11 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ mydata.businessRIN }}</td>
                     <td>{{ mydata.businessName | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name ? mydata.industry_sector_name : 'N/A' }}</td>
-                    <td>{{ mydata.industry_subsector_name ? mydata.industry_subsector_name : 'N/A' }}</td>
-                    <td>{{ mydata.business_address ? mydata.business_address : 'N/A' }}</td>
-                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
-                    <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
+                    <td>{{ mydata.taxPayerName ? mydata.taxPayerName : 'N/A' | titlecase }}</td>
+                    <td>{{ mydata.projectionYear ? mydata.projectionYear : 'N/A' }}</td>
+                    <td>{{ 'Forwarded To EIRS' }}</td>
+                    <td>{{ mydata.dateForwarded ? mydata.dateForwarded : 'N/A' }}</td>
+                    <td>{{ mydata.noOfEmployees ? mydata.noOfEmployees : 'N/A' }}</td>
 
                     <td title="View"><button class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessProjection(projectiondetailsmodal, mydata)"><i
@@ -137,16 +137,16 @@
               <th>S/N</th>
               <th>Taxpayer ID</th>
               <th>Taxpayer Name</th>
-              <th>Designation</th>
-              <th>BVN</th>
-              <th>TIN</th>
-              <th>Tax Year</th>
+              <!-- <th>Designation</th> -->
+              <th>Basic</th>
+              <th>Rent</th>
+              <th>Transport</th>
+              <th>Others (₦)</th>
               <th>Total Income (₦)</th>
-              <th>Months</th>
-              <th>Date Filed</th>
-              <th>Filed From</th>
-              <!-- <th>Edit</th>
-              <th>Delete</th> -->
+              <th>Pension</th>
+              <th>NHF</th>
+              <th>NHIS</th>
+              <th>No of Months</th>
             </tr>
           </thead>
           <tbody>
@@ -156,113 +156,28 @@
               <td>
                 {{ mydata.firstname + " " + mydata.surname | titlecase }}
               </td>
-              <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td>
-              <td>{{ mydata.phonenumber }}</td>
-              <td>{{ mydata.pension }}</td>
-              <td>{{ mydata.nhis }}</td>
+              <!-- <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td> -->
+              <td>{{ mydata.basic | number }}</td>
+              <td>{{ mydata.rent | number }}</td>
+              <td>{{ mydata.transport | number }}</td>
+              <td>{{ mydata.otherIncome | number }}</td>
+              <td>{{ mydata.total | number }}</td>
+              <td>{{ mydata.pension | number }}</td>
               <td>{{ mydata.nhf | number }}</td>
-              <td>{{ mydata.lifeassurance | number }}</td>
-              <td>{{ mydata.nationality | titlecase }}</td>
-              <td>{{ mydata.nationality | titlecase }}</td>
-
-              <!-- <td title="Edit">
-                <button
-                  class="btn btn-sm btn-outline-success"
-                  (click)="editAnnualReturn(annualreturnmodal, mydata)"
-                >
-                  <i class="nav-icon fas fa-edit"></i>
-                </button>
-              </td>
-              <td>
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="deleteAnnualReturn(mydata.taxPayerId)"
-                >
-                  <i class="nav-icon far fa-trash-alt"></i>
-                </button>
-              </td> -->
+              <td>{{ mydata.nhis | number }}</td>
+              <td>{{ mydata.numberOfMonths | number }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-    <!-- <div class="modal-body">
-      <div class="over-auto">
-        <table class="table table-bordered table-condensed" *ngIf="apidata;" datatable [dtOptions]="dtOptions" width="100%">        >
-          <thead>
-            <tr>
-              <th>S/N</th>
-              <th>Name</th>
-              <th>Designation</th>
-              <th>Email</th>
-              <th>BVN</th>
-              <th>TIN</th>
-              <th>Total Income (₦)</th>
-              <th>Months</th>
-              <th>Projection Year</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mydata of apidata; index as i">
-              <td>{{ i + 1 }}</td>
-              <td>
-                {{ mydata.last_name | titlecase }}
-                {{ mydata.first_name | titlecase }}
-              </td>
-              <td>{{ mydata.designation }}</td>
-              <td>
-                <p
-                  *ngIf="mydata.email != '' || mydata.email == null; else notShow"
-                >
-                  {{ mydata.email }}
-                </p>
-                <ng-template #notShow>NA</ng-template>
-              </td>
-              <td>{{ mydata.bvn }}</td>
-              <td>{{ mydata.tin }}</td>
-              <td>{{ mydata.total_income | number }}</td>
-              <td>{{ mydata.month }}</td>
-              <td>{{ mydata.projection_year }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div *ngIf="com">
-        <div class="text-center font-weight-bold mt-4">
-          <h4 class="">Projections Comments</h4>
-        </div>
-        <div class="card-body m-5 my-4 p-0">
-          <table
-            class="table table-bordered table-condensed"
-            *ngIf="com"
-            datatable
-            [dtOptions]="dtOptions"
-            width="100%"
-          >
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Comments</th>
-                <th>Time Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let mydata of comments; index as i">
-                <td>{{ i + 1 }}</td>
-                <td>{{ mydata.comment }}</td>
-                <td>{{ mydata.created_at | date: "MMM d, y, h:mm:ss a" }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div> -->
-    <!-- /.card-body -->
   
     <div class="modal-footer">
+      <button *ngIf="apidataEmpty" type="submit" (click)="generateAssessment(annualreturnmodal)" [attr.disabled]="true"
+        [disabled]="annualReturnsData == null" class="btn btn button-login" style="border: 1px solid;">
+        <i class="fas fa-plus-square"></i> Generate Assessment
+      </button>
+    
       <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">
         Ok
       </button>
