@@ -64,15 +64,15 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   disableEmployeeControl: any = false;
   companyName: any;
   companyRIN: any;
+  taxpayerID: any;
+  assessmentYears: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private titleService: Title,
-    // private spinnerService: Ng4LoadingSpinnerService,
     private httpClient: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    // private component: DashboardComponent,
     private sess: SessionService,
     private utilityService: UtilityService,
     private modalService: NgbModal,
@@ -106,6 +106,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     //   this.router.navigate(["/dashboard"]);
     // }
 
+    this.loadAssessmentYears();
     this.initialiseForms();
 
     this.sample_file =
@@ -181,9 +182,9 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(4),
-          Validators.maxLength(4),
+          // Validators.pattern(/^[0-9\s]*$/),
+          // Validators.minLength(4),
+          // Validators.maxLength(4),
         ],
       ],
       // scheduleMonthId: ['', Validators.required],
@@ -205,8 +206,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
-    // this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`;
+    // this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -216,7 +217,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("BusinessData: ", data);
 
-      this.businessesData = data;
+      this.businessesData = data.data;
       this.ngxService.stop();
     });
   }
@@ -231,9 +232,9 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
-        console.log("singleBusinessData: ", data);
-        this.selectedBusiness = data.response;
-        this.ngxService.stop();
+      console.log("singleBusinessData: ", data);
+      this.selectedBusiness = data.response;
+      this.ngxService.stop();
     });
   }
 
@@ -282,27 +283,27 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.httpClient.delete<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-            console.log(data);
-            if (data.status == true) {
-              Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: "Employees Successfully Deleted",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              this.getBusinesses();
-            } 
-            else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-                showConfirmButton: true,
-                timer: 5000,
-              });
-            }
-          });
+          console.log(data);
+          if (data.status == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Employees Successfully Deleted",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getBusinesses();
+          }
+          else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: data.message,
+              showConfirmButton: true,
+              timer: 5000,
+            });
+          }
+        });
       }
     });
   }
@@ -331,50 +332,64 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.ngxService.start();
 
     this.httpClient.post<any>(this.apiUrl + "SSP/FormH1/UploadFormH1", formData, config).subscribe((res: any) => {
-        console.log(res);
+      console.log(res);
 
-        // Clear form Value Without any Error
+      // Clear form Value Without any Error
+      this.myForm.reset();
+      Object.keys(this.myForm.controls).forEach((key) => {
+        this.myForm.get(key)?.setErrors(null);
+      });
+
+      if (res.status == true) {
+        this.ngxService.stop();
+        this.modalService.dismissAll();
+        this.getBusinesses();
+
         this.myForm.reset();
         Object.keys(this.myForm.controls).forEach((key) => {
           this.myForm.get(key)?.setErrors(null);
         });
 
-        if (res.status == true) {
-          this.ngxService.stop();
-          this.modalService.dismissAll();
-          this.getBusinesses();
+        this.initialiseForms();
 
-          this.myForm.reset();
-          Object.keys(this.myForm.controls).forEach((key) => {
-            this.myForm.get(key)?.setErrors(null);
-          });
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: res.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true,
+        });
+        // this.router.navigate(["/annualreturns"]);
+      }
+      else {
+        // this.file = null;
+        // this.filePath = null;
 
+        this.myForm.get("myfile")?.setValue(null);
+        this.myForm = this.formBuilder.group({
+          myfile: ["", Validators.required],
+        });
+
+        this.ngxService.stop();
+        if (res.response == null) {
+          this.reload();
           Swal.fire({
-            icon: "success",
-            title: "Success",
+            icon: "error",
+            title: "Validation not passed",
+            // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
             text: res.message,
             showConfirmButton: true,
-            timer: 5000,
+            timer: 25000,
             timerProgressBar: true,
           });
-          // this.router.navigate(["/annualreturns"]);
-        } 
-        else {
-          this.ngxService.stop();
-          if (res.response == null) {
-            this.reload();
-            Swal.fire({
-              icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            });
-          }
         }
-      });
+      }
+
+      this.file = null;
+      this.filePath = null;
+      this.submitted = false;
+    });
   }
 
   onSubmitSchedule(formAllData: any) {
@@ -406,44 +421,44 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     });
 
     this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data);
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.forwardScheduleForm.reset();
-          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null);
-          });
+      console.log("scheduleApiResponseData: ", data);
+      if (data.status === true) {
+        // Rest form fithout errors
+        this.forwardScheduleForm.reset();
+        Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
+          this.forwardScheduleForm.get(key)?.setErrors(null);
+        });
 
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          });
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true,
+        });
 
-          this.ngxService.stop();
-          this.modalService.dismissAll();
-          // this.getAnnualReturns(this.businessId, this.companyId);
-        } 
-        else {
-          this.ngxService.stop();
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
+        this.ngxService.stop();
+        this.modalService.dismissAll();
+        // this.getAnnualReturns(this.businessId, this.companyId);
+      }
+      else {
+        this.ngxService.stop();
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+      }
+    });
   }
 
   loadSelectedBusinessData(selectedBusiness: any) {
@@ -466,7 +481,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("annualReturnsData: ", data);
       this.annualReturnsData = data;
 
@@ -493,6 +508,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.phoneNumber = selectedAnnualReturn.phonenumber;
     this.totalMonthsPaid = selectedAnnualReturn.totalmonthspaid;
     this.CRA = selectedAnnualReturn.consolidatedreliefallowancecra;
+    this.taxpayerID = selectedAnnualReturn.taxPayerId;
+
     let annualGross = selectedAnnualReturn.rent + selectedAnnualReturn.basic + selectedAnnualReturn.transport + selectedAnnualReturn.otherIncome;
 
     this.annualReturnForm = this.formBuilder.group({
@@ -505,12 +522,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
           Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
         ],
       ],
-      pension: [ selectedAnnualReturn.pension, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHF: [ selectedAnnualReturn.nhf, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      NHIS: [ selectedAnnualReturn.nhis, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
-      CRA: [ selectedAnnualReturn.cra, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
+      pension: [selectedAnnualReturn.pension, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      NHF: [selectedAnnualReturn.nhf, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      NHIS: [selectedAnnualReturn.nhis, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/)]],
+      CRA: [selectedAnnualReturn.cra, [Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,3})$/)]],
       rent: [
-         selectedAnnualReturn.rent,
+        selectedAnnualReturn.rent,
         [
           // Validators.required,
           Validators.pattern(/^(\d{1,17}|\d{0,17}\.\d{1,2})$/),
@@ -593,23 +610,50 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       return;
     }
 
+    // const obj = {
+    //   basic: formAllData.basicIncome,
+    //   rent: formAllData.rent,
+    //   transport: formAllData.transport,
+    //   otherIncome: formAllData.otherIncome,
+    //   companyId: this.companyId,
+    //   businessId: this.businessId,
+    //   pension: formAllData.pension,
+    //   nhis: formAllData.NHIS,
+    //   nhf: formAllData.NHF,
+    //   lifeassurance: formAllData.lifeAssurance,
+    //   annual_gross_income: formAllData.annualGrossIncome,
+    //   months: formAllData.months,
+
+    //   firstname: formAllData.firstName,
+    //   othername: formAllData.middleName,
+    //   surname: formAllData.surname,
+    //   nationality: formAllData.nationality,
+    //   designation: formAllData.designation,
+
+    //   annualtaxpaid: formAllData.annualTaxPaid,
+    //   rin: this.RIN,
+    //   jtbtin: this.JTBTIN,
+    //   nin: this.NIN,
+    //   homeaddress: this.homeAddress,
+    //   totalmonthspaid: this.totalMonthsPaid,
+    //   phonenumber: this.phoneNumber,
+    //   consolidatedreliefallowancecra: "0",
+    // };
+
     const obj = {
-      // taxPayerId: formAllData.taxPayerID,
-      basic: formAllData.basicIncome,
-      rent: formAllData.rent,
-      transport: formAllData.transport,
-      otherIncome: formAllData.otherIncome,
+      taxPayerId: this.taxpayerID,
+      basic: formAllData.basicIncome.toString(),
+      rent: formAllData.rent.toString(),
+      transport: formAllData.transport.toString(),
+      otherIncome: formAllData.otherIncome.toString(),
       companyId: this.companyId,
       businessId: this.businessId,
-      pension: formAllData.pension,
-      nhis: formAllData.NHIS,
-      nhf: formAllData.NHF,
-      lifeassurance: formAllData.lifeAssurance,
-      // monthly_income: formAllData.monthlyIncome,
-      annual_gross_income: formAllData.annualGrossIncome,
-      // annual_tax_paid: formAllData.annualTaxPaid,
+      pension: formAllData.pension.toString(),
+      nhis: formAllData.NHIS.toString(),
+      nhf: formAllData.NHF.toString(),
+      lifeassurance: formAllData.lifeAssurance.toString(),
+      annual_gross_income: formAllData.annualGrossIncome.toString(),
       months: formAllData.months,
-      // schedule_record_id: this.selectedScheduleRecordId,
 
       firstname: formAllData.firstName,
       othername: formAllData.middleName,
@@ -617,16 +661,18 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       nationality: formAllData.nationality,
       designation: formAllData.designation,
 
-      annualtaxpaid: formAllData.annualTaxPaid,
+      annualtaxpaid: formAllData.annualTaxPaid.toString(),
       rin: this.RIN,
-      jtbtin: this.JTBTIN,
-      nin: this.NIN,
-      homeaddress: this.homeAddress,
-      totalmonthspaid: this.totalMonthsPaid,
-      phonenumber: this.phoneNumber,
+      jtbtin: this.JTBTIN == undefined ? null : this.JTBTIN,
+      nin: this.NIN == undefined ? null : this.NIN,
+      homeaddress: this.homeAddress == undefined ? null : this.homeAddress,
+      totalmonthspaid: formAllData.months.toString(),
+      // totalmonthspaid: this.totalMonthsPaid.toString(),
+
+      phonenumber: this.phoneNumber == undefined ? null : this.phoneNumber,
       consolidatedreliefallowancecra: "0",
-      // consolidatedreliefallowancecra: this.CRA,
     };
+
 
     console.log("annualReturnFormData: ", obj);
     this.postUpdateAnnualReturn(obj);
@@ -642,35 +688,35 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     });
 
     this.httpClient.put<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe((data) => {
-        console.log("annualReturnResponseData: ", data);
-        this.submitted = false;
+      console.log("annualReturnResponseData: ", data);
+      this.submitted = false;
 
-        if (data.status === true) {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Annual Return has been updated successfully!",
-            showConfirmButton: true,
-            timer: 5000,
-          });
+      if (data.status === true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Annual Return has been updated successfully!",
+          showConfirmButton: true,
+          timer: 5000,
+        });
 
-          this.getAnnualReturns(this.businessId, this.companyId);
-          this.editEmployeeModalRef.close();
-          this.ngxService.stop();
-        } 
-        else {
-          this.ngxService.stop();
+        this.getAnnualReturns(this.businessId, this.companyId);
+        this.editEmployeeModalRef.close();
+        this.ngxService.stop();
+      }
+      else {
+        this.ngxService.stop();
 
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-        }
-      });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            data.response != null ? data.response[0].message : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+      }
+    });
   }
 
   deleteAnnualReturn(individualId: number) {
@@ -692,29 +738,39 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.httpClient.delete<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-            console.log(data);
-            if (data.status == true) {
-              Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: "Annual Return Successfully Deleted",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              this.getAnnualReturns(this.businessId, this.companyId);
-            } 
-            else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: data.message,
-                showConfirmButton: true,
-                timer: 5000,
-              });
-            }
-          });
+          console.log(data);
+          if (data.status == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Annual Return Successfully Deleted",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.getAnnualReturns(this.businessId, this.companyId);
+          }
+          else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: data.message,
+              showConfirmButton: true,
+              timer: 5000,
+            });
+          }
+        });
       }
     });
+  }
+
+  loadAssessmentYears() {
+    let currentYear = new Date().getFullYear();
+    this.assessmentYears = [];
+
+    for (var i = 2015; i < currentYear; i++) {
+      let assessmentYear = { id: i, year: i };
+      this.assessmentYears.push(assessmentYear);
+    }
   }
 
   forwardSchedule(modal: any) {
@@ -736,29 +792,29 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   calculateTotalIncome(event: any) {
 
-  //   if (this.annualReturnForm.valid) {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.annualReturnForm
-  //     );
-  //   } else {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.addEmployeeForm
-  //     );
-  //   }
+    //   if (this.annualReturnForm.valid) {
+    //     this.utilityService.calculateTotalIncome(
+    //       this.annualReturnForm
+    //     );
+    //   } else {
+    //     this.utilityService.calculateTotalIncome(
+    //       this.addEmployeeForm
+    //     );
+    //   }
   }
 
   calculateAnnualGross(event: any) {
-      if (this.annualReturnForm.valid) {
-        this.utilityService.calculateAnnualGross(
-          this.annualReturnForm
-        );
-      } 
-      // else {
-      //   this.utilityService.calculateTotalIncome(
-      //     this.addEmployeeForm
-      //   );
-      // }
+    if (this.annualReturnForm.valid) {
+      this.utilityService.calculateAnnualGross(
+        this.annualReturnForm
+      );
     }
+    // else {
+    //   this.utilityService.calculateTotalIncome(
+    //     this.addEmployeeForm
+    //   );
+    // }
+  }
 
   onFileChange(event: any) {
     if (!this.utilityService.validFileExtension(event.target.files, ["xls", "xlsx",])) {

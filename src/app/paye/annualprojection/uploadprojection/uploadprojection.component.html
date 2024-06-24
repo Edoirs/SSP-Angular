@@ -215,7 +215,7 @@
                 {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
               </td>
   
-              <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td>
+              <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
               <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
   
               <td>{{ mydata.rent + mydata.transport + mydata.basic + mydata.otherIncome | number }}</td>
@@ -268,26 +268,18 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="scheduleYear">Filing Year</label>
-              <input
-                type="text"
-                formControlName="scheduleYear"
-                maxlength="4"
-                class="form-control"
-                [ngClass]="{ 'is-invalid': submitted &amp;&amp; fileFormH3Form.controls['scheduleYear'].errors }" />
+                <select name="scheduleYear" formControlName="scheduleYear" id="scheduleYear" class="form-control" 
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; fileFormH3Form.controls['scheduleYear'].errors }">
+                <option value="" disabled>Select Filing Year</option>
+                <option *ngFor="let assessmentYear of assessmentYears" [value]="assessmentYear.id">
+                  {{ assessmentYear.year }}
+                </option>
+              </select>
               <div
                 *ngIf="submitted &amp;&amp; fileFormH3Form.controls['scheduleYear'].errors"
                 class="text-danger">
                 <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['required']">
                   Filing Year is required
-                </div>
-                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['minlength']">
-                  Filing Year must be at least 4 characters long.
-                </div>
-                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['maxlength']">
-                  Filing Year must be 4 characters long.
-                </div>
-                <div *ngIf="fileFormH3Form.controls['scheduleYear'].errors['pattern']">
-                  Filing Year must be Number Only
                 </div>
               </div>
             </div>

@@ -802,7 +802,7 @@ export class AnnualreturnsComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("annualReturnsData: ", data);
       this.annualReturnsData = data == null ? [] : data;
       if (data?.length > 0) {

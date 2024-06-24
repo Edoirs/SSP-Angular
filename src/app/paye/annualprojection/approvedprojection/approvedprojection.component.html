@@ -20,12 +20,12 @@ reass<div class="content-wrapper">
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Business ID</th>
+                <th>Business RIN</th>
                 <th>Business Name</th>
-                <th>Company Name</th>
-                <th>Year</th>
+                <th>Company RIN</th>
+                <th>Tax Year</th>
                 <th>Employee Count</th>
-                <th>Annual Tax</th>
+                <!-- <th>Annual Tax</th> -->
                 <th>Date Approved</th>
                 <th>View</th>
               </tr>
@@ -33,13 +33,13 @@ reass<div class="content-wrapper">
             <tbody>
               <tr *ngFor="let mydata of businessesData; index as i">
                 <td>{{ i + 1 }}</td>
-                <td>{{ mydata.businessId }}</td>
+                <td>{{ mydata.businessRIN }}</td>
                 <td>{{ mydata.businessName == null ? "N/A" : mydata.businessName | titlecase }}</td>
-                <td>{{ mydata.companyName == null ? "N/A" : mydata.companyName | titlecase }}</td>
+                <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>
                 <td>{{ mydata.taxYear }}</td>
-                <td>{{ mydata.businessId }}</td>
-                <td>{{ mydata.annualtaxpaid }}</td>
-                <td>{{ mydata.datetcreated | date: "dd MMM yyyy" }}</td>
+                <td>{{ mydata.noOfEmployees }}</td>
+                <!-- <td>{{ mydata.annualtaxpaid }}</td> -->
+                <td>{{ mydata.dateForwarded | date: "dd MMM yyyy" }}</td>
 
                 <td title="View"><button class="btn btn-sm btn-outline-success"
                     (click)="viewApprovedProjection(approvedProjectionModal, mydata)"><i
@@ -50,48 +50,7 @@ reass<div class="content-wrapper">
             </tbody>
           </table>
 
-            <!-- <table class="table table-bordered table-condensed" *ngIf="apidata;" datatable [dtOptions]="dtSmOptions"
-              width="100%">
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Business ID</th>
-                  <th>Business Name</th>
-                  <th>Projection Year</th>
-                  <th>Employee Count</th>
-                  <th>Annual Projection Amount (₦)</th>
-                  <th>Projection ID</th>
-                  <th>Filed From</th>
-                  <th>Date Approved</th>
-                  <th>View</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let mydata of apidata; index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ mydata.business_id }}</td>
-                  <td>{{ mydata.business_name }}</td>
-                  <td>{{ mydata.projection_year }}</td>
-                  <td>{{ mydata.employee_count }}</td>
-                  <td>{{ mydata.annual_tax_due | number:'1.2-2' }}</td>
-                  <td>{{ mydata.projection_id }}</td>
-                  <td>{{ mydata.file_from }}</td>
-                  <td>{{ mydata.date_approved | date: "dd MMM yyyy" }}</td>
-                  <td title="View">
-                    <button
-                      class="btn btn-sm btn-outline-success"
-                      (click)="
-                        viewApprovedProjection(approvedProjectionModal, mydata)">
-                      <i class="nav-icon fas fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table> -->
 
-            <!-- <ng-template #content>
-              <p style="color: red" class="text-center">No content Available</p>
-            </ng-template> -->
           </div>
         </div>
         <!-- /.card-body -->
@@ -102,114 +61,7 @@ reass<div class="content-wrapper">
   <!-- /.content -->
 </div>
 
-
-
-<!-- <ng-template #annualReturnModal let-modal >
-  <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Filed Projections</h4>
-  </div>
-
-  <div class="modal-body">
-      <div class="container">
-          <table class="table table-bordered table-condensed" *ngIf="assessmentsData;" datatable
-              [dtOptions]="dtOptions" width="100%">
-              <thead>
-                  <tr>
-                      <th>S/N</th>
-                      <th>Date Filed</th>
-                      <th>Tax Year</th>
-                      <th>Annual Tax Paid (₦)</th>
-                      <th>Revenue Approval Status</th>
-                      <th>View</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let mydata of assessmentsData; index as i">
-                      <td>{{ i + 1 }}</td>
-                      <td>{{ mydata.createdAt | date:'dd MMM yyyy' }}</td>
-                      <td>{{ mydata.taxYear }}</td>
-                      <td>{{ mydata.annualTaxPaid | number }}</td>
-                      <td><p [ngClass]="{'text-warning': mydata.filedStatus == 0, 'text-success': mydata.filedStatus == 1, 'text-primary': mydata.filedStatus == 2} ">
-                        {{ mydata.filedStatus == 0 ? "Pending" : mydata.filedStatus == 1 ? "Closed" : "Reassessed" }}
-                      </p></td>
-
-                      <td style="width: 10%" title="View">
-                          <button class="btn btn-sm btn-outline-success"
-                              (click)="viewAssessment(projectiondetailsmodal, mydata)"><i class="nav-icon fas fa-eye"></i>
-                          </button>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-
-  </div>
-
-  <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark button-login" (click)="modal.close('Save click')">Ok</button>
-  </div>
-</ng-template> -->
-
-
-<!-- <ng-template #mymodal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">
-      Projection {{ projectionData.projection_id }}
-    </h4>
-  </div>
-
-  <div class="modal-body">
-    <div class="container">
-      <dl class="row">
-        <dt class="col-sm-5">Full Name</dt>
-        <dd class="col-sm-7">
-          {{ projectionData.last_name | titlecase }}
-          {{ projectionData.first_name | titlecase }}
-        </dd>
-
-        <dt class="col-sm-5">Designation</dt>
-        <dd class="col-sm-7">{{ projectionData.designation | titlecase }}</dd>
-        <dt class="col-sm-5">Email Address</dt>
-        <dd class="col-sm-7">{{ projectionData.email }}</dd>
-        <dt class="col-sm-5">BVN</dt>
-        <dd class="col-sm-7">{{ projectionData.bvn }}</dd>
-        <dt class="col-sm-5">TIN</dt>
-        <dd class="col-sm-7">{{ projectionData.tin }}</dd>
-        <dt class="col-sm-5">Taxable Income</dt>
-        <dd class="col-sm-7">{{ projectionData.taxable_income | number }}</dd>
-        <dt class="col-sm-5">Nontaxable Income</dt>
-        <dd class="col-sm-7">
-          {{ projectionData.nontaxable_income | number }}
-        </dd>
-        <dt class="col-sm-5">Tax-due</dt>
-        <dd class="col-sm-7">{{ projectionData.tax_due | titlecase }}</dd>
-        <dt class="col-sm-5">Year</dt>
-        <dd class="col-sm-7">{{ projectionData.projection_year }}</dd>
-        <dt class="col-sm-5">Date Approved</dt>
-        <dd class="col-sm-7">{{ projectionData.date_approved | date }}</dd>
-      </dl>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn button-login"
-      (click)="modal.close('Save click')"
-    >
-      Ok
-    </button>
-  </div>
-</ng-template> -->
-
 <ng-template #approvedProjectionModal let-modal>
-  <!-- <div class="card-header custome">
-    <h4 class="card-title" id="modal-basic-title">Projection Details</h4>
-    <h4 class="card-title" id="modal-basic-title">
-      {{ companyName }} Projection for {{ projectionYear }}
-    </h4>
-  </div> -->
-
   <div class="modal-header">
     <span>
       <h4 class="modal-title" id="modal-basic-title">Projection Details</h4>
@@ -241,13 +93,13 @@ reass<div class="content-wrapper">
           <td>{{ i + 1 }}</td>
           <td>{{ mydata.taxPayerId }}</td>
           <td>
-            {{ mydata.fullName | titlecase }}
+            {{ mydata.fullName == null ? "N/A" : mydata.fullName | titlecase }}
           </td>
-          <td>{{ mydata.designation | titlecase }}</td>
-          <td>{{ mydata.nontaxable_income | number }}</td>
-          <td>{{ mydata.taxable_income | number }}</td>
-          <td>{{ mydata.tax_due | number }}</td>
-          <td>{{ mydata.taxable_income | number }}</td>
+          <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
+          <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
+          <td>{{ mydata.otherIncome | number }}</td>
+          <td>{{ mydata.basic | number }}</td>
+          <td>{{ mydata.annualtaxpaid == undefined ? "N/A" : mydata.annualtaxpaid | number }}</td>
           <td>{{ mydata.datetcreated | date: "dd MMM yyyy" }}</td>
         </tr>
       </tbody>

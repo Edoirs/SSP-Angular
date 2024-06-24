@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   sessionTimeOut: 1440,
-  // AUTHAPIURL: 'https://revpay.ngsirs.gov.ng/water-api/api/',
+  // AUTHAPIURL: 'http://92.205.57.77:2123/api/',
   AUTHAPIURL: 'https://ss.eirs.vip/api/',
   SAMPLE_FILE_URL: "https://nsirs.nownowpay.com.ng/NIGER-API/public/files/",
   GOOGLE_RECAPTCHA: false,

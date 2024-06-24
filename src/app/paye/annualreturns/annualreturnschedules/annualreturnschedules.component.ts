@@ -336,55 +336,49 @@ export class AnnualreturnschedulesComponent implements OnInit {
     console.log("selectedSchedule: ", selectedSchedule);
     this.showModal(modal);
     this.selectedScheduleId = selectedSchedule.id;
-    this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
+    // this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
 
-    this.getAnnualReturns(selectedSchedule.businessId, selectedSchedule.taxYear);
+    this.getAnnualReturns(selectedSchedule.businessID, selectedSchedule.taxYear);
+    this.loadSelectedScheduleData(selectedSchedule);
 
-    let filedStatus = selectedSchedule.filedStatus.trim();
-    let status = filedStatus == "1" ? "Filed" : filedStatus == "2" ? "Approved" : "Rejected";
-    let dateForwarded = this.datepipe.transform(selectedSchedule.datetcreated, "dd MMM yyyy");
-    let dateDue = this.datepipe.transform(selectedSchedule.dueDate, "dd MMM yyyy");
+    // let filedStatus = selectedSchedule.filedStatus.trim();
+    // let status = filedStatus == "1" ? "Filed" : filedStatus == "2" ? "Approved" : "Rejected";
+    // let dateForwarded = this.datepipe.transform(selectedSchedule.datetcreated, "dd MMM yyyy");
+    // let dateDue = this.datepipe.transform(selectedSchedule.dueDate, "dd MMM yyyy");
 
-    this.scheduleForm = this.formBuilder.group({
-      forwardedTo: ["Forwarded to Manager"],
-      annualReturnStatus: [status],
-      dateForwarded: [dateForwarded],
-      dueDate: [dateDue],
-    });
+    // this.scheduleForm = this.formBuilder.group({
+    //   forwardedTo: ["Forwarded to Manager"],
+    //   annualReturnStatus: [status],
+    //   dateForwarded: [dateForwarded],
+    //   dueDate: [dateDue],
+    // });
   }
 
   loadSelectedScheduleData(selectedSchedule: any) {
-    let status = selectedSchedule.status == 0 ? "In Active" : "Active";
-    let annualReturnStatus =
-      selectedSchedule.annual_return_assessment_status == 0
-        ? "Still Open"
-        : "Case Closed";
-    let forwardedTo =
-      selectedSchedule.forwarded_to == 0
-        ? "Not forwarded"
-        : selectedSchedule.forwarded_to == 1
-        ? "Forwarded to Editor"
-        : "Forwarded to Manager";
+    // let status = selectedSchedule.status == 0 ? "In Active" : "Active";
+    let annualReturnStatus = selectedSchedule.annualReturnStatus;
+    let forwardedTo = selectedSchedule.forwardedTO;
 
-    this.date = new Date(selectedSchedule.created_at);
-    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+    this.date = new Date(selectedSchedule.dateForwarded);
+    let dateForwarded = this.datepipe.transform(this.date, "dd MMM yyyy");
+
+    let testDate = new Date(selectedSchedule.dueDate);
+    let dueDate = this.datepipe.transform(testDate, "dd MMM yyyy");
+
     this.scheduleForm = this.formBuilder.group({
       forwardedTo: [forwardedTo],
       annualReturnStatus: [annualReturnStatus],
-      dateForwarded: [selectedSchedule.date_forwarded],
-      status: [status],
-      dueDate: [selectedSchedule.due_date],
-      corporateId: [selectedSchedule.corporate_id],
-      createdAt: [latest_date],
+      dateForwarded: [dateForwarded],
+      dueDate: [dueDate],
     });
 
-    this.scheduleEmployeesData =
-      selectedSchedule.annual_return_schedule_records;
-    if (forwardedTo === "Forwarded to Manager") {
-      this.forwardedToManager = true;
-    } else if (forwardedTo === "Forwarded to Editor") {
-      this.forwardedToEditor = true;
-    }
+    // this.scheduleEmployeesData =
+    //   selectedSchedule.annual_return_schedule_records;
+    // if (forwardedTo === "Forwarded to Manager") {
+    //   this.forwardedToManager = true;
+    // } else if (forwardedTo === "Forwarded to Editor") {
+    //   this.forwardedToEditor = true;
+    // }
   }
 
   getBusinesses() {
@@ -430,7 +424,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
   getSchedules() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh3WithcompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -445,30 +439,25 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
   }
 
-  // getSchedules(businessId: any) {
+  // getSchedules() {
+  //   const obj = {};
   //   this.ngxService.start();
-  //   this.apiUrl = environment.AUTHAPIURL + "annual-return-schedules-list";
+  //   this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1WithcompanyId/${this.companyId}`;
 
   //   const reqHeader = new HttpHeaders({
   //     "Content-Type": "application/json",
   //     Authorization: "Bearer " + localStorage.getItem("access_token"),
   //   });
 
-  //   let corporateId = localStorage.getItem("corporate_id");
-
-  //   const obj = {
-  //     corporate_ids: [corporateId],
-  //     business_id: businessId,
-  //   };
-
-  //   this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
+  //   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
   //     console.log("schedulesData: ", data);
-  //     this.schedulesData =
-  //       data.response == null ? [] : data.data.reverse();
+
+  //     this.schedulesData = data.data;
   //     this.ngxService.stop();
   //   });
   // }
 
+  
   getSingleSchedule(scheduleId: any) {
     this.ngxService.start();
     this.apiUrl =
@@ -497,7 +486,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("annualReturnsData: ", data);
       this.annualReturnsData = data.data == null ? [] : data.data;
       if (data.data?.length > 0) {

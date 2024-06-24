@@ -69,6 +69,7 @@ export class PendingprojectionComponent implements OnInit {
   annualReturnForm: any;
   disableEmployeeControl: any;
   fileFormH3Form: any;
+  taxpayerID: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -210,7 +211,7 @@ export class PendingprojectionComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     });
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
       console.log("annualReturnsData: ", data);
       this.annualReturnsData = data == null ? [] : data;
       if (data?.length > 0) {
@@ -230,8 +231,9 @@ export class PendingprojectionComponent implements OnInit {
     this.JTBTIN = selectedAnnualReturn.jtbtin;
     this.homeAddress = selectedAnnualReturn.homeaddress;
     this.phoneNumber = selectedAnnualReturn.phonenumber;
-    this.totalMonthsPaid = selectedAnnualReturn.totalmonthspaid;
+    this.totalMonthsPaid = selectedAnnualReturn.numberOfMonths;
     this.CRA = selectedAnnualReturn.consolidatedreliefallowancecra;
+    this.taxpayerID = selectedAnnualReturn.taxPayerId;
 
     this.annualReturnForm = this.formBuilder.group({
       taxPayerID: [selectedAnnualReturn.taxPayerId],
@@ -332,7 +334,7 @@ export class PendingprojectionComponent implements OnInit {
     }
 
     const obj = {
-      taxPayerId: formAllData.taxPayerID,
+      taxPayerId: this.taxpayerID,
       basic: formAllData.basicIncome,
       rent: formAllData.rent,
       transport: formAllData.transport,
@@ -357,11 +359,12 @@ export class PendingprojectionComponent implements OnInit {
 
       annualtaxpaid: formAllData.annualTaxPaid,
       rin: this.RIN,
-      jtbtin: this.JTBTIN,
-      nin: this.NIN,
-      homeaddress: this.homeAddress,
-      totalmonthspaid: this.totalMonthsPaid,
-      phonenumber: this.phoneNumber,
+      jtbtin: this.JTBTIN == undefined ? null : this.JTBTIN,
+      nin: this.NIN == undefined ? null : this.NIN,
+      homeaddress: this.homeAddress == undefined ? null : this.homeAddress,
+      totalmonthspaid: formAllData.months,
+      // totalmonthspaid: this.totalMonthsPaid,
+      phonenumber: this.phoneNumber == undefined ? null : this.phoneNumber,
       consolidatedreliefallowancecra: "0",
       // consolidatedreliefallowancecra: this.CRA,
     };

@@ -171,28 +171,18 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="scheduleYear">Schedule Year</label>
-            <input
-              type="text"
-              formControlName="scheduleYear"
-              maxlength="4"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors }"
-            />
-            <div
-              *ngIf="submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors"
-              class="text-danger"
-            >
+            <select name="scheduleYear" formControlName="scheduleYear" id="scheduleYear" class="form-control" 
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors }">
+                <option value="" disabled>Select Schedule Year</option>
+                <option *ngFor="let assessmentYear of assessmentYears" [value]="assessmentYear.id">
+                  {{ assessmentYear.year }}
+                </option>
+              </select>
+
+            <div *ngIf="submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors"
+              class="text-danger">
               <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['required']">
-                Filing Year is required
-              </div>
-              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['minlength']">
-                Filing Year must be at least 4 characters long.
-              </div>
-              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['maxlength']">
-                Filing Year must be 4 characters long.
-              </div>
-              <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['pattern']">
-                Filing Year must be Number Only
+                Schedule Year is required
               </div>
             </div>
           </div>
@@ -315,7 +305,7 @@
               </button>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-success" (click)="deleteAnnualReturn(mydata.id)">
+              <button class="btn btn-sm btn-outline-success" (click)="deleteAnnualReturn(mydata.taxPayerId)">
                 <i class="nav-icon far fa-trash-alt"></i>
               </button>
             </td>

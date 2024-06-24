@@ -36,15 +36,15 @@
             <tbody>
               <tr *ngFor="let mydata of schedulesData; index as i">
                 <td>{{ i + 1 }}</td>
-                <td>{{ mydata.businessId }}</td>
+                <td>{{ mydata.businessRIN }}</td>
                 <td>{{ mydata.businessName | titlecase }}</td>
-                <td>{{ mydata.rin == null ? "N/A" : mydata.rin }}</td>
+                <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>
                 <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
                 <td>{{ mydata.taxYear }}</td>
-                <td>{{ mydata.noOfEmployees }}</td>
-                <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
-                <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>   
-                <td>{{ mydata.businessAddress == null ? "N/A" : mydata.businessAddress }}</td>
+                <td>{{ mydata.forwardedTO }}</td>
+                <td>{{ mydata.dateForwarded | date : "dd MMM yyyy" }}</td>
+                <td>{{ mydata.dueDate }}</td>   
+                <td>{{ mydata.annualReturnStatus == null ? "N/A" : mydata.annualReturnStatus }}</td>
                 <td style="width: 10%" title="View">
                   <button class="btn btn-sm btn-outline-success" (click)="viewSchedule(mymodal, mydata)">
                     <i class="nav-icon fas fa-eye"></i>
@@ -223,9 +223,8 @@
           <tr>
             <th>S/N</th>
             <th>Taxpayer RIN</th>
-            <th>Firstname</th>
+            <th>Full Name</th>
             <!-- <th>Surname</th> -->
-
             <th>Designation</th>
             <th>Nationality</th>
             <th>Total Income (₦)</th>
@@ -243,11 +242,10 @@
             <!-- <td>
               {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
             </td> -->
-
-            <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td>
+            <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
             <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
 
-            <td>{{ mydata.pension | number }}</td>
+            <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
             <td>{{ mydata.annualtaxpaid | number }}</td>
             <td>{{ mydata.totalmonthspaid | number }}</td>
           </tr>
