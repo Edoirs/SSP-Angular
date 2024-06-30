@@ -691,6 +691,7 @@ export class UploadprojectionComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
+            this.getBusinesses();
             this.getAnnualReturns(this.businessId, this.companyId);
           }
           else {

@@ -206,8 +206,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`;
-    // this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
+    // this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -224,7 +224,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}/bybusinessId//${businessId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -701,6 +701,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         });
 
         this.getAnnualReturns(this.businessId, this.companyId);
+        this.getBusinesses();
         this.editEmployeeModalRef.close();
         this.ngxService.stop();
       }

@@ -360,16 +360,16 @@ export class AnnualreturnschedulesComponent implements OnInit {
     let forwardedTo = selectedSchedule.forwardedTO;
 
     this.date = new Date(selectedSchedule.dateForwarded);
-    let dateForwarded = this.datepipe.transform(this.date, "dd MMM yyyy");
+    // let dateForwarded = this.datepipe.transform(this.date, "dd MMM yyyy");
 
     let testDate = new Date(selectedSchedule.dueDate);
-    let dueDate = this.datepipe.transform(testDate, "dd MMM yyyy");
+    // let dueDate = this.datepipe.transform(testDate, "dd MMM yyyy");
 
     this.scheduleForm = this.formBuilder.group({
       forwardedTo: [forwardedTo],
       annualReturnStatus: [annualReturnStatus],
-      dateForwarded: [dateForwarded],
-      dueDate: [dueDate],
+      dateForwarded: [selectedSchedule.dateForwarded],
+      dueDate: [selectedSchedule.dueDate],
     });
 
     // this.scheduleEmployeesData =
@@ -439,25 +439,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
   }
 
-  // getSchedules() {
-  //   const obj = {};
-  //   this.ngxService.start();
-  //   this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1WithcompanyId/${this.companyId}`;
 
-  //   const reqHeader = new HttpHeaders({
-  //     "Content-Type": "application/json",
-  //     Authorization: "Bearer " + localStorage.getItem("access_token"),
-  //   });
-
-  //   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-  //     console.log("schedulesData: ", data);
-
-  //     this.schedulesData = data.data;
-  //     this.ngxService.stop();
-  //   });
-  // }
-
-  
   getSingleSchedule(scheduleId: any) {
     this.ngxService.start();
     this.apiUrl =
@@ -479,7 +461,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
 
   getAnnualReturns(businessId: any, year: any) {
     this.ngxService.start();
+
     this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`;
+
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -797,7 +781,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
           this.getSingleSchedule(this.selectedScheduleId);
           this.editEmployeeModalRef.close();
           // this.ngxService.stop();
-        } 
+        }
         else {
           // this.ngxService.stop();
 
