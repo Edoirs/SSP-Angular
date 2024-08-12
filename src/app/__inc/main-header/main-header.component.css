@@ -1,0 +1,22 @@
+.navbar-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+
+    > section{
+        display: flex;
+        flex: 1;
+        align-items: center;
+    }
+    section:first-child{
+        align-self: center;
+        h4{
+            font-size: 20px;
+        }
+    }
+    section:nth-child(2){
+        justify-content: flex-end;
+    }
+}
