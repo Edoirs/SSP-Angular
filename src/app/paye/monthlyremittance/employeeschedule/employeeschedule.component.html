@@ -24,12 +24,11 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Business ID</th>
+                    <th>Business RIN</th>
                     <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
                     <th>Address</th>
                     <th>LGA</th>
+                    <th>No. of Employees</th>
                     <!-- <th>Employees Count</th>
                     <th>Taxpayer Role</th> -->
                     <th>View</th>
@@ -40,12 +39,12 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
                     <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
+                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
                     <td>
                       {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
                     </td>
+                    <!-- <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td> -->
                     <!-- <td>{{ mydata.employees_count }}</td>
                     <td>{{ mydata.taxpayer_role }}</td> --> 
                     <td title="View">
@@ -108,7 +107,7 @@
           <thead>
             <tr>
               <th>S/N</th>
-              <th>Taxpayer ID</th>
+              <th>Employee RIN</th>
               <th>Full Name</th>
               <!-- <th>Designation</th> -->
               <!-- <th>Phone</th> -->
