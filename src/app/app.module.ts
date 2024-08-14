@@ -17,7 +17,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { HomeComponent } from './webpages/home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgChartsModule } from 'ng2-charts';
 import { LogoutComponent } from './auth/logout/logout.component';
@@ -50,68 +50,58 @@ import { AdduserComponent } from './paye/users/adduser/adduser.component';
 import { EditComponent } from './paye/users/edit/edit.component';
 import { CompanyprofileComponent } from './paye/profile/companyprofile/companyprofile.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    ContentWrapperComponent,
-    ControlSidebarComponent,
-    MainFooterComponent,
-    MainHeaderComponent,
-    MainSidebarComponent,
-    WebfooterComponent,
-    WebheaderComponent,
-    WhatsupchatComponent,
-    HomeComponent,
-    LoginComponent,
-    LogoutComponent,
-    DashboardComponent,
-    MenuComponent,
-    ResetpasswordComponent,
-    ForgotpasswordComponent,
-    AboutusComponent,
-    ContactusComponent,
-    FaqsComponent,
-    PrivacypolicyComponent,
-    NumbersOnlyDirective,
-    SignUpComponent,
-    AnnualreturnemployeesuploadComponent,
-    AnnualreturnsComponent,
-    AnnualreturnschedulesComponent,
-    AnnualreturnassessmentsComponent,
-    ReassessmentsComponent,
-    ReassessmentappealsComponent,
-    UploadprojectionComponent,
-    PendingprojectionComponent,
-    ApprovedprojectionComponent,
-    EmployeescheduleComponent,
-    DeletedemployeesComponent,
-    SchedulesComponent,
-    AssessmentsComponent,
-    DisplayuserComponent,
-    AdduserComponent,
-    EditComponent,
-    CompanyprofileComponent,
-    
-
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    NgxUiLoaderModule,
-    FormsModule,
-    DataTablesModule,
-    NgbModule,
-    HttpClientModule,
-    NgxPaginationModule,
-    NgChartsModule,
-    
-   
-  ],
-  providers: [
-    DatePipe,
-    {provide : LocationStrategy , useClass: HashLocationStrategy}
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        ContentWrapperComponent,
+        ControlSidebarComponent,
+        MainFooterComponent,
+        MainHeaderComponent,
+        MainSidebarComponent,
+        WebfooterComponent,
+        WebheaderComponent,
+        WhatsupchatComponent,
+        HomeComponent,
+        LoginComponent,
+        LogoutComponent,
+        DashboardComponent,
+        MenuComponent,
+        ResetpasswordComponent,
+        ForgotpasswordComponent,
+        AboutusComponent,
+        ContactusComponent,
+        FaqsComponent,
+        PrivacypolicyComponent,
+        NumbersOnlyDirective,
+        SignUpComponent,
+        AnnualreturnemployeesuploadComponent,
+        AnnualreturnsComponent,
+        AnnualreturnschedulesComponent,
+        AnnualreturnassessmentsComponent,
+        ReassessmentsComponent,
+        ReassessmentappealsComponent,
+        UploadprojectionComponent,
+        PendingprojectionComponent,
+        ApprovedprojectionComponent,
+        EmployeescheduleComponent,
+        DeletedemployeesComponent,
+        SchedulesComponent,
+        AssessmentsComponent,
+        DisplayuserComponent,
+        AdduserComponent,
+        EditComponent,
+        CompanyprofileComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        NgxUiLoaderModule,
+        FormsModule,
+        DataTablesModule,
+        NgbModule,
+        NgxPaginationModule,
+        NgChartsModule], providers: [
+        DatePipe,
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
