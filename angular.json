@@ -96,13 +96,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "niger-water-sewage-corporation:build:production"
+              "buildTarget": "niger-water-sewage-corporation:build:production"
             },
             "development": {
-              "browserTarget": "niger-water-sewage-corporation:build:development"
+              "buildTarget": "niger-water-sewage-corporation:build:development"
             },
             "dev": {
-              "browserTarget": "niger-water-sewage-corporation:build:dev"
+              "buildTarget": "niger-water-sewage-corporation:build:dev"
             }
           },
           "defaultConfiguration": "development"
@@ -110,7 +110,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "niger-water-sewage-corporation:build"
+            "buildTarget": "niger-water-sewage-corporation:build"
           }
         },
         "test": {
