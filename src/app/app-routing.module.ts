@@ -31,44 +31,48 @@ import { EditComponent } from './paye/users/edit/edit.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: "home", component: HomeComponent },
-  { path: "login", component: LoginComponent },
-  { path: "logout", component: LogoutComponent },
-  { path: "dashboard", component: DashboardComponent },
-  { path: "resetpassword", component: ResetpasswordComponent },
-  { path: "forgotpassword", component: ForgotpasswordComponent },
-  { path: "signUp", component: SignUpComponent },
+  {path: "", redirectTo: "home", pathMatch: "full"},
+  {path: "home", component: HomeComponent},
+  {path: "login", component: LoginComponent},
+  {path: "logout", component: LogoutComponent},
+  {path: "dashboard", component: DashboardComponent},
+  {path: "resetpassword", component: ResetpasswordComponent},
+  {path: "forgotpassword", component: ForgotpasswordComponent},
+  {path: "signUp", component: SignUpComponent},
 
-  { path: "contactus", component: ContactusComponent },
-  { path: "aboutus", component: AboutusComponent },
-  { path: "faqs", component: FaqsComponent },
-  { path: "privacypolicy", component: PrivacypolicyComponent },
+  {path: "contactus", component: ContactusComponent},
+  {path: "aboutus", component: AboutusComponent},
+  {path: "faqs", component: FaqsComponent},
+  {path: "privacypolicy", component: PrivacypolicyComponent},
 
+  {path: "assessments", component: AssessmentsComponent},
+  {path: "deletedemployees", component: DeletedemployeesComponent},
+  {path: "employeeschedule", component: EmployeescheduleComponent},
+  {path: "schedules", component: SchedulesComponent},
 
+  {
+    path: "annualreturnemployeesupload",
+    component: AnnualreturnemployeesuploadComponent,
+  },
+  {
+    path: "annualreturnassessments",
+    component: AnnualreturnassessmentsComponent,
+  },
+  {path: "annualreturnschedules", component: AnnualreturnschedulesComponent},
+  {path: "annualreturns", component: AnnualreturnsComponent},
+  {path: "reassessmentappeals", component: ReassessmentappealsComponent},
+  {path: "reassessments", component: ReassessmentsComponent},
 
+  {path: "approvedprojection", component: ApprovedprojectionComponent},
+  {path: "pendingprojection", component: PendingprojectionComponent},
+  {path: "uploadprojection", component: UploadprojectionComponent},
 
-  { path: "assessments", component: AssessmentsComponent },
-  { path: "deletedemployees", component: DeletedemployeesComponent },
-  { path: "employeeschedule", component: EmployeescheduleComponent },
-  { path: "schedules", component: SchedulesComponent },
+  {path: "adduser", component: AdduserComponent},
+  {path: "edituser", component: EditComponent},
+  {path: "displayuser", component: DisplayuserComponent},
 
-  { path: "annualreturnemployeesupload", component: AnnualreturnemployeesuploadComponent },
-  { path: "annualreturnassessments", component: AnnualreturnassessmentsComponent },
-  { path: "annualreturnschedules", component: AnnualreturnschedulesComponent },
-  { path: "annualreturns", component: AnnualreturnsComponent },
-  { path: "reassessmentappeals", component: ReassessmentappealsComponent },
-  { path: "reassessments", component: ReassessmentsComponent },
-
-  { path: "approvedprojection", component: ApprovedprojectionComponent },
-  { path: "pendingprojection", component: PendingprojectionComponent },
-  { path: "uploadprojection", component: UploadprojectionComponent },
-
-  { path: "adduser", component: AdduserComponent },
-  { path: "edituser", component: EditComponent },
-  { path: "displayuser", component: DisplayuserComponent },
-
-];
+  {path: "admin", loadChildren: () => import("./admin/admin.routes")},
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
