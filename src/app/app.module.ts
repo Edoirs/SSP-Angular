@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { DatePipe, HashLocationStrategy, LocationStrategy  } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ContentWrapperComponent } from './__inc/content-wrapper/content-wrapper.component';
-import { ControlSidebarComponent } from './__inc/control-sidebar/control-sidebar.component';
-import { MainFooterComponent } from './__inc/main-footer/main-footer.component';
-import { MainHeaderComponent } from './__inc/main-header/main-header.component';
-import { MainSidebarComponent } from './__inc/main-sidebar/main-sidebar.component';
-import { WebfooterComponent } from './__inc/webfooter/webfooter.component';
-import { WebheaderComponent } from './__inc/webheader/webheader.component';
-import { WhatsupchatComponent } from './__inc/whatsupchat/whatsupchat.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async"
+import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common"
+import {AppRoutingModule} from "./app-routing.module"
+import {AppComponent} from "./app.component"
+import {ContentWrapperComponent} from "./__inc/content-wrapper/content-wrapper.component"
+import {ControlSidebarComponent} from "./__inc/control-sidebar/control-sidebar.component"
+import {MainFooterComponent} from "./__inc/main-footer/main-footer.component"
+import {MainHeaderComponent} from "./__inc/main-header/main-header.component"
+import {MainSidebarComponent} from "./__inc/main-sidebar/main-sidebar.component"
+import {WebfooterComponent} from "./__inc/webfooter/webfooter.component"
+import {WebheaderComponent} from "./__inc/webheader/webheader.component"
+import {WhatsupchatComponent} from "./__inc/whatsupchat/whatsupchat.component"
+import {FormsModule, ReactiveFormsModule} from "@angular/forms"
+import {MatDialogModule} from "@angular/material/dialog"
 import {NgxUiLoaderModule} from "ngx-ui-loader"
 import {DataTablesModule} from "angular-datatables"
 import {HomeComponent} from "./webpages/home/home.component"
@@ -49,7 +51,6 @@ import {DisplayuserComponent} from "./paye/users/displayuser/displayuser.compone
 import {AdduserComponent} from "./paye/users/adduser/adduser.component"
 import {EditComponent} from "./paye/users/edit/edit.component"
 import {CompanyprofileComponent} from "./paye/profile/companyprofile/companyprofile.component"
-import {provideAnimationsAsync} from "@angular/platform-browser/animations/async"
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
     NgbModule,
     NgxPaginationModule,
     NgChartsModule,
+    MatDialogModule,
   ],
   providers: [
     DatePipe,
