@@ -164,7 +164,7 @@ export class SignUpComponent {
         let companyDetail = data.data;
         this.loadCompanyDetailsData(companyDetail);
         this.ngxService.stop();
-        // this.router.navigate(['/dashboard']);
+        // this.router.navigate(['/admin', 'dashboard']);
       }
       else {
         this.ngxService.stop();
@@ -227,7 +227,7 @@ export class SignUpComponent {
 
         this.showCreateUserForm = false;
         this.showEnterOtpForm = true;
-        // this.router.navigate(['/dashboard']);
+        // this.router.navigate(['/admin', 'dashboard']);
       }
       else {
         this.ngxService.stop();

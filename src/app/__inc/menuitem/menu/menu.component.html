@@ -2,7 +2,7 @@
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
     <li class="nav-item menu-open">
-      <a [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="nav-link">
+      <a [routerLink]="['/admin', 'dashboard']" [routerLinkActive]="['active']" class="nav-link">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>Dashboard</p>
       </a>
@@ -30,25 +30,25 @@
       <ul class="nav nav-treeview" style="display: none;">
 
         <li class="nav-item">
-          <a [routerLink]="['/employeeschedule']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['admin', 'employee-schedule']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Employees</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/deletedemployees']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'deleted-employees']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Deleted Employees</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/schedules']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'schedules']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Schedules</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/assessments']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'assessments']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Assessments</p>
           </a>
@@ -70,37 +70,37 @@
       <ul class="nav nav-treeview" style="display: none;">
 
         <li class="nav-item">
-          <a [routerLink]="['/annualreturnemployeesupload']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'annual-return-employees-upload']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Form H1 Filling & Uploads</p>
           </a>
         </li>
         <!-- <li class="nav-item">
-          <a [routerLink]="['/annualreturns']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'annual-returns']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Uploaded Form H1</p>
           </a>
         </li> -->
         <li class="nav-item">
-          <a [routerLink]="['/annualreturnschedules']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'annual-return-schedules']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Form h1 Schedules</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/annualreturnassessments']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'annual-return-assessments']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Filled / Reassessed Form H1</p>
           </a>
         </li>
         <!-- <li class="nav-item">
-          <a [routerLink]="['/reassessments']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'reassessments']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Reassessments</p>
           </a>
         </li> -->
         <li class="nav-item">
-          <a [routerLink]="['/reassessmentappeals']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'reassessment-appeals']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Objections</p>
           </a>
@@ -121,19 +121,19 @@
       <ul class="nav nav-treeview" style="display: none;">
 
         <li class="nav-item">
-          <a [routerLink]="['/uploadprojection']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'upload-projection']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Upload Form H3</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/pendingprojection']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'pending-projection']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Pending Form H3</p>
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/approvedprojection']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'approved-projection']" [routerLinkActive]="['active']" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Filled Form</p>
           </a>

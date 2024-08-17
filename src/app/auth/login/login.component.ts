@@ -171,7 +171,7 @@ export class LoginComponent {
         localStorage.setItem("companyRIN", loginData?.comanyRin);
         this.companyId = formAllData.companyId;
         // this.goToOtp();
-        this.router.navigate(["/dashboard"])
+        this.router.navigate(["/admin", "dashboard"])
       }
       else {
         Swal.fire({
@@ -237,7 +237,7 @@ export class LoginComponent {
 
         this.initialiseOtpForm();
         this.ngxService.stop();
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(["/admin", "dashboard"])
       }
       else {
         this.ngxService.stop();

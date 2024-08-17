@@ -79,7 +79,7 @@ export class SessionService {
   public isIndividual() {
     this.application_id = localStorage.getItem("application_id");
     if (this.application_id == this.selfportal_application_id) {
-      this.router.navigate(["/dashboard"]);
+      this.router.navigate(["/admin", "dashboard"])
     }
   }
 
@@ -91,7 +91,7 @@ export class SessionService {
       this.validtoken != null &&
       this.application_id == this.selfportal_application_id
     ) {
-      this.router.navigate(["/dashboard"]);
+      this.router.navigate(["/admin", "dashboard"])
     }
     if (
       this.validtoken != null &&

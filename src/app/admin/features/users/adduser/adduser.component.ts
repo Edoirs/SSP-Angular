@@ -1,62 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { SessionService } from "../../../session.service";
-import { environment } from "../../../../environments/environment";
+import {Component, OnInit} from "@angular/core"
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {HttpClient, HttpHeaders} from "@angular/common/http"
+import {Router} from "@angular/router"
+import {SessionService} from "../../../../session.service"
+import {environment} from "../../../../../environments/environment"
 // import { FlashMessagesService } from "angular2-flash-messages";
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"
 // import { DashboardComponent } from "src/app/paye/dashboard/dashboard.component";
 
 @Component({
-  selector: 'app-adduser',
-  templateUrl: './adduser.component.html',
-  styleUrls: ['./adduser.component.css']
+  selector: "app-adduser",
+  templateUrl: "./adduser.component.html",
+  styleUrls: ["./adduser.component.css"],
 })
 export class AdduserComponent implements OnInit {
-  registerForm!: FormGroup;
-  submitted = false;
-  apiUrl: any;
+  registerForm!: FormGroup
+  submitted = false
+  apiUrl: any
 
-  roles: any;
-  myroles: any;
-  applications: any;
-  myapplications: any;
-  roleID: any;
-  rolesArr: any;
+  roles: any
+  myroles: any
+  applications: any
+  myapplications: any
+  roleID: any
+  rolesArr: any
 
   constructor(
     private formBuilder: FormBuilder,
     // private component: DashboardComponent,
     private httpClient: HttpClient,
     private router: Router,
-    private sess: SessionService,
-    // private flashMessage: FlashMessagesService,
-    // private spinnerService: Ng4LoadingSpinnerService
+    private sess: SessionService
+  ) // private flashMessage: FlashMessagesService,
+  // private spinnerService: Ng4LoadingSpinnerService
 
-  ) { }
+  {}
 
   ngOnInit(): void {
     //this.component.checkIfEditorExist()
     // this.sess.isCorporate();
-    this.sess.checkLogin();
+    this.sess.checkLogin()
     // Check User Login
 
-    this.roleID = localStorage.getItem("role_id");
+    this.roleID = localStorage.getItem("role_id")
     // if (this.roleID != 5) {
     //   this.router.navigate(["/dashboard"]);
     // }
 
-    this.roleID = localStorage.getItem("role_id");
+    this.roleID = localStorage.getItem("role_id")
     // if (this.roleID != 5) {
     //   this.router.navigate(["/logout"]);
     // }
 
     // this.getRole();
-    this.getApplication();
-    this.initialiseForms();
-    
+    this.getApplication()
+    this.initialiseForms()
   }
 
   initialiseForms() {
@@ -87,58 +86,58 @@ export class AdduserComponent implements OnInit {
         ],
       ],
       role: ["", [Validators.required]],
-    });
+    })
   }
 
   getRole() {
-    this.apiUrl = environment.AUTHAPIURL + "roles";
+    this.apiUrl = environment.AUTHAPIURL + "roles"
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response);
-      this.roles = res.response;
+      console.log(res.response)
+      this.roles = res.response
 
-      const arr = [];
+      const arr = []
       for (const obj of this.roles) {
         // console.log(obj);
         arr.push({
           id: obj.id,
           role_name: obj.role_name,
           status: obj.status,
-        });
-        this.myroles = arr;
+        })
+        this.myroles = arr
       }
-    });
+    })
   }
 
   getApplication() {
-    this.apiUrl = environment.AUTHAPIURL + "applications/1/roles";
+    this.apiUrl = environment.AUTHAPIURL + "applications/1/roles"
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response);
-      this.applications = res.response;
-      this.roles = res.response;
-      this.rolesArr = this.roles.shift();
-      console.log(this.roles);
+      console.log(res.response)
+      this.applications = res.response
+      this.roles = res.response
+      this.rolesArr = this.roles.shift()
+      console.log(this.roles)
 
-      const arr = [];
+      const arr = []
       for (const obj of this.applications) {
         // console.log(obj);
         arr.push({
           id: obj.id,
           application_name: obj.application_name,
           status: obj.status,
-        });
-        this.myapplications = arr;
+        })
+        this.myapplications = arr
       }
-    });
+    })
   }
 
   onSubmit(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
     // stop the process here if form is invalid
     if (this.registerForm.invalid) {
-      return;
+      return
     }
 
-    console.log(formAllData);
+    console.log(formAllData)
 
     const obj = {
       name: formAllData.name,
@@ -146,34 +145,34 @@ export class AdduserComponent implements OnInit {
       phone: formAllData.phoneNumber,
       role_id: formAllData.role,
       taxpayer_type_id: localStorage.getItem("taxpayer_type_id"),
-    };
+    }
 
-    this.postData(obj);
-    this.submitted = false;
+    this.postData(obj)
+    this.submitted = false
   }
 
   postData(jsonData: any) {
-    this.apiUrl = environment.AUTHAPIURL + "users";
+    this.apiUrl = environment.AUTHAPIURL + "users"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     // this.ngxService.start();
     this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log(data);
+        console.log(data)
         // Rest form fithout errors
-        this.registerForm.reset();
+        this.registerForm.reset()
         Object.keys(this.registerForm.controls).forEach((key) => {
-          this.registerForm.get(key)?.setErrors(null);
-        });
+          this.registerForm.get(key)?.setErrors(null)
+        })
 
         if (data.status === true) {
           // this.ngxService.stop();
-          this.initialiseForms();
+          this.initialiseForms()
           Swal.fire({
             icon: "success",
             title: "Success",
@@ -181,7 +180,7 @@ export class AdduserComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         } else {
           // this.ngxService.stop();
           Swal.fire({
@@ -194,9 +193,8 @@ export class AdduserComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         }
-      });
+      })
   }
-
 }

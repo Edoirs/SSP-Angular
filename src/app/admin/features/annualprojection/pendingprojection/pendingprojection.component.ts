@@ -106,7 +106,7 @@ export class PendingprojectionComponent implements OnInit {
 
     this.roleID = localStorage.getItem("role_id");
     // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-    //   this.router.navigate(["/dashboard"]);
+    //   this.router.navigate(['/admin', 'dashboard']);
     // }
 
     if (this.roleID === "5") {
