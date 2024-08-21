@@ -29,8 +29,6 @@
                     <th>Address</th>
                     <th>LGA</th>
                     <th>No. of Employees</th>
-                    <!-- <th>Employees Count</th>
-                    <th>Taxpayer Role</th> -->
                     <th>View</th>
                   </tr>
                 </thead>
@@ -40,13 +38,10 @@
                     <td>{{ mydata.business_id }}</td>
                     <td>{{ mydata.business_name | titlecase }}</td>
                     <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
-                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
                     <td>
                       {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
                     </td>
-                    <!-- <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td> -->
-                    <!-- <td>{{ mydata.employees_count }}</td>
-                    <td>{{ mydata.taxpayer_role }}</td> --> 
+                    <td>{{ mydata.taxpayer_role }}</td> 
                     <td title="View">
                       <button
                         class="btn btn-sm btn-outline-success"
@@ -91,8 +86,27 @@
             style="font-size: 12px; padding: 5px; margin-top: -3px;"
             (click)="viewUploadEmployee(uploadModal)"
           >
-            <i class="fas fa-file-upload"></i> Bulk Upload
+            Bulk Upload
           </button>
+
+          <button
+            type="submit"
+            class="btn btn-outline-success role float-right mx-2"
+            style="font-size: 12px; padding: 5px; margin-top: -3px;"
+            (click)="forwardSchedule(schedulemodal)"
+          >
+          <i class="fas fa-plus-square"></i> Create Schedule
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-outline-success role float-right mx-2"
+            style="font-size: 12px; padding: 5px; margin-top: -3px;"
+            (click)="viewUploadEmployee(uploadModal)"
+          >
+             Mark Inactive
+          </button>
+
         </div>
     </div>
 
@@ -109,19 +123,15 @@
               <th>S/N</th>
               <th>Employee RIN</th>
               <th>Full Name</th>
-              <!-- <th>Designation</th> -->
-              <!-- <th>Phone</th> -->
               <th>Total Income (₦)</th>
-              <th>Pension (₦)</th>
-              <th>NHIS (₦)</th>
-              <th>NHF (₦)</th>
-              <th>Life Assurance (₦)</th>
-              <th>Gross Income (₦)</th>
+              <th>Non Taxable Income (₦)</th>
               <th>CRA (₦)</th>
-              <th>Date Created</th>
+              <th>Tax Free Pay  (₦)</th>
+              <th>Chargeable Income </th>
+              <th>Monthly Tax</th>
               <th>View</th>
-              <th *ngIf="showEditEmployee">Edit</th>
-              <th *ngIf="showDeleteEmployee">Delete</th>
+              <!-- <th *ngIf="showEditEmployee">Edit</th>
+              <th *ngIf="showDeleteEmployee">Delete</th> -->
             </tr>
           </thead>
           <tbody>
@@ -141,15 +151,9 @@
               <td>{{ mydata.nhf | number }}</td>
               <td>{{ mydata.life_assurance | number }}</td>
               <td>{{ mydata.gross_income | number }}</td>
-              <td>{{ mydata.cra | number }}</td>
-              <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
+              <!-- <td>{{ mydata.cra | number }}</td> -->
+              <!-- <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td> -->
               <td title="View">
-                <!-- <button
-                  class="btn btn-sm btn-outline-success"
-                  (click)="viewEmployee(updateEmployee, mydata)"
-                >
-                  <i class="nav-icon fas fa-eye"></i>
-                </button> -->
                 <button
                   class="btn btn-sm btn-outline-success"
                   (click)="viewEmployee(addEmployee, mydata)"
@@ -157,29 +161,23 @@
                   <i class="nav-icon fas fa-eye"></i>
                 </button>
               </td>
-              <td title="Edit" *ngIf="showEditEmployee">
+              <!-- <td title="Edit" *ngIf="showEditEmployee">
                 <button
                   class="btn btn-sm btn-outline-success"
                   (click)="editEmployee(addEmployee, mydata); isEdit = true; showSaveEmployee = true;"
                 >
                   <i class="nav-icon fas fa-edit"></i>
                 </button>
-                <!-- <button
-                  class="btn btn-sm btn-outline-success"
-                  (click)="editEmployee(updateEmployee, mydata)"
-                >
-                  <i class="nav-icon fas fa-edit"></i>
-                </button> -->
-              </td>
+              </td> -->
 
-              <td *ngIf="showDeleteEmployee" title="Delete">
+              <!-- <td *ngIf="showDeleteEmployee" title="Delete">
                 <button
                   (click)="deleteEmployee(mydata.id)"
                   class="btn btn-sm btn-danger"
                 >
                   <i class="nav-icon far fa-trash-alt"></i>
                 </button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -187,12 +185,6 @@
     </div>
 
     <div class="modal-footer" *ngIf="apidataEmpty">
-      <button 
-        type="submit"
-        (click)="forwardSchedule(schedulemodal)"
-        class="btn btn button-login">
-        <i class="fas fa-plus-square"></i> Create Schedule
-      </button>
       <button
         type="button"
         class="btn btn-outline-dark button-login float-right"
