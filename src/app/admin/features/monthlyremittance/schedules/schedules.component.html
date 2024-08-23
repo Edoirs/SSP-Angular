@@ -10,7 +10,7 @@
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-secondary">
           <div class="card-header custome">
-            <h3 class="card-title">List of Businesses</h3>
+            <h3 class="card-title">Schedules</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -26,12 +26,14 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Business ID</th>
+                    <th>Business RIN</th>
                     <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
-                    <th>Address</th>
-                    <th>LGA</th>
+                    <th>Tax Year</th>
+                    <th>Tax Month</th>
+                    <th>Employee Count</th>
+                    <th>Tax Income</th>
+                    <th>Monthly Tax</th>
+                    <th>Assessment Status</th>
                     <th>View</th>
                   </tr>
                 </thead>
@@ -43,6 +45,12 @@
                     <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
                     <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
                     <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
+                    <td>
+                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    </td>
+                    <td>
+                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    </td>
                     <td>
                       {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
                     </td>
@@ -74,9 +82,16 @@
   
   <ng-template #schedulesModal let-modal>
     <div class="modal-header">
-      <!-- <div class="card-header custome"> -->
-        <h4 class="modal-title" id="modal-basic-title">Monthly Remittance Schedules</h4>
-      <!-- </div> -->
+      <div class="">
+        <!-- <h4 class="modal-title" id="modal-basic-title">Monthly Remittance Schedules</h4> -->
+      </div>
+
+      <div class="schedule-buttons">
+        <button>Send to RDM</button>
+        <button>Re-Send to RDM</button>
+        <button>Revise Submission</button>
+        <button>Re-Assess</button>
+      </div>
       <!-- /.card-header -->
       <!-- /.card-body -->
     </div>
@@ -93,14 +108,14 @@
           <thead>
             <tr>
               <th>S/N</th>
-              <th>Forwarded To</th>
-              <th>Date Forwarded</th>
-              <th>Tax Month</th>
-              <th>Tax Year</th>
-              <!-- <th style="width: 8%">Gross Income</th> -->
-              <th>Assessment Status</th>
-              <!-- <th>Status</th> -->
-              <th>Date Created</th>
+              <th>Employee RIN</th>
+              <th>Full Name</th>
+              <th>Total Income</th>
+              <th>Non Taxable Income</th>
+              <th>CRA</th>
+              <th>Tax Free Pay</th>
+              <th>Chargeable Income</th>
+              <th>Monthly Tax</th>
               <th>View</th>
             </tr>
           </thead>
@@ -143,6 +158,8 @@
               </td>
               <!-- <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td> -->
 
+              <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
+              <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
               <td>{{ mydata.created_at | date: "dd MMM yyyy" }}</td>
               <td title="View">
                 <button

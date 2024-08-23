@@ -19,6 +19,7 @@ import {DisplayuserComponent} from "./users/displayuser/displayuser.component"
 import {EditComponent} from "./users/edit/edit.component"
 
 const routes: Routes = [
+  {path: "", redirectTo: "dashboard", pathMatch: "full"},
   {path: "dashboard", component: DashboardComponent},
   {path: "assessments", component: AssessmentsComponent},
   {path: "deleted-employees", component: DeletedemployeesComponent},
