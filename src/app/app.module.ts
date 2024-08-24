@@ -51,6 +51,7 @@ import {DisplayuserComponent} from "./admin/features/users/displayuser/displayus
 import {AdduserComponent} from "./admin/features/users/adduser/adduser.component"
 import {EditComponent} from "./admin/features/users/edit/edit.component"
 import {CompanyprofileComponent} from "./admin/features/profile/companyprofile/companyprofile.component"
+import {MatPaginatorModule} from "@angular/material/paginator"
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import {CompanyprofileComponent} from "./admin/features/profile/companyprofile/c
     NgxPaginationModule,
     NgChartsModule,
     MatDialogModule,
+    MatPaginatorModule,
   ],
   providers: [
     DatePipe,

@@ -18,8 +18,6 @@
               <table
                 class="table table-bordered table-condensed"
                 *ngIf="businessesData"
-                datatable
-                [dtOptions]="dtOptions"
                 width="100%">
                 <thead>
                   <tr>
@@ -33,26 +31,39 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let mydata of businessesData; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-                    <td>{{ mydata.taxpayer_role }}</td> 
-                    <td title="View">
-                      <button
-                        class="btn btn-sm btn-outline-success"
-                        (click)="viewBusinessEmployees(employees, mydata)"
-                      >
-                        <i class="nav-icon fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  @for (employee of employeesList(); track $index) {
+                    <tr>
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{ employee?.businessRin }}</td>
+                      <td>{{ employee?.businessName | titlecase }}</td>
+                      <td>{{ !employee?.businessAddress ? "N/A" : employee?.businessAddress }}</td>
+                      <td>
+                        {{ !employee?.businessLga ? "N/A" : employee?.businessLga }}
+                      </td>
+                      <td>{{ employee?.noOfEmployees }}</td> 
+                      <td title="View">
+                        <button
+                          class="btn btn-sm btn-outline-success"
+                          (click)="viewBusinessEmployees(employees, employee)"
+                        >
+                          <i class="nav-icon fas fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
                 </tbody>
               </table>
+
+              <section>
+                <mat-paginator
+                  [length]="totalLength()"
+                  [pageSize]="pageSize()"
+                  [pageIndex]="pageIndex()"
+                  (page)="handlePageEvent($event)"
+                  showFirstLastButtons
+                  aria-label="Select page">
+                </mat-paginator>
+              </section>
             </div>
           </div>
           <!-- /.card-body -->

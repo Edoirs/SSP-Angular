@@ -2,7 +2,7 @@ import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {BusinessService} from "./services/businesses.services"
 import {ActivatedRoute, Router} from "@angular/router"
-import {BusinessResInterface} from "./services/business.model"
+import {BusinessResInterface} from "./data-access/business.model"
 
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 

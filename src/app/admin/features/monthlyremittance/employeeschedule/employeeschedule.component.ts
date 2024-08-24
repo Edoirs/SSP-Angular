@@ -1,5 +1,5 @@
 import {NgxUiLoaderService} from "ngx-ui-loader"
-import {Component, inject, OnDestroy, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {Title} from "@angular/platform-browser"
@@ -20,6 +20,9 @@ import {MatDialog} from "@angular/material/dialog"
 import {CreateScheduleComponent} from "./ui/create-schedule/create-schedule.component"
 import {TokenService} from "src/app/shared/services/token.service"
 import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.utils"
+import {EmployeeScheduleService} from "./services/employee-schedule.service"
+import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.model"
+import {PageEvent} from "@angular/material/paginator"
 
 @Component({
   selector: "app-employeeschedule",
@@ -28,7 +31,7 @@ import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.uti
 })
 export class EmployeescheduleComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
-  private readonly tokenService = inject(TokenService)
+  private readonly employeeScheduleService = inject(EmployeeScheduleService)
   editEmployeeForm!: FormGroup
   addEmployeeForm!: FormGroup
   submitted: boolean = false
@@ -77,6 +80,12 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   isDisabled: boolean = false
   updateId: any
   companyId: any
+
+  pageSize = signal(15)
+  totalLength = signal(500)
+  pageIndex = signal(1)
+
+  employeesList = signal<EmployeeScheduleResInterface[] | null>(null)
 
   validatorRegex = /^(\d{1,17}|\d{0,17}\.\d{1,2})$/
   cardIdRegex = /^[0-9\s]*$/
@@ -143,10 +152,36 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
     this.sample_file =
       environment.SAMPLE_FILE_URL + "employee-schedule-template.xlsx"
+
+    this.listenToRoute()
   }
 
   ngOnDestroy(): void {
     this.subs.clear()
+  }
+
+  listenToRoute() {
+    this.subs.add = this.route.queryParams.subscribe((params) => {
+      if (Object.keys(params)) {
+        if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
+        if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        this.employeeScheduleService
+          .getEmployees(this.pageIndex(), this.pageSize())
+          .subscribe((res) => {
+            this.employeesList.set(res.data)
+          })
+      }
+    })
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.router.navigate(["."], {
+      relativeTo: this.route,
+      queryParams: {
+        pageSize: event.pageSize,
+        pageIndex: event.pageIndex === 0 ? 1 : event.pageIndex,
+      },
+    })
   }
 
   initTable() {
@@ -864,45 +899,45 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     })
 
     this.subs.add = this.httpClient
-        .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
-        .subscribe((data) => {
-          console.log("scheduleApiResponseData: ", data)
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
+      .subscribe((data) => {
+        console.log("scheduleApiResponseData: ", data)
 
-          if (data.status === true) {
-            // Rest form fithout errors
-            this.forwardScheduleForm.reset()
-            Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-              this.forwardScheduleForm.get(key)?.setErrors(null)
-            })
-            // this.formDirective.resetForm()
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: "Schedule Forawarded Successfully to Manager",
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            })
+        if (data.status === true) {
+          // Rest form fithout errors
+          this.forwardScheduleForm.reset()
+          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
+            this.forwardScheduleForm.get(key)?.setErrors(null)
+          })
+          // this.formDirective.resetForm()
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Schedule Forawarded Successfully to Manager",
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
 
-            // this.ngxService.stop();
-            this.modalService.dismissAll()
-            this.getEmployees(this.businessId)
-          } else {
-            // this.ngxService.stop();
+          // this.ngxService.stop();
+          this.modalService.dismissAll()
+          this.getEmployees(this.businessId)
+        } else {
+          // this.ngxService.stop();
 
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text:
-                data.response != null && data.response[0] != undefined
-                  ? data.response[0].message
-                  : data.message,
-              showConfirmButton: true,
-              timer: 7000,
-              timerProgressBar: true,
-            })
-          }
-        })
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null && data.response[0] != undefined
+                ? data.response[0].message
+                : data.message,
+            showConfirmButton: true,
+            timer: 7000,
+            timerProgressBar: true,
+          })
+        }
+      })
   }
 
   deleteEmployee(id: number) {

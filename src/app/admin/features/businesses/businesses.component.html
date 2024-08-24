@@ -31,9 +31,9 @@
                 @for (business of businesses(); track $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
-                  <td>{{ business.businessRin }}</td>
-                  <td>{{ business.businessName }}</td>
-                  <td>{{ business.lgaName }}</td>
+                  <td>{{ business?.businessRin }}</td>
+                  <td>{{ business?.businessName }}</td>
+                  <td>{{ business?.lgaName }}</td>
                 </tr>
                 }
               </tbody>
