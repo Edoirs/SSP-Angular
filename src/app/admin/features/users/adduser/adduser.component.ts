@@ -40,7 +40,6 @@ export class AdduserComponent implements OnInit {
   ngOnInit(): void {
     //this.component.checkIfEditorExist()
     // this.sess.isCorporate();
-    this.sess.checkLogin()
     // Check User Login
 
     this.roleID = localStorage.getItem("role_id")

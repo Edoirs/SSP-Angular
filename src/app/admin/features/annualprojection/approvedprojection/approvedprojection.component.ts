@@ -60,8 +60,7 @@ export class ApprovedprojectionComponent implements OnInit {
 
   ngOnInit() {
     // this.sess.isCorporate();
-    this.titleService.setTitle(this.title);
-    this.sess.checkLogin();
+    this.titleService.setTitle(this.title)
     this.modalOptions = {
       backdrop: true,
       centered: true,

@@ -101,17 +101,6 @@ export class SessionService {
     }
   }
 
-  public checkLogin() {
-    this.validtoken = localStorage.getItem("access_token");
-    // this.application_id = localStorage.getItem("application_id");
-
-    console.log("token: ", this.validtoken);
-    // tslint:disable-next-line: triple-equals
-    if (this.validtoken == "" || this.validtoken === null) {
-      this.router.navigate(["/login"]);
-    }
-  }
-
   getAllMonths() {
     this.months = [
       { monthId: "01", monthName: "January" },

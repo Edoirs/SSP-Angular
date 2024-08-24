@@ -82,29 +82,28 @@ export class SchedulesComponent implements OnInit {
 
   ngOnInit(): void {
     // this.sess.isCorporate();
-    this.titleService.setTitle(this.title);
+    this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin();
-    this.initialiseForms();
-    this.getZipcodes();
-    this.getStateLocalGovts();
-    console.log("token: ", localStorage.getItem("access_token"));
-    var userRole = localStorage.getItem("role_id");
-    this.corporateId = localStorage.getItem("corporate_id");
+    this.initialiseForms()
+    this.getZipcodes()
+    this.getStateLocalGovts()
+    console.log("token: ", localStorage.getItem("access_token"))
+    var userRole = localStorage.getItem("role_id")
+    this.corporateId = localStorage.getItem("corporate_id")
 
-    this.companyId = localStorage.getItem("companyId");
-    console.log("companyId: ", this.companyId);
-    this.getBusinesses();
+    this.companyId = localStorage.getItem("companyId")
+    console.log("companyId: ", this.companyId)
+    this.getBusinesses()
 
-    this.showGenerateAssessment = true;
+    this.showGenerateAssessment = true
     // if (userRole == "5") {
     //   this.showGenerateAssessment = true;
     //   this.managerRole = true;
     // }
 
     if (userRole == "6") {
-      this.editorRole = true;
-      this.showEditEmployee = true;
+      this.editorRole = true
+      this.showEditEmployee = true
     }
 
     this.modalOptions = {
@@ -113,9 +112,9 @@ export class SchedulesComponent implements OnInit {
       backdropClass: "customBackdrop",
       // size: 'lg'
       size: "xl",
-    };
+    }
 
-    this.intialiseTableProperties();
+    this.intialiseTableProperties()
   }
 
   intialiseTableProperties() {

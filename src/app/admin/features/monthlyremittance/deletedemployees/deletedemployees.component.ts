@@ -40,7 +40,6 @@ export class DeletedemployeesComponent implements OnInit {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin()
 
     this.roleID = localStorage.getItem("role_id")
     // if (this.roleID != 1) {

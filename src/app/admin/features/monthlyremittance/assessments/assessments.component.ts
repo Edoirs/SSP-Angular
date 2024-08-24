@@ -86,22 +86,21 @@ export class AssessmentsComponent implements OnInit {
 
   ngOnInit(): void {
     // this.sess.isCorporate();
-    this.titleService.setTitle(this.title);
+    this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin();
-    this.initialisePaymentItemsForm();
-    this.initialiseForms();
+    this.initialisePaymentItemsForm()
+    this.initialiseForms()
 
-    this.companyId = localStorage.getItem("companyId");
-    console.log("companyId: ", this.companyId);
-    this.getBusinesses();
-    
-    this.roleID = localStorage.getItem("role_id");
+    this.companyId = localStorage.getItem("companyId")
+    console.log("companyId: ", this.companyId)
+    this.getBusinesses()
+
+    this.roleID = localStorage.getItem("role_id")
     if (this.roleID === "5" || this.roleID === "6") {
-      this.managerRole = true;
+      this.managerRole = true
     }
-    this.intialiseTableProperties();
-    console.log("token: ", localStorage.getItem("access_token"));
+    this.intialiseTableProperties()
+    console.log("token: ", localStorage.getItem("access_token"))
   }
   initialisePaymentItemsForm() {
     this.paymentItemsForm = this.formBuilder.group({

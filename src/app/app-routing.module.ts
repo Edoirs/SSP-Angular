@@ -13,6 +13,8 @@ import {PrivacypolicyComponent} from "./webpages/privacypolicy/privacypolicy.com
 import {SignUpComponent} from "./auth/sign-up/sign-up.component"
 // import { CompanyprofileComponent } from './paye/users/companyprofile/companyprofile.component';
 
+import {AuthGuard} from "@shared-guards/auth.guard"
+
 const routes: Routes = [
   {path: "", redirectTo: "home", pathMatch: "full"},
   {path: "home", component: HomeComponent},
@@ -27,7 +29,11 @@ const routes: Routes = [
   {path: "faqs", component: FaqsComponent},
   {path: "privacypolicy", component: PrivacypolicyComponent},
 
-  {path: "admin", loadChildren: () => import("./admin/admin.routes")},
+  {
+    path: "admin",
+    loadChildren: () => import("./admin/admin.routes"),
+    canActivate: [AuthGuard],
+  },
 ]
 
 @NgModule({

@@ -1,5 +1,5 @@
 import {NgxUiLoaderService} from "ngx-ui-loader"
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {Title} from "@angular/platform-browser"
@@ -18,14 +18,17 @@ import Swal from "sweetalert2"
 import {EmployeeTableImage} from "./utils/employeeschedule.utils"
 import {MatDialog} from "@angular/material/dialog"
 import {CreateScheduleComponent} from "./ui/create-schedule/create-schedule.component"
+import {TokenService} from "src/app/shared/services/token.service"
+import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.utils"
 
 @Component({
   selector: "app-employeeschedule",
   templateUrl: "./employeeschedule.component.html",
   styleUrl: "./employeeschedule.component.css",
 })
-export class EmployeescheduleComponent implements OnInit {
+export class EmployeescheduleComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
+  private readonly tokenService = inject(TokenService)
   editEmployeeForm!: FormGroup
   addEmployeeForm!: FormGroup
   submitted: boolean = false
@@ -79,6 +82,8 @@ export class EmployeescheduleComponent implements OnInit {
   cardIdRegex = /^[0-9\s]*$/
   textOnlyRegex = "[a-zA-Z ]*"
 
+  subs = new SubscriptionHandler()
+
   constructor(
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -96,7 +101,6 @@ export class EmployeescheduleComponent implements OnInit {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin()
     this.initialiseEditForms()
     // this.getEmployees();
     this.getZipcodes()
@@ -139,6 +143,10 @@ export class EmployeescheduleComponent implements OnInit {
 
     this.sample_file =
       environment.SAMPLE_FILE_URL + "employee-schedule-template.xlsx"
+  }
+
+  ngOnDestroy(): void {
+    this.subs.clear()
   }
 
   initTable() {
@@ -662,7 +670,7 @@ export class EmployeescheduleComponent implements OnInit {
   getZipcodes() {
     this.apiUrl = environment.AUTHAPIURL + "LocalGovtPostalCode/getall"
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.subs.add = this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       console.log("zipcodes: ", data)
       this.zipCodes = data.data
     })
@@ -671,7 +679,7 @@ export class EmployeescheduleComponent implements OnInit {
   getStateLocalGovts() {
     this.apiUrl = `${environment.AUTHAPIURL}LocalGovernmentArea/getall`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+    this.subs.add = this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       this.stateLocalGovts = data.data
       console.log("stateLocalGovts: ", data)
     })
@@ -686,7 +694,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         console.log("singleEmployeeData: ", data)
@@ -706,7 +714,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         console.log("BusinessData: ", data)
@@ -725,7 +733,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         console.log("singleBusinessData: ", data)
@@ -744,7 +752,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
         console.log("employeeResponseData: ", data)
@@ -803,7 +811,7 @@ export class EmployeescheduleComponent implements OnInit {
     //   business_id: businessId,
     // };
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         console.log("employeesData: ", data)
@@ -855,46 +863,46 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
-      .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data)
+    this.subs.add = this.httpClient
+        .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
+        .subscribe((data) => {
+          console.log("scheduleApiResponseData: ", data)
 
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.forwardScheduleForm.reset()
-          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null)
-          })
-          // this.formDirective.resetForm()
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Schedule Forawarded Successfully to Manager",
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
+          if (data.status === true) {
+            // Rest form fithout errors
+            this.forwardScheduleForm.reset()
+            Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
+              this.forwardScheduleForm.get(key)?.setErrors(null)
+            })
+            // this.formDirective.resetForm()
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Schedule Forawarded Successfully to Manager",
+              showConfirmButton: true,
+              timer: 5000,
+              timerProgressBar: true,
+            })
 
-          // this.ngxService.stop();
-          this.modalService.dismissAll()
-          this.getEmployees(this.businessId)
-        } else {
-          // this.ngxService.stop();
+            // this.ngxService.stop();
+            this.modalService.dismissAll()
+            this.getEmployees(this.businessId)
+          } else {
+            // this.ngxService.stop();
 
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 7000,
-            timerProgressBar: true,
-          })
-        }
-      })
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                data.response != null && data.response[0] != undefined
+                  ? data.response[0].message
+                  : data.message,
+              showConfirmButton: true,
+              timer: 7000,
+              timerProgressBar: true,
+            })
+          }
+        })
   }
 
   deleteEmployee(id: number) {
@@ -923,7 +931,7 @@ export class EmployeescheduleComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         // this.ngxService.start();
-        this.httpClient
+        this.subs.add = this.httpClient
           .post<any>(this.apiUrl, obj, {headers: reqHeader})
           .subscribe((data) => {
             if (data.status == true) {
@@ -1054,7 +1062,7 @@ export class EmployeescheduleComponent implements OnInit {
     })
 
     this.ngxService.start()
-    this.httpClient
+    this.subs.add = this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
         console.log("employeeResponseData: ", data)
@@ -1106,7 +1114,7 @@ export class EmployeescheduleComponent implements OnInit {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
     })
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
         console.log("employeeResponseData: ", data)
@@ -1217,7 +1225,7 @@ export class EmployeescheduleComponent implements OnInit {
     this.apiUrl = environment.AUTHAPIURL
     // this.ngxService.start();
 
-    this.httpClient
+    this.subs.add = this.httpClient
       .post<any>(this.apiUrl + "employees/import", formData, config)
       .subscribe((res) => {
         console.log(res)

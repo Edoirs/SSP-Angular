@@ -88,7 +88,6 @@ export class PendingprojectionComponent implements OnInit {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title);
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin();
     this.initialiseForm();
 
     this.companyId = localStorage.getItem("companyId");

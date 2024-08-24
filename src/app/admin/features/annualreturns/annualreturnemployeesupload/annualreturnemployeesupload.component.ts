@@ -86,7 +86,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
-    this.sess.checkLogin()
 
     this.companyId = localStorage.getItem("companyId")
     console.log("companyId: ", this.companyId)

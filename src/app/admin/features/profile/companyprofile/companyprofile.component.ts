@@ -48,57 +48,55 @@ export class CompanyprofileComponent implements OnInit {
    }
 
    ngOnInit(): void {
-    // this.sess.isCorporate();
-    // this.component.checkIfEditorExist();
-    // Check User Login
-    this.sess.checkLogin();
-    this.roleID = localStorage.getItem("role_id");
+     // this.sess.isCorporate();
+     // this.component.checkIfEditorExist();
+     // Check User Login
+     this.roleID = localStorage.getItem("role_id")
 
-    // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
-    //   this.router.navigate(["/dashboard"]);
-    // }
+     // if (this.roleID != 5 && this.roleID != 6 && this.roleID != 7) {
+     //   this.router.navigate(["/dashboard"]);
+     // }
 
-    this.userID = localStorage.getItem("id");
-    this.corporateID = localStorage.getItem("corporate_id");
+     this.userID = localStorage.getItem("id")
+     this.corporateID = localStorage.getItem("corporate_id")
 
-    this.getTaxOffices();
-    this.getIndustrySectors();
-    this.getEmployees();
-    this.getCompanyData();
+     this.getTaxOffices()
+     this.getIndustrySectors()
+     this.getEmployees()
+     this.getCompanyData()
 
-    this.companyProfileForm = this.formBuilder.group({
-      companyName: ["", [Validators.required, Validators.maxLength(45)]],
-      phone: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9\s]*$/),
-          Validators.minLength(11),
-          Validators.maxLength(11),
-        ],
-      ],
-      email: ["", [Validators.required, Validators.email]],
-      taxOffice: ["", [Validators.required]],
-      rcNumber: ["", [Validators.required]],
-      myfile: [""],
-      industry: ["", [Validators.required]],
-      tin: ["", [Validators.required]],
-      contactAddress: ["", [Validators.required]],
-      // preferredNotification: ['', [Validators.required]],
-    });
-    if(this.roleID == 6){
-      this.isReadOnly = true;
-      this.companyProfileForm.controls['myfile'].disable();
-      this.companyProfileForm.controls['industry'].disable();
+     this.companyProfileForm = this.formBuilder.group({
+       companyName: ["", [Validators.required, Validators.maxLength(45)]],
+       phone: [
+         "",
+         [
+           Validators.required,
+           Validators.pattern(/^[0-9\s]*$/),
+           Validators.minLength(11),
+           Validators.maxLength(11),
+         ],
+       ],
+       email: ["", [Validators.required, Validators.email]],
+       taxOffice: ["", [Validators.required]],
+       rcNumber: ["", [Validators.required]],
+       myfile: [""],
+       industry: ["", [Validators.required]],
+       tin: ["", [Validators.required]],
+       contactAddress: ["", [Validators.required]],
+       // preferredNotification: ['', [Validators.required]],
+     })
+     if (this.roleID == 6) {
+       this.isReadOnly = true
+       this.companyProfileForm.controls["myfile"].disable()
+       this.companyProfileForm.controls["industry"].disable()
+     }
 
-    }
-
-    if (this.roleID == 7) {
-      this.isReadOnly = true;
-      this.companyProfileForm.controls['myfile'].disable();
-      this.companyProfileForm.controls['industry'].disable();
-    }
-  }
+     if (this.roleID == 7) {
+       this.isReadOnly = true
+       this.companyProfileForm.controls["myfile"].disable()
+       this.companyProfileForm.controls["industry"].disable()
+     }
+   }
 
   getIndustrySectors() {
     this.apiUrl = environment.AUTHAPIURL + "industry-sectors";

@@ -71,28 +71,27 @@ export class AnnualreturnschedulesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.title);
-    this.sess.checkLogin();
-    this.getAllMonths();
+    this.titleService.setTitle(this.title)
+    this.getAllMonths()
 
-    this.companyId = localStorage.getItem("companyId");
-    console.log("companyId: ", this.companyId);
+    this.companyId = localStorage.getItem("companyId")
+    console.log("companyId: ", this.companyId)
     // this.getBusinesses();
-    this.getSchedules();
+    this.getSchedules()
 
-    this.initialiseForms();
-    console.log("token: ", localStorage.getItem("access_token"));
-    var userRole = localStorage.getItem("role_id");
-    this.corporateId = localStorage.getItem("corporate_id");
+    this.initialiseForms()
+    console.log("token: ", localStorage.getItem("access_token"))
+    var userRole = localStorage.getItem("role_id")
+    this.corporateId = localStorage.getItem("corporate_id")
 
     if (userRole == "5") {
-      this.showGenerateAssessment = true;
-      this.managerRole = true;
+      this.showGenerateAssessment = true
+      this.managerRole = true
     }
 
     if (userRole == "6") {
-      this.editorRole = true;
-      this.showEditEmployee = true;
+      this.editorRole = true
+      this.showEditEmployee = true
     }
 
     this.modalOptions = {
@@ -101,9 +100,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
       backdropClass: "customBackdrop",
       // size: 'lg'
       size: "xl",
-    };
+    }
 
-    this.intialiseTableProperties();
+    this.intialiseTableProperties()
   }
 
   intialiseTableProperties() {
