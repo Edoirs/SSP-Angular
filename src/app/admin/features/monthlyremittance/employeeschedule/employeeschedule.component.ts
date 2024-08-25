@@ -23,6 +23,7 @@ import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.uti
 import {EmployeeScheduleService} from "./services/employee-schedule.service"
 import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.model"
 import {PageEvent} from "@angular/material/paginator"
+import {MonthlyRemittanceEmployees} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
 
 @Component({
   selector: "app-employeeschedule",
@@ -864,6 +865,10 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
   openCreateScheduleModal() {
     this.dialog.open(CreateScheduleComponent)
+  }
+
+  openEmployeeDetails(data: EmployeeScheduleResInterface) {
+    this.dialog.open(MonthlyRemittanceEmployees, {data, minWidth: 1000})
   }
 
   onSubmitSchedule(formAllData: any) {

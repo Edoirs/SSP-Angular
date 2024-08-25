@@ -1,0 +1,7 @@
+.monthly-remittance{
+    padding: 20px;
+
+    table{
+        table-layout: auto;
+    }
+}

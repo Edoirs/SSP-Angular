@@ -1,0 +1,100 @@
+<div class="monthly-remittance">
+  <div class="monthly-remittance-header">
+    <h4 class="monthly-remittance-header-title">
+      Monthly Remittance Employees
+    </h4>
+    <div>
+      <button
+        type="submit"
+        class="btn btn-outline-success role float-right mx-2"
+        style="font-size: 12px; padding: 5px; margin-top: -3px">
+        <i class="fas fa-plus-square"></i> Add Employee
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-outline-success role float-right mx-2"
+        style="font-size: 12px; padding: 5px; margin-top: -3px">
+        Bulk Upload
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-outline-success role float-right mx-2"
+        style="font-size: 12px; padding: 5px; margin-top: -3px">
+        <i class="fas fa-plus-square"></i> Create Schedule
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-outline-success role float-right mx-2"
+        style="font-size: 12px; padding: 5px; margin-top: -3px">
+        Mark Inactive
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <table class="table table-bordered table-condensed" width="100%">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Employee RIN</th>
+            <th>Full Name</th>
+            <th>Total Income (₦)</th>
+            <th>Non Taxable Income (₦)</th>
+            <th>CRA (₦)</th>
+            <th>Tax Free Pay (₦)</th>
+            <th>Chargeable Income</th>
+            <th>Monthly Tax</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (employee of employeeDetails(); track $index) {
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ employee.employeeRin }}</td>
+            <td>{{employee.fullName | titlecase}}
+            </td>
+
+            <td>{{employee.totalIncome}}</td>
+            <td>{{employee.non_TaxableIncome}}</td>
+            <td>{{employee.grossIncome}}</td>
+            <td>{{employee.totalIncome}}</td>
+            <td>{{employee.totalIncome}}</td>
+            <td>{{employee.totalIncome}}</td>
+
+            <td title="View">
+              <button class="btn btn-sm btn-outline-success">
+                <i class="nav-icon fas fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td>No data available.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <section>
+        <mat-paginator
+          [pageSize]="15"
+          [pageIndex]="1"
+          (page)="handlePageEvent($event)"
+          showFirstLastButtons
+          aria-label="Select page">
+        </mat-paginator>
+      </section>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark button-login float-right">
+      Ok
+    </button>
+  </div>
+</div>
