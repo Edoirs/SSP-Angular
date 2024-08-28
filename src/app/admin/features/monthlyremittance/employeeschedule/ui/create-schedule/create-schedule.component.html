@@ -1,6 +1,7 @@
-<div class="modal-header">
+<div class="create-schedule">
+  <div class="modal-header">
     <span>
-      <h4 class="modal-title" id="modal-basic-title">Forward Schedule</h4>
+      <h4 class="modal-title" id="modal-basic-title">Create Schedule</h4>
     </span>
     <!-- <span class="text-danger">(All fields are required)</span> -->
     <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -119,7 +120,7 @@
               type="text"
               formControlName="comment"
               class="form-control"
-              rows="4"
+              rows="10"
               placeholder="Comment"
               [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.controls['comment'].errors }"
             ></textarea>
@@ -154,3 +155,4 @@
       Ok
     </button>
   </div>
+</div>

@@ -24,7 +24,7 @@ export class CreateScheduleComponent {
   isScheduleYearValid = signal(false)
 
   createScheduleForm = new FormGroup({
-    scheduleMonth: new FormControl("", {validators: [Validators.required]}),
+    scheduleMonthId: new FormControl("", {validators: [Validators.required]}),
     scheduleYear: new FormControl("", {validators: [Validators.required]}),
     comment: new FormControl("", {validators: [Validators.required]}),
   })

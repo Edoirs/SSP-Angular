@@ -5,28 +5,30 @@
     </h4>
     <div>
       <button
-        type="submit"
+        type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px">
         <i class="fas fa-plus-square"></i> Add Employee
       </button>
 
       <button
-        type="submit"
+        type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px">
         Bulk Upload
       </button>
 
       <button
-        type="submit"
+        type="button"
         class="btn btn-outline-success role float-right mx-2"
-        style="font-size: 12px; padding: 5px; margin-top: -3px">
+        style="font-size: 12px; padding: 5px; margin-top: -3px"
+        (click)="openCreateSchedule()"
+        >
         <i class="fas fa-plus-square"></i> Create Schedule
       </button>
 
       <button
-        type="submit"
+        type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px">
         Mark Inactive
@@ -34,7 +36,7 @@
     </div>
   </div>
 
-  <div class="modal-body">
+  <div class="monthly-remittance-body">
     <div class="container">
       <table class="table table-bordered table-condensed" width="100%">
         <thead>
@@ -44,8 +46,11 @@
             <th>Full Name</th>
             <th>Total Income (₦)</th>
             <th>Non Taxable Income (₦)</th>
+            <th>Gross Income (₦)</th>
             <th>Employee Status </th>
+            <th>Edit</th>
             <th>View</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -57,12 +62,21 @@
 
             <td>{{employee.totalIncome}}</td>
             <td>{{employee.non_TaxableIncome}}</td>
+            <td>{{employee.grossIncome}}</td>
             <td>{{employee.status}}</td>
-
+            
+            <td title="edit">
+              <button class="btn btn-sm btn-outline-success">
+                <i class="nav-icon fas fa-pen"></i>
+              </button>
+            </td>
             <td title="View">
               <button class="btn btn-sm btn-outline-success">
                 <i class="nav-icon fas fa-eye"></i>
               </button>
+            </td>
+
+            <td>
             </td>
           </tr>
           } @empty {
