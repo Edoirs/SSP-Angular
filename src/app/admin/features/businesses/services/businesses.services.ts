@@ -10,7 +10,7 @@ export class BusinessService {
 
   getBusinesses(pageNumber = 1, pageSize = 15) {
     const params = new HttpParams({fromObject: {pageNumber, pageSize}})
-    return this.httpClient.get<ServerResInterface<BusinessResInterface[]>>(
+    return this.httpClient.get<ServerResInterface<BusinessResInterface>>(
       `${environment.AUTHAPIURL}PhaseII/GetallBusinesses`,
       {params}
     )

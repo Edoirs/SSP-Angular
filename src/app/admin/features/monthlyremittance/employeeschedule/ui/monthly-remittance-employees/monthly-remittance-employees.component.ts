@@ -7,7 +7,11 @@ import {
   OnInit,
   signal,
 } from "@angular/core"
-import {MAT_DIALOG_DATA} from "@angular/material/dialog"
+import {
+  MAT_DIALOG_DATA,
+  MatDialogClose,
+  MatDialogRef,
+} from "@angular/material/dialog"
 import {
   EmployeeDetailResInterface,
   EmployeeScheduleResInterface,
@@ -21,13 +25,12 @@ import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
   templateUrl: "./monthly-remittance-employees.component.html",
   styleUrl: "./monthly-remittance-employees.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule],
+  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthlyRemittanceEmployees implements OnInit, OnDestroy {
-  private readonly injectedData =
-    inject<EmployeeScheduleResInterface>(MAT_DIALOG_DATA)
+  private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)

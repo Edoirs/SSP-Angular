@@ -11,7 +11,7 @@ export class EmployeeScheduleService {
   getEmployees(pageNumber = 1, pageSize = 15) {
     const params = new HttpParams({fromObject: {pageNumber, pageSize}})
     return this.httpClient.get<
-      ServerResInterface<EmployeeModel.EmployeeScheduleResInterface[]>
+      ServerResInterface<EmployeeModel.EmployeeScheduleResInterface>
     >(`${environment.AUTHAPIURL}PhaseII/GetallBusinessEmployees`, {params})
   }
 

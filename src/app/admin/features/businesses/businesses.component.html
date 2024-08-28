@@ -28,13 +28,17 @@
                 </tr>
               </thead>
               <tbody>
-                @for (business of businesses(); track $index) {
+                @for (business of businesses()?.businesses; track $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   <td>{{ business?.businessRin }}</td>
                   <td>{{ business?.businessName }}</td>
                   <td>{{ business?.lgaName }}</td>
                 </tr>
+                } @empty {
+                  <tr>
+                    <td><span>No business found.</span></td>
+                  </tr>
                 }
               </tbody>
             </table>

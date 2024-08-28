@@ -44,10 +44,7 @@
             <th>Full Name</th>
             <th>Total Income (₦)</th>
             <th>Non Taxable Income (₦)</th>
-            <th>CRA (₦)</th>
-            <th>Tax Free Pay (₦)</th>
-            <th>Chargeable Income</th>
-            <th>Monthly Tax</th>
+            <th>Employee Status </th>
             <th>View</th>
           </tr>
         </thead>
@@ -56,15 +53,11 @@
           <tr>
             <td>{{ $index + 1 }}</td>
             <td>{{ employee.employeeRin }}</td>
-            <td>{{employee.fullName | titlecase}}
-            </td>
+            <td>{{employee.fullName | titlecase}}</td>
 
             <td>{{employee.totalIncome}}</td>
             <td>{{employee.non_TaxableIncome}}</td>
-            <td>{{employee.grossIncome}}</td>
-            <td>{{employee.totalIncome}}</td>
-            <td>{{employee.totalIncome}}</td>
-            <td>{{employee.totalIncome}}</td>
+            <td>{{employee.status}}</td>
 
             <td title="View">
               <button class="btn btn-sm btn-outline-success">
@@ -93,7 +86,7 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark button-login float-right">
+    <button type="button" class="btn btn-outline-dark button-login float-right" mat-dialog-close>
       Ok
     </button>
   </div>

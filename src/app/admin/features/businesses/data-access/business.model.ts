@@ -1,6 +1,9 @@
 export interface BusinessResInterface {
-  businessRin: string
-  businessName: string
-  lgaName: string
-  companyRin: string
+  businesses: {
+    businessRin: string
+    businessName: string
+    lgaName: string
+    companyRin: string
+  }[]
+  totalCount: number
 }

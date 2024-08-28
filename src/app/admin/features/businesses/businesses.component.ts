@@ -22,7 +22,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   totalLength = signal(500)
   pageIndex = signal(1)
 
-  businesses = signal<BusinessResInterface[] | null>(null)
+  businesses = signal<BusinessResInterface | null>(null)
 
   subs = new SubscriptionHandler()
 
@@ -39,10 +39,11 @@ export class BusinessesComponent implements OnInit, OnDestroy {
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
-        this.businessService
+        this.subs.add = this.businessService
           .getBusinesses(this.pageIndex(), this.pageSize())
           .subscribe((res) => {
             this.businesses.set(res.data)
+            this.totalLength.set(res.data.totalCount)
           })
       }
     })

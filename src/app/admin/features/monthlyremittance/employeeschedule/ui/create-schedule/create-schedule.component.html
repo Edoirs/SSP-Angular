@@ -1,1 +1,156 @@
-this component works
+<div class="modal-header">
+    <span>
+      <h4 class="modal-title" id="modal-basic-title">Forward Schedule</h4>
+    </span>
+    <!-- <span class="text-danger">(All fields are required)</span> -->
+    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form
+        [formGroup]="createScheduleForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="scheduleYear"
+              >Schedule Year<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <input
+              type="text"
+              pattern="[^\s]+"
+              formControlName="scheduleYear"
+              maxlength="4"
+              class="form-control"
+              placeholder="Schedule Year Eg: 2019"
+            />
+            <div
+              *ngIf="createScheduleForm.get('scheduleYear')?.errors"
+                class="text-danger"
+            >
+              <div
+                *ngIf="
+                  createScheduleForm.get('scheduleYear')?.hasError('required')
+                "
+              >
+                Schedule Year is required
+              </div>
+              <div
+                *ngIf="
+                  createScheduleForm.get('scheduleYear')?.hasError('minlength')
+                "
+              >
+                Schedule Year must be at least 4 characters long.
+              </div>
+              <div
+                *ngIf="
+                  createScheduleForm.get('scheduleYear')?.hasError('maxLength')
+                "
+              >
+                Schedule Year must be 4 characters long.
+              </div>
+              <div
+                *ngIf="createScheduleForm.get('scheduleYear')?.hasError('pattern')"
+              >
+                Schedule Year must be Number Only
+              </div>
+            </div>
+            <div
+              *ngIf="!isScheduleYearValid()"
+              class="text-danger"
+            >
+              <div>Schedule Year cannot be less than 2010</div>
+            </div>
+            <!-- <div *ngIf="yearIncorrect">Schedule Year must be a year after 1999 and this year</div> -->
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="scheduleMonthId"
+              >Schedule Month<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <select
+              type="text"
+              name="scheduleMonthId"
+              formControlName="scheduleMonthId"
+              id="scheduleMonthId"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.get('scheduleMonthId')?.errors }"
+            >
+              <option value="">-- Select Tax Month --</option>
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <div
+              *ngIf="createScheduleForm.valid && createScheduleForm.get('scheduleMonthId')?.errors"
+              class="text-danger"
+            >
+              <div
+                *ngIf="
+                  createScheduleForm.get('scheduleMonthId')?.hasError('req')
+                "
+              >
+                Schedule Month is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="comment">Comment </label>
+            <textarea
+              type="text"
+              formControlName="comment"
+              class="form-control"
+              rows="4"
+              placeholder="Comment"
+              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.controls['comment'].errors }"
+            ></textarea>
+            <div
+              *ngIf="createScheduleForm.valid && createScheduleForm.controls['comment'].errors"
+              class="text-danger"
+            >
+              <div *ngIf="createScheduleForm.controls['comment'].errors['required']">
+                Comment is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="createScheduleForm.invalid"
+          class="btn btn button-login"
+        >
+          <i class="far fa-save"></i> Forward Schedule
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark button-login"
+      mat-dialog-close
+    >
+      Ok
+    </button>
+  </div>

@@ -86,7 +86,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   totalLength = signal(500)
   pageIndex = signal(1)
 
-  employeesList = signal<EmployeeScheduleResInterface[] | null>(null)
+  employeesList = signal<EmployeeScheduleResInterface | null>(null)
 
   validatorRegex = /^(\d{1,17}|\d{0,17}\.\d{1,2})$/
   cardIdRegex = /^[0-9\s]*$/
@@ -170,6 +170,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
           .getEmployees(this.pageIndex(), this.pageSize())
           .subscribe((res) => {
             this.employeesList.set(res.data)
+            this.totalLength.set(res.data?.totalCount)
           })
       }
     })
@@ -867,7 +868,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.dialog.open(CreateScheduleComponent)
   }
 
-  openEmployeeDetails(data: EmployeeScheduleResInterface) {
+  openEmployeeDetails(data: any) {
     this.dialog.open(MonthlyRemittanceEmployees, {data, minWidth: 1000})
   }
 
