@@ -17,13 +17,14 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {CreateScheduleComponent} from "../create-schedule/create-schedule.component"
+import {NgToggleModule} from "ng-toggle-button"
 
 @Component({
   selector: "app-monthly-remittance-employees",
   templateUrl: "./monthly-remittance-employees.component.html",
   styleUrl: "./monthly-remittance-employees.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose],
+  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -70,5 +71,11 @@ export class MonthlyRemittanceEmployees implements OnInit, OnDestroy {
 
   viewAddEmployee(modal: any) {}
 
-  showModal(modal: any) {}
+  switchStatus(event: any) {
+    const status = event.target.checked
+    if (
+      window.confirm("Are you sure you want to change this employee's status?")
+    )
+      console.log("changed")
+  }
 }
