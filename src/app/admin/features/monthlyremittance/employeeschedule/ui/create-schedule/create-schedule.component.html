@@ -36,6 +36,7 @@
             >
               <div
                 *ngIf="
+                  createScheduleForm.touched &&
                   createScheduleForm.get('scheduleYear')?.hasError('required')
                 "
               >
@@ -56,13 +57,13 @@
                 Schedule Year must be 4 characters long.
               </div>
               <div
-                *ngIf="createScheduleForm.get('scheduleYear')?.hasError('pattern')"
+                *ngIf="createScheduleForm.touched && createScheduleForm.get('scheduleYear')?.hasError('pattern')"
               >
                 Schedule Year must be Number Only
               </div>
             </div>
             <div
-              *ngIf="!isScheduleYearValid()"
+              *ngIf="createScheduleForm.touched && !isScheduleYearValid()"
               class="text-danger"
             >
               <div>Schedule Year cannot be less than 2010</div>
@@ -104,7 +105,8 @@
             >
               <div
                 *ngIf="
-                  createScheduleForm.get('scheduleMonthId')?.hasError('req')
+                  createScheduleForm.touched &&
+                  createScheduleForm.get('scheduleMonthId')?.hasError('required')
                 "
               >
                 Schedule Month is required
@@ -122,13 +124,13 @@
               class="form-control"
               rows="10"
               placeholder="Comment"
-              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.controls['comment'].errors }"
+              [ngClass]="{ 'is-invalid': createScheduleForm.touched && createScheduleForm.get('comment')?.errors }"
             ></textarea>
             <div
-              *ngIf="createScheduleForm.valid && createScheduleForm.controls['comment'].errors"
+              *ngIf="createScheduleForm.valid && createScheduleForm.get('comment')?.errors"
               class="text-danger"
             >
-              <div *ngIf="createScheduleForm.controls['comment'].errors['required']">
+              <div *ngIf="createScheduleForm.get('comment')?.hasError('required')">
                 Comment is required
               </div>
             </div>

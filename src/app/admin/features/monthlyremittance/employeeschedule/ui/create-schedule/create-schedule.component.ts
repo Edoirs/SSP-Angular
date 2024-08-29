@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from "@angular/core"
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core"
 import {
   FormControl,
   FormGroup,
@@ -8,6 +15,7 @@ import {
 import {MatDialogClose, MatDialogRef} from "@angular/material/dialog"
 import {EmployeescheduleComponent} from "../../employeeschedule.component"
 import {CommonModule} from "@angular/common"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 
 @Component({
   selector: "app-create-schedule",
@@ -18,10 +26,12 @@ import {CommonModule} from "@angular/common"
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateScheduleComponent {
+export class CreateScheduleComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
 
   isScheduleYearValid = signal(false)
+
+  subs = new SubscriptionHandler()
 
   createScheduleForm = new FormGroup({
     scheduleMonthId: new FormControl("", {validators: [Validators.required]}),
@@ -29,16 +39,28 @@ export class CreateScheduleComponent {
     comment: new FormControl("", {validators: [Validators.required]}),
   })
 
+  ngOnInit(): void {
+    this.checkYear()
+  }
+
+  ngOnDestroy(): void {
+    this.subs.clear()
+  }
+
   closeModal() {
     this.dialogRef.close()
   }
 
-  toggleScheduleYear(year: any) {
-    if (year < 2010) {
-      this.isScheduleYearValid.set(false)
-    } else {
-      this.isScheduleYearValid.set(true)
-    }
+  checkYear() {
+    this.subs.add = this.createScheduleForm
+      .get("scheduleYear")!
+      .valueChanges.subscribe((n) => {
+        if (parseInt(n as string) < 2010) {
+          this.isScheduleYearValid.set(false)
+        } else {
+          this.isScheduleYearValid.set(true)
+        }
+      })
   }
 
   onSubmit() {
