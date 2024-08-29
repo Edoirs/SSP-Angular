@@ -28,4 +28,18 @@ export class EmployeeScheduleService {
       ServerResInterface<EmployeeModel.EmployeeDetailResInterface[]>
     >(`${environment.AUTHAPIURL}PhaseII/GetBussinessEmployeesByRin`, {params})
   }
+
+  bulkEmployeeUpload(formData: FormData) {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    }
+    return this.httpClient.post<any>(
+      `${environment.AUTHAPIURL}employees/import`,
+      formData,
+      config
+    )
+  }
 }

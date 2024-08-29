@@ -1,0 +1,70 @@
+<div class="card card-secondary bulk-upload">
+    <div class="card-header custome">
+      <h3 class="card-title">Upload Employees</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <div class="alert alert-success" role="alert" *ngIf="message()">
+        {{ message() }}
+      </div>
+
+      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="fileInput">Select File to Upload</label>
+
+            <div class="custom-file">
+              <input
+                formControlName="file"
+                id="file"
+                type="file"
+                class="custom-file-input"
+                (change)="onFileChange($event)"
+                [ngClass]="{
+                  'is-invalid': uploadForm.valid && uploadForm.get('file')?.errors
+                }"
+                accept=".xls,.xlsx"
+              />
+              <label class="custom-file-label" for="customFile">{{
+                filePath() == null ? "Choose file (xlsx or xls)" : filePath()
+              }}</label>
+            </div>
+
+            <div
+              *ngIf="uploadForm.valid && uploadForm.get('file')?.touched && uploadForm.get('file')?.invalid"
+              class="text-danger"
+            >
+              <div *ngIf="uploadForm.get('file')?.hasError('required')">
+                File is required.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn button-login"
+          [disabled]="file == null"
+        >
+          Upload File
+        </button>
+      </form>
+
+      <div class="login-remeber">
+        <a [href]="sampleFile()" target="_blank">
+          Download employee template here</a
+        >
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="modal-footer">
+      <button
+        type="button"
+        id="closeUploadModal"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close
+      >
+        Ok
+      </button>
+    </div>
+  </div>

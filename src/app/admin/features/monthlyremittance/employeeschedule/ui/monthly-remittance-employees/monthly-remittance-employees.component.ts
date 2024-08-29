@@ -18,6 +18,7 @@ import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {CreateScheduleComponent} from "../create-schedule/create-schedule.component"
 import {NgToggleModule} from "ng-toggle-button"
+import {BulkUploadComponent} from "../bulk-upload/bulk-upload.component"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -65,6 +66,10 @@ export class MonthlyRemittanceEmployees implements OnInit, OnDestroy {
 
   openCreateSchedule() {
     this.dialog.open(CreateScheduleComponent, {minWidth: 1000})
+  }
+
+  openBulkUpload() {
+    this.dialog.open(BulkUploadComponent, {minWidth: 1000})
   }
 
   closeModal() {}
