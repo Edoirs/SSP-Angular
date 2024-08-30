@@ -18,12 +18,11 @@ import Swal from "sweetalert2"
 import {EmployeeTableImage} from "./utils/employeeschedule.utils"
 import {MatDialog} from "@angular/material/dialog"
 import {CreateScheduleComponent} from "./ui/create-schedule/create-schedule.component"
-import {TokenService} from "src/app/shared/services/token.service"
 import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "./services/employee-schedule.service"
 import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.model"
 import {PageEvent} from "@angular/material/paginator"
-import {MonthlyRemittanceEmployees} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
+import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
 
 @Component({
   selector: "app-employeeschedule",
@@ -869,7 +868,10 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   }
 
   openEmployeeDetails(data: any) {
-    this.dialog.open(MonthlyRemittanceEmployees, {data, minWidth: 1000})
+    this.dialog.open(MonthlyRemittanceEmployeesComponent, {
+      data,
+      minWidth: 1000,
+    })
   }
 
   onSubmitSchedule(formAllData: any) {

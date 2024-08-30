@@ -1,13 +1,15 @@
 export interface EmployeeScheduleResInterface {
-  businesses: {
-    businessRin: string
-    companyRin: string
-    businessName: string
-    businessAddress: string
-    businessLga: string
-    noOfEmployees: number
-  }[]
+  businesses: BusinessesResInterface[]
   totalCount: number
+}
+
+export interface BusinessesResInterface {
+  businessRin: string
+  companyRin: string
+  businessName: string
+  businessAddress: string
+  businessLga: string
+  noOfEmployees: number
 }
 
 export interface EmployeeDetailResInterface {

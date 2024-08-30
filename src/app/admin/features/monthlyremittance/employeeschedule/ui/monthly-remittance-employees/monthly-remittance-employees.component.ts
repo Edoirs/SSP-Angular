@@ -20,6 +20,8 @@ import {CreateScheduleComponent} from "../create-schedule/create-schedule.compon
 import {NgToggleModule} from "ng-toggle-button"
 import {BulkUploadComponent} from "../bulk-upload/bulk-upload.component"
 import {AddEmployeeComponent} from "../add-employee/add-employee.component"
+import {BusinessResInterface} from "src/app/admin/features/businesses/data-access/business.model"
+import {EditEmployeeComponent} from "../edit-employee/edit-employee.component"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -30,7 +32,7 @@ import {AddEmployeeComponent} from "../add-employee/add-employee.component"
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonthlyRemittanceEmployees implements OnInit, OnDestroy {
+export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   private readonly dialog = inject<any>(MatDialog)
   private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
@@ -75,6 +77,10 @@ export class MonthlyRemittanceEmployees implements OnInit, OnDestroy {
 
   openAddEmployee() {
     this.dialog.open(AddEmployeeComponent, {minWidth: 1000, maxHeight: 700})
+  }
+
+  openEditEmployee(data: EmployeeDetailResInterface) {
+    this.dialog.open(EditEmployeeComponent, {data, minWidth: 1000})
   }
 
   closeModal() {}

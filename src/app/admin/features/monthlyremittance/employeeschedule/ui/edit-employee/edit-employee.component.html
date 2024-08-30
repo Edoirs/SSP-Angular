@@ -1,0 +1,111 @@
+<div class="edit-employee">
+  <div class="modal-header">
+    <span>
+      <h4 class="modal-title" id="modal-basic-title">Edit Employee</h4>
+    </span>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="editEmployeeForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+
+          <div class="form-group col-md-6">
+            <label for="totalIncome"
+              >Total Income<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <input
+              type="number"
+              pattern="[^\s]+"
+              formControlName="totalIncome"
+              maxlength="4"
+              class="form-control"
+              placeholder="Total Income Eg: 2019" />
+            <div
+              *ngIf="editEmployeeForm.get('totalIncome')?.errors"
+              class="text-danger">
+              <div
+                *ngIf="
+                  editEmployeeForm.touched &&
+                  editEmployeeForm.get('totalIncome')?.hasError('pattern')
+                ">
+                Total Income must be Number Only
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="grossIncome"
+              >Gross Income<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <input
+              type="number"
+              pattern="[^\s]+"
+              formControlName="grossIncome"
+              maxlength="4"
+              class="form-control"
+              placeholder="Gross Income Eg: 2019" />
+            <div
+              *ngIf="editEmployeeForm.get('grossIncome')?.errors"
+              class="text-danger">
+              <div
+                *ngIf="
+                  editEmployeeForm.touched &&
+                  editEmployeeForm.get('grossIncome')?.hasError('pattern')
+                ">
+                Gross Income must be Number Only
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="non_TaxableIncome"
+              >Non-Taxable Income<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <input
+              type="number"
+              pattern="[^\s]+"
+              formControlName="non_TaxableIncome"
+              maxlength="4"
+              class="form-control"
+              placeholder="Non-Taxable Income Eg: 2019" />
+            <div
+              *ngIf="editEmployeeForm.get('non_TaxableIncome')?.errors"
+              class="text-danger">
+              <div
+                *ngIf="
+                  editEmployeeForm.touched &&
+                  editEmployeeForm.get('non_TaxableIncome')?.hasError('pattern')
+                ">
+                Non-Taxable Income must be Number Only
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="editEmployeeForm.invalid"
+          class="btn btn button-login">
+          <i class="far fa-save"></i> Update
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark button-login"
+      mat-dialog-close>
+      Ok
+    </button>
+  </div>
+</div>
