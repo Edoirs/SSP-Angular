@@ -42,4 +42,16 @@ export class EmployeeScheduleService {
       config
     )
   }
+
+  getStateLocalGovts() {
+    return this.httpClient.get<any>(
+      `${environment.AUTHAPIURL}LocalGovernmentArea/getall`
+    )
+  }
+
+  getZipcodes() {
+    return this.httpClient.get<any>(
+      `${environment.AUTHAPIURL}LocalGovtPostalCode/getall`
+    )
+  }
 }
