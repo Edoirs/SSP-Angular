@@ -22,6 +22,7 @@ import {BulkUploadComponent} from "../bulk-upload/bulk-upload.component"
 import {AddEmployeeComponent} from "../add-employee/add-employee.component"
 import {BusinessResInterface} from "src/app/admin/features/businesses/data-access/business.model"
 import {EditEmployeeComponent} from "../edit-employee/edit-employee.component"
+import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -81,6 +82,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   openEditEmployee(data: EmployeeDetailResInterface) {
     this.dialog.open(EditEmployeeComponent, {data, minWidth: 1000})
+  }
+
+  openViewEmployee(data: EmployeeDetailResInterface) {
+    this.dialog.open(ViewEmployeeComponent, {data, minWidth: 1000})
   }
 
   closeModal() {}
