@@ -20,3 +20,9 @@ export interface EmployeeDetailResInterface {
   grossIncome: number
   status: string
 }
+
+export interface MarkEmployeeInterface {
+  businessRin: string
+  companyRin: string
+  employeeRin?: string
+}

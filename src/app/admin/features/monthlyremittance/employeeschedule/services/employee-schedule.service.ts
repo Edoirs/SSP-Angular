@@ -54,4 +54,11 @@ export class EmployeeScheduleService {
       `${environment.AUTHAPIURL}LocalGovtPostalCode/getall`
     )
   }
+
+  markEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/Mark-Employee-Inactive`,
+      payload
+    )
+  }
 }

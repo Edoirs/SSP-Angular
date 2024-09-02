@@ -47,7 +47,9 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     non_TaxableIncome: new FormControl(this.injectedData.non_TaxableIncome),
   })
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.injectedData)
+  }
 
   ngOnDestroy(): void {
     this.subs.clear()

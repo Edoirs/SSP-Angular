@@ -12,7 +12,11 @@ import {
   MatDialog,
   MatDialogClose,
 } from "@angular/material/dialog"
-import {EmployeeDetailResInterface} from "../../data-access/employee-schedule.model"
+import {MatSnackBar} from "@angular/material/snack-bar"
+import {
+  EmployeeDetailResInterface,
+  MarkEmployeeInterface,
+} from "../../data-access/employee-schedule.model"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
@@ -20,7 +24,6 @@ import {CreateScheduleComponent} from "../create-schedule/create-schedule.compon
 import {NgToggleModule} from "ng-toggle-button"
 import {BulkUploadComponent} from "../bulk-upload/bulk-upload.component"
 import {AddEmployeeComponent} from "../add-employee/add-employee.component"
-import {BusinessResInterface} from "src/app/admin/features/businesses/data-access/business.model"
 import {EditEmployeeComponent} from "../edit-employee/edit-employee.component"
 import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 
@@ -34,7 +37,8 @@ import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
-  private readonly dialog = inject<any>(MatDialog)
+  private readonly dialog = inject(MatDialog)
+  private readonly snackBar = inject(MatSnackBar)
   private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
@@ -92,11 +96,25 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   viewAddEmployee(modal: any) {}
 
-  switchStatus(event: any) {
+  switchStatus(event: any, employeeRin?: string) {
     const status = event.target.checked
+    const payload = {
+      companyRin: this.injectedData.companyRin,
+      businessRin: this.injectedData.businessRin,
+      ...(employeeRin && {employeeRin}),
+    } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")
     )
-      console.log("changed")
+      this.subs.add = this.employeeScheduleService
+        .markEmployeeInactive(payload)
+        .subscribe({
+          next: (res) => {
+            this.snackBar.open(res.message, "close", {duration: 2000})
+          },
+          error: (err) => {
+            this.snackBar.open(err.message, "close", {duration: 2000})
+          },
+        })
   }
 }
