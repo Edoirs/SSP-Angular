@@ -54,23 +54,39 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   subs = new SubscriptionHandler()
 
   editEmployeeForm = new FormGroup({
-    totalIncome: new FormControl(this.injectedData.employee.totalIncome, {
+    basic: new FormControl(0, {
       validators: [Validators.pattern(PositiveNumberRegex)],
     }),
-    grossIncome: new FormControl(this.injectedData.employee.grossIncome, {
+    rent: new FormControl(0, {
       validators: [Validators.pattern(PositiveNumberRegex)],
     }),
-    non_TaxableIncome: new FormControl(
-      this.injectedData.employee.non_TaxableIncome,
-      {
-        validators: [Validators.pattern(PositiveNumberRegex)],
-      }
-    ),
+    transport: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    ltg: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    utility: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    meal: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    nhf: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    nhis: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    pension: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
+    lifeAssurance: new FormControl(0, {
+      validators: [Validators.pattern(PositiveNumberRegex)],
+    }),
   })
 
-  ngOnInit(): void {
-    console.log(this.injectedData.company)
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.subs.clear()
@@ -81,21 +97,26 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.loading.set(true)
     const payload = {
       ...this.editEmployeeForm.value,
       businessRin: this.injectedData.company.businessRin,
       companyRin: this.injectedData.company.companyRin,
+      employeeRin: this.injectedData.employee.employeeRin,
     } as Partial<EditEmployeeIncomeInterface>
-    console.log(this.editEmployeeForm.value)
     if (this.editEmployeeForm.valid)
       this.subs.add = this.employeeScheduleService
         .editEmployee(payload as EditEmployeeIncomeInterface)
         .subscribe({
           next: (res) => {
-            window.location.reload()
+            if (res.status === true) {
+              window.location.reload()
+            } else {
+              this.snackBar.open(res.message, "close", {duration: 2000})
+            }
           },
-          error: (err) => {
-            this.snackBar.open(err.message, "close", {duration: 2000})
+          complete: () => {
+            this.loading.set(false)
           },
         })
   }

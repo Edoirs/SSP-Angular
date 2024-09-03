@@ -63,7 +63,7 @@ export class EmployeeScheduleService {
   }
 
   editEmployee(payload: EmployeeModel.EditEmployeeIncomeInterface) {
-    return this.httpClient.post<ServerResInterface<any>>(
+    return this.httpClient.put<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/UpdateEmployeeIncome`,
       payload
     )
