@@ -53,16 +53,16 @@
                 class="form-control"
                 (keyup)="calculateTotalIncome($event)"
                 placeholder="Basic Income"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['basicIncome'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['basic'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['basicIncome'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['basic'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['basicIncome'].errors['required']">
+                <div *ngIf="addEmployeeForm.controls['basic'].errors['required']">
                   Basic Income required
                 </div>
-                <div *ngIf="addEmployeeForm.controls['basicIncome'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['basic'].errors['pattern']">
                   Basic Income must be Number with only two digits allowed after
                   the decimal
                 </div>
@@ -82,7 +82,7 @@
                 formControlName="titleId"
                 id="titleId"
                 class="form-control"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['titleId'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['title'].errors }"
               >
                 <option value="">Select Title</option>
                 <option value="Mr.">Mr.</option>
@@ -90,10 +90,10 @@
                 <option value="Miss.">Miss.</option>
               </select>
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['titleId'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['title'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['titleId'].errors['required']">
+                <div *ngIf="addEmployeeForm.controls['title'].errors['required']">
                   Title is required
                 </div>
               </div>
@@ -140,18 +140,18 @@
                 formControlName="firstName"
                 class="form-control"
                 placeholder="First Name"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['firstName'].errors }" />
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['firstname'].errors }" />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['firstName'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['firstname'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['firstName'].errors['required']">
+                <div *ngIf="addEmployeeForm.controls['firstname'].errors['required']">
                   First Name is required
                 </div>
-                <div *ngIf="addEmployeeForm.controls['firstName'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['firstname'].errors['pattern']">
                   First Name can only contain alphabets
                 </div>
-                <div *ngIf="addEmployeeForm.controls['firstName'].errors['maxLength']">
+                <div *ngIf="addEmployeeForm.controls['firstname'].errors['maxLength']">
                   First Name must be at most 30 characters
                 </div>
               </div>
@@ -264,19 +264,19 @@
                 formControlName="otherName"
                 class="form-control"
                 placeholder="Other Name"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['otherName'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['othername'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['otherName'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['othername'].errors"
                 class="text-danger"
               >
                 <!-- <div *ngIf="addEmployeeForm.controls['myfile']otherName.errors['required']">
                   Other Name is required
                 </div> -->
-                <div *ngIf="addEmployeeForm.controls['otherName'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['othername'].errors['pattern']">
                   Other Name can only contain alphabets
                 </div>
-                <div *ngIf="addEmployeeForm.controls['otherName'].errors['maxLength']">
+                <div *ngIf="addEmployeeForm.controls['othername'].errors['maxLength']">
                   Other Name must be at most 30 characters
                 </div>
               </div>
@@ -325,26 +325,26 @@
                 formControlName="phoneNumber"
                 class="form-control"
                 placeholder="Phone Number"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['phoneNumber'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['phonenumber'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['phoneNumber'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['phonenumber'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['phoneNumber'].errors['required']">
+                <div *ngIf="addEmployeeForm.controls['phonenumber'].errors['required']">
                   Phone Number is required
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['phoneNumber'].errors['minlength']"
+                  *ngIf="addEmployeeForm.controls['phonenumber'].errors['minlength']"
                 >
                   Phone Number must be at least 11 digit long
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['phoneNumber'].errors['maxLength']"
+                  *ngIf="addEmployeeForm.controls['phonenumber'].errors['maxLength']"
                 >
                   Phone Number must be at most 11 digit long
                 </div>
-                <div *ngIf="addEmployeeForm.controls['phoneNumber'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['phonenumber'].errors['pattern']">
                   Phone Number must be numbers only and start with 0
                 </div>
               </div>
@@ -384,23 +384,23 @@
                 formControlName="emailAddress"
                 class="form-control"
                 placeholder="Email Address"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['emailAddress'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['email'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['emailAddress'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['email'].errors"
                 class="text-danger"
               >
                 <div
-                  *ngIf="addEmployeeForm.controls['emailAddress'].errors['required']"
+                  *ngIf="addEmployeeForm.controls['email'].errors['required']"
                 >
                   Email Address is required
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['emailAddress'].errors['minlength']"
+                  *ngIf="addEmployeeForm.controls['email'].errors['minlength']"
                 >
                   Email Address must not be more than 45 characters long
                 </div>
-                <div *ngIf="addEmployeeForm.controls['emailAddress'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['email'].errors['pattern']">
                   Provide a valid Email address
                 </div>
               </div>
@@ -414,13 +414,13 @@
                 class="form-control"
                 placeholder="National Housing Fund"
                 (keyup)="calculateGrossIncome($event)"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['NHF'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nhf'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['NHF'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['nhf'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['NHF'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['nhf'].errors['pattern']">
                   National Housing Fund must be numbers with only two digits
                   allowed after the decimal
                 </div>
@@ -472,13 +472,13 @@
                 class="form-control"
                 placeholder="National Health Insurance Scheme"
                 (keyup)="calculateGrossIncome($event)"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['NHIS'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nhis'].errors }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['NHIS'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['nhis'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['NHIS'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['nhis'].errors['pattern']">
                   National Health Insurance Scheme must be numbers with only two
                   digits allowed after the decimal
                 </div>
@@ -628,7 +628,7 @@
                 id="localGovernmentId"
                 class="form-control"
                 style="min-width: 339px"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['localGovernmentId'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['lgaCode'].errors }"
               >
                 <option value="">Select Local Government</option>
                 <option
@@ -639,12 +639,12 @@
                 </option>
               </select>
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['localGovernmentId'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['lgaCode'].errors"
                 class="text-danger"
               >
                 <div
                   *ngIf="
-                    addEmployeeForm.controls['localGovernmentId'].errors!['required']
+                    addEmployeeForm.controls['lgaCode'].errors!['required']
                   "
                 >
                   Local Government is required
@@ -664,7 +664,7 @@
                 formControlName="startMonthId"
                 id="startMonthId"
                 class="form-control"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['startMonthId'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['startMonth'].errors }"
               >
                 <option value="">Select Start Month</option>
                 <option value="01">January</option>
@@ -681,11 +681,11 @@
                 <option value="12">December</option>
               </select>
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['startMonthId'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['startMonth'].errors"
                 class="text-danger"
               >
                 <div
-                  *ngIf="addEmployeeForm.controls['startMonthId'].errors!['required']"
+                  *ngIf="addEmployeeForm.controls['startMonth'].errors!['required']"
                 >
                   Start Month is required
                 </div>
@@ -793,24 +793,24 @@
                 class="form-control"
                 rows="3"
                 placeholder="Home Address"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['contactAddress'].errors }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['homeaddress'].errors }"
               ></textarea>
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['contactAddress'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['homeaddress'].errors"
                 class="text-danger"
               >
                 <div
-                  *ngIf="addEmployeeForm.controls['contactAddress'].errors['required']"
+                  *ngIf="addEmployeeForm.controls['homeaddress'].errors['required']"
                 >
                   Home Address is required
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['contactAddress'].errors['minlength']"
+                  *ngIf="addEmployeeForm.controls['homeaddress'].errors['minlength']"
                 >
                   Home Address must be at least 10 characters long
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['contactAddress'].errors['maxLength']"
+                  *ngIf="addEmployeeForm.controls['homeaddress'].errors['maxLength']"
                 >
                   Home Address must be at most 80 characters
                 </div>

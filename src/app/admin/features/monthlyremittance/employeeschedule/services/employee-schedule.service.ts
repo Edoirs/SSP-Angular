@@ -55,6 +55,20 @@ export class EmployeeScheduleService {
     )
   }
 
+  addEmployee(payload: EmployeeModel.AddEmployeeInterface) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/Add-Employee`,
+      payload
+    )
+  }
+
+  editEmployee(payload: EmployeeModel.EditEmployeeIncomeInterface) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/UpdateEmployeeIncome`,
+      payload
+    )
+  }
+
   markEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
     return this.httpClient.put<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/Mark-Employee-Inactive`,

@@ -23,6 +23,11 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import * as EmployeeUtils from "../../utils/employeeschedule.utils"
 import {UtilityService} from "src/app/utility.service"
+import {
+  AddEmployeeInterface,
+  BusinessesResInterface,
+} from "../../data-access/employee-schedule.model"
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: "app-add-employee",
@@ -35,9 +40,11 @@ import {UtilityService} from "src/app/utility.service"
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
-  private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
+  private readonly injectedData =
+    inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly utilityService = inject(UtilityService)
+  private readonly snackBar = inject(MatSnackBar)
 
   loading = signal(false)
   message = signal("")
@@ -51,7 +58,28 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   subs = new SubscriptionHandler()
 
   addEmployeeForm = new FormGroup({
-    emailAddress: new FormControl("", {
+    firstname: new FormControl("", {
+      validators: [
+        Validators.required,
+        Validators.pattern(EmployeeUtils.TextOnlyRegex),
+        Validators.maxLength(30),
+      ],
+    }),
+    surname: new FormControl("", {
+      validators: [
+        Validators.required,
+        Validators.pattern(EmployeeUtils.TextOnlyRegex),
+        Validators.maxLength(30),
+      ],
+    }),
+    othername: new FormControl("", {
+      validators: [
+        Validators.pattern(EmployeeUtils.TextOnlyRegex),
+        Validators.maxLength(30),
+      ],
+    }),
+    title: new FormControl("", {validators: [Validators.required]}),
+    email: new FormControl("", {
       validators: [
         Validators.required,
         Validators.maxLength(45),
@@ -66,11 +94,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
       ],
     }),
-    startMonthId: new FormControl("01", {validators: [Validators.required]}),
-    NHF: new FormControl("0", {
+    startMonth: new FormControl("01", {validators: [Validators.required]}),
+    nhf: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    NHIS: new FormControl("0", {
+    nhis: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
     pension: new FormControl("0", {
@@ -88,13 +116,22 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.pattern(EmployeeUtils.PositiveNumberRegex),
       ],
     }),
-    basicIncome: new FormControl("0", {
+    basic: new FormControl("0", {
       validators: [
         Validators.required,
         Validators.pattern(EmployeeUtils.PositiveNumberRegex),
       ],
     }),
     rent: new FormControl("0", {
+      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
+    }),
+    ltg: new FormControl("0", {
+      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
+    }),
+    meal: new FormControl("0", {
+      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
+    }),
+    utility: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
     transport: new FormControl("0", {
@@ -127,7 +164,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(10),
       ],
     }),
-    phoneNumber: new FormControl("", {
+    phonenumber: new FormControl("", {
       validators: [
         Validators.required,
         Validators.pattern(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/),
@@ -138,27 +175,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     existingTaxId: new FormControl("", {
       validators: [Validators.minLength(11), Validators.maxLength(11)],
     }),
-    firstName: new FormControl("", {
-      validators: [
-        Validators.required,
-        Validators.pattern(EmployeeUtils.TextOnlyRegex),
-        Validators.maxLength(30),
-      ],
-    }),
-    surname: new FormControl("", {
-      validators: [
-        Validators.required,
-        Validators.pattern(EmployeeUtils.TextOnlyRegex),
-        Validators.maxLength(30),
-      ],
-    }),
-    otherName: new FormControl("", {
-      validators: [
-        Validators.pattern(EmployeeUtils.TextOnlyRegex),
-        Validators.maxLength(30),
-      ],
-    }),
-    titleId: new FormControl("", {validators: [Validators.required]}),
     designation: new FormControl("", {
       validators: [
         Validators.required,
@@ -166,20 +182,22 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(40),
       ],
     }),
-    contactAddress: new FormControl("", {
+    homeaddress: new FormControl("", {
       validators: [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(80),
       ],
     }),
-    localGovernmentId: new FormControl("", {validators: [Validators.required]}),
+    lgaCode: new FormControl("", {validators: [Validators.required]}),
     NSIRSTaxPayerID: new FormControl(""),
     CRA: new FormControl(""),
     taxYear: new FormControl(""),
   })
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.injectedData)
+  }
 
   ngOnDestroy(): void {
     this.subs.clear()
@@ -220,6 +238,22 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    const payload = {
+      ...this.addEmployeeForm.value,
+      businessRin: this.injectedData.businessRin,
+      companyRin: this.injectedData.companyRin,
+    } as Partial<AddEmployeeInterface>
     console.log(this.addEmployeeForm.value)
+    if (this.addEmployeeForm.valid)
+      this.subs.add = this.employeeScheduleService
+        .addEmployee(payload as AddEmployeeInterface)
+        .subscribe({
+          next: (res) => {
+            window.location.reload()
+          },
+          error: (err) => {
+            this.snackBar.open(err.message, "close", {duration: 2000})
+          },
+        })
   }
 }

@@ -77,7 +77,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openBulkUpload() {
-    this.dialog.open(BulkUploadComponent, {minWidth: 1000})
+    this.dialog.open(BulkUploadComponent, {
+      data: this.injectedData,
+      minWidth: 1000,
+    })
   }
 
   openAddEmployee() {
@@ -85,7 +88,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openEditEmployee(data: EmployeeDetailResInterface) {
-    this.dialog.open(EditEmployeeComponent, {data, minWidth: 1000})
+    this.dialog.open(EditEmployeeComponent, {
+      data: {employee: data, company: this.injectedData},
+      minWidth: 1000,
+    })
   }
 
   openViewEmployee(data: EmployeeDetailResInterface) {
