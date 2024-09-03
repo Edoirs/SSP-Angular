@@ -73,7 +73,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openCreateSchedule() {
-    this.dialog.open(CreateScheduleComponent, {minWidth: 1000})
+    this.dialog.open(CreateScheduleComponent, {
+      data: this.injectedData,
+      minWidth: 1000,
+    })
   }
 
   openBulkUpload() {

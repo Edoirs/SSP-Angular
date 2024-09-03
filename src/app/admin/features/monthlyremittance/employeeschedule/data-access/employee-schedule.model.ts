@@ -74,3 +74,10 @@ export interface AddEmployeeInterface {
   utility: number
   startMonth: string
 }
+
+export interface GetScheduleByDate {
+  businessRin: string
+  companyRin: string
+  year: number
+  month: string
+}

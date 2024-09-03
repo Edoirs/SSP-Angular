@@ -17,7 +17,7 @@
       >
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="scheduleYear"
+            <label for="year"
               >Schedule Year<sup class="font-wegiht-bold text-danger"
                 >*</sup
               ></label
@@ -25,39 +25,39 @@
             <input
               type="text"
               pattern="[^\s]+"
-              formControlName="scheduleYear"
+              formControlName="year"
               maxlength="4"
               class="form-control"
               placeholder="Schedule Year Eg: 2019"
             />
             <div
-              *ngIf="createScheduleForm.get('scheduleYear')?.errors"
+              *ngIf="createScheduleForm.get('year')?.errors"
                 class="text-danger"
             >
               <div
                 *ngIf="
                   createScheduleForm.touched &&
-                  createScheduleForm.get('scheduleYear')?.hasError('required')
+                  createScheduleForm.get('year')?.hasError('required')
                 "
               >
                 Schedule Year is required
               </div>
               <div
                 *ngIf="
-                  createScheduleForm.get('scheduleYear')?.hasError('minlength')
+                  createScheduleForm.get('year')?.hasError('minlength')
                 "
               >
                 Schedule Year must be at least 4 characters long.
               </div>
               <div
                 *ngIf="
-                  createScheduleForm.get('scheduleYear')?.hasError('maxLength')
+                  createScheduleForm.get('year')?.hasError('maxLength')
                 "
               >
                 Schedule Year must be 4 characters long.
               </div>
               <div
-                *ngIf="createScheduleForm.touched && createScheduleForm.get('scheduleYear')?.hasError('pattern')"
+                *ngIf="createScheduleForm.touched && createScheduleForm.get('year')?.hasError('pattern')"
               >
                 Schedule Year must be Number Only
               </div>
@@ -72,41 +72,41 @@
           </div>
 
           <div class="form-group col-md-6">
-            <label for="scheduleMonthId"
+            <label for="month"
               >Schedule Month<sup class="font-wegiht-bold text-danger"
                 >*</sup
               ></label
             >
             <select
               type="text"
-              name="scheduleMonthId"
-              formControlName="scheduleMonthId"
-              id="scheduleMonthId"
+              name="month"
+              formControlName="month"
+              id="month"
               class="form-control"
-              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.get('scheduleMonthId')?.errors }"
+              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.get('month')?.errors }"
             >
               <option value="">-- Select Tax Month --</option>
-              <option value="01">January</option>
-              <option value="02">February</option>
-              <option value="03">March</option>
-              <option value="04">April</option>
-              <option value="05">May</option>
-              <option value="06">June</option>
-              <option value="07">July</option>
-              <option value="08">August</option>
-              <option value="09">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
             </select>
             <div
-              *ngIf="createScheduleForm.valid && createScheduleForm.get('scheduleMonthId')?.errors"
+              *ngIf="createScheduleForm.valid && createScheduleForm.get('month')?.errors"
               class="text-danger"
             >
               <div
                 *ngIf="
                   createScheduleForm.touched &&
-                  createScheduleForm.get('scheduleMonthId')?.hasError('required')
+                  createScheduleForm.get('month')?.hasError('required')
                 "
               >
                 Schedule Month is required

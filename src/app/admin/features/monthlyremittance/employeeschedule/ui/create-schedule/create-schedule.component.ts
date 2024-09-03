@@ -12,10 +12,20 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms"
-import {MatDialogClose, MatDialogRef} from "@angular/material/dialog"
+import {
+  MAT_DIALOG_DATA,
+  MatDialogClose,
+  MatDialogRef,
+} from "@angular/material/dialog"
 import {EmployeescheduleComponent} from "../../employeeschedule.component"
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {
+  BusinessesResInterface,
+  GetScheduleByDate,
+} from "../../data-access/employee-schedule.model"
+import {MatSnackBar} from "@angular/material/snack-bar"
+import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 
 @Component({
   selector: "app-create-schedule",
@@ -27,16 +37,23 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateScheduleComponent implements OnInit, OnDestroy {
+  private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
+  private readonly snackBar = inject(MatSnackBar)
+  private readonly injectedData =
+    inject<BusinessesResInterface>(MAT_DIALOG_DATA)
+
+  loading = signal(false)
+  message = signal("")
 
   isScheduleYearValid = signal(false)
 
   subs = new SubscriptionHandler()
 
   createScheduleForm = new FormGroup({
-    scheduleMonthId: new FormControl("", {validators: [Validators.required]}),
-    scheduleYear: new FormControl("", {validators: [Validators.required]}),
-    comment: new FormControl("", {validators: [Validators.required]}),
+    month: new FormControl("", {validators: [Validators.required]}),
+    year: new FormControl("", {validators: [Validators.required]}),
+    comment: new FormControl("", {validators: []}),
   })
 
   ngOnInit(): void {
@@ -53,7 +70,7 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
 
   checkYear() {
     this.subs.add = this.createScheduleForm
-      .get("scheduleYear")!
+      .get("year")!
       .valueChanges.subscribe((n) => {
         if (parseInt(n as string) < 2010) {
           this.isScheduleYearValid.set(false)
@@ -64,6 +81,27 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.createScheduleForm.value)
+    const payload = {
+      ...this.createScheduleForm.value,
+      businessRin: this.injectedData.businessRin,
+      companyRin: this.injectedData.companyRin,
+    } as Partial<GetScheduleByDate>
+    if (this.createScheduleForm.valid) {
+      this.loading.set(true)
+      this.subs.add = this.employeeScheduleService
+        .getScheduleByDate(payload as GetScheduleByDate)
+        .subscribe({
+          next: (res) => {
+            if (res.status === true) {
+              window.location.reload()
+            } else {
+              this.snackBar.open(res.message, "close", {duration: 2000})
+            }
+          },
+          complete: () => {
+            this.loading.set(false)
+          },
+        })
+    }
   }
 }

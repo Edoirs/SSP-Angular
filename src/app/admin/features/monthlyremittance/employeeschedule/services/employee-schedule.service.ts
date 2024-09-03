@@ -82,4 +82,11 @@ export class EmployeeScheduleService {
       payload
     )
   }
+
+  getScheduleByDate(payload: EmployeeModel.GetScheduleByDate) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/GetScheduleByDate`,
+      payload
+    )
+  }
 }
