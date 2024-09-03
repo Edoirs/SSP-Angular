@@ -8,7 +8,7 @@
         {{ message() }}
       </div>
 
-      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="uploadForm" (submit)="onSubmit()">
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="fileInput">Select File to Upload</label>

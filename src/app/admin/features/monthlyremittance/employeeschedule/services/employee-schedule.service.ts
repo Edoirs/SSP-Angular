@@ -37,7 +37,7 @@ export class EmployeeScheduleService {
       },
     }
     return this.httpClient.post<any>(
-      `${environment.AUTHAPIURL}employees/import`,
+      `${environment.AUTHAPIURL}PhaseII/UploadEmployees`,
       formData,
       config
     )

@@ -24,6 +24,8 @@ import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import Swal from "sweetalert2"
 import {UtilityService} from "src/app/utility.service"
 import {environment} from "@environment/environment"
+import {Router} from "@angular/router"
+import {BusinessesResInterface} from "../../data-access/employee-schedule.model"
 
 @Component({
   selector: "app-bulk-upload",
@@ -36,9 +38,11 @@ import {environment} from "@environment/environment"
 })
 export class BulkUploadComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
-  private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
+  private readonly injectedData =
+    inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly utilityService = inject(UtilityService)
+  private readonly router = inject(Router)
 
   file = signal<any>(null)
   filePath = signal("")
@@ -99,8 +103,9 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     if (this.uploadForm.invalid) return
 
     const formData = new FormData()
-    formData.append("employees", this.uploadForm.get("myfile")!.value)
-    formData.append("business_id", this.injectedData.business_id)
+    formData.append("file", this.uploadForm.get("file")?.value as string)
+    formData.append("BusinessRin", this.injectedData.businessRin)
+    formData.append("CompanyRin", this.injectedData.companyRin)
 
     this.subs.add = this.employeeScheduleService
       .bulkEmployeeUpload(formData)
@@ -136,7 +141,8 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
               timer: 5000,
               timerProgressBar: true,
             })
-            document.getElementById("closeUploadModal")!.click()
+            this.router.navigate(["/admin", "employee-schedule"])
+            window.location.reload()
           }
         } else {
           // this.ngxService.stop();
