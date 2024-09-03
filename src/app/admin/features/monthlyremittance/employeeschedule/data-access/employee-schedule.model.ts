@@ -26,3 +26,51 @@ export interface MarkEmployeeInterface {
   companyRin: string
   employeeRin?: string
 }
+
+export interface EditEmployeeIncomeInterface {
+  employeeRin: string
+  businessRin: string
+  companyRin: string
+  basic?: number
+  rent?: number
+  transport?: number
+  ltg?: number
+  utility?: number
+  meal?: number
+  others?: number
+  nhf?: number
+  nhis?: number
+  pension?: number
+  lifeAssurance?: number
+}
+
+export interface AddEmployeeInterface {
+  businessRin: string
+  companyRin: string
+  title: string
+  firstname: string
+  surname: string
+  othername: string
+  phonenumber: string
+  email: string
+  employeeRin: string
+  jtbtin: string
+  nin: string
+  nationality: string
+  homeaddress: string
+  designation: string
+  lgaCode: string
+  zipCode: string
+  basic: number
+  rent: number
+  transport: number
+  otherIncome: number
+  nhf: number
+  nhis: number
+  pension: number
+  lifeAssurance: number
+  ltg: number
+  meal: number
+  utility: number
+  startMonth: string
+}

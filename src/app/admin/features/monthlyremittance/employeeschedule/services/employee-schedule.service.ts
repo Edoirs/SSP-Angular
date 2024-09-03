@@ -56,8 +56,15 @@ export class EmployeeScheduleService {
   }
 
   markEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
-    return this.httpClient.post<ServerResInterface<any>>(
+    return this.httpClient.put<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/Mark-Employee-Inactive`,
+      payload
+    )
+  }
+
+  markAllEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
+    return this.httpClient.put<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/Mark-All-Employee-Inactive`,
       payload
     )
   }

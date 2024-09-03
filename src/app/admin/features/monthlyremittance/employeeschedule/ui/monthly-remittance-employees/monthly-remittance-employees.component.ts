@@ -81,7 +81,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openAddEmployee() {
-    this.dialog.open(AddEmployeeComponent, {minWidth: 1000, maxHeight: 700})
+    this.dialog.open(AddEmployeeComponent, {data: this.injectedData, minWidth: 1000, maxHeight: 700})
   }
 
   openEditEmployee(data: EmployeeDetailResInterface) {
@@ -95,6 +95,24 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   closeModal() {}
 
   viewAddEmployee(modal: any) {}
+
+  markAllEmployeeInActive() {
+    const payload = {
+      companyRin: this.injectedData.companyRin,
+      businessRin: this.injectedData.businessRin,
+    } as MarkEmployeeInterface
+    if (window.confirm("Are you sure you want to mark all employees inactive?"))
+      this.subs.add = this.employeeScheduleService
+        .markAllEmployeeInactive(payload)
+        .subscribe({
+          next: (res) => {
+            window.location.reload()
+          },
+          error: (err) => {
+            this.snackBar.open(err.message, "close", {duration: 2000})
+          },
+        })
+  }
 
   switchStatus(event: any, employeeRin?: string) {
     const status = event.target.checked
