@@ -49,7 +49,7 @@
               </label>
               <input
                 type="text"
-                formControlName="basicIncome"
+                formControlName="basic"
                 class="form-control"
                 (keyup)="calculateTotalIncome($event)"
                 placeholder="Basic Income"
@@ -79,7 +79,7 @@
               <select
                 type="text"
                 name="titleId"
-                formControlName="titleId"
+                formControlName="title"
                 id="titleId"
                 class="form-control"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['title'].errors }"
@@ -381,7 +381,7 @@
               >
               <input
                 type="text"
-                formControlName="emailAddress"
+                formControlName="email"
                 class="form-control"
                 placeholder="Email Address"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['email'].errors }"
@@ -410,7 +410,7 @@
               <label for="NHF">National Housing Fund (NHF)</label>
               <input
                 type="text"
-                formControlName="NHF"
+                formControlName="nhf"
                 class="form-control"
                 placeholder="National Housing Fund"
                 (keyup)="calculateGrossIncome($event)"
@@ -468,7 +468,7 @@
               <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
               <input
                 type="text"
-                formControlName="NHIS"
+                formControlName="nhis"
                 class="form-control"
                 placeholder="National Health Insurance Scheme"
                 (keyup)="calculateGrossIncome($event)"
@@ -624,7 +624,7 @@
               </label>
               <select
                 name="localGovernmentId"
-                formControlName="localGovernmentId"
+                formControlName="lgaCode"
                 id="localGovernmentId"
                 class="form-control"
                 style="min-width: 339px"
@@ -661,7 +661,7 @@
               <select
                 type="text"
                 name="startMonthId"
-                formControlName="startMonthId"
+                formControlName="startMonth"
                 id="startMonthId"
                 class="form-control"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['startMonth'].errors }"
@@ -789,7 +789,7 @@
               >
               <textarea
                 type="text"
-                formControlName="contactAddress"
+                formControlName="homeaddress"
                 class="form-control"
                 rows="3"
                 placeholder="Home Address"
