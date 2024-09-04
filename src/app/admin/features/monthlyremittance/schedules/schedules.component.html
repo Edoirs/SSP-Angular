@@ -18,9 +18,7 @@
               <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
               <table
                 class="table table-bordered table-condensed"
-                *ngIf="businessesData"
-                datatable
-                [dtOptions]="dtOptions"
+                *ngIf="businessesData()"
                 width="100%"
               >
                 <thead>
@@ -31,41 +29,64 @@
                     <th>Tax Year</th>
                     <th>Tax Month</th>
                     <th>Employee Count</th>
-                    <th>Tax Income</th>
+                    <th>Total Income</th>
                     <th>Monthly Tax</th>
+                    <th>Date Forwarded</th>
                     <th>Assessment Status</th>
                     <th>View</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let mydata of businessesData; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-  
-                    <td title="View">
-                      <button
-                        class="btn btn-sm btn-outline-success"
-                        (click)="viewBusinessSchedules(schedulesModal, mydata)"
-                      >
-                        <i class="nav-icon fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
+                  @for (mydata of businessesData(); track $index) {
+                    <tr>
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{ mydata?.businessRin }}</td>
+                      <td>{{ mydata?.businessName | titlecase }}</td>
+                      <td>{{ mydata?.taxYear }}</td>
+                      <td>{{ mydata?.taxMonth  }}</td>
+                      <td>{{ mydata?.employeeCount }}</td>
+                      <td>
+                        {{ mydata?.totalIncome }}
+                      </td>
+                      <td>
+                        {{ mydata?.monthlyTax }}
+                      </td>
+                      <td>
+                        {{ mydata?.dateForwarded | date }}
+                      </td>
+                      <td>
+                        {{ mydata?.assessementStatus }}
+                      </td>
+    
+                      <td title="View">
+                        <button
+                          class="btn btn-sm btn-outline-success"
+                          (click)="openScheduleView(mydata)"
+                        >
+                          <i class="nav-icon fas fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                  @empty {
+                    <tr>
+                      <td><span>No schedules available for this record.</span></td>
+                    </tr>
+                  }
                 </tbody>
               </table>
+
+              <section>
+                <mat-paginator
+                  [length]="totalLength()"
+                  [pageSize]="pageSize()"
+                  [pageIndex]="pageIndex()"
+                  (page)="handlePageEvent($event)"
+                  showFirstLastButtons
+                  aria-label="Select page">
+                </mat-paginator>
+              </section>
+
             </div>
           </div>
           <!-- /.card-body -->

@@ -33,7 +33,7 @@ import {EmployeeScheduleService} from "../../services/employee-schedule.service"
   styleUrl: "./create-schedule.component.css",
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, MatDialogClose],
-  providers: [],
+  providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateScheduleComponent implements OnInit, OnDestroy {

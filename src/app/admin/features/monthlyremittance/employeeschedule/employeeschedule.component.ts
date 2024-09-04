@@ -30,8 +30,8 @@ import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-emplo
   styleUrl: "./employeeschedule.component.css",
 })
 export class EmployeescheduleComponent implements OnInit, OnDestroy {
-  private readonly dialog = inject(MatDialog)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  private readonly dialog = inject(MatDialog)
   editEmployeeForm!: FormGroup
   addEmployeeForm!: FormGroup
   submitted: boolean = false

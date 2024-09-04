@@ -35,7 +35,7 @@ import {MatSnackBar} from "@angular/material/snack-bar"
   styleUrl: "./edit-employee.component.css",
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, MatDialogClose],
-  providers: [],
+  providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditEmployeeComponent implements OnInit, OnDestroy {
