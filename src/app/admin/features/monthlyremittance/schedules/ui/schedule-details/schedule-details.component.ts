@@ -22,7 +22,11 @@ import {
   ScheduleResInterface,
   SendRdmInterface,
 } from "../../data-access/schedule.model"
-import {MaterialSnackErrorConfig} from "@shared/utils/material.utils"
+import {
+  MaterialDialogConfig,
+  MaterialSnackErrorConfig,
+} from "@shared/utils/material.utils"
+import {ViewScheduleComponent} from "../view-schedule/view-schedule.component"
 
 @Component({
   selector: "app-schedule-details",
@@ -85,10 +89,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   }
 
   viewSchedule(data: ScheduleDetailResInterface) {
-    //   this.dialog.open(CreateScheduleComponent, {
-    //     data: this.injectedData,
-    //     minWidth: 1000,
-    //   })
+    this.dialog.open(ViewScheduleComponent, MaterialDialogConfig(data))
   }
 
   sendToRdm() {
@@ -115,7 +116,11 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error(err)
         this.buttonLoading.set(false)
-        this.snackBar.open(err?.error?.message || err?.message, "close", MaterialSnackErrorConfig())
+        this.snackBar.open(
+          err?.error?.message || err?.message,
+          "close",
+          MaterialSnackErrorConfig()
+        )
       },
     })
   }
@@ -140,7 +145,11 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error(err)
         this.buttonLoading.set(false)
-        this.snackBar.open(err?.error?.message || err?.message, "close", MaterialSnackErrorConfig())
+        this.snackBar.open(
+          err?.error?.message || err?.message,
+          "close",
+          MaterialSnackErrorConfig()
+        )
       },
     })
   }
@@ -165,13 +174,22 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error(err)
         this.buttonLoading.set(false)
-        this.snackBar.open(err?.error?.message || err?.message, "close", MaterialSnackErrorConfig())
+        this.snackBar.open(
+          err?.error?.message || err?.message,
+          "close",
+          MaterialSnackErrorConfig()
+        )
       },
     })
   }
 
   reAssess() {
-    this.buttonLoading.set(true)
+    if (
+      confirm(
+        "Assessment will be recomputed and new amount generated against assessment reference number?"
+      )
+    )
+      this.buttonLoading.set(true)
     const payload: SendRdmInterface = {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
@@ -190,7 +208,11 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error(err)
         this.buttonLoading.set(false)
-        this.snackBar.open(err?.error?.message || err?.message, "close", MaterialSnackErrorConfig())
+        this.snackBar.open(
+          err?.error?.message || err?.message,
+          "close",
+          MaterialSnackErrorConfig()
+        )
       },
     })
   }

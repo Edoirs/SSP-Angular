@@ -1,0 +1,70 @@
+<div class="card card-secondary view-employee">
+  <div class="card-header custome">
+    <h3 class="card-title">Employee Details</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="over-auto">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RIN</td>
+            <td>{{ injectedData.employeeRin }}</td>
+          </tr>
+
+          <tr>
+            <td>Full Name</td>
+            <td>{{ injectedData.employeeName }}</td>
+          </tr>
+
+          <tr>
+            <td>Total Income</td>
+            <td>{{ injectedData.totalIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>Non Taxable Income</td>
+            <td>{{ injectedData.nonTaxableIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>CRA</td>
+            <td>{{ injectedData.cra }}</td>
+          </tr>
+
+          <tr>
+            <td>Chargable Income</td>
+            <td>{{ injectedData.chargableIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Free Pay</td>
+            <td>{{ injectedData.taxFreePay }}</td>
+          </tr>
+
+          <tr>
+            <td>Monthly Tax</td>
+            <td>{{ injectedData.monthlyTax }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close>
+        Ok
+      </button>
+    </div>
+
+  </div>
+
+</div>
