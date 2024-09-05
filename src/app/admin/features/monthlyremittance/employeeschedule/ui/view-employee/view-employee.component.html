@@ -8,25 +8,53 @@
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
-            <th>RIN</th>
-            <th>Full Name</th>
-            <th>Total Income</th>
-            <th>Non Taxable Income</th>
-            <th>Gross Income</th>
-            <th>Status</th>
+            <th>Property</th>
+            <th>Value</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{{ detailList()[0] }}</td>
-            <td>{{ detailList()[1] }}</td>
-            <td>{{ detailList()[2] }}</td>
-            <td>{{ detailList()[3] }}</td>
-            <td>{{ detailList()[4] }}</td>
-            <td>{{ detailList()[5] }}</td>
+            <td>RIN</td>
+            <td>{{ injectedData.employeeRin }}</td>
           </tr>
+
+          <tr>
+            <td>Full Name</td>
+            <td>{{ injectedData.fullName }}</td>
+          </tr>
+
+          <tr>
+            <td>Total Income</td>
+            <td>{{ injectedData.totalIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>Non Taxable Income</td>
+            <td>{{ injectedData.non_TaxableIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>Gross Income</td>
+            <td>{{ injectedData.grossIncome }}</td>
+          </tr>
+
+          <tr>
+            <td>Status</td>
+            <td>{{ injectedData.status }}</td>
+          </tr>
+
         </tbody>
       </table>
     </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close>
+        Ok
+      </button>
+    </div>
+
   </div>
 </div>

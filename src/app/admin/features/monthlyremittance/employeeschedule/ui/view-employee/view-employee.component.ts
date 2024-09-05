@@ -27,7 +27,7 @@ import {EmployeeDetailResInterface} from "../../data-access/employee-schedule.mo
 })
 export class ViewEmployeeComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
-  private readonly injectedData =
+  public readonly injectedData =
     inject<EmployeeDetailResInterface>(MAT_DIALOG_DATA)
 
   loading = signal(false)
@@ -40,8 +40,6 @@ export class ViewEmployeeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.clear()
   }
-
-  detailList = () => Object.values(this.injectedData)
 
   closeModal() {
     this.dialogRef.close()
