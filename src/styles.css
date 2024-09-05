@@ -1,19 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-button{
-    background-color: transparent;
-    color: green;
-    font-size: 15px;
-    padding: 8px 12px;
-    border: 1.5px solid green;
-    border-radius: 8px;
-    transition: all .3s ease-in-out;
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-button:hover{
-    background-color: green;
-    color: #fff;
+button {
+  background-color: transparent;
+  color: green;
+  font-size: 15px;
+  padding: 8px 12px;
+  border: 1.5px solid green;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: green;
+  color: #fff;
+}
+
+button:disabled {
+  background-color: #97979736;
+  color: #3532325b;
+  border: none;
+  cursor: not-allowed;
+}
+
+mat-paginator button,
+mat-paginator button:disabled,
+mat-paginator button:hover {
+  background-color: transparent;
 }
