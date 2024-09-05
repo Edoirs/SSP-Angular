@@ -16,6 +16,7 @@ import {MatSnackBar} from "@angular/material/snack-bar"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {ScheduleService} from "../../services/schedules.service"
+import {ScheduleDetailResInterface} from "../../data-access/schedule.model"
 
 @Component({
   selector: "app-schedule-details",
@@ -34,7 +35,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
 
   employeeDetails = signal<any[] | null>(null)
 
-  schedulesData?: any
+  schedulesData = signal<ScheduleDetailResInterface[] | null>(null)
 
   subs = new SubscriptionHandler()
 
@@ -53,7 +54,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
         this.injectedData.companyRin
       )
       .subscribe((res) => {
-        this.employeeDetails.set(res.data)
+        console.log(res)
+        this.schedulesData.set(res.data)
       })
   }
 

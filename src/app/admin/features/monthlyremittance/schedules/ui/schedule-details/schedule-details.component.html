@@ -14,7 +14,7 @@
     <!-- /.card-body -->
   </div>
 
-  <div class="modal-body">
+  <div class="schedule-table">
     <div class="container">
       <table class="table table-bordered table-condensed" width="100%">
         <thead>
@@ -32,53 +32,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let mydata of schedulesData; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>
-              <p
-                [ngClass]="{
-                  'text-danger': mydata.forwarded_to == 0,
-                  'text-primary': mydata.forwarded_to == 1,
-                  'text-success': mydata.forwarded_to == 2
-                }">
-                {{
-                  mydata.forwarded_to == 0
-                    ? "Schedule Not forwarded"
-                    : mydata.forwarded_to == 1
-                    ? "Sent back to Editor"
-                    : "Forwarded to Manager"
-                }}
-              </p>
-            </td>
-
-            <td>{{ mydata.date_forwarded | date : "dd MMM yyyy" }}</td>
-            <td>{{ mydata.due_date | date : "MMMM" }}</td>
-            <td>{{ mydata.due_date | date : "y" }}</td>
-            <td>
-              <p
-                [ngClass]="{
-                  'text-danger': mydata.assessment_status == 0,
-                  'text-primary': mydata.assessment_status == 1,
-                  'text-success': mydata.assessment_status == 2
-                }">
-                {{
-                  mydata.assessment_status == 0 ? "Still Open" : "Case Closed"
-                }}
-              </p>
-            </td>
-            <!-- <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td> -->
-
-            <td>{{ mydata.created_at | date : "dd MMM yyyy" }}</td>
-            <td>{{ mydata.created_at | date : "dd MMM yyyy" }}</td>
-            <td>{{ mydata.created_at | date : "dd MMM yyyy" }}</td>
-            <td title="View">
-              <button
-                class="btn btn-sm btn-outline-success"
-                (click)="viewSchedule(mydata)">
-                <i class="nav-icon fas fa-eye"></i>
-              </button>
-            </td>
-          </tr>
+          @for (mydata of schedulesData(); track $index) {
+            <tr>
+              <td>{{ $index + 1 }}</td>
+              <td>{{mydata.employeeRin}}</td>
+  
+              <td>{{mydata?.employeeName}}</td>
+              <td>{{mydata?.totalIncome}}</td>
+              <td>{{mydata?.nonTaxableIncome}}</td>
+              <td>{{mydata?.cra}}</td>
+              <td>{{mydata?.taxFreePay}}</td>
+              <td>{{mydata?.chargableIncome}}</td>
+              <td>{{mydata?.monthlyTax}}</td>
+              <td title="View">
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="viewSchedule(mydata)">
+                  <i class="nav-icon fas fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="10"><span>No schedules available for this record.</span></td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
