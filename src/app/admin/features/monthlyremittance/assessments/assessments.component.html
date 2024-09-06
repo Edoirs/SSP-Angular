@@ -80,6 +80,18 @@
                   </tr>
                 </tbody>
               </table>
+
+              <section>
+                <mat-paginator
+                  [length]="totalLength()"
+                  [pageSize]="pageSize()"
+                  [pageIndex]="pageIndex()"
+                  (page)="handlePageEvent($event)"
+                  showFirstLastButtons
+                  aria-label="Select page">
+                </mat-paginator>
+              </section>
+              
             </div>
           </div>
           <!-- /.card-body -->
@@ -322,7 +334,7 @@
                   formControlName="companyName"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['companyName'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['companyName'].errors }"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -332,7 +344,7 @@
                   formControlName="taxPayerID"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['taxPayerID'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['taxPayerID'].errors }"
                 />
               </div>
             </div>
@@ -345,7 +357,7 @@
                   formControlName="dateGenerated"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['dateGenerated'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['dateGenerated'].errors }"
                 />
               </div>
   
@@ -356,7 +368,7 @@
                   formControlName="balance"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['balance'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['balance'].errors }"
                 />
               </div>
             </div>
@@ -369,7 +381,7 @@
                   formControlName="address"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['address'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['address'].errors }"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -379,7 +391,7 @@
                   formControlName="phoneNumber"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['phoneNumber'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['phoneNumber'].errors }"
                 />
               </div>
             </div>
@@ -391,7 +403,7 @@
                   formControlName="invoiceID"
                   class="form-control"
                   [attr.disabled]="true"
-                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; assessmentForm.controls['invoiceID'].errors }"
+                  [ngClass]="{ 'is-invalid': submitted && assessmentForm.controls['invoiceID'].errors }"
                 />
               </div>
             </div>
@@ -483,7 +495,7 @@
                   <div class="col-sm-3">
                       <input type="text" formControlName="totaldueBalance" [(ngModel)]="totaldueBalance" class="form-control"
                           placeholder="Total Due Balance" id="totaldueBalance" [attr.disabled]="true"
-                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; paymentItemsForm.controls['totaldueBalance'].errors }" />
+                          [ngClass]="{ 'is-invalid': submitted && paymentItemsForm.controls['totaldueBalance'].errors }" />
                   </div>
               </div>
               </div>
@@ -497,8 +509,8 @@
                                 </label>
                                 <input type="text" formControlName="assessmentItem" class="form-control"
                                     placeholder="Assessment Item" [id]="'assessmentItem' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
-                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('assessmentItem')!.errors }" />
-                                <div *ngIf="submitted &amp;&amp; payItemForm.get('assessmentItem')!.errors"
+                                    [ngClass]="{ 'is-invalid': submitted && payItemForm.get('assessmentItem')!.errors }" />
+                                <div *ngIf="submitted && payItemForm.get('assessmentItem')!.errors"
                                     class="text-danger">
                                 </div>
                             </div>
@@ -508,8 +520,8 @@
                                 </label>
                                 <input type="text" formControlName="amountAssessed" class="form-control" placeholder="Amount Assessed"
                                     [id]="'amountAssessed' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
-                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('amountAssessed')!.errors }" />
-                                <div *ngIf="submitted &amp;&amp; payItemForm.get('amountAssessed')!.errors"
+                                    [ngClass]="{ 'is-invalid': submitted && payItemForm.get('amountAssessed')!.errors }" />
+                                <div *ngIf="submitted && payItemForm.get('amountAssessed')!.errors"
                                     class="text-danger">
                                 </div>
                             </div>
@@ -521,8 +533,8 @@
                                 <input type="text" formControlName="amountToPay" class="form-control" placeholder="Amount to Pay"
                                     [id]="'amountToPay' + payItemForm.get('paymentItemId')!.value"
                                     (keyup)="calculateAmountAssessed(i); onChangeAmount($event.target, payItemForm.get('paymentItemId')!.value)"
-                                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('amountToPay')!.errors }" />
-                                <div *ngIf="submitted &amp;&amp; payItemForm.get('amountToPay')!.errors" class="text-danger">
+                                    [ngClass]="{ 'is-invalid': submitted && payItemForm.get('amountToPay')!.errors }" />
+                                <div *ngIf="submitted && payItemForm.get('amountToPay')!.errors" class="text-danger">
                                     <div *ngIf="payItemForm.get('amountToPay')!.errors!['required']">
                                       Amount to Pay is required, but can be 0.
                                     </div>
@@ -536,7 +548,7 @@
                               <label [attr.for]="'itemID' + payItemForm.get('paymentItemId')!.value">Item ID</label>
                               <input type="text" formControlName="paymentItemId" class="form-control" placeholder="Item ID" 
                               [id]="'itemID' + payItemForm.get('paymentItemId')!.value" [attr.disabled]="true"
-                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; payItemForm.get('paymentItemId')!.errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && payItemForm.get('paymentItemId')!.errors }" />
                             </div>
                         </div>
   
@@ -552,7 +564,7 @@
                         <div class="col-sm-3">
                             <input type="text" formControlName="totalAmountToPay" class="form-control"
                                 placeholder="Total Amount Assessed" id="totalAmountToPay" [attr.disabled]="true"
-                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; paymentItemsForm.get('totalAmountToPay')!.errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && paymentItemsForm.get('totalAmountToPay')!.errors }" />
                         </div>
                     </div>
                     <!-- </div> -->
