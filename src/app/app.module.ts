@@ -40,9 +40,9 @@ import {AnnualreturnschedulesComponent} from "./admin/features/annualreturns/ann
 import {AnnualreturnassessmentsComponent} from "./admin/features/annualreturns/annualreturnassessments/annualreturnassessments.component"
 import {ReassessmentsComponent} from "./admin/features/annualreturns/reassessments/reassessments.component"
 import {ReassessmentappealsComponent} from "./admin/features/annualreturns/reassessmentappeals/reassessmentappeals.component"
-import {UploadprojectionComponent} from "./admin/features/annualprojection/uploadprojection/uploadprojection.component"
-import {PendingprojectionComponent} from "./admin/features/annualprojection/pendingprojection/pendingprojection.component"
-import {ApprovedprojectionComponent} from "./admin/features/annualprojection/approvedprojection/approvedprojection.component"
+import {UploadprojectionComponent} from "./admin/features/annualprojection/features/uploadprojection/uploadprojection.component"
+import {PendingprojectionComponent} from "./admin/features/annualprojection/features/pendingprojection/pendingprojection.component"
+import {ApprovedprojectionComponent} from "./admin/features/annualprojection/features/approvedprojection/approvedprojection.component"
 import {EmployeescheduleComponent} from "./admin/features/monthlyremittance/employeeschedule/employeeschedule.component"
 import {DeletedemployeesComponent} from "./admin/features/monthlyremittance/deletedemployees/deletedemployees.component"
 import {SchedulesComponent} from "./admin/features/monthlyremittance/schedules/schedules.component"
@@ -52,6 +52,7 @@ import {AdduserComponent} from "./admin/features/users/adduser/adduser.component
 import {EditComponent} from "./admin/features/users/edit/edit.component"
 import {CompanyprofileComponent} from "./admin/features/profile/companyprofile/companyprofile.component"
 import {MatPaginatorModule} from "@angular/material/paginator"
+import {NgToggleModule} from "ng-toggle-button"
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import {MatPaginatorModule} from "@angular/material/paginator"
     NgChartsModule,
     MatDialogModule,
     MatPaginatorModule,
+    NgToggleModule.forRoot(),
   ],
   providers: [
     DatePipe,

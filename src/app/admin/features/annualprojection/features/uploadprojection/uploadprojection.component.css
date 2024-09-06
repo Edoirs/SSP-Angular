@@ -1,0 +1,7 @@
+.header-btn{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 12px;
+    margin-bottom: 12px;
+}

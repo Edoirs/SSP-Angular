@@ -44,7 +44,7 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
   private readonly utilityService = inject(UtilityService)
   private readonly router = inject(Router)
 
-  file = signal<any>(null)
+  file = signal<File | null>(null)
   filePath = signal("")
 
   loading = signal(false)
@@ -103,104 +103,64 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     if (this.uploadForm.invalid) return
 
     const formData = new FormData()
-    formData.append("file", this.uploadForm.get("file")?.value as string)
+    formData.append("file", this.file() as File)
     formData.append("BusinessRin", this.injectedData.businessRin)
     formData.append("CompanyRin", this.injectedData.companyRin)
 
-    this.subs.add = this.employeeScheduleService
-      .bulkEmployeeUpload(formData)
-      .subscribe((res) => {
-        console.log(res)
-
-        this.uploadForm.reset()
-        Object.keys(this.uploadForm.controls).forEach((key) => {
-          this.uploadForm.get(key)?.setErrors(null)
-        })
-        if (res.status == true) {
-          // this.ngxService.stop();
-
-          this.uploadForm.reset()
-          Object.keys(this.uploadForm.controls).forEach((key) => {
-            this.uploadForm.get(key)?.setErrors(null)
-          })
-          if (res.message === "0 Employees created; 0 updated.") {
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Confirm the file content and try again",
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            })
-          } else {
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: res.message,
-              showConfirmButton: true,
-              timer: 5000,
-              timerProgressBar: true,
-            })
-            this.router.navigate(["/admin", "employee-schedule"])
-            window.location.reload()
-          }
-        } else {
-          // this.ngxService.stop();
-          this.uploadForm.reset()
-          Object.keys(this.uploadForm.controls).forEach((key) => {
-            this.uploadForm.get(key)?.setErrors(null)
-          })
-          const regex = /_/g
-          if (res.response == null) {
+    if (this.file())
+      this.subs.add = this.employeeScheduleService
+        .bulkEmployeeUpload(formData)
+        .subscribe({
+          next: (res) => {
+            this.uploadForm.reset()
+            if (res.status == true) {
+              if (res.message === "0 Employees created; 0 updated.") {
+                Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: "Confirm the file content and try again",
+                  showConfirmButton: true,
+                  timer: 5000,
+                  timerProgressBar: true,
+                })
+              } else {
+                Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: res.message,
+                  showConfirmButton: true,
+                  timer: 5000,
+                  timerProgressBar: true,
+                })
+                this.router.navigate(["/admin", "employee-schedule"])
+                window.location.reload()
+              }
+            } else {
+              if (res.response == null) {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Validation not passed",
+                  // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
+                  text: res?.message,
+                  showConfirmButton: true,
+                  timer: 10000,
+                  timerProgressBar: true,
+                })
+              }
+            }
+          },
+          error: (err) => {
+            console.error(err)
             Swal.fire({
               icon: "warning",
               title: "Validation not passed",
               // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: "The content of this file does not match the template provided",
+              text: err?.message || err?.error?.message,
               showConfirmButton: true,
               timer: 10000,
               timerProgressBar: true,
             })
           }
-
-          for (const key of Object.keys(res.response)) {
-            const row = res.response[key]
-
-            for (const error of row) {
-              let err = key.replace(regex, " " + ":")
-              this.message.set(
-                err.toUpperCase() + " " + (key.replace(regex, " ") + ":", error)
-              )
-
-              this.columnError.update((data) => [...data, this.message()])
-              console.log(this.message())
-            }
-          }
-
-          if (this.columnError().length < 12) {
-            Swal.fire({
-              icon: "warning",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 ">  ERROR: ' +
-                this.columnError().join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.columnError.join('\n'),
-              showConfirmButton: true,
-            })
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: res.message,
-              html:
-                '<div class="text-left ml-3 p-0 my-4 div-scroll-alert"> ERROR: ' +
-                this.columnError().join("<br /> ERROR: ") +
-                "</div>",
-              // text: this.columnError.join('\n'),
-              showConfirmButton: true,
-            })
-          }
-        }
-      })
+        })
   }
 }
