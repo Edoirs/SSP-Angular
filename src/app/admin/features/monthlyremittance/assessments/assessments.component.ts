@@ -17,7 +17,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TableImage} from "./utils/assessments.utils"
 import {AssessmentService} from "./services/assessment.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
-import { PageEvent } from "@angular/material/paginator"
+import {PageEvent} from "@angular/material/paginator"
 
 @Component({
   selector: "app-assessments",
@@ -74,6 +74,8 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
+  dataLoading = signal(false)
+  dataMessage = signal("")
 
   subs = new SubscriptionHandler()
 
@@ -225,6 +227,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
 
   listenToRoute() {
     this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.dataLoading.set(true)
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
@@ -232,10 +235,13 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
           .getAssessments(this.pageIndex(), this.pageSize())
           .subscribe({
             next: (res) => {
+              this.dataLoading.set(false)
               if (res.status === true) {
                 this.assementsData.set(res.data.businesses)
                 this.totalLength.set(res.data?.totalCount)
               } else {
+                this.dataLoading.set(false)
+                this.dataMessage.set(res?.message)
                 this.ngxService.stop()
                 Swal.fire({
                   icon: "error",
@@ -245,6 +251,10 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
                   timer: 5000,
                 })
               }
+            },
+            error: (err) => {
+              this.dataMessage.set(err?.message || err?.error?.message)
+              this.dataLoading.set(false)
             },
           })
       }
@@ -697,9 +707,9 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
       (result) => {
         this.closeResult = `Closed with: ${result}`
       },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
-        }
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
+      }
     )
   }
 
