@@ -15,6 +15,20 @@
         <!-- /.card-header -->
         <div class="card-body">
           <div class="over-auto">
+
+            <section class="table-header">
+              <div class="table-header-cont-1"></div>
+              <div class="table-header-cont-2">
+                <div class="table-header-btns">
+                  <button>CSV</button>
+                  <button>Excel</button>
+                </div>
+              </div>
+              <div class="table-header-cont-3">
+                <input class="form-control" #searchTable type="search" placeholder="search" [value]="queryString()" (search)="queryTable(searchTable)"/>
+              </div>
+            </section>
+
             <table
               class="table table-bordered table-condensed"
               datatable

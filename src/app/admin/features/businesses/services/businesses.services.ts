@@ -8,8 +8,10 @@ import {BusinessResInterface} from "../data-access/business.model"
 export class BusinessService {
   private readonly httpClient = inject(HttpClient)
 
-  getBusinesses(pageNumber = 1, pageSize = 15) {
-    const params = new HttpParams({fromObject: {pageNumber, pageSize}})
+  getBusinesses(pageNumber = 1, pageSize = 15, search?: string) {
+    const params = new HttpParams({
+      fromObject: {pageNumber, pageSize, ...(search && {businessName: search})},
+    })
     return this.httpClient.get<ServerResInterface<BusinessResInterface>>(
       `${environment.AUTHAPIURL}PhaseII/GetallBusinesses`,
       {params}

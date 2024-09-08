@@ -8,6 +8,7 @@ import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 import Swal from "sweetalert2"
+import {ThrotlleQuery} from "@shared/utils/shared.utils"
 
 @Component({
   selector: "app-businesses",
@@ -29,6 +30,8 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   dataLoading = signal(false)
   dataMessage = signal("")
 
+  queryString = signal("")
+
   subs = new SubscriptionHandler()
 
   ngOnInit(): void {
@@ -39,14 +42,33 @@ export class BusinessesComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
+  queryTable(domInput: HTMLInputElement) {
+    this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
+      this.router.navigate(["."], {
+        relativeTo: this.route,
+        queryParams: {
+          search: query,
+          pageSize: 15,
+          pageIndex: 1,
+        },
+        queryParamsHandling: "replace",
+      })
+    })
+  }
+
   listenToRoute() {
     this.subs.add = this.route.queryParams.subscribe((params) => {
       this.dataLoading.set(true)
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.businessService
-          .getBusinesses(this.pageIndex(), this.pageSize())
+          .getBusinesses(
+            this.pageIndex(),
+            this.pageSize(),
+            decodeURIComponent(params["search"])
+          )
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)
