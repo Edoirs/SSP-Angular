@@ -83,14 +83,14 @@ export class EmployeeScheduleService {
     )
   }
 
-  getScheduleByDate(payload: EmployeeModel.GetScheduleByDate) {
+  getScheduleByDate(payload: EmployeeModel.GetScheduleByDateInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/GetScheduleByDate`,
       payload
     )
   }
 
-  downloadEmployeePdf(payload: EmployeeModel.DownloadEmployeePdf) {
+  downloadEmployeePdf(payload: EmployeeModel.DownloadEmployeePdfInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/DownLoadPDF`,
       payload

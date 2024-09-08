@@ -27,6 +27,8 @@ import {
   MaterialSnackErrorConfig,
 } from "@shared/utils/material.utils"
 import {ViewScheduleComponent} from "../view-schedule/view-schedule.component"
+import Swal from "sweetalert2"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-schedule-details",
@@ -232,16 +234,12 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
           console.log(res.data)
           // window.location.href = res.data
         } else {
-          this.snackBar.open(res?.message, "close", MaterialSnackErrorConfig())
+          Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         console.error(err)
-        this.snackBar.open(
-          err?.error?.message || err?.message,
-          "close",
-          MaterialSnackErrorConfig()
-        )
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         this.buttonLoading.set(false)
       },
     })

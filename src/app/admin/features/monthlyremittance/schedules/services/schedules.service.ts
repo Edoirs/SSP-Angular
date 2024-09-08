@@ -8,8 +8,10 @@ import * as ScheduleModel from "../data-access/schedule.model"
 export class ScheduleService {
   private readonly httpClient = inject(HttpClient)
 
-  getSchedules(pageNumber = 1, pageSize = 15) {
-    const params = new HttpParams({fromObject: {pageNumber, pageSize}})
+  getSchedules(pageNumber = 1, pageSize = 15, search?: string) {
+    const params = new HttpParams({
+      fromObject: {pageNumber, pageSize, ...(search && {businessName: search})},
+    })
     return this.httpClient.get<
       ServerResInterface<ScheduleModel.SchedulesResInterface>
     >(`${environment.AUTHAPIURL}PhaseII/GetAllScheduleDetails`, {params})

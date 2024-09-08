@@ -14,6 +14,7 @@ import {
 } from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {
+  DownloadEmployeePdfInterface,
   EmployeeDetailResInterface,
   MarkEmployeeInterface,
 } from "../../data-access/employee-schedule.model"
@@ -176,19 +177,16 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       businessRin: this.injectedData.businessRin,
       taxMonth: this.injectedData.taxMonth,
       taxYear: this.injectedData.taxYear,
-    } as MarkEmployeeInterface
-    if (
-      window.confirm("Are you sure you want to change this employee's status?")
-    )
-      this.subs.add = this.employeeScheduleService
-        .markEmployeeInactive(payload)
-        .subscribe({
-          next: (res) => {
-            this.snackBar.open(res.message, "close", {duration: 2000})
-          },
-          error: (err) => {
-            this.snackBar.open(err.message, "close", {duration: 2000})
-          },
-        })
+    } as DownloadEmployeePdfInterface
+    this.subs.add = this.employeeScheduleService
+      .downloadEmployeePdf(payload)
+      .subscribe({
+        next: (res) => {
+          this.snackBar.open(res.message, "close", {duration: 2000})
+        },
+        error: (err) => {
+          this.snackBar.open(err.message, "close", {duration: 2000})
+        },
+      })
   }
 }

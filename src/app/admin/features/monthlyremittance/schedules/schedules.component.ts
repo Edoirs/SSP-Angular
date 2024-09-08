@@ -30,6 +30,8 @@ import {ScheduleResInterface} from "./data-access/schedule.model"
 import {PageEvent} from "@angular/material/paginator"
 import {MatDialog} from "@angular/material/dialog"
 import {ScheduleDetailsComponent} from "./ui/schedule-details/schedule-details.component"
+import {ThrotlleQuery} from "@shared/utils/shared.utils"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-schedules",
@@ -86,6 +88,11 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
+
+  dataLoading = signal(false)
+  dataMessage = signal("")
+
+  queryString = signal("")
 
   subs = new SubscriptionHandler()
 
@@ -746,28 +753,45 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       })
   }
 
+  queryTable(domInput: HTMLInputElement) {
+    this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
+      this.router.navigate(["."], {
+        relativeTo: this.route,
+        queryParams: {
+          search: query,
+          pageSize: 15,
+          pageIndex: 1,
+        },
+        queryParamsHandling: "replace",
+      })
+    })
+  }
+
   listenToRoute() {
     this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.dataLoading.set(true)
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.scheduleService
-          .getSchedules(this.pageIndex(), this.pageSize())
+          .getSchedules(this.pageIndex(), this.pageSize(), this.queryString())
           .subscribe({
             next: (res) => {
+              this.dataLoading.set(false)
               if (res.status === true) {
-                this.businessesData.set(res.data.businesses)
-                this.totalLength.set(res.data?.totalCount)
+                this.businessesData.set(res.data?.businesses)
+                this.totalLength.set(res.data.totalCount)
               } else {
-                this.ngxService.stop()
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: res.message,
-                  showConfirmButton: true,
-                  timer: 5000,
-                })
+                this.dataLoading.set(false)
+                this.dataMessage.set(res?.message)
+                Swal.fire(SweetAlertOptions(res?.message))
               }
+            },
+            error: (err) => {
+              this.dataLoading.set(false)
+              this.dataMessage.set(err?.message || err?.error?.message)
+              Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
             },
           })
       }

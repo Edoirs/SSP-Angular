@@ -75,14 +75,14 @@ export interface AddEmployeeInterface {
   startMonth: string
 }
 
-export interface GetScheduleByDate {
+export interface GetScheduleByDateInterface {
   businessRin: string
   companyRin: string
   year: number
   month: string
 }
 
-export interface DownloadEmployeePdf {
+export interface DownloadEmployeePdfInterface {
   businessRin: string
   companyRin: string
   taxMonth: number

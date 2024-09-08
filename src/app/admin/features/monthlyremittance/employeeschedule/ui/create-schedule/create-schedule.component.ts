@@ -22,7 +22,7 @@ import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {
   BusinessesResInterface,
-  GetScheduleByDate,
+  GetScheduleByDateInterface,
 } from "../../data-access/employee-schedule.model"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
@@ -85,11 +85,11 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
       ...this.createScheduleForm.value,
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
-    } as Partial<GetScheduleByDate>
+    } as Partial<GetScheduleByDateInterface>
     if (this.createScheduleForm.valid) {
       this.loading.set(true)
       this.subs.add = this.employeeScheduleService
-        .getScheduleByDate(payload as GetScheduleByDate)
+        .getScheduleByDate(payload as GetScheduleByDateInterface)
         .subscribe({
           next: (res) => {
             if (res.status === true) {
