@@ -169,4 +169,26 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
           },
         })
   }
+
+  downloadPdf() {
+    const payload = {
+      companyRin: this.injectedData.companyRin,
+      businessRin: this.injectedData.businessRin,
+      taxMonth: this.injectedData.taxMonth,
+      taxYear: this.injectedData.taxYear,
+    } as MarkEmployeeInterface
+    if (
+      window.confirm("Are you sure you want to change this employee's status?")
+    )
+      this.subs.add = this.employeeScheduleService
+        .markEmployeeInactive(payload)
+        .subscribe({
+          next: (res) => {
+            this.snackBar.open(res.message, "close", {duration: 2000})
+          },
+          error: (err) => {
+            this.snackBar.open(err.message, "close", {duration: 2000})
+          },
+        })
+  }
 }

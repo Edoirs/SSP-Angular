@@ -89,4 +89,11 @@ export class EmployeeScheduleService {
       payload
     )
   }
+
+  downloadEmployeePdf(payload: EmployeeModel.DownloadEmployeePdf) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/DownLoadPDF`,
+      payload
+    )
+  }
 }

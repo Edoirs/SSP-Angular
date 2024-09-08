@@ -81,3 +81,10 @@ export interface GetScheduleByDate {
   year: number
   month: string
 }
+
+export interface DownloadEmployeePdf {
+  businessRin: string
+  companyRin: string
+  taxMonth: number
+  taxYear: string
+}
