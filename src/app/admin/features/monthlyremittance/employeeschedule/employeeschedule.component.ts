@@ -23,6 +23,7 @@ import {EmployeeScheduleService} from "./services/employee-schedule.service"
 import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.model"
 import {PageEvent} from "@angular/material/paginator"
 import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-employeeschedule",
@@ -86,6 +87,8 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   pageIndex = signal(1)
 
   employeesList = signal<EmployeeScheduleResInterface | null>(null)
+  dataLoading = signal(false)
+  dataMessage = signal("")
 
   validatorRegex = /^(\d{1,17}|\d{0,17}\.\d{1,2})$/
   cardIdRegex = /^[0-9\s]*$/
@@ -167,9 +170,23 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         this.employeeScheduleService
           .getEmployees(this.pageIndex(), this.pageSize())
-          .subscribe((res) => {
-            this.employeesList.set(res.data)
-            this.totalLength.set(res.data?.totalCount)
+          .subscribe({
+            next: (res) => {
+              this.dataLoading.set(false)
+              if (res.status) {
+                this.employeesList.set(res.data)
+                this.totalLength.set(res.data?.totalCount)
+              } else {
+                this.dataLoading.set(false)
+                this.dataMessage.set(res?.message)
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+            },
+            error: (err) => {
+              this.dataLoading.set(false)
+              this.dataMessage.set(err?.message || err?.error?.message)
+              Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            },
           })
       }
     })

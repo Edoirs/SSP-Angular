@@ -18,6 +18,7 @@ import {TableImage} from "./utils/assessments.utils"
 import {AssessmentService} from "./services/assessment.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {PageEvent} from "@angular/material/paginator"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-assessments",
@@ -240,21 +241,16 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
                 this.assementsData.set(res.data.businesses)
                 this.totalLength.set(res.data?.totalCount)
               } else {
+                this.ngxService.stop()
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)
-                this.ngxService.stop()
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: res.message,
-                  showConfirmButton: true,
-                  timer: 5000,
-                })
+                Swal.fire(SweetAlertOptions(res?.message))
               }
             },
             error: (err) => {
-              this.dataMessage.set(err?.message || err?.error?.message)
               this.dataLoading.set(false)
+              this.dataMessage.set(err?.message || err?.error?.message)
+              Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
             },
           })
       }
