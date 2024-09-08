@@ -27,6 +27,9 @@ import {AddEmployeeComponent} from "../add-employee/add-employee.component"
 import {EditEmployeeComponent} from "../edit-employee/edit-employee.component"
 import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 
+import Swal from "sweetalert2"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+
 @Component({
   selector: "app-monthly-remittance-employees",
   templateUrl: "./monthly-remittance-employees.component.html",
@@ -43,6 +46,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
+  dataLoading = signal(false)
+  dataMessage = signal("")
+
+  totalLength = signal(0)
 
   subs = new SubscriptionHandler()
 
@@ -62,8 +69,22 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         pageNumber,
         pageSize
       )
-      .subscribe((res) => {
-        this.employeeDetails.set(res.data)
+      .subscribe({
+        next: (res) => {
+          this.dataLoading.set(false)
+          if (res.status) {
+            this.employeeDetails.set(res.data)
+          } else {
+            this.dataLoading.set(false)
+            this.dataMessage.set(res?.message)
+            Swal.fire(SweetAlertOptions(res?.message))
+          }
+        },
+        error: (err) => {
+          this.dataLoading.set(false)
+          this.dataMessage.set(err?.message || err?.error?.message)
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
       })
   }
 
@@ -87,7 +108,11 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openAddEmployee() {
-    this.dialog.open(AddEmployeeComponent, {data: this.injectedData, minWidth: 1000, maxHeight: 700})
+    this.dialog.open(AddEmployeeComponent, {
+      data: this.injectedData,
+      minWidth: 1000,
+      maxHeight: 700,
+    })
   }
 
   openEditEmployee(data: EmployeeDetailResInterface) {

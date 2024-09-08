@@ -28,7 +28,18 @@
                 </tr>
               </thead>
               <tbody>
-                @for (business of businesses()?.businesses; track $index) {
+                @if(dataLoading()){
+                <tr>
+                  <td colspan="100%"><span>Loading...</span></td>
+                </tr>
+                } @else if (dataMessage()) {
+                <tr>
+                  <td colspan="100%">
+                    <span>{{ dataMessage() }}</span>
+                  </td>
+                </tr>
+                } @else { @for (business of businesses()?.businesses; track
+                $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   <td>{{ business?.businessRin }}</td>
@@ -36,10 +47,10 @@
                   <td>{{ business?.lgaName }}</td>
                 </tr>
                 } @empty {
-                  <tr>
-                    <td><span>No business found.</span></td>
-                  </tr>
-                }
+                <tr>
+                  <td><span>No business found.</span></td>
+                </tr>
+                } }
               </tbody>
             </table>
 
