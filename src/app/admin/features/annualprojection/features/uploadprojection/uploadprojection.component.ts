@@ -249,7 +249,9 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
       // companyRin: this.injectedData.companyRin,
       // businessRin: this.injectedData.businessRin,
     } as MarkEmployeeInterface
-    if (window.confirm("Are you sure you want to mark all employees inactive?"))
+    if (
+      window.confirm("Are you sure you want to mark all employees inactive?")
+    ) {
       this.subs.add = this.annualProjectionService
         .markAllEmployeeInactive(payload)
         .subscribe({
@@ -263,6 +265,9 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
+    }
+    this.btnLoading.set(false)
+    
   }
 
   openForwardProjection() {

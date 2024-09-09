@@ -5,7 +5,7 @@
     </h4>
 
     <div>
-      <button class="btn btn-outline-success" (click)="downloadPdf()">
+      <button class="btn btn-outline-success" (click)="downloadPdf()" [disabled]="btnLoading()">
         Excel
       </button>
     </div>
@@ -39,7 +39,7 @@
         type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
-        (click)="markAllEmployeeInActive()">
+        (click)="markAllEmployeeInActive()" [disabled]="btnLoading()">
         Mark Inactive
       </button>
     </div>

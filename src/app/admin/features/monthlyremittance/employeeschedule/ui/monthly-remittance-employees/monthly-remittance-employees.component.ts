@@ -49,6 +49,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
   dataLoading = signal(false)
+  btnLoading = signal(false)
   dataMessage = signal("")
 
   totalLength = signal(0)
@@ -133,22 +134,29 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   viewAddEmployee(modal: any) {}
 
   markAllEmployeeInActive() {
+    this.btnLoading.set(true)
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
     } as MarkEmployeeInterface
-    if (window.confirm("Are you sure you want to mark all employees inactive?"))
+    if (
+      window.confirm("Are you sure you want to mark all employees inactive?")
+    ) {
       this.subs.add = this.employeeScheduleService
         .markAllEmployeeInactive(payload)
         .subscribe({
           next: (res) => {
+            this.btnLoading.set(false)
             if (res.status) return window.location.reload()
             Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
+            this.btnLoading.set(false)
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
+    }
+    this.btnLoading.set(false)
   }
 
   switchStatus(event: any, employeeRin?: string) {
@@ -174,6 +182,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   downloadPdf() {
+    this.btnLoading.set(true)
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
@@ -184,9 +193,12 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       .downloadEmployeePdf(payload)
       .subscribe({
         next: (res) => {
+          this.btnLoading.set(false)
           if (res.status) window.open(res?.data)
+          Swal.fire(SweetAlertOptions(res?.message))
         },
         error: (err) => {
+          this.btnLoading.set(false)
           Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
         },
       })
