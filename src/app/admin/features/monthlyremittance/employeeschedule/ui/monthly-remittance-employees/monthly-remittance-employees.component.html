@@ -5,7 +5,9 @@
     </h4>
 
     <div>
-      <button (click)="downloadPdf()">Excel</button>
+      <button class="btn btn-outline-success" (click)="downloadPdf()">
+        Excel
+      </button>
     </div>
 
     <div>
@@ -13,8 +15,7 @@
         type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
-        (click)="openAddEmployee()"
-        >
+        (click)="openAddEmployee()">
         <i class="fas fa-plus-square"></i> Add Employee
       </button>
 
@@ -22,8 +23,7 @@
         type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
-        (click)="openBulkUpload()"
-        >
+        (click)="openBulkUpload()">
         Bulk Upload
       </button>
 
@@ -38,7 +38,7 @@
       <button
         type="button"
         class="btn btn-outline-success role float-right mx-2"
-        style="font-size: 12px; padding: 5px; margin-top: -3px" 
+        style="font-size: 12px; padding: 5px; margin-top: -3px"
         (click)="markAllEmployeeInActive()">
         Mark Inactive
       </button>
@@ -63,7 +63,17 @@
           </tr>
         </thead>
         <tbody>
-          @for (employee of employeeDetails(); track $index) {
+          @if(dataLoading()){
+          <tr>
+            <td colspan="100%"><span>Loading...</span></td>
+          </tr>
+          } @else if (dataMessage()) {
+          <tr>
+            <td colspan="100%">
+              <span>{{ dataMessage() }}</span>
+            </td>
+          </tr>
+          } @else { @for (employee of employeeDetails(); track $index) {
           <tr>
             <td>{{ $index + 1 }}</td>
             <td>{{ employee.employeeRin }}</td>
@@ -75,12 +85,16 @@
             <td>{{ employee.status }}</td>
 
             <td title="edit">
-              <button class="btn btn-sm btn-outline-success" (click)="openEditEmployee(employee)">
+              <button
+                class="btn btn-sm btn-outline-success"
+                (click)="openEditEmployee(employee)">
                 <i class="nav-icon fas fa-pen"></i>
               </button>
             </td>
             <td title="View">
-              <button class="btn btn-sm btn-outline-success" (click)="openViewEmployee(employee)">
+              <button
+                class="btn btn-sm btn-outline-success"
+                (click)="openViewEmployee(employee)">
                 <i class="nav-icon fas fa-eye"></i>
               </button>
             </td>
@@ -92,15 +106,16 @@
                   unchecked: '#939da2',
                   checked: '#00773B'
                 }"
-                (change)="switchStatus($event, employee.employeeRin)"
-                ></ng-toggle>
+                (change)="
+                  switchStatus($event, employee.employeeRin)
+                "></ng-toggle>
             </td>
           </tr>
           } @empty {
           <tr>
-            <td colspan="6">No data available.</td>
+            <td colspan="100%">No data available.</td>
           </tr>
-          }
+          } }
         </tbody>
       </table>
 

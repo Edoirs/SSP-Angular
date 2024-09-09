@@ -98,6 +98,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         pageSize: event.pageSize,
         pageIndex: event.pageIndex === 0 ? 1 : event.pageIndex,
       },
+      queryParamsHandling: "replace",
     })
   }
 }

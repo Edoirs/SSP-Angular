@@ -15,8 +15,8 @@
         <!-- /.card-header -->
         <div class="card-body">
           <section class="header-btn">
-            <button>Mark All Inactive</button>
-            <button>Forward Projection</button>
+            <button [disabled]="btnLoading()" (click)="markAllEmployeeInActive()">Mark All Inactive</button>
+            <button [disabled]="btnLoading()" (click)="openForwardProjection()">Forward Projection</button>
           </section>
           <div class="over-auto">
             <!-- <p class="login-box-msg bold-black">List of Employees</p> -->

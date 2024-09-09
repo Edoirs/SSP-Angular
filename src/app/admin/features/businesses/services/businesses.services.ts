@@ -9,8 +9,13 @@ export class BusinessService {
   private readonly httpClient = inject(HttpClient)
 
   getBusinesses(pageNumber = 1, pageSize = 15, search?: string) {
+    console.log({search: search?.toString()})
     const params = new HttpParams({
-      fromObject: {pageNumber, pageSize, ...(search && {businessName: search})},
+      fromObject: {
+        pageNumber,
+        pageSize,
+        ...(search && {businessName: search.toString()}),
+      },
     })
     return this.httpClient.get<ServerResInterface<BusinessResInterface>>(
       `${environment.AUTHAPIURL}PhaseII/GetallBusinesses`,

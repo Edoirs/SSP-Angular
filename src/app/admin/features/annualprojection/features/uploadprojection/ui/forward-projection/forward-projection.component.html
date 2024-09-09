@@ -1,0 +1,67 @@
+<div class="forward-projection">
+  <div class="modal-header">
+    <span>
+      <h4 class="modal-title" id="modal-basic-title">Forward Projection</h4>
+    </span>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="forwardProjectionForm" (submit)="onSubmit()">
+        <div class="form-row">
+
+          <div class="form-group col-md-6">
+            <label for="taxYear"
+              >Projection Year<sup class="font-wegiht-bold text-danger"
+                >*</sup
+              ></label
+            >
+            <input
+              type="number"
+              pattern="[^\s]+"
+              formControlName="taxYear"
+              maxlength="4"
+              class="form-control"
+              placeholder="Total Income Eg: 2019" />
+            <div
+              *ngIf="forwardProjectionForm.get('taxYear')?.errors"
+              class="text-danger">
+              <div
+                *ngIf="
+                  forwardProjectionForm.touched &&
+                  forwardProjectionForm.get('taxYear')?.hasError('pattern')
+                ">
+                Total Income must be Number Only
+              </div>
+              <div
+                *ngIf="
+                  forwardProjectionForm.touched &&
+                  forwardProjectionForm.get('taxYear')?.hasError('required')
+                ">
+                This field is required
+              </div>
+            </div>
+          </div>
+          
+
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="forwardProjectionForm.invalid || loading()"
+          class="">
+          Forward
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark button-login"
+      mat-dialog-close>
+      Ok
+    </button>
+  </div>
+</div>

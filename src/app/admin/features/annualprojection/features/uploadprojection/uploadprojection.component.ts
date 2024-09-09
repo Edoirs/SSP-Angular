@@ -18,6 +18,11 @@ import {PageEvent} from "@angular/material/paginator"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {AnnualProjectionService} from "../../services/annual-projection.service"
 import {DtImage} from "./utils/upload-project.utils"
+import {MarkEmployeeInterface} from "../../../monthlyremittance/employeeschedule/data-access/employee-schedule.model"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {MatDialog} from "@angular/material/dialog"
+import {ForwaedProjectionComponent} from "./ui/forward-projection/forward-projection.component"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
   selector: "app-uploadprojection",
@@ -26,6 +31,7 @@ import {DtImage} from "./utils/upload-project.utils"
 })
 export class UploadprojectionComponent implements OnInit, OnDestroy {
   private readonly annualProjectionService = inject(AnnualProjectionService)
+  private readonly dialog = inject(MatDialog)
   myForm!: FormGroup
   submitted: boolean = false
   files: any
@@ -74,6 +80,8 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
+
+  btnLoading = signal(false)
 
   subs = new SubscriptionHandler()
 
@@ -233,6 +241,32 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   handlePageEvent(event: PageEvent) {
     const pageIndex = event.pageIndex === 0 ? 1 : event.pageIndex
     // this.getEmployeeDetail(pageIndex, event.pageSize)
+  }
+
+  markAllEmployeeInActive() {
+    this.btnLoading.set(true)
+    const payload = {
+      // companyRin: this.injectedData.companyRin,
+      // businessRin: this.injectedData.businessRin,
+    } as MarkEmployeeInterface
+    if (window.confirm("Are you sure you want to mark all employees inactive?"))
+      this.subs.add = this.annualProjectionService
+        .markAllEmployeeInactive(payload)
+        .subscribe({
+          next: (res) => {
+            this.btnLoading.set(false)
+            if (res.status) return window.location.reload()
+            Swal.fire(SweetAlertOptions(res?.message))
+          },
+          error: (err) => {
+            this.btnLoading.set(false)
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          },
+        })
+  }
+
+  openForwardProjection() {
+    this.dialog.open(ForwaedProjectionComponent, MaterialDialogConfig())
   }
 
   getBusinesses() {

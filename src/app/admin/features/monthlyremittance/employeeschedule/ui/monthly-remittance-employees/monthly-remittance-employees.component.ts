@@ -30,6 +30,7 @@ import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -41,10 +42,10 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
+  private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly dialog = inject(MatDialog)
   private readonly snackBar = inject(MatSnackBar)
   private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
-  private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
   dataLoading = signal(false)
@@ -95,17 +96,17 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openCreateSchedule() {
-    this.dialog.open(CreateScheduleComponent, {
-      data: this.injectedData,
-      minWidth: 1000,
-    })
+    this.dialog.open(
+      CreateScheduleComponent,
+      MaterialDialogConfig(this.injectedData)
+    )
   }
 
   openBulkUpload() {
-    this.dialog.open(BulkUploadComponent, {
-      data: this.injectedData,
-      minWidth: 1000,
-    })
+    this.dialog.open(
+      BulkUploadComponent,
+      MaterialDialogConfig(this.injectedData)
+    )
   }
 
   openAddEmployee() {
@@ -117,14 +118,14 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openEditEmployee(data: EmployeeDetailResInterface) {
-    this.dialog.open(EditEmployeeComponent, {
-      data: {employee: data, company: this.injectedData},
-      minWidth: 1000,
-    })
+    this.dialog.open(
+      EditEmployeeComponent,
+      MaterialDialogConfig({employee: data, company: this.injectedData})
+    )
   }
 
   openViewEmployee(data: EmployeeDetailResInterface) {
-    this.dialog.open(ViewEmployeeComponent, {data, minWidth: 1000})
+    this.dialog.open(ViewEmployeeComponent, MaterialDialogConfig(data))
   }
 
   closeModal() {}
@@ -141,10 +142,11 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         .markAllEmployeeInactive(payload)
         .subscribe({
           next: (res) => {
-            window.location.reload()
+            if (res.status) return window.location.reload()
+            Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
-            this.snackBar.open(err.message, "close", {duration: 2000})
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
   }
@@ -163,10 +165,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         .markEmployeeInactive(payload)
         .subscribe({
           next: (res) => {
-            this.snackBar.open(res.message, "close", {duration: 2000})
+            Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
-            this.snackBar.open(err.message, "close", {duration: 2000})
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
   }
@@ -182,10 +184,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       .downloadEmployeePdf(payload)
       .subscribe({
         next: (res) => {
-          this.snackBar.open(res.message, "close", {duration: 2000})
+          if (res.status) window.open(res?.data)
         },
         error: (err) => {
-          this.snackBar.open(err.message, "close", {duration: 2000})
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
         },
       })
   }
