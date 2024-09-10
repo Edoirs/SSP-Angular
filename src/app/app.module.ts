@@ -19,7 +19,11 @@ import {DataTablesModule} from "angular-datatables"
 import {HomeComponent} from "./webpages/home/home.component"
 import {LoginComponent} from "./auth/login/login.component"
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap"
-import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http"
+import {
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+} from "@angular/common/http"
 import {NgxPaginationModule} from "ngx-pagination"
 import {NgChartsModule} from "ng2-charts"
 import {LogoutComponent} from "./auth/logout/logout.component"
@@ -53,6 +57,7 @@ import {EditComponent} from "./admin/features/users/edit/edit.component"
 import {CompanyprofileComponent} from "./admin/features/profile/companyprofile/companyprofile.component"
 import {MatPaginatorModule} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
+import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
 
 @NgModule({
   declarations: [
@@ -113,7 +118,10 @@ import {NgToggleModule} from "ng-toggle-button"
   providers: [
     DatePipe,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([loggingInterceptor])
+    ),
     provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent],
