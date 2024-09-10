@@ -8,10 +8,10 @@ import {MarkEmployeeInterface} from "../../monthlyremittance/employeeschedule/da
 export class AnnualProjectionService {
   private readonly httpClient = inject(HttpClient)
 
-  getUploads(pageNumber = 1, pageSize = 15) {
+  getUploads(companyId: string, pageNumber = 1, pageSize = 15) {
     const params = new HttpParams({fromObject: {pageNumber, pageSize}})
     return this.httpClient.get<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/GetFileFormH3`,
+      `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${companyId}`,
       {params}
     )
   }

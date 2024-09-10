@@ -23,6 +23,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MatDialog} from "@angular/material/dialog"
 import {ForwaedProjectionComponent} from "./ui/forward-projection/forward-projection.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {UserStateService} from "@shared/services/user-state.service"
 
 @Component({
   selector: "app-uploadprojection",
@@ -31,6 +32,7 @@ import {MaterialDialogConfig} from "@shared/utils/material.utils"
 })
 export class UploadprojectionComponent implements OnInit, OnDestroy {
   private readonly annualProjectionService = inject(AnnualProjectionService)
+  private readonly userStateService = inject(UserStateService)
   private readonly dialog = inject(MatDialog)
   myForm!: FormGroup
   submitted: boolean = false
@@ -212,7 +214,11 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         this.subs.add = this.annualProjectionService
-          .getUploads(this.pageIndex(), this.pageSize())
+          .getUploads(
+            this.userStateService.getUser().companyId as string,
+            this.pageIndex(),
+            this.pageSize()
+          )
           .subscribe({
             next: (res) => {
               if (res.status === true) {
@@ -267,7 +273,6 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
         })
     }
     this.btnLoading.set(false)
-    
   }
 
   openForwardProjection() {
