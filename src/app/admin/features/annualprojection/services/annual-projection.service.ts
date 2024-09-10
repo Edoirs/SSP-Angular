@@ -11,8 +11,8 @@ export class AnnualProjectionService {
   getUploads(companyId: string, pageNumber = 1, pageSize = 15) {
     const params = new HttpParams({fromObject: {pageNumber, pageSize}})
     return this.httpClient.get<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${companyId}`,
-      {params}
+      `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${companyId}`
+      // {params}
     )
   }
 

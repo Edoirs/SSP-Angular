@@ -22,14 +22,19 @@
                 >*</sup
               ></label
             >
-            <input
+            <select
               type="text"
-              pattern="[^\s]+"
+              name="month"
               formControlName="year"
-              maxlength="4"
+              id="month"
               class="form-control"
-              placeholder="Schedule Year Eg: 2019"
-            />
+              [ngClass]="{ 'is-invalid': createScheduleForm.valid && createScheduleForm.get('year')?.errors }"
+            >
+              <option value="">-- Select Tax Year --</option>
+              @for (year of validYears; track $index) {
+                <option value="year">{{year}}</option>
+              }
+            </select>
             <div
               *ngIf="createScheduleForm.get('year')?.errors"
                 class="text-danger"
@@ -42,33 +47,7 @@
               >
                 Schedule Year is required
               </div>
-              <div
-                *ngIf="
-                  createScheduleForm.get('year')?.hasError('minlength')
-                "
-              >
-                Schedule Year must be at least 4 characters long.
-              </div>
-              <div
-                *ngIf="
-                  createScheduleForm.get('year')?.hasError('maxLength')
-                "
-              >
-                Schedule Year must be 4 characters long.
-              </div>
-              <div
-                *ngIf="createScheduleForm.touched && createScheduleForm.get('year')?.hasError('pattern')"
-              >
-                Schedule Year must be Number Only
-              </div>
             </div>
-            <div
-              *ngIf="createScheduleForm.touched && !isScheduleYearValid()"
-              class="text-danger"
-            >
-              <div>Schedule Year cannot be less than 2010</div>
-            </div>
-            <!-- <div *ngIf="yearIncorrect">Schedule Year must be a year after 1999 and this year</div> -->
           </div>
 
           <div class="form-group col-md-6">

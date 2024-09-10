@@ -12,3 +12,13 @@ export const ThrotlleQuery = (
     distinctUntilChanged()
   )
 }
+
+export const ValidYears = (): number[] => {
+  let years: number[] = []
+
+  for (let year = 2018; year <= new Date().getFullYear(); year++) {
+    years.push(year)
+  }
+
+  return years
+}

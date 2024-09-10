@@ -26,6 +26,7 @@ import {
 } from "../../data-access/employee-schedule.model"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
+import {ValidYears} from "@shared/utils/shared.utils"
 
 @Component({
   selector: "app-create-schedule",
@@ -42,6 +43,8 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   private readonly snackBar = inject(MatSnackBar)
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
+
+  readonly validYears = ValidYears()
 
   loading = signal(false)
   message = signal("")

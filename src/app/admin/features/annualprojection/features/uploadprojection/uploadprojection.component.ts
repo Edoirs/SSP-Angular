@@ -252,8 +252,8 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   markAllEmployeeInActive() {
     this.btnLoading.set(true)
     const payload = {
-      // companyRin: this.injectedData.companyRin,
-      // businessRin: this.injectedData.businessRin,
+      companyRin: this.userStateService.getUser().companyRin,
+      businessRin: this.userStateService.getUser().companyId,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
