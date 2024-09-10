@@ -64,11 +64,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.businessService
-          .getBusinesses(
-            this.pageIndex(),
-            this.pageSize(),
-            decodeURIComponent(params["search"])
-          )
+          .getBusinesses(this.pageIndex(), this.pageSize(), this.queryString())
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)
