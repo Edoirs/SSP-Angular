@@ -27,11 +27,10 @@
                   <th>Business RIN</th>
                   <th>Business Name</th>
                   <th>Total Income</th>
-                  <th>No of Employees</th>
                   <th>Non-taxable Income</th>
-                  <th>Edit</th>
                   <th>View</th>
-                  <th>Status</th>
+                  <th>Edit</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,35 +40,18 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ mydata.businessRIN }}</td>
                     <td>{{ mydata.businessName | titlecase }}</td>
-                    <td>
-                      {{
-                        mydata.businessAddress ? mydata.businessAddress : "N/A"
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        mydata.noOfEmployees == null
-                          ? "N/A"
-                          : mydata.noOfEmployees
-                      }}
-                    </td>
+                    <td>{{ mydata.annualReturnStatus }}</td>
+                    <td>{{ mydata.annualReturnStatus }}</td>
   
-                    <td title="edit">
-                      <button class="btn btn-sm btn-outline-success" (click)="viewBusinessProjection(uploadProjectionModal, mydata)">
-                        <i class="nav-icon fas fa-pen"></i>
-                      </button>
-                    </td>
                     <td title="View">
                       <button class="btn btn-sm btn-outline-success" (click)="deleteBusiness(mydata)">
                         <i class="nav-icon fas fa-eye"></i>
                       </button>
                     </td>
-  
-                    <td title="File Form H3">
-                      <button
-                        class="btn btn-sm btn-outline-success"
-                        (click)="createSchedule(annualReturnModal, mydata)">
-                        <i class="nav-icon fas fa-eye"></i>
+
+                    <td title="edit">
+                      <button class="btn btn-sm btn-outline-success" (click)="viewBusinessProjection(uploadProjectionModal, mydata)">
+                        <i class="nav-icon fas fa-pen"></i>
                       </button>
                     </td>
   
@@ -80,7 +62,7 @@
                           unchecked: '#939da2',
                           checked: '#00773B'
                         }"
-                        (change)="switchStatus($event, mydata)"></ng-toggle>
+                        (change)="switchStatus($event, mydata.businessRIN)"></ng-toggle>
                     </td>
                   </tr>
 

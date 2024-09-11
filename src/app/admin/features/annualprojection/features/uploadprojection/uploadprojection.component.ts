@@ -23,7 +23,8 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MatDialog} from "@angular/material/dialog"
 import {ForwaedProjectionComponent} from "./ui/forward-projection/forward-projection.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
-import {UserStateService} from "@shared/services/user-state.service"
+import {TokenService} from "@shared/services/token.service"
+import {UploadProjectionInterface} from "./data-access/annual-projection.models"
 
 @Component({
   selector: "app-uploadprojection",
@@ -32,7 +33,7 @@ import {UserStateService} from "@shared/services/user-state.service"
 })
 export class UploadprojectionComponent implements OnInit, OnDestroy {
   private readonly annualProjectionService = inject(AnnualProjectionService)
-  private readonly userStateService = inject(UserStateService)
+  private readonly tokenService = inject(TokenService)
   private readonly dialog = inject(MatDialog)
   myForm!: FormGroup
   submitted: boolean = false
@@ -78,7 +79,7 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   taxpayerID: any
   assessmentYears: any[] = []
 
-  uploadsData = signal<any[] | null>(null)
+  uploadsData = signal<UploadProjectionInterface[] | null>(null)
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
@@ -215,14 +216,14 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         this.subs.add = this.annualProjectionService
           .getUploads(
-            this.userStateService.getUser().companyId as string,
+            this.tokenService.getLoginResData().companyId.toString(),
             this.pageIndex(),
             this.pageSize()
           )
           .subscribe({
             next: (res) => {
               if (res.status === true) {
-                this.uploadsData.set(res.data.businesses)
+                this.uploadsData.set(res.data.records)
                 this.totalLength.set(res.data?.totalCount)
               } else {
                 this.ngxService.stop()
@@ -252,8 +253,8 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   markAllEmployeeInActive() {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.userStateService.getUser().companyRin,
-      businessRin: this.userStateService.getUser().companyId,
+      companyRin: this.tokenService.getLoginResData().comanyRin,
+      businessRin: this.tokenService.getLoginResData().businessRins[0].rin,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")

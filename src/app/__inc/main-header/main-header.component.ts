@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from "@angular/core"
 import {MatDialog} from "@angular/material/dialog"
 import {ChangePasswordModalComponent} from "./ui/change-password/change-password-modal.component"
-import {UserStateService} from "@shared/services/user-state.service"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-main-header",
@@ -9,7 +9,7 @@ import {UserStateService} from "@shared/services/user-state.service"
   styleUrls: ["./main-header.component.css"],
 })
 export class MainHeaderComponent implements OnInit {
-  public readonly userStateService = inject(UserStateService)
+  public readonly tokenService = inject(TokenService)
   private readonly dialog = inject(MatDialog)
   roleID: any
   roleName: any

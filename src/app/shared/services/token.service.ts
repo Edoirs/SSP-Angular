@@ -1,20 +1,40 @@
 import {Injectable} from "@angular/core"
 
+
+export interface LoginResInterface {
+  token: string
+  expiryAt: string
+  phoneNumber?: string
+  companyId: number
+  comanyRin: string
+  name: string
+  email?: string
+  taxpayerTypeId: number
+  businessRins: {
+    id: number
+    name: string
+    rin: string
+  }[]
+}
+
+export const LSLoginProps = "lgprops"
+
 @Injectable({providedIn: "root"})
 export class TokenService {
-  private readonly AccessToken = "access_token"
+  saveLoginResData(data: LoginResInterface) {
+    return localStorage.setItem(LSLoginProps, JSON.stringify(data))
+  }
 
-  saveAccessToken(access_token: string) {
-    return localStorage.setItem(this.AccessToken, access_token)
+  getLoginResData(): LoginResInterface {
+    const userRes = localStorage.getItem(LSLoginProps) as string
+    return JSON.parse(userRes)
   }
 
   getAccessToken(): string {
-    const token = localStorage.getItem(this.AccessToken)
-
-    return token as string
+    return this.getLoginResData()?.token
   }
 
-  removeAccessToken() {
-    return localStorage.removeItem(this.AccessToken)
+  removeLoginResData() {
+    return localStorage.removeItem(LSLoginProps)
   }
 }
