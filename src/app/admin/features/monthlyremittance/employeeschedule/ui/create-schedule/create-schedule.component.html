@@ -32,7 +32,7 @@
             >
               <option value="">-- Select Tax Year --</option>
               @for (year of validYears; track $index) {
-                <option value="year">{{year}}</option>
+                <option [value]="year">{{year}}</option>
               }
             </select>
             <div
@@ -118,8 +118,8 @@
 
         <button
           type="submit"
-          [disabled]="createScheduleForm.invalid"
-          class="btn btn button-login"
+          [disabled]="createScheduleForm.invalid || loading()"
+          class=""
         >
           <i class="far fa-save"></i> Forward Schedule
         </button>

@@ -4,9 +4,9 @@ import {debounceTime, distinctUntilChanged, map} from "rxjs/operators"
 
 export const ThrotlleQuery = (
   event: HTMLInputElement,
-  type: string
+  eventType: string
 ): Observable<string> => {
-  return fromEvent(event, type).pipe(
+  return fromEvent(event, eventType).pipe(
     map((event: any) => event.target.value),
     debounceTime(800),
     distinctUntilChanged()

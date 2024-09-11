@@ -24,9 +24,10 @@ import {
   BusinessesResInterface,
   GetScheduleByDateInterface,
 } from "../../data-access/employee-schedule.model"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {ValidYears} from "@shared/utils/shared.utils"
+import Swal from "sweetalert2"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-create-schedule",
@@ -40,7 +41,6 @@ import {ValidYears} from "@shared/utils/shared.utils"
 export class CreateScheduleComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
-  private readonly snackBar = inject(MatSnackBar)
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
 
@@ -95,14 +95,16 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
         .getScheduleByDate(payload as GetScheduleByDateInterface)
         .subscribe({
           next: (res) => {
+            this.loading.set(false)
             if (res.status === true) {
               window.location.reload()
             } else {
-              this.snackBar.open(res.message, "close", {duration: 2000})
+              Swal.fire(SweetAlertOptions(res?.message))
             }
           },
-          complete: () => {
+          error: (err) => {
             this.loading.set(false)
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
     }
