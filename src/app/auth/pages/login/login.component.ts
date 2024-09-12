@@ -2,7 +2,7 @@ import {Component, inject} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 
-import {environment} from "../../../environments/environment"
+import {environment} from "../../../../environments/environment"
 import Swal from "sweetalert2"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
