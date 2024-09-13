@@ -32,6 +32,7 @@ import {MatDialog} from "@angular/material/dialog"
 import {ScheduleDetailsComponent} from "./ui/schedule-details/schedule-details.component"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-schedules",
@@ -40,6 +41,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 })
 export class SchedulesComponent implements OnInit, OnDestroy {
   private readonly scheduleService = inject(ScheduleService)
+  public readonly tokenService = inject(TokenService)
   private readonly route = inject(ActivatedRoute)
   private readonly dialog = inject(MatDialog)
   dtOptions: any = {}

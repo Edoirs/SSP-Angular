@@ -9,6 +9,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 import Swal from "sweetalert2"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-businesses",
@@ -20,6 +21,7 @@ import {ThrotlleQuery} from "@shared/utils/shared.utils"
 })
 export class BusinessesComponent implements OnInit, OnDestroy {
   private readonly businessService = inject(BusinessService)
+  public readonly tokenService = inject(TokenService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   pageSize = signal(15)

@@ -42,6 +42,10 @@
               <thead>
                 <tr>
                   <th>S/N</th>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <th>Company RIN</th>
+                    <th>Company Name</th>
+                  }
                   <th>Business RIN</th>
                   <th>Business Name</th>
                   <th>Address</th>
@@ -62,6 +66,10 @@
                 $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <th>Company RIN</th>
+                    <th>Company Name</th>
+                  }
                   <td>{{ business?.businessRin }}</td>
                   <td>{{ business?.businessName }}</td>
                   <td>{{ business?.lgaName }}</td>

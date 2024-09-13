@@ -22,6 +22,10 @@
               <thead>
                 <tr>
                   <th>S/N</th>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                  <th>Company RIN</th>
+                  <th>Company Name</th>
+                  }
                   <th>Business RIN</th>
                   <th>Business Name</th>
                   <th>Address</th>
@@ -45,17 +49,17 @@
                 $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                  <th>Company RIN</th>
+                  <th>Company Name</th>
+                  }
                   <td>{{ employee?.businessRin }}</td>
                   <td>{{ employee?.businessName | titlecase }}</td>
                   <td>
-                    {{
-                      !employee?.businessAddress
-                        ? "N/A"
-                        : employee?.businessAddress
-                    }}
+                    {{ employee?.businessAddress || "N/A" }}
                   </td>
                   <td>
-                    {{ !employee?.businessLga ? "N/A" : employee?.businessLga }}
+                    {{ employee?.businessLga || "N/A" }}
                   </td>
                   <td>{{ employee?.noOfEmployees }}</td>
                   <td title="View">

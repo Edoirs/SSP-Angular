@@ -19,6 +19,7 @@ import {AssessmentService} from "./services/assessment.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-assessments",
@@ -27,6 +28,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 })
 export class AssessmentsComponent implements OnInit, OnDestroy {
   private readonly assessmentService = inject(AssessmentService)
+  public readonly tokenService = inject(TokenService)
   apiUrl!: string
   assessmentsData: any = {}
   objectDisable!: boolean

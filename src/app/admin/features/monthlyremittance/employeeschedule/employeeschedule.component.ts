@@ -24,6 +24,7 @@ import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.mode
 import {PageEvent} from "@angular/material/paginator"
 import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-employeeschedule",
@@ -32,6 +33,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 })
 export class EmployeescheduleComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  public readonly tokenService = inject(TokenService)
   private readonly dialog = inject(MatDialog)
   editEmployeeForm!: FormGroup
   addEmployeeForm!: FormGroup
