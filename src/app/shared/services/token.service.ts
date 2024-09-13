@@ -26,13 +26,13 @@ export class TokenService {
     return localStorage.setItem(LSLoginProps, JSON.stringify(data))
   }
 
-  getLoginResData(): LoginResInterface {
+  get getLoginResData(): LoginResInterface {
     const userRes = localStorage.getItem(LSLoginProps) as string
     return JSON.parse(userRes)
   }
 
   getAccessToken(): string {
-    return this.getLoginResData()?.token
+    return this.getLoginResData?.token
   }
 
   removeLoginResData() {

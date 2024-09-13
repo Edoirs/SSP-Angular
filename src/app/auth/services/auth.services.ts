@@ -24,12 +24,14 @@ export class AuthService {
             companyRin: payload.userName,
             phoneNumber: payload.phoneNumber,
           } as AuthModels.AdminInitChangePasswordInterface
-          return this.adminInitSignUp(user)
+          return this.adminInitChangePassword(user)
         })
       )
   }
 
-  adminInitSignUp(payload: AuthModels.AdminInitChangePasswordInterface) {
+  adminInitChangePassword(
+    payload: AuthModels.AdminInitChangePasswordInterface
+  ) {
     return this.httpClient.post<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/InitiateChangePassword`,
       {...payload, isAdmin: true}

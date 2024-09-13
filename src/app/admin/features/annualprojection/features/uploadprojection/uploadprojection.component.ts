@@ -216,7 +216,7 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         this.subs.add = this.annualProjectionService
           .getUploads(
-            this.tokenService.getLoginResData().companyId.toString(),
+            this.tokenService.getLoginResData.companyId.toString(),
             this.pageIndex(),
             this.pageSize()
           )
@@ -253,8 +253,8 @@ export class UploadprojectionComponent implements OnInit, OnDestroy {
   markAllEmployeeInActive() {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.tokenService.getLoginResData().comanyRin,
-      businessRin: this.tokenService.getLoginResData().businessRins[0].rin,
+      companyRin: this.tokenService.getLoginResData.comanyRin,
+      businessRin: this.tokenService.getLoginResData.businessRins[0].rin,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")

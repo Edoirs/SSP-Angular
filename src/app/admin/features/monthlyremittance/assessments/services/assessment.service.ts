@@ -14,8 +14,8 @@ export class AssessmentService {
       fromObject: {
         pageNumber,
         pageSize,
-        BusinessId: this.tokenService.getLoginResData().businessRins[0].id,
-        CompanyID: this.tokenService.getLoginResData().companyId,
+        BusinessId: this.tokenService.getLoginResData.businessRins[0].id,
+        CompanyID: this.tokenService.getLoginResData.companyId,
       },
     })
     return this.httpClient.get<ServerResInterface<any>>(
