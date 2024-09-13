@@ -135,7 +135,7 @@
   
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-building"></i>
-                      <input type="text" id="userName" name="userName" placeholder="Enter Username"
+                      <input type="text" id="userName" name="userName" placeholder="Enter Email Address"
                         class="login__input border-end-0" formControlName="userName"
                         [ngClass]="{ 'is-invalid': submitted && adminSignUpForm.controls['userName'].errors }" />
                       <div *ngIf="submitted && adminSignUpForm.controls['userName'].errors"
@@ -269,7 +269,7 @@
                     </form>
                   } @else {
                     <form autocomplete="off" [formGroup]="adminSignUpOtpForm"
-                          ((submit))="onAdminOtpSubmit()">
+                          (submit)="onAdminOtpSubmit()">
                   <div>
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-lock"></i>
@@ -356,11 +356,9 @@
                   </div>
 
                   <div class="login__field input-group">
-                    <select class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
-                      color: #4c489d; box-shadow: 0px 2px 2px #5c5696; transition: 0.2s;" name="taxOffice" placeholder="Select Tax Office"
-                      formControlName="companyRin_Phone">
+                    <select class="form-select form-select-lg login-select" aria-label="Large select example" name="taxOffice" placeholder="Select Tax Office">
                       <option selected disabled>Select Tax Payer Type</option>
-                      @for (office of (getTaxOffices() | async)?.data; track $index) {
+                      @for (office of taxOffices(); track $index) {
                         <option [value]="office.zoneId">{{office?.zoneName}}</option>
                       }
                     </select>

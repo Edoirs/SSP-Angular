@@ -34,6 +34,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   showCreateUserForm = signal(true)
 
+  taxOffices = signal<AuthModels.TaxOfficeResInterface[] | null>(null)
+
   subs = new SubscriptionHandler()
 
   adminSignUpForm = new FormGroup({
@@ -63,6 +65,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     // this.showCreateUserForm = true
     this.initialiseForms()
     this.initialiseForgotForms()
+    this.getTaxOffices()
   }
 
   ngOnDestroy(): void {
@@ -122,7 +125,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   getTaxOffices() {
-    return this.authService.getTaxOffices()
+    this.subs.add = this.authService.getTaxOffices().subscribe((res) => {
+      this.taxOffices.set(res.data)
+    })
   }
 
   onAdminSubmit() {
@@ -136,8 +141,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
             if (res.status == true) {
               this.ngxService.stop()
               this.showCreateUserForm.set(false)
-              console.log(res?.data)
-              Swal.fire(SweetAlertOptions(res.message))
+              this.authUtilsService.saveAuthOtp("admin", 0)
             } else {
               Swal.fire(SweetAlertOptions(res.message))
             }
@@ -150,26 +154,29 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onAdminOtpSubmit() {
-    if (this.adminSignUpOtpForm.valid)
-      this.subs.add = this.authService
-        .adminChangePassword(
-          this.adminSignUpOtpForm
-            .value as AuthModels.AdminChangePasswordInterface
-        )
-        .subscribe({
-          next: (res) => {
-            if (res.status == true) {
-              this.ngxService.stop()
-              this.router.navigate(["/login"])
-            } else {
-              Swal.fire(SweetAlertOptions(res.message))
-            }
-          },
-          error: (err) => {
+    if (this.adminSignUpOtpForm.valid) {
+      const payload = {
+        isAdmin: true,
+        newPassword: this.adminSignUpOtpForm.value.newPassword,
+        companyRin_Phone: this.adminSignUpOtpForm.value.companyRin_Phone,
+        otp: this.adminSignUpOtpForm.value.otp,
+      } as AuthModels.AdminChangePasswordInterface
+
+      this.subs.add = this.authService.adminChangePassword(payload).subscribe({
+        next: (res) => {
+          if (res.status == true) {
             this.ngxService.stop()
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
-          },
-        })
+            this.router.navigate(["/login"])
+          } else {
+            Swal.fire(SweetAlertOptions(res.message))
+          }
+        },
+        error: (err) => {
+          this.ngxService.stop()
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
+      })
+    }
   }
 
   onSubmitCreateUser(formAllData: any) {

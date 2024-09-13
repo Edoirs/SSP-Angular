@@ -26,13 +26,12 @@
                   <div class="messages"></div>
 
                   <div class="login__field input-group">
-                    <select class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
+                    <select #userType class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
                     color: #4c489d; box-shadow: 0px 2px 2px #5c5696; transition: 0.2s;" name="taxTypeId" formControlName="taxTypeId">
                       <option value="" selected disabled>Select Tax Payer Type</option>
                       <option value="Individual">Individual</option>
                       <option value="Company">Company</option>
-                      <!-- <option value="3">Special</option>
-                      <option value="3">Government</option> -->
+                      <option value="Admin">Admin</option>
                     </select>
                     <div *ngIf="submitted &amp;&amp; loginForm.controls['taxTypeId'].errors"
                       class="form-text text-danger">
@@ -44,9 +43,19 @@
                  
                   <div class="login__field input-group">
                     <i class="login__icon fa fa-user"></i>
-                    <input type="text" id="rinPhoneNumber" name="rinPhoneNumber" placeholder="RIN / Phone Number"
-                      class="login__input border-end-0" formControlName="rinPhoneNumber" maxlength="11"
+
+                    @if (userType.value !== 'Admin') {
+                      <input type="text" id="rinPhoneNumber" name="rinPhoneNumber" placeholder="RIN / Phone Number" maxlength="11"
+                      class="login__input border-end-0" formControlName="rinPhoneNumber" 
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['rinPhoneNumber'].errors }" />
+                    }@else {
+                      <input type="email" id="rinPhoneNumber" name="rinPhoneNumber" placeholder="Email Address"
+                      class="login__input border-end-0" formControlName="rinPhoneNumber" 
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['rinPhoneNumber'].errors }" />
+                    }
+                    
+
+
                     <div class="input-group-append">
                       <div class="input-group-text border border-0 bg-transparent">
                         <span class="fas fa-envelope login__icon"></span>

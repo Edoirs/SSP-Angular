@@ -8,6 +8,12 @@ export interface AdminSignupInterface {
   phoneNumber: string
 }
 
+export interface AdminInitChangePasswordInterface {
+  isAdmin: boolean
+  companyRin: string
+  phoneNumber: string
+}
+
 export interface AdminChangePasswordInterface {
   isAdmin: boolean
   newPassword: string

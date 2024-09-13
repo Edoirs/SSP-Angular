@@ -15,6 +15,7 @@ export interface LoginResInterface {
     name: string
     rin: string
   }[]
+  isAdminUser?: boolean
 }
 
 export const LSLoginProps = "lgprops"

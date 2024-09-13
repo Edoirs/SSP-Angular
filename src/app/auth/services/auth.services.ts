@@ -3,7 +3,7 @@ import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import * as AuthModels from "../data-access/auth.models"
-import {Observable, of, tap} from "rxjs"
+import {Observable, of, switchMap, tap} from "rxjs"
 import {data} from "jquery"
 
 @Injectable({providedIn: "root"})
@@ -12,9 +12,27 @@ export class AuthService {
   private readonly httpClient = inject(HttpClient)
 
   adminSignUp(payload: AuthModels.AdminSignupInterface) {
+    return this.httpClient
+      .post<ServerResInterface<any>>(
+        `${environment.AUTHAPIURL}PhaseII/AdminSignUp`,
+        payload
+      )
+      .pipe(
+        switchMap((res) => {
+          const user = {
+            isAdmin: true,
+            companyRin: payload.userName,
+            phoneNumber: payload.phoneNumber,
+          } as AuthModels.AdminInitChangePasswordInterface
+          return this.adminInitSignUp(user)
+        })
+      )
+  }
+
+  adminInitSignUp(payload: AuthModels.AdminInitChangePasswordInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/AdminSignUp`,
-      payload
+      `${environment.AUTHAPIURL}PhaseII/InitiateChangePassword`,
+      {...payload, isAdmin: true}
     )
   }
 
