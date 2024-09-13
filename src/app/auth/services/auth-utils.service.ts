@@ -1,20 +1,24 @@
 import {Injectable} from "@angular/core"
+import {LSAuthCredsInterface} from "../data-access/auth.models"
 
-export const AuthOtp = "AuthOtp"
+export const AuthUser = "AuthUser"
 
 @Injectable({providedIn: "root"})
 export class AuthUtilsService {
-  saveAuthOtp(otp: number) {
-    localStorage.setItem(AuthOtp, otp.toString())
+  saveAuthOtp(userType: string, otp: number) {
+    localStorage.setItem(
+      AuthUser,
+      JSON.stringify({userType, otp: otp.toString()})
+    )
   }
 
-  getAuthOtp(): number {
-    const otp = localStorage.getItem(AuthOtp) as string
-    return parseInt(otp)
+  getLSAuthUser(): LSAuthCredsInterface | null {
+    const user = localStorage.getItem(AuthUser) as string
+    return JSON.parse(user)
   }
 
-  deleteAuthOtp() {
-    if (this.getAuthOtp()) localStorage.removeItem(AuthOtp)
+  deleteAuthUser() {
+    if (this.getLSAuthUser()?.otp) localStorage.removeItem(AuthUser)
     return
   }
 }

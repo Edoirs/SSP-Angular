@@ -40,13 +40,13 @@
                       <i class="login__icon fa fa-hashtag"></i>
                       <input type="text" id="RIN" name="RIN" placeholder="Enter RIN" class="login__input border-end-0"
                         formControlName="RIN" (keyup)="getCompanyDetails($event)"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; createUserForm.controls['RIN'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['RIN'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent">
                           <span class="fas fa-envelope login__icon"></span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; createUserForm.controls['RIN'].errors"
+                      <div *ngIf="submitted && createUserForm.controls['RIN'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['RIN'].errors['required']">
                           RIN is required
@@ -58,13 +58,13 @@
                       <i class="login__icon fa fa-building"></i>
                       <input type="text" id="companyName" name="companyName" placeholder="Enter Company Name"
                         class="login__input border-end-0" formControlName="companyName"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; createUserForm.controls['companyName'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['companyName'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent">
                           <span class="fas fa-envelope login__icon"></span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; createUserForm.controls['companyName'].errors"
+                      <div *ngIf="submitted && createUserForm.controls['companyName'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['companyName'].errors['required']">
                           Company Name is required
@@ -76,13 +76,13 @@
                       <i class="login__icon fa fa-location-arrow"></i>
                       <input type="text" id="address" name="address" placeholder="Enter Address"
                         class="login__input border-end-0" formControlName="address"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; createUserForm.controls['address'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['address'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent">
                           <span class="fas fa-envelope login__icon"></span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; createUserForm.controls['address'].errors"
+                      <div *ngIf="submitted && createUserForm.controls['address'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['address'].errors['required']">
                           Address is required
@@ -94,13 +94,13 @@
                       <i class="login__icon fa fa-volume-control-phone"></i>
                       <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number"
                         class="login__input border-end-0" formControlName="phoneNumber" minlength="11" maxlength="11"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; createUserForm.controls['phoneNumber'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['phoneNumber'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent">
                           <span class="fas fa-envelope login__icon"></span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; createUserForm.controls['phoneNumber'].errors"
+                      <div *ngIf="submitted && createUserForm.controls['phoneNumber'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['phoneNumber'].errors['required']">
                           Phone Number is required
@@ -171,14 +171,111 @@
                     </form>
                   }
                 }@else {
-                  <form autocomplete="off" [formGroup]="enterOtpForm"
-                  (ngSubmit)="onSubmitEnterOtp(enterOtpForm.value)">
+                  @if (authUtilsService.getLSAuthUser()?.userType !== 'admin') {
+                    <form autocomplete="off" [formGroup]="enterOtpForm"
+                    (ngSubmit)="onSubmitEnterOtp(enterOtpForm.value)">
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType ? 'text' : 'password'" class="login__input border-end-0"
+                          formControlName="newPassword" name="password" placeholder="New Password"
+                          [ngClass]="{ 'is-invalid': submitted && enterOtpForm.controls['newPassword'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                            'fa-eye': !fieldTextType,
+                                            'fa-eye-slash': fieldTextType
+                                          }" (click)="toggleFieldTextType()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted && enterOtpForm.controls['newPassword'].errors"
+                          class="form-text text-danger">
+                          <div *ngIf="enterOtpForm.controls['newPassword'].errors['required']">
+                            New Password is required
+                          </div>
+                          <div *ngIf="enterOtpForm.controls['newPassword'].errors['minlength']">
+                            New Password must be min 8 characters.
+                          </div>
+                          <div *ngIf="enterOtpForm.controls['newPassword'].errors['maxlength']">
+                            New Password must not exceed 40 character.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType1 ? 'text' : 'password'" class="login__input border-end-0"
+                          placeholder="Confirm Password" formControlName="confirmPassword" name="password"
+                          [ngClass]="{ 'is-invalid': submitted && enterOtpForm.controls['confirmPassword'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                      'fa-eye': !fieldTextType1,
+                                      'fa-eye-slash': fieldTextType1
+                                    }" (click)="toggleFieldTextType1 ()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted && enterOtpForm.controls['confirmPassword'].errors"
+                          class="form-text text-danger">
+                          <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['minlength']">
+                            Confirm Password must be min 8 characters.
+                          </div>
+                          <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['maxlength']">
+                            Confirm Password must not exceed 40 character.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div>
+                      <div class="login__field input-group">
+                        <i class="login__icon fa fa-lock"></i>
+                        <input [type]="fieldTextType2 ? 'text' : 'password'" id="psw" class="login__input border-end-0"
+                          formControlName="enterOtp" name="enterOtp" placeholder="Enter 6-digit code to login"
+                          maxlength="6"
+                          [ngClass]="{ 'is-invalid': submitted && enterOtpForm.controls['enterOtp'].errors }" />
+                        <div class="input-group-append">
+                          <div class="input-group-text border border-0 bg-transparent ">
+                            <span class="fa login__icon" [ngClass]="{
+                                          'fa-eye': !fieldTextType2,
+                                          'fa-eye-slash': fieldTextType2
+                                        }" (click)="toggleFieldTextType2()">
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="submitted && enterOtpForm.controls['enterOtp'].errors"
+                          class="text-danger validation-error">
+                          <div *ngIf="enterOtpForm.controls['enterOtp'].errors['required']">
+                            OTP is required
+                          </div>
+                          <div *ngIf="enterOtpForm.controls['enterOtp'].errors['pattern']">
+                            Special characters or space are not allowed
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="login__field">
+                      <i class="login__icon fa fa-lock"></i>
+                      <input type="password" class="login__input" placeholder="Password">
+                    </div> -->
+                    <button class="button login__submit" type="submit" id="mycaptcha">
+                      Create Account
+                      <i class="button__icon fa fa-chevron-right"></i>
+                    </button>
+                    </form>
+                  } @else {
+                    <form autocomplete="off" [formGroup]="adminSignUpOtpForm"
+                          ((submit))="onAdminOtpSubmit()">
                   <div>
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-lock"></i>
                       <input [type]="fieldTextType ? 'text' : 'password'" class="login__input border-end-0"
                         formControlName="newPassword" name="password" placeholder="New Password"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; enterOtpForm.controls['newPassword'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && adminSignUpOtpForm.controls['newPassword'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent ">
                           <span class="fa login__icon" [ngClass]="{
@@ -188,15 +285,15 @@
                           </span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; enterOtpForm.controls['newPassword'].errors"
+                      <div *ngIf="submitted && adminSignUpOtpForm.controls['newPassword'].errors"
                         class="form-text text-danger">
-                        <div *ngIf="enterOtpForm.controls['newPassword'].errors['required']">
+                        <div *ngIf="adminSignUpOtpForm.controls['newPassword'].errors['required']">
                           New Password is required
                         </div>
-                        <div *ngIf="enterOtpForm.controls['newPassword'].errors['minlength']">
+                        <div *ngIf="adminSignUpOtpForm.controls['newPassword'].errors['minlength']">
                           New Password must be min 8 characters.
                         </div>
-                        <div *ngIf="enterOtpForm.controls['newPassword'].errors['maxlength']">
+                        <div *ngIf="adminSignUpOtpForm.controls['newPassword'].errors['maxlength']">
                           New Password must not exceed 40 character.
                         </div>
                       </div>
@@ -208,7 +305,7 @@
                       <i class="login__icon fa fa-lock"></i>
                       <input [type]="fieldTextType1 ? 'text' : 'password'" class="login__input border-end-0"
                         placeholder="Confirm Password" formControlName="confirmPassword" name="password"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; enterOtpForm.controls['confirmPassword'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && adminSignUpOtpForm.controls['confirmPassword'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent ">
                           <span class="fa login__icon" [ngClass]="{
@@ -218,12 +315,12 @@
                           </span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; enterOtpForm.controls['confirmPassword'].errors"
+                      <div *ngIf="submitted && adminSignUpOtpForm.controls['confirmPassword'].errors"
                         class="form-text text-danger">
-                        <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['minlength']">
+                        <div *ngIf="adminSignUpOtpForm.controls['confirmPassword'].errors['minlength']">
                           Confirm Password must be min 8 characters.
                         </div>
-                        <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['maxlength']">
+                        <div *ngIf="adminSignUpOtpForm.controls['confirmPassword'].errors['maxlength']">
                           Confirm Password must not exceed 40 character.
                         </div>
                       </div>
@@ -234,9 +331,9 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-lock"></i>
                       <input [type]="fieldTextType2 ? 'text' : 'password'" id="psw" class="login__input border-end-0"
-                        formControlName="enterOtp" name="enterOtp" placeholder="Enter 6-digit code to login"
+                        formControlName="otp" name="otp" placeholder="Enter 6-digit code to login"
                         maxlength="6"
-                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; enterOtpForm.controls['enterOtp'].errors }" />
+                        [ngClass]="{ 'is-invalid': submitted && adminSignUpOtpForm.controls['otp'].errors }" />
                       <div class="input-group-append">
                         <div class="input-group-text border border-0 bg-transparent ">
                           <span class="fa login__icon" [ngClass]="{
@@ -246,26 +343,46 @@
                           </span>
                         </div>
                       </div>
-                      <div *ngIf="submitted &amp;&amp; enterOtpForm.controls['enterOtp'].errors"
+                      <div *ngIf="submitted && adminSignUpOtpForm.controls['otp'].errors"
                         class="text-danger validation-error">
-                        <div *ngIf="enterOtpForm.controls['enterOtp'].errors['required']">
+                        <div *ngIf="adminSignUpOtpForm.controls['otp'].errors['required']">
                           OTP is required
                         </div>
-                        <div *ngIf="enterOtpForm.controls['enterOtp'].errors['pattern']">
+                        <div *ngIf="adminSignUpOtpForm.controls['otp'].errors['pattern']">
                           Special characters or space are not allowed
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="login__field">
-                    <i class="login__icon fa fa-lock"></i>
-                    <input type="password" class="login__input" placeholder="Password">
-                  </div> -->
+
+                  <div class="login__field input-group">
+                    <select class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
+                      color: #4c489d; box-shadow: 0px 2px 2px #5c5696; transition: 0.2s;" name="taxOffice" placeholder="Select Tax Office"
+                      formControlName="companyRin_Phone">
+                      <option selected disabled>Select Tax Payer Type</option>
+                      @for (office of (getTaxOffices() | async)?.data; track $index) {
+                        <option [value]="office.zoneId">{{office?.zoneName}}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <div *ngIf="submitted && adminSignUpOtpForm.controls['companyRin_Phone'].errors"
+                        class="text-danger validation-error">
+                        <div *ngIf="adminSignUpOtpForm.controls['companyRin_Phone'].errors['required']">
+                          Tax office is required
+                        </div>
+                  </div>
+                  
+
+
+
                   <button class="button login__submit" type="submit" id="mycaptcha">
                     Create Account
                     <i class="button__icon fa fa-chevron-right"></i>
                   </button>
                   </form>
+                  }
+                  
                 }
               </div>
 

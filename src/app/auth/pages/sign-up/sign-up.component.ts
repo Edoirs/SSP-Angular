@@ -8,9 +8,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {AuthService} from "../../services/auth.services"
-import {AdminSignupInterface} from "../../data-access/auth.models"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {AuthUtilsService} from "../../services/auth-utils.service"
+import * as AuthModels from "../../data-access/auth.models"
 
 @Component({
   selector: "app-sign-up",
@@ -19,7 +19,7 @@ import {AuthUtilsService} from "../../services/auth-utils.service"
 })
 export class SignUpComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService)
-  private readonly authUtilsService = inject(AuthUtilsService)
+  public readonly authUtilsService = inject(AuthUtilsService)
   createUserForm!: FormGroup
   enterOtpForm!: FormGroup
   submitted = false
@@ -44,6 +44,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   adminSignUpOtpForm = new FormGroup({
     isAdmin: new FormControl(true, {validators: [Validators.required]}),
     newPassword: new FormControl("", {validators: [Validators.required]}),
+    confirmPassword: new FormControl("", {validators: [Validators.required]}),
     companyRin_Phone: new FormControl("", {validators: [Validators.required]}),
     otp: new FormControl<number | null>(null, {
       validators: [Validators.required],
@@ -66,7 +67,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.clear()
-    this.authUtilsService.deleteAuthOtp()
+    this.authUtilsService.deleteAuthUser()
   }
 
   initialiseForms() {
@@ -120,25 +121,55 @@ export class SignUpComponent implements OnInit, OnDestroy {
     return this.createUserForm.get("taxTypeId")
   }
 
+  getTaxOffices() {
+    return this.authService.getTaxOffices()
+  }
+
   onAdminSubmit() {
-    this.subs.add = this.authService
-      .adminSignUp(this.adminSignUpForm.value as AdminSignupInterface)
-      .subscribe({
-        next: (res) => {
-          if (res.status == true) {
+    if (this.adminSignUpForm.valid)
+      this.subs.add = this.authService
+        .adminSignUp(
+          this.adminSignUpForm.value as AuthModels.AdminSignupInterface
+        )
+        .subscribe({
+          next: (res) => {
+            if (res.status == true) {
+              this.ngxService.stop()
+              this.showCreateUserForm.set(false)
+              console.log(res?.data)
+              Swal.fire(SweetAlertOptions(res.message))
+            } else {
+              Swal.fire(SweetAlertOptions(res.message))
+            }
+          },
+          error: (err) => {
             this.ngxService.stop()
-            this.showCreateUserForm.set(false)
-            console.log(res?.data)
-            Swal.fire(SweetAlertOptions(res.message))
-          } else {
-            Swal.fire(SweetAlertOptions(res.message))
-          }
-        },
-        error: (err) => {
-          this.ngxService.stop()
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
-        },
-      })
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          },
+        })
+  }
+
+  onAdminOtpSubmit() {
+    if (this.adminSignUpOtpForm.valid)
+      this.subs.add = this.authService
+        .adminChangePassword(
+          this.adminSignUpOtpForm
+            .value as AuthModels.AdminChangePasswordInterface
+        )
+        .subscribe({
+          next: (res) => {
+            if (res.status == true) {
+              this.ngxService.stop()
+              this.router.navigate(["/login"])
+            } else {
+              Swal.fire(SweetAlertOptions(res.message))
+            }
+          },
+          error: (err) => {
+            this.ngxService.stop()
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          },
+        })
   }
 
   onSubmitCreateUser(formAllData: any) {
