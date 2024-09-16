@@ -24,7 +24,9 @@ export class AuthService {
             companyRin: payload.userName,
             phoneNumber: payload.phoneNumber,
           } as AuthModels.AdminInitChangePasswordInterface
-          return this.adminInitChangePassword(user)
+
+          if (res.status) return this.adminInitChangePassword(user)
+          return of(res)
         })
       )
   }
