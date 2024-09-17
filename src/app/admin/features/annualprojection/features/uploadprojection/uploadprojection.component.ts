@@ -83,7 +83,6 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sess.checkLogin()
     this.loadAssessmentYears()
     this.initialiseForms()
     this.companyId = localStorage.getItem("companyId")
