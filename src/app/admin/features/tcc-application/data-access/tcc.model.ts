@@ -14,3 +14,10 @@ export interface TccAppDetailsInterface {
   tccStatus: number
   tccRequest: string
 }
+
+export interface TccAppDetailsInterface {
+  tccCount: number
+  businessName: string
+  businessRIN: string
+  businessAddress: string
+}
