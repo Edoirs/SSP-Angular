@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {MatDialog} from "@angular/material/dialog"
 import {ChangePasswordModalComponent} from "./ui/change-password/change-password-modal.component"
 import {TokenService} from "@shared/services/token.service"
@@ -41,8 +41,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   openChangePassword(): void {
     const payload = {
-      isAdmin: this.tokenService.getLoginResData?.isAdminUser ? true : false,
-      companyRin: this.tokenService.getLoginResData?.isAdminUser
+      isAdmin: !!this.tokenService.getLoginResData?.isAdminUser,
+      companyRin: !!this.tokenService.getLoginResData?.isAdminUser
         ? this.tokenService.getLoginResData?.email
         : this.tokenService.getLoginResData?.comanyRin,
       phoneNumber: this.tokenService.getLoginResData?.phoneNumber,
@@ -57,8 +57,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
             })
           return Swal.fire(SweetAlertOptions(res?.message))
         },
-        error: (err) =>
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message)),
+        error: (err) => {
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
       })
   }
 }

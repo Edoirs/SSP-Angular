@@ -1,6 +1,8 @@
 import {Observable} from "rxjs/internal/Observable"
 import {fromEvent} from "rxjs/internal/observable/fromEvent"
 import {debounceTime, distinctUntilChanged, map} from "rxjs/operators"
+import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms"
+
 
 export const ThrotlleQuery = (
   event: HTMLInputElement,
@@ -21,4 +23,12 @@ export const ValidYears = (): number[] => {
   }
 
   return years
+}
+
+export const confirmPasswordValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  return control.value.password === control.value.password_confirmation
+    ? null
+    : {PasswordNoMatch: true}
 }

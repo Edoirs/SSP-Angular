@@ -36,3 +36,9 @@ mat-paginator button:disabled,
 mat-paginator button:hover {
   background-color: transparent;
 }
+
+
+.form-error{
+  font-size: 14px;
+  color: red;
+}

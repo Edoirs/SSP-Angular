@@ -36,7 +36,7 @@ export class AuthService {
   ) {
     return this.httpClient.post<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/InitiateChangePassword`,
-      {...payload, isAdmin: true}
+      payload
     )
   }
 
