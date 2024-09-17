@@ -24,6 +24,7 @@ export interface EmployeeDetailResInterface {
 export interface MarkEmployeeInterface {
   businessRin: string
   companyRin: string
+  activeDet: 0 | 1
   employeeRin?: string
 }
 

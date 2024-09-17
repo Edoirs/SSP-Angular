@@ -28,6 +28,8 @@ import {
   BusinessesResInterface,
 } from "../../data-access/employee-schedule.model"
 import {MatSnackBar} from "@angular/material/snack-bar"
+import Swal from "sweetalert2"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-add-employee",
@@ -52,7 +54,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   grossIncomeIncorrect!: boolean
   validateCacTin!: boolean
 
-  stateLocalGovts = signal<any>(null)
+  stateLocalGovts = signal<{lganame: string; lgaid: string}[] | null>(null)
   zipCodes = signal<any>(null)
 
   subs = new SubscriptionHandler()
@@ -196,7 +198,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   })
 
   ngOnInit(): void {
-    console.log(this.injectedData)
+    this.getStateLocalGovts()
   }
 
   ngOnDestroy(): void {
@@ -224,17 +226,27 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   getStateLocalGovts() {
     this.subs.add = this.employeeScheduleService
       .getStateLocalGovts()
-      .subscribe((data) => {
-        this.stateLocalGovts.set(data.data)
+      .subscribe({
+        next: (res) => {
+          if (res.status) return this.stateLocalGovts.set(res.data)
+          Swal.fire(SweetAlertOptions(res?.message))
+        },
+        error: (err) => {
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
       })
   }
 
   getZipcodes() {
-    this.subs.add = this.employeeScheduleService
-      .getZipcodes()
-      .subscribe((data) => {
-        this.zipCodes.set(data.data)
-      })
+    this.subs.add = this.employeeScheduleService.getZipcodes().subscribe({
+      next: (res) => {
+        if (res.status) return this.zipCodes.set(res.data)
+        Swal.fire(SweetAlertOptions(res?.message))
+      },
+      error: (err) => {
+        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+      },
+    })
   }
 
   onSubmit() {
@@ -243,16 +255,16 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
     } as Partial<AddEmployeeInterface>
-    console.log(this.addEmployeeForm.value)
     if (this.addEmployeeForm.valid)
       this.subs.add = this.employeeScheduleService
         .addEmployee(payload as AddEmployeeInterface)
         .subscribe({
           next: (res) => {
-            window.location.reload()
+            if (res.status) return window.location.reload()
+            Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
-            this.snackBar.open(err.message, "close", {duration: 2000})
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
   }

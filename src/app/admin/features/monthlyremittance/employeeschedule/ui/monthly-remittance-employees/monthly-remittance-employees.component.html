@@ -108,7 +108,7 @@
                 }"
                 (change)="
                   switchStatus($event, employee.employeeRin)
-                "></ng-toggle>
+                " [disabled]="employee.status.toLowerCase() !== 'active'"></ng-toggle>
             </td>
           </tr>
           } @empty {

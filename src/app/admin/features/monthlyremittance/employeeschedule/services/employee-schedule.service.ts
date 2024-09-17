@@ -44,9 +44,9 @@ export class EmployeeScheduleService {
   }
 
   getStateLocalGovts() {
-    return this.httpClient.get<any>(
-      `${environment.AUTHAPIURL}LocalGovernmentArea/getall`
-    )
+    return this.httpClient.get<
+      ServerResInterface<{lganame: string; lgaid: string}[]>
+    >(`${environment.AUTHAPIURL}Utility/get-lga`)
   }
 
   getZipcodes() {
@@ -72,13 +72,6 @@ export class EmployeeScheduleService {
   markEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
     return this.httpClient.put<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/Mark-Employee-Inactive`,
-      payload
-    )
-  }
-
-  markAllEmployeeInactive(payload: EmployeeModel.MarkEmployeeInterface) {
-    return this.httpClient.put<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/Mark-All-Employee-Inactive`,
       payload
     )
   }

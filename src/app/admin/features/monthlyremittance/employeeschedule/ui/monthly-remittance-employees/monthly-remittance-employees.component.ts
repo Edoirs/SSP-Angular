@@ -138,12 +138,13 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
+      activeDet: 0,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
     ) {
       this.subs.add = this.employeeScheduleService
-        .markAllEmployeeInactive(payload)
+        .markEmployeeInactive(payload)
         .subscribe({
           next: (res) => {
             this.btnLoading.set(false)
@@ -161,10 +162,12 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   switchStatus(event: any, employeeRin?: string) {
     const status = event.target.checked
+    if (status) return
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
       ...(employeeRin && {employeeRin}),
+      activeDet: status ? 1 : 0,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")
@@ -173,7 +176,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         .markEmployeeInactive(payload)
         .subscribe({
           next: (res) => {
-            Swal.fire(SweetAlertOptions(res?.message))
+            if (res.status) Swal.fire(SweetAlertOptions(res?.message, true))
           },
           error: (err) => {
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
@@ -183,6 +186,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   downloadPdf() {
     this.btnLoading.set(true)
+    console.log(this.injectedData)
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,

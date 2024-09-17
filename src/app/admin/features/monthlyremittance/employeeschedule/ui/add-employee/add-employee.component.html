@@ -8,7 +8,7 @@
       <div class="container">
         <form
           [formGroup]="addEmployeeForm"
-          (ngSubmit)="onSubmit()"
+          (Submit)="onSubmit()"
         >
           <!-- START NEW FORM -->
           <div class="form-row">
@@ -633,9 +633,9 @@
                 <option value="">Select Local Government</option>
                 <option
                   *ngFor="let stateLocalGovt of stateLocalGovts()"
-                  [value]="stateLocalGovt.lga_code"
+                  [value]="stateLocalGovt.lgaid"
                 >
-                  {{ stateLocalGovt.name }}
+                  {{ stateLocalGovt.lganame }}
                 </option>
               </select>
               <div
@@ -820,7 +820,7 @@
   
           <button
             type="submit"
-            class="btn btn button-login"
+            class=""
           >
             <i class="fas fa-plus-square"></i> Save Employee
           </button>

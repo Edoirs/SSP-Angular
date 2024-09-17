@@ -91,7 +91,8 @@ export class ChangePasswordModalComponent implements OnDestroy {
       } as AdminChangePasswordInterface
       this.subs.add = this.authService.adminChangePassword(payload).subscribe({
         next: (res) => {
-          if (res.status) return Swal.fire(SweetAlertOptions(res?.message))
+          if (res.status)
+            return Swal.fire(SweetAlertOptions(res?.message, true))
           this.dialogRef.close()
           return Swal.fire(SweetAlertOptions(res?.message))
         },
