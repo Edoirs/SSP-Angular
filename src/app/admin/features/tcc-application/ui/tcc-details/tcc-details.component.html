@@ -1,0 +1,111 @@
+<div class="monthly-remittance">
+  <div class="monthly-remittance-header">
+    <h4 class="monthly-remittance-header-title">
+      TCC Application
+    </h4>
+
+    <div class="table-header">
+
+      <div class="table-header-cont-1">
+        <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading()">
+          Process TCC Request
+        </button>
+      </div>
+
+      <div class="table-header-cont-2">
+        <input
+          class="form-control"
+          #searchTable
+          type="search"
+          placeholder="search business name"
+          [value]="queryString()"
+          (keyup)="queryTable(searchTable)"
+          (search)="queryTable(searchTable)" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="monthly-remittance-body">
+    <div class="container">
+      <table class="table table-bordered table-condensed" width="100%">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Employee RIN</th>
+            <th>Employee Name</th>
+            <th>TCC Status</th>
+            <th>Request TCC</th>
+            <th>View</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(dataLoading()){
+          <tr>
+            <td colspan="100%"><span>Loading...</span></td>
+          </tr>
+          } @else if (dataMessage()) {
+          <tr>
+            <td colspan="100%">
+              <span>{{ dataMessage() }}</span>
+            </td>
+          </tr>
+          } @else { @for (employee of employeeDetails(); track $index) {
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ employee.employeeRin }}</td>
+            <td>{{ employee.employeeName | titlecase }}</td>
+
+            <td>{{ employee.tccStatus }}</td>
+            <td>{{ employee.tccRequest }}</td>
+            
+            <td title="View">
+              <button
+                class="btn btn-sm btn-outline-success"
+                (click)="openTccView(employee)">
+                <i class="nav-icon fas fa-eye"></i>
+              </button>
+            </td>
+
+            <td>
+              <ng-toggle
+                [value]="false"
+                [color]="{
+                  unchecked: '#939da2',
+                  checked: '#00773B'
+                }"
+                (change)="
+                  switchStatus($event, employee.employeeRin)
+                "></ng-toggle>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="100%">No data available.</td>
+          </tr>
+          } }
+        </tbody>
+      </table>
+
+      <section>
+        <mat-paginator
+          [pageSize]="15"
+          [pageIndex]="1"
+          (page)="handlePageEvent($event)"
+          showFirstLastButtons
+          aria-label="Select page">
+        </mat-paginator>
+      </section>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark button-login float-right"
+      mat-dialog-close>
+      Ok
+    </button>
+  </div>
+</div>

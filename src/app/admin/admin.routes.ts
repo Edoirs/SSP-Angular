@@ -13,4 +13,11 @@ export default [
         (c) => c.BusinessesComponent
       ),
   },
+  {
+    path: "tcc-application",
+    loadComponent: () =>
+      import("./features/tcc-application/tcc-application.component").then(
+        (c) => c.TccApplicationComponent
+      ),
+  },
 ] as Routes

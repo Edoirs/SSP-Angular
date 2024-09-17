@@ -1,0 +1,106 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header"></div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+      <!-- <flash-messages></flash-messages> -->
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">List of Businesses</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="over-auto">
+            <section class="table-header">
+              <div class="table-header-cont-1"></div>
+              <div class="table-header-cont-2">
+                <div class="table-header-btns">
+                  <!-- <button>CSV</button> -->
+                  <button>Excel</button>
+                </div>
+              </div>
+              <div class="table-header-cont-3">
+                <input
+                  class="form-control"
+                  #searchTable
+                  type="search"
+                  placeholder="search business name"
+                  [value]="queryString()"
+                  (keyup)="queryTable(searchTable)"
+                  (search)="queryTable(searchTable)" />
+              </div>
+            </section>
+
+            <table
+              class="table table-bordered table-condensed"
+              datatable
+              width="100%">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <th>Company RIN</th>
+                    <th>Company Name</th>
+                  }
+                  <th>Business RIN</th>
+                  <th>Business Name</th>
+                  <th>Business Address</th>
+                  <th>No. of Employees</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if(dataLoading()){
+                <tr>
+                  <td colspan="100%"><span>Loading...</span></td>
+                </tr>
+                } @else if (dataMessage()) {
+                <tr>
+                  <td colspan="100%">
+                    <span>{{ dataMessage() }}</span>
+                  </td>
+                </tr>
+                } @else { @for (business of businesses(); track
+                $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <th>Company RIN</th>
+                    <th>Company Name</th>
+                  }
+                  <td>{{ business?.businessRIN }}</td>
+                  <td>{{ business?.businessName }}</td>
+                  <td>{{ business?.businessAddress }}</td>
+                  <td>{{ business?.noOfEmployees }}</td>
+                  <td title="View"><button class="btn btn-sm btn-outline-success" (click)="openTccDetails(business)"><i
+                      class="nav-icon fas fa-eye"></i>
+                  </button></td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td colspan="100%"><span>No business found.</span></td>
+                </tr>
+                } }
+              </tbody>
+            </table>
+
+            <section>
+              <mat-paginator
+                [length]="totalLength()"
+                [pageSize]="pageSize()"
+                [pageIndex]="pageIndex()"
+                (page)="handlePageEvent($event)"
+                showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
