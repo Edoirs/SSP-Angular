@@ -12,7 +12,6 @@ import {
   MatDialog,
   MatDialogClose,
 } from "@angular/material/dialog"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
@@ -22,33 +21,31 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccService} from "@admin-pages/tcc-application/services/tcc-application.services"
 import {ViewTccApplicationComponent} from "../view-tcc/view-tcc.component"
-import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import {
-  PendingTccResInterface,
-  ProcessTccInterface,
+  SubmittedTccAppResInterface,
   TccAppDetailsInterface,
 } from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 
 @Component({
-  selector: "app-tcc-details",
-  templateUrl: "./tcc-details.component.html",
-  styleUrl: "./tcc-details.component.css",
+  selector: "app-submitted-tcc-view",
+  templateUrl: "./submitted-tcc-view.component.html",
+  styleUrl: "./submitted-tcc-view.component.css",
   standalone: true,
   imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
   providers: [TccService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
+export class TccSubmittedApplicationViewComponent implements OnInit, OnDestroy {
   private readonly tccService = inject(TccService)
   private readonly dialog = inject(MatDialog)
   private readonly injectedData =
-    inject<UploadProjectionInterface>(MAT_DIALOG_DATA)
+    inject<SubmittedTccAppResInterface>(MAT_DIALOG_DATA)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
-  employeeDetails = signal<PendingTccResInterface[] | null>(null)
+  employeeDetails = signal<TccAppDetailsInterface[] | null>(null)
   dataLoading = signal(false)
   btnLoading = signal(false)
   dataMessage = signal("")
@@ -56,8 +53,6 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
   queryString = signal("")
 
   totalLength = signal(0)
-
-  employeeIds: number[] = []
 
   subs = new SubscriptionHandler()
 
@@ -71,7 +66,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.tccService
-      .getPendingTcc(pageNumber, pageSize, this.injectedData.businessID)
+      .getSubmittedTccView(pageNumber, pageSize, this.injectedData.businessRIN)
       .subscribe({
         next: (res) => {
           this.dataLoading.set(false)
@@ -96,42 +91,11 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     this.getTccDetails(pageIndex, event.pageSize)
   }
 
-  openTccView(data: PendingTccResInterface) {
-    this.dialog.open(ViewTccApplicationComponent, MaterialDialogConfig(data))
-  }
-
-  processTCC(empId?: string) {
-    let payload = {
-      employeeIds: [],
-      busId: this.injectedData.businessID,
-    } as ProcessTccInterface
-
-    if (empId) {
-      payload.employeeIds = [parseInt(empId)]
-    } else {
-      payload = {
-        ...payload,
-        employeeIds: this.employeeIds,
-      }
-    }
-
-    this.dataLoading.set(true)
-
-    this.subs.add = this.tccService.processTcc(payload).subscribe({
-      next: (res) => {
-        this.dataLoading.set(false)
-        if (res.status) {
-          Swal.fire(SweetAlertOptions(res?.message, true))
-        } else {
-          this.dataLoading.set(false)
-          Swal.fire(SweetAlertOptions(res?.message))
-        }
-      },
-      error: (err) => {
-        this.dataLoading.set(false)
-        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
-      },
-    })
+  openTccView() {
+    this.dialog.open(
+      ViewTccApplicationComponent,
+      MaterialDialogConfig(this.employeeDetails())
+    )
   }
 
   queryTable(domInput: HTMLInputElement) {
@@ -146,13 +110,5 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
         queryParamsHandling: "replace",
       })
     })
-  }
-
-  addEmployeeId(id: string) {
-    if (this.employeeIds.length) {
-      const exists = this.employeeIds.find((n) => n === +id)
-      if (!exists) return this.employeeIds.push(parseInt(id))
-    }
-    return this.employeeIds.push(parseInt(id))
   }
 }

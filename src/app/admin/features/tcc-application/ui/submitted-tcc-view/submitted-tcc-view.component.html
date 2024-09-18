@@ -1,12 +1,9 @@
 <div class="monthly-remittance">
   <div class="monthly-remittance-header">
-    <h4 class="monthly-remittance-header-title">
-      TCC Application
-    </h4>
+    <h4 class="monthly-remittance-header-title">TCC Application</h4>
 
     <div class="table-header">
-
-      <div class="table-header-cont-1">
+      <!-- <div class="table-header-cont-1">
         <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading()">
           Process TCC Request
         </button>
@@ -21,8 +18,7 @@
           [value]="queryString()"
           (keyup)="queryTable(searchTable)"
           (search)="queryTable(searchTable)" />
-      </div>
-
+      </div> -->
     </div>
   </div>
 
@@ -31,13 +27,11 @@
       <table class="table table-bordered table-condensed" width="100%">
         <thead>
           <tr>
-            <th>S/N</th>
+            <th>SN</th>
             <th>Employee RIN</th>
             <th>Employee Name</th>
-            <th>Status</th>
-            <th>Request TCC</th>
-            <th>Select</th>
-            <th>View</th>
+            <th>TCC Status</th>
+            <th>TCC Request</th>
           </tr>
         </thead>
         <tbody>
@@ -54,25 +48,15 @@
           } @else { @for (employee of employeeDetails(); track $index) {
           <tr>
             <td>{{ $index + 1 }}</td>
-            <td>{{ employee?.employeeRIN }}</td>
+            <td>{{ employee?.employeeRin }}</td>
             <td>{{ employee?.employeeName | titlecase }}</td>
+            <td>{{ employee?.tccStatus }}</td>
+            <td>{{ employee?.tccRequest }}</td>
 
-            <td>
-              <span>{{ employee.tccStatus }}</span>
-            </td>
-
-            <td>
-              <button (click)="processTCC(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction' || dataLoading()">request</button>
-            </td>
-
-            <td>
-              <input type="checkbox" name="status" (click)="addEmployeeId(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction'">
-            </td>
-            
             <td title="View">
               <button
                 class="btn btn-sm btn-outline-success"
-                (click)="openTccView(employee)">
+                (click)="openTccView()">
                 <i class="nav-icon fas fa-eye"></i>
               </button>
             </td>

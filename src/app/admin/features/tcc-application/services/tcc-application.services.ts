@@ -60,9 +60,51 @@ export class TccService {
     })
   }
 
+  getSubmittedTcc(
+    pageNumber = 1,
+    pageSize = 15,
+    busId: string,
+    search?: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+        busId,
+        ...(search && {businessName: search}),
+      },
+    })
+    return this.httpClient.get<
+      ServerResInterface<TccModels.SubmittedTccAppResInterface>
+    >(`${environment.AUTHAPIURL}PhaseII/GetSubmitedTccApplication`, {
+      params,
+    })
+  }
+
+  getSubmittedTccView(
+    pageNumber = 1,
+    pageSize = 15,
+    busId: string,
+    search?: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+        busId,
+        ...(search && {businessName: search}),
+      },
+    })
+    return this.httpClient.get<
+      ServerResInterface<TccModels.TccAppDetailsInterface[]>
+    >(`${environment.AUTHAPIURL}PhaseII/GetSubmitedTccApplicationView`, {
+      params,
+    })
+  }
+
   processTcc(payload: any) {
     return this.httpClient.post<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/GetTccApplicationToBeSubmitted`,
+      `${environment.AUTHAPIURL}PhaseII/SendTcc`,
       payload
     )
   }

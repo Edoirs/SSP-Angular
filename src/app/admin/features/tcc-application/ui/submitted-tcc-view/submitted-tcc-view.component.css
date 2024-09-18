@@ -1,0 +1,27 @@
+.monthly-remittance{
+    padding: 20px;
+
+    table{
+        table-layout: auto;
+    }
+}
+
+.monthly-remittance-header, .table-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.monthly-remittance-body{
+    margin-top: 20px;
+}
+
+input[type='checkbox']{
+    width: 24px;
+}
+
+input[type='checkbox']:checked{
+    color: green;
+    fill: green;
+}

@@ -6,11 +6,11 @@
 
     <div class="table-header">
 
-      <div class="table-header-cont-1">
+      <!-- <div class="table-header-cont-1">
         <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading()">
           Process TCC Request
         </button>
-      </div>
+      </div> -->
 
       <div class="table-header-cont-2">
         <input
@@ -21,7 +21,7 @@
           [value]="queryString()"
           (keyup)="queryTable(searchTable)"
           (search)="queryTable(searchTable)" />
-      </div>
+      </div> 
 
     </div>
   </div>
@@ -31,12 +31,10 @@
       <table class="table table-bordered table-condensed" width="100%">
         <thead>
           <tr>
-            <th>S/N</th>
-            <th>Employee RIN</th>
-            <th>Employee Name</th>
-            <th>Status</th>
-            <th>Request TCC</th>
-            <th>Select</th>
+            <th>Business RIN</th>
+            <th>Business Name</th>
+            <th>Business Address</th>
+            <th>TCC Count</th>
             <th>View</th>
           </tr>
         </thead>
@@ -51,37 +49,22 @@
               <span>{{ dataMessage() }}</span>
             </td>
           </tr>
-          } @else { @for (employee of employeeDetails(); track $index) {
+          } @else {
           <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ employee?.employeeRIN }}</td>
-            <td>{{ employee?.employeeName | titlecase }}</td>
-
-            <td>
-              <span>{{ employee.tccStatus }}</span>
-            </td>
-
-            <td>
-              <button (click)="processTCC(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction' || dataLoading()">request</button>
-            </td>
-
-            <td>
-              <input type="checkbox" name="status" (click)="addEmployeeId(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction'">
-            </td>
+            <td>{{ employeeDetails()?.businessRIN }}</td>
+            <td>{{ employeeDetails()?.businessName | titlecase }}</td>
+            <td>{{ employeeDetails()?.businessAddress }}</td>
+            <td>{{ employeeDetails()?.tccCount }}</td>
             
             <td title="View">
               <button
                 class="btn btn-sm btn-outline-success"
-                (click)="openTccView(employee)">
+                (click)="openTccView()">
                 <i class="nav-icon fas fa-eye"></i>
               </button>
             </td>
           </tr>
-          } @empty {
-          <tr>
-            <td colspan="100%">No data available.</td>
-          </tr>
-          } }
+         }
         </tbody>
       </table>
 

@@ -15,8 +15,8 @@ import {
   // UploadProjectioResInterface,
 } from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import {MatDialog} from "@angular/material/dialog"
-import {TccApplicationDetailsComponent} from "../../ui/tcc-details/tcc-details.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {TccSubmittedApplicationDetailsComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-details/submitted-tcc-details.component"
 
 @Component({
   selector: "app-submitted-application",
@@ -114,7 +114,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
 
   openTccDetails(business: UploadProjectionInterface) {
     this.dialog.open(
-      TccApplicationDetailsComponent,
+      TccSubmittedApplicationDetailsComponent,
       MaterialDialogConfig(business)
     )
   }
