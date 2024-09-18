@@ -7,7 +7,7 @@
     <div class="table-header">
 
       <div class="table-header-cont-1">
-        <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading()">
+        <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading() || dataLoading()">
           Process TCC Request
         </button>
       </div>

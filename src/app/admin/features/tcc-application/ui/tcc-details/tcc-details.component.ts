@@ -122,6 +122,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
         this.dataLoading.set(false)
         if (res.status) {
           Swal.fire(SweetAlertOptions(res?.message, true))
+          window.location.reload()
         } else {
           this.dataLoading.set(false)
           Swal.fire(SweetAlertOptions(res?.message))

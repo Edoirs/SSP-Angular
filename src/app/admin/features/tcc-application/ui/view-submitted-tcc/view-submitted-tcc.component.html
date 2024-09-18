@@ -14,13 +14,8 @@
         </thead>
         <tbody>
           <tr>
-            <td>Employee ID</td>
-            <td>{{ injectedData.employeeId }}</td>
-          </tr>
-
-          <tr>
             <td>Employee RIN</td>
-            <td>{{ injectedData.employeeRIN }}</td>
+            <td>{{ injectedData.employeeRin }}</td>
           </tr>
 
           <tr>
@@ -31,6 +26,11 @@
           <tr>
             <td>TCC Status</td>
             <td>{{ injectedData.tccStatus }}</td>
+          </tr>
+
+          <tr>
+            <td>Request TCC</td>
+            <td>{{ injectedData.tccRequest || 'N/A' }}</td>
           </tr>
 
         </tbody>

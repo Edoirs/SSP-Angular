@@ -37,7 +37,7 @@ export class EmployeeScheduleService {
       },
     }
     return this.httpClient.post<any>(
-      `${environment.AUTHAPIURL}SSP/FormH3/UploadFormH3`,
+      `${environment.AUTHAPIURL}FormH3/UploadFormH3`,
       formData,
       config
     )

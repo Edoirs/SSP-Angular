@@ -65,6 +65,7 @@ export class TccSubmittedApplicationDetailsComponent
   }
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
+    this.dataLoading.set(true)
     this.subs.add = this.tccService
       .getSubmittedTcc(pageNumber, pageSize, this.injectedData.businessID)
       .subscribe({

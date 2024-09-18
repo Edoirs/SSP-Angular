@@ -14,25 +14,22 @@ import {
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {TccApplicationDetailsComponent} from "../tcc-details/tcc-details.component"
-import {
-  PendingTccResInterface,
-  TccAppDetailsInterface,
-} from "@admin-pages/tcc-application/data-access/tcc.model"
+import {TccAppDetailsInterface} from "@admin-pages/tcc-application/data-access/tcc.model"
 
 @Component({
-  selector: "app-view-employee",
-  templateUrl: "./view-tcc.component.html",
-  styleUrl: "./view-tcc.component.css",
+  selector: "app-view-submitted-employee",
+  templateUrl: "./view-submitted-tcc.component.html",
+  styleUrl: "./view-submitted-tcc.component.css",
   standalone: true,
   imports: [CommonModule, MatDialogClose],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ViewTccApplicationComponent implements OnInit, OnDestroy {
+export class ViewSubmittedTccApplicationComponent implements OnInit, OnDestroy {
   private readonly dialogRef = inject(
     MatDialogRef<TccApplicationDetailsComponent>
   )
-  public readonly injectedData = inject<PendingTccResInterface>(MAT_DIALOG_DATA)
+  public readonly injectedData = inject<TccAppDetailsInterface>(MAT_DIALOG_DATA)
 
   loading = signal(false)
   message = signal("")

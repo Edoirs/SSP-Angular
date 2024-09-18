@@ -51,12 +51,12 @@
             <td>{{ employee?.employeeRin }}</td>
             <td>{{ employee?.employeeName | titlecase }}</td>
             <td>{{ employee?.tccStatus }}</td>
-            <td>{{ employee?.tccRequest }}</td>
+            <td>{{ employee?.tccRequest || 'N/A' }}</td>
 
             <td title="View">
               <button
                 class="btn btn-sm btn-outline-success"
-                (click)="openTccView()">
+                (click)="openTccView(employee)">
                 <i class="nav-icon fas fa-eye"></i>
               </button>
             </td>

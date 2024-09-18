@@ -20,13 +20,13 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccService} from "@admin-pages/tcc-application/services/tcc-application.services"
-import {ViewTccApplicationComponent} from "../view-tcc/view-tcc.component"
 import {
   SubmittedTccAppResInterface,
   TccAppDetailsInterface,
 } from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
+import {ViewSubmittedTccApplicationComponent} from "../view-submitted-tcc/view-submitted-tcc.component"
 
 @Component({
   selector: "app-submitted-tcc-view",
@@ -66,7 +66,7 @@ export class TccSubmittedApplicationViewComponent implements OnInit, OnDestroy {
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.tccService
-      .getSubmittedTccView(pageNumber, pageSize, this.injectedData.businessRIN)
+      .getSubmittedTccView(pageNumber, pageSize, this.injectedData.businessId)
       .subscribe({
         next: (res) => {
           this.dataLoading.set(false)
@@ -91,10 +91,10 @@ export class TccSubmittedApplicationViewComponent implements OnInit, OnDestroy {
     this.getTccDetails(pageIndex, event.pageSize)
   }
 
-  openTccView() {
+  openTccView(data: TccAppDetailsInterface) {
     this.dialog.open(
-      ViewTccApplicationComponent,
-      MaterialDialogConfig(this.employeeDetails())
+      ViewSubmittedTccApplicationComponent,
+      MaterialDialogConfig(data)
     )
   }
 

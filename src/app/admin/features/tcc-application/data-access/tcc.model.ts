@@ -19,6 +19,7 @@ export interface SubmittedTccAppResInterface {
   tccCount: number
   businessName: string
   businessRIN: string
+  businessId: string
   businessAddress: string
 }
 
