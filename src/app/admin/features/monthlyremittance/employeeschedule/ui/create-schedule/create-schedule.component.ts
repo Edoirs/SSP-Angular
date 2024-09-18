@@ -86,8 +86,8 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   onSubmit() {
     const payload = {
       ...this.createScheduleForm.value,
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      businessId: this.injectedData.businessRin,
+      companyId: this.injectedData.companyRin,
     } as Partial<GetScheduleByDateInterface>
     if (this.createScheduleForm.valid) {
       this.loading.set(true)

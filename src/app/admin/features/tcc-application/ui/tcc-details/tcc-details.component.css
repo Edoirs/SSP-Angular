@@ -16,3 +16,12 @@
 .monthly-remittance-body{
     margin-top: 20px;
 }
+
+input[type='checkbox']{
+    width: 24px;
+}
+
+input[type='checkbox']:checked{
+    color: green;
+    fill: green;
+}

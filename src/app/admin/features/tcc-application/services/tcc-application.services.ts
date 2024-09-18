@@ -3,7 +3,7 @@ import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
-import {TccAppDetailsInterface} from "../data-access/tcc.model"
+import * as TccModels from "../data-access/tcc.model"
 
 @Injectable({providedIn: "any"})
 export class TccService {
@@ -37,9 +37,33 @@ export class TccService {
         ...(search && {businessName: search}),
       },
     })
-    return this.httpClient.get<ServerResInterface<TccAppDetailsInterface[]>>(
-      `${environment.AUTHAPIURL}PhaseII/GetTccApplicationView`,
-      {params}
+    return this.httpClient.get<
+      ServerResInterface<TccModels.TccAppDetailsInterface[]>
+    >(`${environment.AUTHAPIURL}PhaseII/GetSubmitedTccApplicationView`, {
+      params,
+    })
+  }
+
+  getPendingTcc(pageNumber = 1, pageSize = 15, busId: string, search?: string) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+        busId,
+        ...(search && {businessName: search}),
+      },
+    })
+    return this.httpClient.get<
+      ServerResInterface<TccModels.PendingTccResInterface[]>
+    >(`${environment.AUTHAPIURL}PhaseII/GetTccApplicationToBeSubmitted`, {
+      params,
+    })
+  }
+
+  processTcc(payload: any) {
+    return this.httpClient.post<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/GetTccApplicationToBeSubmitted`,
+      payload
     )
   }
 }

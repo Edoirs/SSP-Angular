@@ -143,12 +143,36 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/admin', 'tcc-application']" [routerLinkActive]="['active']">
+      <a class="nav-link">
         <i class="nav-icon fas fa-file-invoice"></i>
         <p>
           TCC Application
+          <i class="fas fa-angle-left right"></i>
         </p>
       </a>
+
+      <ul class="nav nav-treeview" style="display: none;">
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin', 'pending-application']" [routerLinkActive]="['active']">
+            <i class="nav-icon fas fa-file-invoice"></i>
+            <p>
+              Pending Application
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin', 'submitted-application']" [routerLinkActive]="['active']">
+            <i class="nav-icon fas fa-file-invoice"></i>
+            <p>
+              Submitted Application
+            </p>
+          </a>
+        </li>
+
+      </ul>
+
     </li>
 
     <li class="nav-item">
@@ -163,7 +187,7 @@
       <ul class="nav nav-treeview" style="display: none;">
 
         <li class="nav-item">
-          <a [routerLink]="['/reports']" [routerLinkActive]="['active']" class="nav-link">
+          <a [routerLink]="['/admin', 'reports']" [routerLinkActive]="['active']" class="nav-link">
             <i class="fas fa-line-chart nav-icon"></i>
             <p>Transaction History</p>
           </a>
@@ -172,6 +196,7 @@
       </ul>
 
     </li>
+
     <li class="nav-item">
       <a [routerLink]="['/logout']" class="nav-link">
         <i class=" nav-icon fa fa-sign-out"></i>

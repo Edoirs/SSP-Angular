@@ -14,10 +14,17 @@ export default [
       ),
   },
   {
-    path: "tcc-application",
+    path: "pending-application",
     loadComponent: () =>
-      import("./features/tcc-application/tcc-application.component").then(
-        (c) => c.TccApplicationComponent
-      ),
+      import(
+        "./features/tcc-application/features/pending-application/pending-application.component"
+      ).then((c) => c.TccPendingApplicationComponent),
+  },
+  {
+    path: "submitted-application",
+    loadComponent: () =>
+      import(
+        "./features/tcc-application/features/submitted-application/submitted-application.component"
+      ).then((c) => c.TccSubmittedApplicationComponent),
   },
 ] as Routes

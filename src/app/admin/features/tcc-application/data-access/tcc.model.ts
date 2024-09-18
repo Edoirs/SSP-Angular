@@ -15,6 +15,18 @@ export interface TccAppDetailsInterface {
   tccRequest: string
 }
 
+export interface PendingTccResInterface {
+  employeeId: string
+  employeeRIN: string
+  employeeName: string
+  tccStatus: string
+}
+
+export interface ProcessTccInterface {
+  employeeIds: number[]
+  busId: string
+}
+
 export interface TccAppDetailsInterface {
   tccCount: number
   businessName: string

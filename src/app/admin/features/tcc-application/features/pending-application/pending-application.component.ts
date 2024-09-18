@@ -1,8 +1,8 @@
 import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
-import {TccService} from "./services/tcc-application.services"
+import {TccService} from "../../services/tcc-application.services"
 import {ActivatedRoute, Router} from "@angular/router"
-import {BusinessResInterface} from "./data-access/tcc.model"
+import {BusinessResInterface} from "../../data-access/tcc.model"
 
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
@@ -15,18 +15,18 @@ import {
   UploadProjectioResInterface,
 } from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import {MatDialog} from "@angular/material/dialog"
-import {TccApplicationDetailsComponent} from "./ui/tcc-details/tcc-details.component"
+import {TccApplicationDetailsComponent} from "../../ui/tcc-details/tcc-details.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
-  selector: "app-tcc-application",
-  templateUrl: "./tcc-application.component.html",
-  styleUrl: "./tcc-application.component.scss",
+  selector: "app-pending-application",
+  templateUrl: "./pending-application.component.html",
+  styleUrl: "./pending-application.component.scss",
   standalone: true,
   imports: [MatPaginatorModule],
   providers: [TccService],
 })
-export class TccApplicationComponent implements OnInit, OnDestroy {
+export class TccPendingApplicationComponent implements OnInit, OnDestroy {
   private readonly tccService = inject(TccService)
   public readonly tokenService = inject(TokenService)
   private readonly route = inject(ActivatedRoute)

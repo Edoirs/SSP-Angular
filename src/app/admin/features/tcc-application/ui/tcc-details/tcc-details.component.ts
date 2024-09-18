@@ -23,7 +23,11 @@ import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccService} from "@admin-pages/tcc-application/services/tcc-application.services"
 import {ViewTccApplicationComponent} from "../view-tcc/view-tcc.component"
 import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
-import {TccAppDetailsInterface} from "@admin-pages/tcc-application/data-access/tcc.model"
+import {
+  PendingTccResInterface,
+  ProcessTccInterface,
+  TccAppDetailsInterface,
+} from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 
@@ -44,7 +48,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
-  employeeDetails = signal<TccAppDetailsInterface[] | null>(null)
+  employeeDetails = signal<PendingTccResInterface[] | null>(null)
   dataLoading = signal(false)
   btnLoading = signal(false)
   dataMessage = signal("")
@@ -52,6 +56,8 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
   queryString = signal("")
 
   totalLength = signal(0)
+
+  employeeIds: number[] = []
 
   subs = new SubscriptionHandler()
 
@@ -65,7 +71,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.tccService
-      .getTccDetails(pageNumber, pageSize, this.injectedData.businessID)
+      .getPendingTcc(pageNumber, pageSize, this.injectedData.businessID)
       .subscribe({
         next: (res) => {
           this.dataLoading.set(false)
@@ -90,12 +96,41 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     this.getTccDetails(pageIndex, event.pageSize)
   }
 
-  openTccView(data: TccAppDetailsInterface) {
+  openTccView(data: PendingTccResInterface) {
     this.dialog.open(ViewTccApplicationComponent, MaterialDialogConfig(data))
   }
 
-  processTCC() {
-    return
+  processTCC(empId?: string) {
+    let payload = {
+      employeeIds: [],
+      busId: this.injectedData.businessID,
+    } as ProcessTccInterface
+
+    if (empId) {
+      payload.employeeIds = [parseInt(empId)]
+    } else {
+      payload = {
+        ...payload,
+        employeeIds: this.employeeIds,
+      }
+    }
+
+    this.subs.add = this.tccService.processTcc(payload).subscribe({
+      next: (res) => {
+        this.dataLoading.set(false)
+        if (res.status) {
+          Swal.fire(SweetAlertOptions(res?.message, true))
+        } else {
+          this.dataLoading.set(false)
+          this.dataMessage.set(res?.message)
+          Swal.fire(SweetAlertOptions(res?.message))
+        }
+      },
+      error: (err) => {
+        this.dataLoading.set(false)
+        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+      },
+    })
   }
 
   queryTable(domInput: HTMLInputElement) {
@@ -112,23 +147,11 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  switchStatus(event: any, employeeRin?: string) {
-    // const status = event.target.checked
-    // const payload = {
-    //   companyRin: this.injectedData.companyRin,
-    //   businessRin: this.injectedData.businessRin,
-    //   ...(employeeRin && {employeeRin}),
-    // } as MarkEmployeeInterface
-    // if (
-    //   window.confirm("Are you sure you want to change this employee's status?")
-    // )
-    //   this.subs.add = this.tccService.markEmployeeInactive(payload).subscribe({
-    //     next: (res) => {
-    //       Swal.fire(SweetAlertOptions(res?.message))
-    //     },
-    //     error: (err) => {
-    //       Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
-    //     },
-    //   })
+  addEmployeeId(id: string) {
+    if (this.employeeIds.length) {
+      const exists = this.employeeIds.find((n) => n === +id)
+      if (!exists) return this.employeeIds.push(parseInt(id))
+    }
+    return this.employeeIds.push(parseInt(id))
   }
 }
