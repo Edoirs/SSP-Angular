@@ -2,6 +2,7 @@ import {TitleCasePipe} from "@angular/common"
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnDestroy,
   OnInit,
@@ -49,6 +50,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
+  anyEmployeeActive = computed(
+    () =>
+      !!this.employeeDetails()?.find((employee) => employee.status === "active")
+  )
   dataLoading = signal(false)
   btnLoading = signal(false)
   dataMessage = signal("")

@@ -31,7 +31,9 @@
         type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
-        (click)="openCreateSchedule()">
+        (click)="openCreateSchedule()"
+        [disabled]="!anyEmployeeActive()"
+        >
         <i class="fas fa-plus-square"></i> Create Schedule
       </button>
 

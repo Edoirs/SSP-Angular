@@ -12,7 +12,6 @@ import {
   MatDialog,
   MatDialogClose,
 } from "@angular/material/dialog"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
@@ -26,7 +25,6 @@ import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/
 import {
   PendingTccResInterface,
   ProcessTccInterface,
-  TccAppDetailsInterface,
 } from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
@@ -57,7 +55,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   totalLength = signal(0)
 
-  employeeIds: number[] = []
+  employeeIds = signal<number[] | []>([])
 
   subs = new SubscriptionHandler()
 
@@ -67,6 +65,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.clear()
+    this.employeeIds.set([])
   }
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
@@ -107,11 +106,11 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     } as ProcessTccInterface
 
     if (empId) {
-      payload.employeeIds = [parseInt(empId)]
+      // payload.employeeIds = [parseInt(empId)]
     } else {
       payload = {
         ...payload,
-        employeeIds: this.employeeIds,
+        employeeIds: <number[]>this.employeeIds(),
       }
     }
 
@@ -151,10 +150,14 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
   }
 
   addEmployeeId(id: string) {
-    if (this.employeeIds.length) {
-      const exists = this.employeeIds.find((n) => n === +id)
-      if (!exists) return this.employeeIds.push(parseInt(id))
+    if (this.employeeIds()?.length) {
+      const exists = this.employeeIds()?.find((n) => n === +id)
+      if (!exists)
+        return this.employeeIds.update((nums) => {
+          return [...(nums as number[]), parseInt(id)]
+        })
+    } else {
+      this.employeeIds.update((nums) => [parseInt(id)])
     }
-    return this.employeeIds.push(parseInt(id))
   }
 }
