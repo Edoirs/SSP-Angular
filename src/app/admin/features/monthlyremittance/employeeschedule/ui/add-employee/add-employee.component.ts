@@ -46,7 +46,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly utilityService = inject(UtilityService)
-  private readonly snackBar = inject(MatSnackBar)
 
   loading = signal(false)
   message = signal("")
@@ -187,8 +186,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     homeaddress: new FormControl("", {
       validators: [
         Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(80),
+        Validators.minLength(3),
+        Validators.maxLength(150),
       ],
     }),
     lgaCode: new FormControl("", {validators: [Validators.required]}),

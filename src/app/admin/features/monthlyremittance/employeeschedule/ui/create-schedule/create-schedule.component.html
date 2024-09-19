@@ -99,20 +99,18 @@
             <label for="comment">Comment </label>
             <textarea
               type="text"
-              formControlName="comment"
               class="form-control"
               rows="10"
               placeholder="Comment"
-              [ngClass]="{ 'is-invalid': createScheduleForm.touched && createScheduleForm.get('comment')?.errors }"
             ></textarea>
-            <div
+            <!-- <div
               *ngIf="createScheduleForm.valid && createScheduleForm.get('comment')?.errors"
               class="text-danger"
             >
               <div *ngIf="createScheduleForm.get('comment')?.hasError('required')">
                 Comment is required
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 

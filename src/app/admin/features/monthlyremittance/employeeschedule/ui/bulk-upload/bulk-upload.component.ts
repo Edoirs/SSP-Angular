@@ -26,6 +26,7 @@ import {UtilityService} from "src/app/utility.service"
 import {environment} from "@environment/environment"
 import {Router} from "@angular/router"
 import {BusinessesResInterface} from "../../data-access/employee-schedule.model"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-bulk-upload",
@@ -104,8 +105,8 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
 
     const formData = new FormData()
     formData.append("file", this.file() as File)
-    formData.append("BusinessRin", this.injectedData.businessRin)
-    formData.append("CompanyRin", this.injectedData.companyRin)
+    formData.append("BusinessId", this.injectedData.businessId.toString())
+    formData.append("CompanyId", this.injectedData.companyId.toString())
 
     if (this.file())
       this.subs.add = this.employeeScheduleService
@@ -115,52 +116,29 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
             this.uploadForm.reset()
             if (res.status == true) {
               if (res.message === "0 Employees created; 0 updated.") {
-                Swal.fire({
-                  icon: "error",
-                  title: "Error",
-                  text: "Confirm the file content and try again",
-                  showConfirmButton: true,
-                  timer: 5000,
-                  timerProgressBar: true,
-                })
+                Swal.fire(
+                  SweetAlertOptions("Confirm the file content and try again")
+                )
               } else {
-                Swal.fire({
-                  icon: "success",
-                  title: "Success",
-                  text: res.message,
-                  showConfirmButton: true,
-                  timer: 5000,
-                  timerProgressBar: true,
-                })
+                Swal.fire(SweetAlertOptions(res?.message, true))
                 this.router.navigate(["/admin", "employee-schedule"])
-                window.location.reload()
               }
             } else {
               if (res.response == null) {
-                Swal.fire({
-                  icon: "warning",
-                  title: "Validation not passed",
-                  // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-                  text: res?.message,
-                  showConfirmButton: true,
-                  timer: 10000,
-                  timerProgressBar: true,
-                })
+                Swal.fire(SweetAlertOptions(res?.message))
               }
             }
           },
           error: (err) => {
             console.error(err)
-            Swal.fire({
-              icon: "warning",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: err?.message || err?.error?.message,
-              showConfirmButton: true,
-              timer: 10000,
-              timerProgressBar: true,
-            })
-          }
+            Swal.fire(
+              SweetAlertOptions(
+                err?.message ||
+                  err?.error?.message ||
+                  err?.error?.error?.message
+              )
+            )
+          },
         })
   }
 }

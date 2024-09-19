@@ -1,12 +1,16 @@
-import {HttpClient, HttpParams} from "@angular/common/http"
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import * as EmployeeModel from "../data-access/employee-schedule.model"
+import {TokenService} from "@shared/services/token.service"
+
+import axios from "axios"
 
 @Injectable({providedIn: "any"})
 export class EmployeeScheduleService {
   private readonly httpClient = inject(HttpClient)
+  private readonly tokenService = inject(TokenService)
 
   getEmployees(pageNumber = 1, pageSize = 15) {
     const params = new HttpParams({fromObject: {pageNumber, pageSize}})
@@ -16,13 +20,13 @@ export class EmployeeScheduleService {
   }
 
   getEmployeeDetails(
-    businessRin: string,
-    companyRin: string,
+    businessId: string,
+    companyId: string,
     pageNumber = 1,
     pageSize = 15
   ) {
     const params = new HttpParams({
-      fromObject: {businessRin, companyRin, pageNumber, pageSize},
+      fromObject: {businessId, companyId, pageNumber, pageSize},
     })
     return this.httpClient.get<
       ServerResInterface<EmployeeModel.EmployeeDetailResInterface[]>
@@ -57,7 +61,7 @@ export class EmployeeScheduleService {
 
   addEmployee(payload: EmployeeModel.AddEmployeeInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/Add-Employee`,
+      `${environment.AUTHAPIURL}PhaseII/AddEmployee`,
       payload
     )
   }
@@ -83,10 +87,20 @@ export class EmployeeScheduleService {
     )
   }
 
-  downloadEmployeePdf(payload: EmployeeModel.DownloadEmployeePdfInterface) {
-    return this.httpClient.post<ServerResInterface<any>>(
+  async downloadEmployeePdf(
+    payload: EmployeeModel.DownloadEmployeePdfInterface
+  ) {
+    const response = await axios.post(
       `${environment.AUTHAPIURL}PhaseII/DownLoadPDF`,
-      payload
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
     )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
   }
 }

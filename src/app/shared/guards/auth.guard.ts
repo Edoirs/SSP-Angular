@@ -11,7 +11,7 @@ export const AuthGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  return !inject(TokenService).getAccessToken()
+  return !inject(TokenService).getAccessToken
     ? inject(Router).navigate(["login"])
     : true
 }

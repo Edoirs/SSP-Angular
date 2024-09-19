@@ -7,7 +7,7 @@ export function loggingInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  const token = inject(TokenService).getAccessToken()
+  const token = inject(TokenService).getAccessToken
   if (token) {
     const newReq = req.clone({
       headers: req.headers.set("Authorization", `Bearer ${token}`),

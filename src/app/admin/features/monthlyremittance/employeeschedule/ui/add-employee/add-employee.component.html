@@ -8,7 +8,6 @@
       <div class="container">
         <form
           [formGroup]="addEmployeeForm"
-          (Submit)="onSubmit()"
         >
           <!-- START NEW FORM -->
           <div class="form-row">
@@ -137,7 +136,7 @@
               <input
                 type="text"
                 pattern="[^\s]+"
-                formControlName="firstName"
+                formControlName="firstname"
                 class="form-control"
                 placeholder="First Name"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['firstname'].errors }" />
@@ -261,7 +260,7 @@
               <input
                 type="text"
                 pattern="[^\s]+"
-                formControlName="otherName"
+                formControlName="othername"
                 class="form-control"
                 placeholder="Other Name"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['othername'].errors }"
@@ -322,7 +321,7 @@
               <input
                 type="text"
                 maxlength="11"
-                formControlName="phoneNumber"
+                formControlName="phonenumber"
                 class="form-control"
                 placeholder="Phone Number"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['phonenumber'].errors }"
@@ -758,20 +757,14 @@
                   >*</sup
                 ></label
               >
-              <select
-                type="text"
-                name="zipCode"
-                formControlName="zipCode"
-                id="zipCode"
-                class="form-control"
-                style="min-width: 339px"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['zipCode'].errors }"
-              >
-                <option value="">Select Zip Code</option>
-                <option *ngFor="let zipcode of zipCodes()" [value]="zipcode.city">
-                  {{ zipcode.city }} {{ " " }} {{ zipcode.postalcode }}
-                </option>
-              </select>
+              <input
+              type="number"
+              minlength="3"
+              formControlName="zipCode"
+              class="form-control"
+              placeholder="Enter Zip Code Number"
+              [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['phonenumber'].errors }"
+            />
               <div
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['zipCode'].errors"
                 class="text-danger"
@@ -779,8 +772,12 @@
                 <div *ngIf="addEmployeeForm.controls['zipCode'].errors!['required']">
                   Zip Code is required
                 </div>
+                <div *ngIf="addEmployeeForm.controls['zipCode'].errors!['minlength']">
+                  Zip Code should be more than 3 numbers above
+                </div>
               </div>
             </div>
+
             <div class="form-group col-md-6">
               <label for="contactAddress"
                 >Home Address<sup class="ml-1 font-wegiht-bold text-danger"
@@ -791,7 +788,9 @@
                 type="text"
                 formControlName="homeaddress"
                 class="form-control"
-                rows="3"
+                minlength="3"
+                maxlength="150"
+                rows="5"
                 placeholder="Home Address"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['homeaddress'].errors }"
               ></textarea>
@@ -807,20 +806,21 @@
                 <div
                   *ngIf="addEmployeeForm.controls['homeaddress'].errors['minlength']"
                 >
-                  Home Address must be at least 10 characters long
+                  Home Address must be at least 3 characters long
                 </div>
                 <div
                   *ngIf="addEmployeeForm.controls['homeaddress'].errors['maxLength']"
                 >
-                  Home Address must be at most 80 characters
+                  Home Address must be at most 150 characters
                 </div>
               </div>
             </div>
           </div>
   
           <button
-            type="submit"
-            class=""
+          type="button"
+            (click)="onSubmit()"
+            [disabled]="addEmployeeForm.invalid"
           >
             <i class="fas fa-plus-square"></i> Save Employee
           </button>

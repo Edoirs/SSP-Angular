@@ -62,7 +62,9 @@
             </td>
 
             <td>
-              <button (click)="processTCC(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction' || dataLoading()">request</button>
+              <button (click)="processTCC(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction' || dataLoading()">
+                <i class="nav-icon fas fa-folder-open"></i>
+              </button>
             </td>
 
             <td>

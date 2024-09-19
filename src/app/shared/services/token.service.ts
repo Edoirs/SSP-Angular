@@ -31,7 +31,7 @@ export class TokenService {
     return JSON.parse(userRes)
   }
 
-  getAccessToken(): string {
+  get getAccessToken(): string {
     return this.getLoginResData?.token
   }
 

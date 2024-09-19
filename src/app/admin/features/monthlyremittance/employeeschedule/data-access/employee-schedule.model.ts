@@ -4,12 +4,15 @@ export interface EmployeeScheduleResInterface {
 }
 
 export interface BusinessesResInterface {
+  businessId: number
+  companyId: number
   businessRin: string
   companyRin: string
   businessName: string
   businessAddress: string
   businessLga: string
   noOfEmployees: number
+  taxOffice: string
 }
 
 export interface EmployeeDetailResInterface {
@@ -77,10 +80,11 @@ export interface AddEmployeeInterface {
 }
 
 export interface GetScheduleByDateInterface {
-  businessRin: string
-  companyRin: string
+  businessId: string
+  companyId: string
   year: number
   month: string
+  comment?: string
 }
 
 export interface DownloadEmployeePdfInterface {

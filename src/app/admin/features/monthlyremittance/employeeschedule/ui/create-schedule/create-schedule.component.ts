@@ -28,6 +28,7 @@ import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {ValidYears} from "@shared/utils/shared.utils"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-create-schedule",
@@ -44,6 +45,8 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
 
+  private readonly tokenService = inject(TokenService)
+
   readonly validYears = ValidYears()
 
   loading = signal(false)
@@ -56,7 +59,7 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   createScheduleForm = new FormGroup({
     month: new FormControl("", {validators: [Validators.required]}),
     year: new FormControl("", {validators: [Validators.required]}),
-    comment: new FormControl("", {validators: []}),
+    // comment: new FormControl("", {validators: []}),
   })
 
   ngOnInit(): void {
@@ -84,10 +87,11 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const payload = {
+    let payload = {
       ...this.createScheduleForm.value,
-      businessId: this.injectedData.businessRin,
-      companyId: this.injectedData.companyRin,
+      businessId: this.injectedData.businessId.toString(),
+      companyId: this.tokenService.getLoginResData.companyId.toString(),
+      year: parseInt(this.createScheduleForm.value?.year as string),
     } as Partial<GetScheduleByDateInterface>
     if (this.createScheduleForm.valid) {
       this.loading.set(true)
@@ -97,7 +101,7 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
           next: (res) => {
             this.loading.set(false)
             if (res.status === true) {
-              window.location.reload()
+              Swal.fire(SweetAlertOptions(res?.message, true))
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }

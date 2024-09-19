@@ -14,6 +14,7 @@ import {
 } from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {
+  BusinessesResInterface,
   DownloadEmployeePdfInterface,
   EmployeeDetailResInterface,
   MarkEmployeeInterface,
@@ -44,8 +45,8 @@ import {MaterialDialogConfig} from "@shared/utils/material.utils"
 export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly dialog = inject(MatDialog)
-  private readonly snackBar = inject(MatSnackBar)
-  private readonly injectedData = inject<any>(MAT_DIALOG_DATA)
+  private readonly injectedData =
+    inject<BusinessesResInterface>(MAT_DIALOG_DATA)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
   dataLoading = signal(false)
@@ -67,8 +68,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   getEmployeeDetail(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.employeeScheduleService
       .getEmployeeDetails(
-        this.injectedData.businessRin,
-        this.injectedData.companyRin,
+        this.injectedData.businessId.toString(),
+        this.injectedData.companyId.toString(),
         pageNumber,
         pageSize
       )
@@ -184,27 +185,23 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         })
   }
 
-  downloadPdf() {
+  async downloadPdf() {
     this.btnLoading.set(true)
-    console.log(this.injectedData)
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
-      taxMonth: this.injectedData.taxMonth,
-      taxYear: this.injectedData.taxYear,
     } as DownloadEmployeePdfInterface
-    this.subs.add = this.employeeScheduleService
-      .downloadEmployeePdf(payload)
-      .subscribe({
-        next: (res) => {
-          this.btnLoading.set(false)
-          if (res.status) window.open(res?.data)
-          Swal.fire(SweetAlertOptions(res?.message))
-        },
-        error: (err) => {
-          this.btnLoading.set(false)
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
-        },
-      })
+
+    try {
+      this.btnLoading.set(false)
+      const pdf = await this.employeeScheduleService.downloadEmployeePdf(
+        payload
+      )
+      window.open(pdf, "_blank", "download")
+    } catch (err: any) {
+      console.log({err})
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
   }
 }
