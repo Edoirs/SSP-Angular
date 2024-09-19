@@ -137,13 +137,14 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   queryTable(domInput: HTMLInputElement) {
     this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
-      this.router.navigate(["."], {
+      this.router.navigate(["/admin/pending-application"], {
         relativeTo: this.route,
         queryParams: {
           search: query,
           pageSize: 15,
           pageIndex: 1,
         },
+        fragment: "details",
         queryParamsHandling: "replace",
       })
     })

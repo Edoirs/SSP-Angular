@@ -101,13 +101,13 @@ export class TccSubmittedApplicationDetailsComponent
 
   queryTable(domInput: HTMLInputElement) {
     this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
-      this.router.navigate(["."], {
-        relativeTo: this.route,
+      this.router.navigate(["/admin/submitted-application"], {
         queryParams: {
           search: query,
           pageSize: 15,
           pageIndex: 1,
         },
+        fragment: "details",
         queryParamsHandling: "replace",
       })
     })
