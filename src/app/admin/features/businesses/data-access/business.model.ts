@@ -4,6 +4,7 @@ export interface BusinessResInterface {
     businessName: string
     lgaName: string
     companyRin: string
+    companyName: string
   }[]
   totalCount: number
 }

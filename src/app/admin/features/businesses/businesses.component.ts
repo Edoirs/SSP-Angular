@@ -10,6 +10,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import Swal from "sweetalert2"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {TokenService} from "@shared/services/token.service"
+import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 
 @Component({
   selector: "app-businesses",
@@ -24,6 +25,8 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   public readonly tokenService = inject(TokenService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
+  private exportAsService = inject(ExportAsService)
+
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
@@ -33,6 +36,12 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   dataMessage = signal("")
 
   queryString = signal("")
+
+  exportAsCSVConfig: ExportAsConfig = {
+    type: "csv",
+    elementIdOrContent: "xlsTable",
+    download: false,
+  }
 
   subs = new SubscriptionHandler()
 
@@ -87,6 +96,27 @@ export class BusinessesComponent implements OnInit, OnDestroy {
           })
       }
     })
+  }
+
+  async downloadExcel() {
+    this.dataLoading.set(true)
+
+    try {
+      this.dataLoading.set(false)
+      const pdf = await this.businessService.downloadBusinessExcel()
+      console.log(pdf)
+      window.open(pdf, "_blank", "download")
+    } catch (err: any) {
+      console.log({err})
+      this.dataLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
+  }
+
+  dowloadCsv() {
+    this.subs.add = this.exportAsService
+      .save(this.exportAsCSVConfig, `My Report ${new Date().toISOString()}`)
+      .subscribe()
   }
 
   handlePageEvent(event: PageEvent) {

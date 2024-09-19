@@ -17,6 +17,7 @@ import {
 import {MatDialog} from "@angular/material/dialog"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccSubmittedApplicationDetailsComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-details/submitted-tcc-details.component"
+import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 
 @Component({
   selector: "app-submitted-application",
@@ -32,6 +33,8 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly dialog = inject(MatDialog)
+  private exportAsService = inject(ExportAsService)
+
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
@@ -41,6 +44,12 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
   dataMessage = signal("")
 
   queryString = signal("")
+
+  exportAsCSVConfig: ExportAsConfig = {
+    type: "csv",
+    elementIdOrContent: "xlsTable",
+    download: false,
+  }
 
   subs = new SubscriptionHandler()
 
@@ -110,6 +119,12 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: "replace",
     })
+  }
+
+  dowloadCsv() {
+    this.subs.add = this.exportAsService
+      .save(this.exportAsCSVConfig, `My Report ${new Date().toISOString()}`)
+      .subscribe()
   }
 
   openTccDetails(business: UploadProjectionInterface) {

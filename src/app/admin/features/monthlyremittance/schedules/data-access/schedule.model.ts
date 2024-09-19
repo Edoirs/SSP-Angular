@@ -8,6 +8,7 @@ export interface ScheduleResInterface {
   businessName: string
   businessRin: string
   companyRin: string
+  companyName: string
   dateForwarded: string
   employeeCount: number
   monthlyTax: number

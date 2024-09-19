@@ -58,6 +58,7 @@ import {CompanyprofileComponent} from "./admin/features/profile/companyprofile/c
 import {MatPaginatorModule} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
 import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
+import {ExportAsModule} from "ngx-export-as"
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
     NgChartsModule,
     MatDialogModule,
     MatPaginatorModule,
+    ExportAsModule,
     NgToggleModule.forRoot(),
   ],
   providers: [

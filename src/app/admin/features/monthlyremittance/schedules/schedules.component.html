@@ -69,8 +69,8 @@
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   @if(tokenService.getLoginResData.isAdminUser){
-                    <th>Company RIN</th>
-                    <th>Company Name</th>
+                    <td>{{ mydata?.companyRin }}</td>
+                    <td>{{ mydata?.companyName }}</td>
                   }
                   <td>{{ mydata?.businessRin }}</td>
                   <td>{{ mydata?.businessName | titlecase }}</td>

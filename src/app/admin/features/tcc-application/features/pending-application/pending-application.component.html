@@ -19,8 +19,8 @@
               <div class="table-header-cont-1"></div>
               <div class="table-header-cont-2">
                 <div class="table-header-btns">
-                  <!-- <button>CSV</button> -->
-                  <button>Excel</button>
+                  <button (click)="dowloadCsv()">CSV</button>
+                  <button (click)="dowloadExcel()">Excel</button>
                 </div>
               </div>
               <div class="table-header-cont-3">
@@ -36,6 +36,8 @@
             </section>
 
             <table
+              #xlsTable
+              id="xlsTable"
               class="table table-bordered table-condensed"
               datatable
               width="100%">
@@ -69,8 +71,8 @@
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   @if(tokenService.getLoginResData.isAdminUser){
-                    <th>Company RIN</th>
-                    <th>Company Name</th>
+                    <td>{{ business?.companyRin }}</td>
+                    <td>{{ business?.companyName }}</td>
                   }
                   <td>{{ business?.businessRIN }}</td>
                   <td>{{ business?.businessName }}</td>

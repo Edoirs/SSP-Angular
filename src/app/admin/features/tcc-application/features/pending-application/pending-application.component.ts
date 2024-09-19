@@ -2,7 +2,6 @@ import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {TccService} from "../../services/tcc-application.services"
 import {ActivatedRoute, Router} from "@angular/router"
-import {BusinessResInterface} from "../../data-access/tcc.model"
 
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
@@ -10,13 +9,11 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import Swal from "sweetalert2"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {TokenService} from "@shared/services/token.service"
-import {
-  UploadProjectionInterface,
-  UploadProjectioResInterface,
-} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
+import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import {MatDialog} from "@angular/material/dialog"
 import {TccApplicationDetailsComponent} from "../../ui/tcc-details/tcc-details.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 
 @Component({
   selector: "app-pending-application",
@@ -32,6 +29,8 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly dialog = inject(MatDialog)
+  private exportAsService = inject(ExportAsService)
+
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(1)
@@ -41,6 +40,18 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
   dataMessage = signal("")
 
   queryString = signal("")
+
+  exportAsConfig: ExportAsConfig = {
+    type: "xls",
+    elementIdOrContent: "xlsTable",
+    download: true,
+  }
+
+  exportAsCSVConfig: ExportAsConfig = {
+    type: "csv",
+    elementIdOrContent: "xlsTable",
+    download: false,
+  }
 
   subs = new SubscriptionHandler()
 
@@ -110,6 +121,18 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: "replace",
     })
+  }
+
+  dowloadCsv() {
+    this.subs.add = this.exportAsService
+      .save(this.exportAsCSVConfig, `My Report ${new Date().toISOString()}`)
+      .subscribe()
+  }
+
+  dowloadExcel() {
+    this.subs.add = this.exportAsService
+      .save(this.exportAsConfig, `My Report ${new Date().toISOString()}`)
+      .subscribe()
   }
 
   openTccDetails(business: UploadProjectionInterface) {

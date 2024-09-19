@@ -8,6 +8,7 @@ export interface BusinessesResInterface {
   companyId: number
   businessRin: string
   companyRin: string
+  companyName: string
   businessName: string
   businessAddress: string
   businessLga: string
