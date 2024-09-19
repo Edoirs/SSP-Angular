@@ -102,6 +102,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     nhis: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
+    jtbtn: new FormControl("0", {
+      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
+    }),
     pension: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
@@ -158,13 +161,13 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(11),
       ],
     }),
-    employeeTIN: new FormControl("", {
-      validators: [
-        Validators.pattern(EmployeeUtils.CardIdRegex),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ],
-    }),
+    // employeeTIN: new FormControl("", {
+    //   validators: [
+    //     Validators.pattern(EmployeeUtils.CardIdRegex),
+    //     Validators.minLength(10),
+    //     Validators.maxLength(10),
+    //   ],
+    // }),
     phonenumber: new FormControl("", {
       validators: [
         Validators.required,
@@ -192,8 +195,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     }),
     lgaCode: new FormControl("", {validators: [Validators.required]}),
     NSIRSTaxPayerID: new FormControl(""),
-    CRA: new FormControl(""),
-    taxYear: new FormControl(""),
+    // CRA: new FormControl(""),
+    // taxYear: new FormControl(""),
   })
 
   ngOnInit(): void {

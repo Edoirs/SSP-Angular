@@ -50,7 +50,7 @@
                 type="text"
                 formControlName="basic"
                 class="form-control"
-                (keyup)="calculateTotalIncome($event)"
+                
                 placeholder="Basic Income"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['basic'].errors }"
               />
@@ -111,7 +111,7 @@
                 formControlName="rent"
                 class="form-control"
                 placeholder="Rent"
-                (keyup)="calculateTotalIncome($event)"
+                
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['rent'].errors }"
               />
               <div
@@ -169,7 +169,7 @@
                 type="text"
                 formControlName="transport"
                 class="form-control"
-                (keyup)="calculateTotalIncome($event)"
+                
                 placeholder="transport"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['transport'].errors }"
               />
@@ -232,7 +232,7 @@
                 type="text"
                 formControlName="otherIncome"
                 class="form-control"
-                (keyup)="calculateTotalIncome($event)"
+                
                 placeholder="Other Income"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['otherIncome'].errors }"
               />
@@ -293,7 +293,6 @@
                 formControlName="totalIncome"
                 class="form-control"
                 placeholder="Total Income"
-                (keyup)="calculateGrossIncome($event)"
                 [attr.disabled]="true"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['totalIncome'].errors }"
               />
@@ -356,7 +355,6 @@
                 formControlName="pension"
                 class="form-control"
                 placeholder="Pension"
-                (keyup)="calculateGrossIncome($event)"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['pension'].errors }"
               />
               <div
@@ -412,7 +410,6 @@
                 formControlName="nhf"
                 class="form-control"
                 placeholder="National Housing Fund"
-                (keyup)="calculateGrossIncome($event)"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nhf'].errors }"
               />
               <div
@@ -439,7 +436,7 @@
                 maxlength="11"
                 class="form-control"
                 placeholder="BVN"
-                (keyup)="changeTinPhoneNinBvnStatus()"
+              
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['bvn'].errors || addEmployeeForm.touched && validateCacTin }"
               />
               <div
@@ -463,6 +460,7 @@
                 <div>JTB-TIN or NIN or BVN Number is required</div>
               </div>
             </div>
+
             <div class="form-group col-md-6">
               <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
               <input
@@ -470,7 +468,6 @@
                 formControlName="nhis"
                 class="form-control"
                 placeholder="National Health Insurance Scheme"
-                (keyup)="calculateGrossIncome($event)"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nhis'].errors }"
               />
               <div
@@ -487,33 +484,33 @@
   
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="employeeTIN"
+              <label for="jtbtn"
                 >Employee JTB-TIN <span class="note-color">**</span></label
               >
               <input
                 type="text"
-                formControlName="employeeTIN"
+                formControlName="jtbtn"
                 maxlength="10"
                 class="form-control"
-                placeholder="Employee JTB-TIN"
-                (keyup)="changeTinPhoneNinBvnStatus()"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['employeeTIN'].errors || addEmployeeForm.touched && validateCacTin }"
+                placeholder="Employee JTBTN"
+              
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['jtbtn'].errors || addEmployeeForm.touched && validateCacTin }"
               />
               <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['employeeTIN'].errors"
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['jtbtn'].errors"
                 class="text-danger"
               >
                 <div
-                  *ngIf="addEmployeeForm.controls['employeeTIN'].errors['minlength']"
+                  *ngIf="addEmployeeForm.controls['jtbtn'].errors['minlength']"
                 >
                   Employee JTB-TIN must be at least 10 digit long
                 </div>
                 <div
-                  *ngIf="addEmployeeForm.controls['employeeTIN'].errors['maxLength']"
+                  *ngIf="addEmployeeForm.controls['jtbtn'].errors['maxLength']"
                 >
                   Employee JTB-TIN must be at most 10 digit long
                 </div>
-                <div *ngIf="addEmployeeForm.controls['employeeTIN'].errors['pattern']">
+                <div *ngIf="addEmployeeForm.controls['jtbtn'].errors['pattern']">
                   Employee JTB-TIN must be numeric value only
                 </div>
               </div>
@@ -531,7 +528,6 @@
                 formControlName="lifeAssurance"
                 class="form-control"
                 placeholder="Life Assurance"
-                (keyup)="calculateGrossIncome($event)"
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['lifeAssurance'].errors }"
               />
               <div
@@ -546,6 +542,74 @@
                 </div>
               </div>
             </div>
+
+            <div class="form-group col-md-6">
+              <label for="ltg">LTG</label>
+              <input
+                type="text"
+                formControlName="ltg"
+                class="form-control"
+                placeholder="LTG"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['ltg'].errors }"
+              />
+              <div
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['ltg'].errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls['ltg'].errors['pattern']"
+                >
+                  LTG must be numbers with only two digits allowed
+                  after the decimal
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="meal">Meal</label>
+              <input
+                type="text"
+                formControlName="meal"
+                class="form-control"
+                placeholder="Meal"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['meal'].errors }"
+              />
+              <div
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['meal'].errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls['meal'].errors['pattern']"
+                >
+                  Meal must be numbers with only two digits allowed
+                  after the decimal
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="utility">utility</label>
+              <input
+                type="text"
+                formControlName="utility"
+                class="form-control"
+                placeholder="utility"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['utility'].errors }"
+              />
+              <div
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['utility'].errors"
+                class="text-danger"
+              >
+                <div
+                  *ngIf="addEmployeeForm.controls['utility'].errors['pattern']"
+                >
+                  utility must be numbers with only two digits allowed
+                  after the decimal
+                </div>
+              </div>
+            </div>
+
+
           </div>
   
           <div class="form-row">
@@ -561,7 +625,7 @@
                 id="nin"
                 placeholder="Enter NIN"
                 maxlength="11"
-                (keyup)="changeTinPhoneNinBvnStatus()"
+              
                 [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nin'].errors || addEmployeeForm.touched && validateCacTin }"
               />
               <div
