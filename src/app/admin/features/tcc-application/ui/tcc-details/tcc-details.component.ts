@@ -106,7 +106,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     } as ProcessTccInterface
 
     if (empId) {
-      // payload.employeeIds = [parseInt(empId)]
+      payload.employeeIds = [parseInt(empId)]
     } else {
       payload = {
         ...payload,
@@ -120,14 +120,17 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.dataLoading.set(false)
         if (res.status) {
+          this.employeeIds.set([])
           Swal.fire(SweetAlertOptions(res?.message, true))
           window.location.reload()
         } else {
+          this.employeeIds.set([])
           this.dataLoading.set(false)
           Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
+        this.employeeIds.set([])
         this.dataLoading.set(false)
         Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
       },
