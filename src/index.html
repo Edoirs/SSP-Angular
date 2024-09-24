@@ -36,12 +36,11 @@
   <link rel="stylesheet" type="text/css" href="assets/dist/css/nresponsive.css">
 
 
-
-  <!-- <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css"> -->
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" id="school-body">
 
@@ -58,6 +57,7 @@
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.js"></script>
 
@@ -75,7 +75,7 @@
 
 
 <noscript><meta http-equiv="refresh" content="0;url=errPage.html"></noscript>
-<script type = "text/javascript" >
+<!-- <script type = "text/javascript" >
     function burstCache() {
     if (!navigator.onLine) {
         document.body.innerHTML = 'Loading...';
@@ -84,7 +84,7 @@
 
     }
      burstCache();
-</script>
+</script> -->
 
 <script>
   jQuery(document).ready(function($){
@@ -93,6 +93,10 @@ $('nav-link').on('click', function(){
         $("#menu-icon").removeClass("active");
     });
     });
+</script>
+
+<script>
+  $('ul').Treeview()
 </script>
 
 <script type="text/javascript">
