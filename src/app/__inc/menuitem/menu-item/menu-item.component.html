@@ -2,7 +2,11 @@
   @if (data().children?.length) {
   <a class="paye-nav-item" (click)="toggleMenu()">
     <div class="paye-nav-item-text">
-      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      @if (!data().faIconType) {
+        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      } @else {
+        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+      }
       <p>
         {{ data().name }}
       </p>
@@ -16,7 +20,11 @@
   }@else {
   <a [routerLink]="data().url" [routerLinkActive]="['active']">
     <div class="paye-nav-item-text">
-      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      @if (!data().faIconType) {
+        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      } @else {
+        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+      }
       <p>
         {{ data().name }}
       </p>
@@ -30,7 +38,11 @@
     @for (menu of data().children; track $index) {
       <a [routerLink]="menu.url" [routerLinkActive]="['active']">
         <div class="paye-nav-item-text">
-          <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
+          @if (data().faIconType === 'solid') {
+            <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
+          } @else {
+            <i class="nav-icon far" [ngClass]="menu.faIcon"></i>
+          }
           <p>
             {{ menu.name }}
           </p>

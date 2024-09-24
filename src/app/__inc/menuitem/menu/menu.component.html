@@ -1,62 +1,13 @@
 <nav class="menu-items">
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-    <li class="nav-item menu-open">
-      <a [routerLink]="['/admin', 'dashboard']" [routerLinkActive]="['active']" class="nav-link">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Dashboard</p>
-      </a>
-    </li>
+    <app-menu-item [data]="menuList[0]" />
+    
+    <app-menu-item [data]="menuList[1]" />
 
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/admin', 'businesses']" [routerLinkActive]="['active']">
-        <i class="nav-icon fas fa-building"></i>
-        <p>
-          Businesses
-        </p>
-      </a>
-    </li>
+    <app-menu-item [data]="menuList[2]" />
 
-
-    <li class="nav-item">
-      <a class="nav-link treeview">
-        <i class="nav-icon fas fa-file-invoice"></i>
-        <p>
-          Monthly Remittance
-          <i class="fas fa-angle-left right"></i>
-        </p>
-      </a>
-
-      <ul class="nav nav-treeview" style="display: none;">
-
-        <li class="nav-item">
-          <a [routerLink]="['admin', 'employee-schedule']" [routerLinkActive]="['active']" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Employees</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['/admin', 'deleted-employees']" [routerLinkActive]="['active']" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Deleted Employees</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['/admin', 'schedules']" [routerLinkActive]="['active']" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Schedules</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['/admin', 'assessments']" [routerLinkActive]="['active']" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Assessments</p>
-          </a>
-        </li>
-
-      </ul>
-
-    </li>
+    <app-menu-item [data]="menuList[3]" />
 
     <li class="nav-item">
       <a class="nav-link treeview">
