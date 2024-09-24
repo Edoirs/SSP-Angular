@@ -52,7 +52,9 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
   anyEmployeeActive = computed(
     () =>
-      !!this.employeeDetails()?.find((employee) => employee.status === "active")
+      !!this.employeeDetails()?.find(
+        (employee) => employee?.status?.toLowerCase() === "active"
+      )
   )
   dataLoading = signal(false)
   btnLoading = signal(false)
