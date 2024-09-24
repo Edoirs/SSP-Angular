@@ -59,6 +59,7 @@ import {MatPaginatorModule} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
 import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
 import {ExportAsModule} from "ngx-export-as"
+import {MenuItemComponent} from "./__inc/menuitem/menu-item/menu-item.component"
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import {ExportAsModule} from "ngx-export-as"
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    MenuItemComponent,
     NgxUiLoaderModule,
     FormsModule,
     DataTablesModule,

@@ -1,0 +1,42 @@
+<section class="paye-nav">
+  @if (data().children?.length) {
+  <a class="paye-nav-item" (click)="toggleMenu()">
+    <div class="paye-nav-item-text">
+      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      <p>
+        {{ data().name }}
+      </p>
+    </div>
+    <div class="paye-nav-item-icon">
+      <i #menuIcon id="arrow-indicator" class="fas fa-angle-left right" [ngStyle]="{
+        'transform': openMenu() ? 'rotate(270deg)' : 'rotate(0)'
+      }"></i>
+    </div>
+  </a>
+  }@else {
+  <a [routerLink]="data().url" [routerLinkActive]="['active']">
+    <div class="paye-nav-item-text">
+      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      <p>
+        {{ data().name }}
+      </p>
+    </div>
+  </a>
+  }
+</section>
+
+@if (openMenu()) {
+  <section #subMenu class="paye-nav-child">
+    @for (menu of data().children; track $index) {
+      <a [routerLink]="menu.url" [routerLinkActive]="['active']">
+        <div class="paye-nav-item-text">
+          <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
+          <p>
+            {{ menu.name }}
+          </p>
+        </div>
+      </a>
+    }
+  </section>
+}
+

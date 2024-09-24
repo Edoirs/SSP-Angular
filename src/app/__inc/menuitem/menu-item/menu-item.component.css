@@ -1,0 +1,31 @@
+:host{
+    position: relative;
+    margin-right: 12px;
+}
+
+a{
+    width: 100%;
+}
+
+.paye-nav i,p, .paye-nav-child i,p{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.paye-nav a, .paye-nav-child a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    color: green;
+}
+
+.paye-nav-child a{
+    padding-left: 26px;
+}
+
+.paye-nav-item-text{
+    display: inline-flex;
+    gap: 24px;
+    align-items: center;
+}
