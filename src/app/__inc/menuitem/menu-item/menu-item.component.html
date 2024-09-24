@@ -2,29 +2,33 @@
   @if (data().children?.length) {
   <a class="paye-nav-item" (click)="toggleMenu()">
     <div class="paye-nav-item-text">
-      @if (!data().faIconType) {
-        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      @if (data().faIcon) { @if (!data().faIconType) {
+      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
       } @else {
-        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
-      }
+      <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+      } }
       <p>
         {{ data().name }}
       </p>
     </div>
     <div class="paye-nav-item-icon">
-      <i #menuIcon id="arrow-indicator" class="fas fa-angle-left right" [ngStyle]="{
-        'transform': openMenu() ? 'rotate(270deg)' : 'rotate(0)'
-      }"></i>
+      <i
+        #menuIcon
+        id="arrow-indicator"
+        class="fas fa-angle-left right"
+        [ngStyle]="{
+          transform: openMenu() ? 'rotate(270deg)' : 'rotate(0)'
+        }"></i>
     </div>
   </a>
   }@else {
   <a [routerLink]="data().url" [routerLinkActive]="['active']">
     <div class="paye-nav-item-text">
-      @if (!data().faIconType) {
-        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+      @if (data().faIcon) { @if (!data().faIconType) {
+      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
       } @else {
-        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
-      }
+      <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+      } }
       <p>
         {{ data().name }}
       </p>
@@ -34,21 +38,20 @@
 </section>
 
 @if (openMenu()) {
-  <section #subMenu class="paye-nav-child">
-    @for (menu of data().children; track $index) {
-      <a [routerLink]="menu.url" [routerLinkActive]="['active']">
-        <div class="paye-nav-item-text">
-          @if (data().faIconType === 'solid') {
-            <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
-          } @else {
-            <i class="nav-icon far" [ngClass]="menu.faIcon"></i>
-          }
-          <p>
-            {{ menu.name }}
-          </p>
-        </div>
-      </a>
-    }
-  </section>
+<section #subMenu class="paye-nav-child">
+  @for (menu of data().children; track $index) {
+  <a [routerLink]="menu.url" [routerLinkActive]="['active']">
+    <div class="paye-nav-item-text">
+      @if (data().faIconType === 'solid') {
+      <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
+      } @else {
+      <i class="nav-icon far" [ngClass]="menu.faIcon"></i>
+      }
+      <p>
+        {{ menu.name }}
+      </p>
+    </div>
+  </a>
+  }
+</section>
 }
-
