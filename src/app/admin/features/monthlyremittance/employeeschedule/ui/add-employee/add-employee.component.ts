@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -30,6 +31,7 @@ import {
 import {MatSnackBar} from "@angular/material/snack-bar"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {combineLatest, forkJoin, Observable, of, Subject} from "rxjs"
 
 @Component({
   selector: "app-add-employee",
@@ -49,6 +51,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   loading = signal(false)
   message = signal("")
+
+  totalOtherIncome = signal(0)
+  totalGrossIncome = signal(0)
+  checkTotal$ = new Subject<boolean>()
 
   grossIncomeIncorrect!: boolean
   validateCacTin!: boolean
@@ -199,8 +205,13 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     // taxYear: new FormControl(""),
   })
 
+  constructor() {
+    this.checkTotalIncome()
+  }
+
   ngOnInit(): void {
     this.getStateLocalGovts()
+    this.groupComputations()
   }
 
   ngOnDestroy(): void {
@@ -209,6 +220,35 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.dialogRef.close()
+  }
+
+  get basic() {
+    return this.addEmployeeForm.get("basic")
+  }
+
+  get rent() {
+    return this.addEmployeeForm.get("rent")
+  }
+
+  get transport() {
+    return this.addEmployeeForm.get("transport")
+  }
+
+  get otherIncome() {
+    return this.addEmployeeForm.get("otherIncome")
+  }
+
+  get pension() {
+    return this.addEmployeeForm.get("pension")
+  }
+  get nhf() {
+    return this.addEmployeeForm.get("nhf")
+  }
+  get nhis() {
+    return this.addEmployeeForm.get("nhis")
+  }
+  get LifeAssurance() {
+    return this.addEmployeeForm.get("lifeAssurance")
   }
 
   changeTinPhoneNinBvnStatus() {
@@ -250,6 +290,57 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       },
     })
   }
+
+  sumTotalIncome() {
+    this.subs.add = combineLatest({
+      basic: this.basic!.valueChanges || of(0),
+      rent: this.rent!.valueChanges || of(0),
+      transport: this.transport!.valueChanges || of(0),
+      otherIncome: this.otherIncome!.valueChanges || of(0),
+    }).subscribe(({basic, rent, transport, otherIncome}) => {
+      const sum =
+        parseInt(<string>basic) +
+        parseInt(<string>rent) +
+        parseInt(<string>transport) +
+        parseInt(<string>otherIncome)
+      this.totalOtherIncome.set(sum)
+    })
+  }
+
+  sumGrossIncome() {
+    this.subs.add = combineLatest({
+      pension: this.pension!.valueChanges || of(0),
+      nhf: this.nhf!.valueChanges || of(0),
+      nhis: this.nhis!.valueChanges || of(0),
+      LifeAssurance: this.LifeAssurance!.valueChanges || of(0),
+      checkTotalIncome: this.checkTotal$,
+    }).subscribe(({pension, nhf, nhis, LifeAssurance}) => {
+      const sum =
+        this.totalOtherIncome() +
+        parseInt(<string>pension) +
+        parseInt(<string>nhf) +
+        parseInt(<string>nhis) +
+        parseInt(<string>LifeAssurance)
+      this.totalGrossIncome.set(sum)
+    })
+  }
+
+  groupComputations() {
+    this.sumTotalIncome()
+    this.sumGrossIncome()
+  }
+
+  checkTotalIncome = () =>
+    effect(
+      () => {
+        if (this.totalOtherIncome()) {
+          this.checkTotal$.next(true)
+        }
+      },
+      {
+        allowSignalWrites: true,
+      }
+    )
 
   onSubmit() {
     const payload = {

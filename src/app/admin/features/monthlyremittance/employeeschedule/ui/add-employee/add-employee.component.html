@@ -47,7 +47,7 @@
                 >
               </label>
               <input
-                type="text"
+                type="number"
                 formControlName="basic"
                 class="form-control"
                 
@@ -107,7 +107,7 @@
                 > -->
               </label>
               <input
-                type="text"
+                type="number"
                 formControlName="rent"
                 class="form-control"
                 placeholder="Rent"
@@ -166,7 +166,7 @@
                 > -->
               </label>
               <input
-                type="text"
+                type="number"
                 formControlName="transport"
                 class="form-control"
                 
@@ -229,7 +229,7 @@
                 > -->
               </label>
               <input
-                type="text"
+                type="number"
                 formControlName="otherIncome"
                 class="form-control"
                 
@@ -254,7 +254,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="otherName"
-                >Other Name
+                >Other Names
                 <!-- <sup class="ml-1 font-wegiht-bold text-danger">*</sup> -->
               </label>
               <input
@@ -280,35 +280,20 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group col-md-6">
-              <label for="totalIncome"
-                >Total Income<sup
-                  style="font-weight: 800"
-                  class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                >
+              <label for="otherName"
+                >Total Income(Basic + Rent + Transport + Others)*
+                <!-- <sup class="ml-1 font-wegiht-bold text-danger">*</sup> -->
               </label>
               <input
-                type="text"
-                formControlName="totalIncome"
+                type="number"
                 class="form-control"
-                placeholder="Total Income"
-                [attr.disabled]="true"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['totalIncome'].errors }"
+                [value]="totalOtherIncome()"
+                disabled
               />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['totalIncome'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="addEmployeeForm.controls['totalIncome'].errors['required']">
-                  Total Income required
-                </div>
-                <div *ngIf="addEmployeeForm.controls['totalIncome'].errors['pattern']">
-                  Total Income must be Number with only two digits allowed after
-                  the decimal
-                </div>
-              </div>
             </div>
+
           </div>
   
           <div class="form-row">
@@ -351,7 +336,7 @@
             <div class="form-group col-md-6">
               <label for="pension">Pension</label>
               <input
-                type="text"
+                type="number"
                 formControlName="pension"
                 class="form-control"
                 placeholder="Pension"
@@ -406,7 +391,7 @@
             <div class="form-group col-md-6">
               <label for="NHF">National Housing Fund (NHF)</label>
               <input
-                type="text"
+                type="number"
                 formControlName="nhf"
                 class="form-control"
                 placeholder="National Housing Fund"
@@ -464,7 +449,7 @@
             <div class="form-group col-md-6">
               <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
               <input
-                type="text"
+                type="number"
                 formControlName="nhis"
                 class="form-control"
                 placeholder="National Health Insurance Scheme"
@@ -485,7 +470,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="jtbtn"
-                >Employee JTB-TIN <span class="note-color">**</span></label
+                >JTB-TIN <span class="note-color">**</span></label
               >
               <input
                 type="text"
@@ -524,7 +509,7 @@
             <div class="form-group col-md-6">
               <label for="lifeAssurance">Life Assurance</label>
               <input
-                type="text"
+                type="number"
                 formControlName="lifeAssurance"
                 class="form-control"
                 placeholder="Life Assurance"
@@ -543,7 +528,7 @@
               </div>
             </div>
 
-            <div class="form-group col-md-6">
+            <!-- <div class="form-group col-md-6">
               <label for="ltg">LTG</label>
               <input
                 type="text"
@@ -607,7 +592,7 @@
                   after the decimal
                 </div>
               </div>
-            </div>
+            </div> -->
 
 
           </div>
@@ -648,33 +633,16 @@
             </div>
             <div class="form-group col-md-6">
               <label for="grossIncome"
-                >Gross Income<sup class="ml-1 font-wegiht-bold text-danger"
+                >Gross Income(Total Income + Pension + NHF + NHIS + Life Assurance)<sup class="ml-1 font-wegiht-bold text-danger"
                   >*</sup
                 ></label
               >
               <input
-                type="text"
-                formControlName="grossIncome"
+                type="number"
                 class="form-control"
-                placeholder="Gross Income"
-                [attr.disabled]="true"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['grossIncome'].errors || grossIncomeIncorrect }"
+                [value]="totalGrossIncome()"
+                disabled
               />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['grossIncome'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="addEmployeeForm.controls['grossIncome'].errors['required']">
-                  Gross Income is required
-                </div>
-                <div *ngIf="addEmployeeForm.controls['grossIncome'].errors!['pattern']">
-                  Gross must be numbers with only two digits allowed after the
-                  decimal
-                </div>
-              </div>
-              <div *ngIf="grossIncomeIncorrect" class="text-danger">
-                <div>Gross Income cannot be less than or equal to zero</div>
-              </div>
             </div>
           </div>
   
@@ -757,31 +725,7 @@
           </div>
   
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="nationality"
-                >Nationality<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                ></label
-              >
-              <input
-                type="text"
-                formControlName="nationality"
-                class="form-control"
-                placeholder="Nationality"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nationality'].errors }"
-              />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['nationality'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="addEmployeeForm.controls['nationality'].errors['required']">
-                  Nationality is required
-                </div>
-                <div *ngIf="addEmployeeForm.controls['nationality'].errors['pattern']">
-                  Nationality must be numbers only
-                </div>
-              </div>
-            </div>
+
             <div class="form-group col-md-6">
               <label for="designation"
                 >Designation<sup class="ml-1 font-wegiht-bold text-danger"
@@ -809,6 +753,32 @@
                   *ngIf="addEmployeeForm.controls['designation'].errors!['maxLength']"
                 >
                   Designation must be at most 40 characters
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="nationality"
+                >Nationality<sup class="ml-1 font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="text"
+                formControlName="nationality"
+                class="form-control"
+                placeholder="Nationality"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nationality'].errors }"
+              />
+              <div
+                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['nationality'].errors"
+                class="text-danger"
+              >
+                <div *ngIf="addEmployeeForm.controls['nationality'].errors['required']">
+                  Nationality is required
+                </div>
+                <div *ngIf="addEmployeeForm.controls['nationality'].errors['pattern']">
+                  Nationality must be numbers only
                 </div>
               </div>
             </div>
