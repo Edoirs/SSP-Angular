@@ -45,7 +45,7 @@
         <button
           type="submit"
           class=""
-          [disabled]="file == null"
+          [disabled]="file() == null || loading()"
         >
           Upload File
         </button>

@@ -41,7 +41,7 @@ export class EmployeeScheduleService {
       },
     }
     return this.httpClient.post<any>(
-      `${environment.AUTHAPIURL}FormH3/UploadFormH3`,
+      `${environment.AUTHAPIURL}FormH3/UploadMonthly`,
       formData,
       config
     )

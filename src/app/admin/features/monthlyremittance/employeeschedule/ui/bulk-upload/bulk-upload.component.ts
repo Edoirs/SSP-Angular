@@ -27,6 +27,7 @@ import {environment} from "@environment/environment"
 import {Router} from "@angular/router"
 import {BusinessesResInterface} from "../../data-access/employee-schedule.model"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-bulk-upload",
@@ -69,14 +70,16 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
-  closeModal() {
-    this.dialogRef.close()
+  reloadWindow() {
+    return timer(3000).subscribe(() => {
+      window.location.reload()
+    })
   }
 
   onFileChange(event: any) {
     //Validate file extension
     if (
-      !this.utilityService.validFileExtension(event.target.files, [
+      !this.utilityService.validFileExtension(event.target?.files, [
         "xls",
         "xlsx",
       ])
@@ -91,11 +94,11 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
       return false
     }
 
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0]
-      this.file.set(event.target.files[0])
-      this.filePath.set(event.target.files[0].name)
-      this.uploadForm.get("file")?.setValue(file)
+    if (event?.target?.files?.length > 0) {
+      const file = event.target?.files[0]
+      this.file.set(event.target?.files[0])
+      this.filePath.set(event.target.files[0]?.name)
+      // this.uploadForm.get("file")?.setValue(file)
     }
     return true
   }
@@ -108,28 +111,35 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     formData.append("BusinessId", this.injectedData.businessId.toString())
     formData.append("CompanyId", this.injectedData.companyId.toString())
 
-    if (this.file())
+    if (this.file()) {
+      this.loading.set(true)
       this.subs.add = this.employeeScheduleService
         .bulkEmployeeUpload(formData)
         .subscribe({
           next: (res) => {
-            this.uploadForm.reset()
             if (res.status == true) {
+              this.loading.set(false)
+              this.file.set(null)
+              this.uploadForm.reset()
+              this.subs.add = this.reloadWindow()
               if (res.message === "0 Employees created; 0 updated.") {
                 Swal.fire(
                   SweetAlertOptions("Confirm the file content and try again")
                 )
               } else {
+                this.subs.add = this.reloadWindow()
                 Swal.fire(SweetAlertOptions(res?.message, true))
                 this.router.navigate(["/admin", "employee-schedule"])
               }
             } else {
+              this.loading.set(false)
               if (res.response == null) {
                 Swal.fire(SweetAlertOptions(res?.message))
               }
             }
           },
           error: (err) => {
+            this.loading.set(false)
             console.error(err)
             Swal.fire(
               SweetAlertOptions(
@@ -139,6 +149,10 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
               )
             )
           },
+          complete: () => {
+            this.loading.set(false)
+          },
         })
+    }
   }
 }
