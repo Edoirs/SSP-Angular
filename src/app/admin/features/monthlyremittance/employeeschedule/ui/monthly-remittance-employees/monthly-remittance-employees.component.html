@@ -6,7 +6,7 @@
 
     <div>
       <button class="btn btn-outline-success" (click)="downloadPdf()" [disabled]="btnLoading()">
-        Excel
+        PDF
       </button>
     </div>
 
@@ -112,7 +112,7 @@
                 }"
                 (change)="
                   switchStatus($event, employee.employeeRin)
-                " [disabled]="employee.status.toLowerCase() !== 'active'"></ng-toggle>
+                " />
             </td>
           </tr>
           } @empty {

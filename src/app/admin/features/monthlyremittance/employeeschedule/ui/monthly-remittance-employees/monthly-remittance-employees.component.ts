@@ -146,7 +146,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
-      activeDet: 0,
+      active: false,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
@@ -169,13 +169,12 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   switchStatus(event: any, employeeRin?: string) {
-    const status = event.target.checked
-    if (status) return
+    const status = event.target.checked as boolean
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
       ...(employeeRin && {employeeRin}),
-      activeDet: status ? 1 : 0,
+      active: status,
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")
