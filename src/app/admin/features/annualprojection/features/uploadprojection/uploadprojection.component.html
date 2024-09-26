@@ -14,6 +14,7 @@
         <div class="card-header custome">
           <h3 class="card-title">List of Businesses</h3>
         </div>
+
         <!-- /.card-header -->
         <div class="card-body">
 
@@ -184,6 +185,27 @@
         </div>
       </form>
 
+      <div class="header-btn">
+    
+        <button
+          type="button"
+          class="btn btn-outline-success role float-right mx-2"
+          style="font-size: 12px; padding: 5px; margin-top: -3px"
+          (click)="markAllEmployeeInActive()" [disabled]="btnLoading()"
+          >
+          Mark All Inactive
+        </button>
+
+        <button
+        *ngIf="apidataEmpty"
+        type="submit"
+        (click)="fileFormH3(fileFormH3Modal)"
+        [disabled]="annualReturnsData == null"
+        class="btn btn button-login" style="border: 1px solid;">
+        <i class="fas fa-plus-square"></i> Forward Schedule
+      </button>
+      </div>
+
       <div>
         <table class="table table-bordered table-condensed" *ngIf="annualReturnsData" datatable [dtOptions]="dtOptions"
         width="100%">
@@ -201,7 +223,7 @@
             <th>Months</th>
 
             <th>Edit</th>
-            <th>Delete</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -229,9 +251,14 @@
               </button>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-success" (click)="deleteAnnualReturn(mydata.id)">
-                <i class="nav-icon far fa-trash-alt"></i>
-              </button>
+              <ng-toggle
+              [color]="{
+                unchecked: '#939da2',
+                checked: '#00773B'
+              }"
+              (change)="
+                switchStatus($event, mydata.id)
+              " />
             </td>
           </tr>
         </tbody>
@@ -242,14 +269,6 @@
   </div>
 
   <div class="modal-footer">
-    <button
-        *ngIf="apidataEmpty"
-        type="submit"
-        (click)="fileFormH3(fileFormH3Modal)"
-        [disabled]="annualReturnsData == null"
-        class="btn btn button-login" style="border: 1px solid;">
-        <i class="fas fa-plus-square"></i> File Form H3
-      </button>
 
     <button type="button" class="btn btn-outline-dark button-login float-right" (click)="modal.close('Save click')">
       Ok
