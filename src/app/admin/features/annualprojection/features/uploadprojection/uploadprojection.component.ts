@@ -699,6 +699,7 @@ export class UploadprojectionComponent implements OnInit {
       companyRin: this.companyRIN,
       businessRin: this.corporateForm.value.businessID,
       active: false,
+      source: "formh3",
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
@@ -727,6 +728,7 @@ export class UploadprojectionComponent implements OnInit {
       businessRin: this.corporateForm.value.businessID,
       ...(employeeRin && {employeeRin}),
       active: status,
+      source: "formh3",
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")

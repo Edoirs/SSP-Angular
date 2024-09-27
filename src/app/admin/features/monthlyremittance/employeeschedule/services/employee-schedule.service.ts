@@ -61,7 +61,7 @@ export class EmployeeScheduleService {
 
   addEmployee(payload: EmployeeModel.AddEmployeeInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseII/AddEmployee`,
+      `${environment.AUTHAPIURL}Employee/AddEmployee`,
       payload
     )
   }

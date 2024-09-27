@@ -147,6 +147,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
       active: false,
+      source: "monthly",
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
@@ -175,6 +176,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       businessRin: this.injectedData.businessRin,
       ...(employeeRin && {employeeRin}),
       active: status,
+      source: "monthly",
     } as MarkEmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")

@@ -23,7 +23,6 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import Swal from "sweetalert2"
 import {UtilityService} from "src/app/utility.service"
-import {environment} from "@environment/environment"
 import {Router} from "@angular/router"
 import {BusinessesResInterface} from "../../data-access/employee-schedule.model"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
@@ -53,10 +52,6 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
   message = signal("")
 
   columnError = signal<string[]>([])
-
-  sampleFile = signal(
-    `${environment.SAMPLE_FILE_URL}employee-schedule-template.xlsx`
-  )
 
   subs = new SubscriptionHandler()
 

@@ -26,6 +26,7 @@ export interface EmployeeDetailResInterface {
 }
 
 export interface MarkEmployeeInterface {
+  source: "formh3" | "monthly"
   businessRin: string
   companyRin: string
   employeeRin?: string
@@ -50,34 +51,35 @@ export interface EditEmployeeIncomeInterface {
 }
 
 export interface AddEmployeeInterface {
-  businessRin: string
-  companyRin: string
-  title: string
-  firstname: string
-  surname: string
-  othername: string
-  phonenumber: string
+  bvn: string
+  taxpayer_id: string
+  tin: string
   email: string
-  employeeRin: string
-  jtbtin: string
-  nin: string
-  nationality: string
-  homeaddress: string
   designation: string
-  lgaCode: string
-  zipCode: string
-  basic: number
-  rent: number
-  transport: number
-  otherIncome: number
-  nhf: number
+  title: string
+  first_name: string
+  last_name: string
+  other_name: string
+  nationality: string
+  gross_income: string
   nhis: number
+  nhf: number
   pension: number
-  lifeAssurance: number
-  ltg: number
-  meal: number
-  utility: number
-  startMonth: string
+  basic: number
+  transport: number
+  rent: number
+  zip_code: string
+  other_income: number
+  phone: string
+  start_month: string
+  corporate_id: number
+  home_address: string
+  life_assurance: number
+  lga_code: number
+  nin: string
+  source: "monthly" | "formh3"
+  asset_id: string
+  business_id: number
 }
 
 export interface GetScheduleByDateInterface {
