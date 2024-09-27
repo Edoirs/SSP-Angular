@@ -65,21 +65,21 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   subs = new SubscriptionHandler()
 
   addEmployeeForm = new FormGroup({
-    firstname: new FormControl("", {
+    first_name: new FormControl("", {
       validators: [
         Validators.required,
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
         Validators.maxLength(30),
       ],
     }),
-    surname: new FormControl("", {
+    last_name: new FormControl("", {
       validators: [
         Validators.required,
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
         Validators.maxLength(30),
       ],
     }),
-    othername: new FormControl("", {
+    other_name: new FormControl("", {
       validators: [
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
         Validators.maxLength(30),
@@ -94,37 +94,29 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
       ],
     }),
-    zipCode: new FormControl("", {validators: [Validators.required]}),
+    zip_code: new FormControl("", {validators: [Validators.required]}),
     nationality: new FormControl("Nigerian", {
       validators: [
         Validators.required,
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
       ],
     }),
-    startMonth: new FormControl("01", {validators: [Validators.required]}),
+    start_month: new FormControl("01", {validators: [Validators.required]}),
     nhf: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
     nhis: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    jtbtn: new FormControl("0", {
-      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
+    tin: new FormControl("0", {
+      validators: [
+        Validators.pattern(EmployeeUtils.PositiveNumberRegex),
+        Validators.minLength(6),
+        Validators.maxLength(10),
+      ],
     }),
     pension: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
-    }),
-    grossIncome: new FormControl("", {
-      validators: [
-        Validators.required,
-        Validators.pattern(EmployeeUtils.PositiveNumberRegex),
-      ],
-    }),
-    totalIncome: new FormControl("", {
-      validators: [
-        Validators.required,
-        Validators.pattern(EmployeeUtils.PositiveNumberRegex),
-      ],
     }),
     basic: new FormControl("0", {
       validators: [
@@ -138,19 +130,13 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     ltg: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    meal: new FormControl("0", {
-      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
-    }),
-    utility: new FormControl("0", {
-      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
-    }),
     transport: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    otherIncome: new FormControl("0", {
+    other_income: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    lifeAssurance: new FormControl("0", {
+    life_assurance: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
     bvn: new FormControl("", {
@@ -167,14 +153,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(11),
       ],
     }),
-    // employeeTIN: new FormControl("", {
-    //   validators: [
-    //     Validators.pattern(EmployeeUtils.CardIdRegex),
-    //     Validators.minLength(10),
-    //     Validators.maxLength(10),
-    //   ],
-    // }),
-    phonenumber: new FormControl("", {
+    phone: new FormControl("", {
       validators: [
         Validators.required,
         Validators.pattern(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/),
@@ -182,7 +161,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(11),
       ],
     }),
-    existingTaxId: new FormControl("", {
+    taxpayer_id: new FormControl("", {
       validators: [Validators.minLength(11), Validators.maxLength(11)],
     }),
     designation: new FormControl("", {
@@ -192,17 +171,14 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(40),
       ],
     }),
-    homeaddress: new FormControl("", {
+    home_address: new FormControl("", {
       validators: [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(150),
       ],
     }),
-    lgaCode: new FormControl("", {validators: [Validators.required]}),
-    NSIRSTaxPayerID: new FormControl(""),
-    // CRA: new FormControl(""),
-    // taxYear: new FormControl(""),
+    lga_code: new FormControl("", {validators: [Validators.required]}),
   })
 
   constructor() {
@@ -235,7 +211,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   get otherIncome() {
-    return this.addEmployeeForm.get("otherIncome")
+    return this.addEmployeeForm.get("other_income")
   }
 
   get pension() {
@@ -248,7 +224,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     return this.addEmployeeForm.get("nhis")
   }
   get LifeAssurance() {
-    return this.addEmployeeForm.get("lifeAssurance")
+    return this.addEmployeeForm.get("life_assurance")
   }
 
   changeTinPhoneNinBvnStatus() {
@@ -343,20 +319,25 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     )
 
   onSubmit() {
+    this.loading.set(true)
     const payload = {
       ...this.addEmployeeForm.value,
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      business_id: this.injectedData.businessId,
+      corporate_id: this.injectedData.companyId,
+      source: "monthly",
     } as Partial<AddEmployeeInterface>
     if (this.addEmployeeForm.valid)
       this.subs.add = this.employeeScheduleService
         .addEmployee(payload as AddEmployeeInterface)
         .subscribe({
           next: (res) => {
+            this.loading.set(false)
             if (res.status) return window.location.reload()
             Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
+            this.loading.set(false)
+
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
