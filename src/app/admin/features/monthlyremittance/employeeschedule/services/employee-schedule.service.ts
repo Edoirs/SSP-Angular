@@ -87,11 +87,11 @@ export class EmployeeScheduleService {
     )
   }
 
-  async downloadEmployeePdf(
+  async downloadEmployeePdfMonthly(
     payload: EmployeeModel.DownloadEmployeePdfInterface
   ) {
     const response = await axios.post(
-      `${environment.AUTHAPIURL}PhaseII/DownLoadPDF`,
+      `${environment.AUTHAPIURL}PhaseII/DownLoadPDFMonthly`,
       payload,
       {
         headers: {

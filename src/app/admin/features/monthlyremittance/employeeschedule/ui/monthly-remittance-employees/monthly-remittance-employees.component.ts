@@ -202,7 +202,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
     try {
       this.btnLoading.set(false)
-      const pdf = await this.employeeScheduleService.downloadEmployeePdf(
+      const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
         payload
       )
       window.open(pdf, "_blank", "download")
