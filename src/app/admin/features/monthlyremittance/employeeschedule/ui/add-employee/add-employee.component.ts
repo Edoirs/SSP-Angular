@@ -31,7 +31,7 @@ import {
 import {MatSnackBar} from "@angular/material/snack-bar"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
-import {combineLatest, forkJoin, Observable, of, Subject} from "rxjs"
+import {combineLatest, forkJoin, Observable, of, Subject, timer} from "rxjs"
 
 @Component({
   selector: "app-add-employee",
@@ -94,7 +94,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
       ],
     }),
-    zip_code: new FormControl("", {validators: [Validators.required]}),
+    zip_code: new FormControl("", {
+      validators: [Validators.required],
+    }),
     nationality: new FormControl("Nigerian", {
       validators: [
         Validators.required,
@@ -125,9 +127,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       ],
     }),
     rent: new FormControl("0", {
-      validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
-    }),
-    ltg: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
     transport: new FormControl("0", {
@@ -324,6 +323,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       ...this.addEmployeeForm.value,
       business_id: this.injectedData.businessId,
       corporate_id: this.injectedData.companyId,
+      lga_code: parseInt(this.addEmployeeForm.value?.lga_code as string),
+      zip_code: this.addEmployeeForm.value?.zip_code?.toString(),
+      phone: this.addEmployeeForm.value?.phone?.toString(),
       source: "monthly",
     } as Partial<AddEmployeeInterface>
     if (this.addEmployeeForm.valid)
@@ -332,7 +334,12 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.loading.set(false)
-            if (res.status) return window.location.reload()
+            if (res.status) {
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.subs.add = timer(5000).subscribe(() =>
+                window.location.reload()
+              )
+            }
             Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {

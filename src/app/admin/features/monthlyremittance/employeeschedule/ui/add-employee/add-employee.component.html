@@ -303,7 +303,7 @@
                 <sup class="ml-1 font-wegiht-bold text-danger">*</sup>
               </label>
               <input
-                type="text"
+                type="number"
                 maxlength="11"
                 formControlName="phone"
                 class="form-control"
@@ -528,73 +528,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="form-group col-md-6">
-              <label for="ltg">LTG</label>
-              <input
-                type="text"
-                formControlName="ltg"
-                class="form-control"
-                placeholder="LTG"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['ltg'].errors }"
-              />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['ltg'].errors"
-                class="text-danger"
-              >
-                <div
-                  *ngIf="addEmployeeForm.controls['ltg'].errors['pattern']"
-                >
-                  LTG must be numbers with only two digits allowed
-                  after the decimal
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="meal">Meal</label>
-              <input
-                type="text"
-                formControlName="meal"
-                class="form-control"
-                placeholder="Meal"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['meal'].errors }"
-              />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['meal'].errors"
-                class="text-danger"
-              >
-                <div
-                  *ngIf="addEmployeeForm.controls['meal'].errors['pattern']"
-                >
-                  Meal must be numbers with only two digits allowed
-                  after the decimal
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="utility">utility</label>
-              <input
-                type="text"
-                formControlName="utility"
-                class="form-control"
-                placeholder="utility"
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['utility'].errors }"
-              />
-              <div
-                *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['utility'].errors"
-                class="text-danger"
-              >
-                <div
-                  *ngIf="addEmployeeForm.controls['utility'].errors['pattern']"
-                >
-                  utility must be numbers with only two digits allowed
-                  after the decimal
-                </div>
-              </div>
-            </div> -->
-
 
           </div>
   

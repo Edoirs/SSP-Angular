@@ -205,7 +205,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
         payload
       )
-      window.open(pdf, "_blank", "download")
+      window.open(pdf, "_blank")
     } catch (err: any) {
       console.log({err})
       this.btnLoading.set(false)

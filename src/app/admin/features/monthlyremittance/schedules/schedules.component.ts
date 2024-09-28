@@ -777,7 +777,12 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
         if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.scheduleService
-          .getSchedules(this.pageIndex(), this.pageSize(), this.queryString())
+          .getSchedules(
+            this.tokenService.getLoginResData.companyId.toString(),
+            this.pageIndex(),
+            this.pageSize(),
+            this.queryString()
+          )
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)
