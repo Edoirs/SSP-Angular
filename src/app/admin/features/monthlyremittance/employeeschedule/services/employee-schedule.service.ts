@@ -12,8 +12,10 @@ export class EmployeeScheduleService {
   private readonly httpClient = inject(HttpClient)
   private readonly tokenService = inject(TokenService)
 
-  getEmployees(pageNumber = 1, pageSize = 15) {
-    const params = new HttpParams({fromObject: {pageNumber, pageSize}})
+  getEmployees(pageNumber: number, pageSize = 15) {
+    const params = new HttpParams({
+      fromObject: {pageNumber: pageNumber + 1, pageSize},
+    })
     return this.httpClient.get<
       ServerResInterface<EmployeeModel.EmployeeScheduleResInterface>
     >(`${environment.AUTHAPIURL}PhaseII/GetallBusinessEmployees`, {params})
@@ -22,11 +24,11 @@ export class EmployeeScheduleService {
   getEmployeeDetails(
     businessId: string,
     companyId: string,
-    pageNumber = 1,
+    pageNumber: number,
     pageSize = 15
   ) {
     const params = new HttpParams({
-      fromObject: {businessId, companyId, pageNumber, pageSize},
+      fromObject: {businessId, companyId, pageNumber: pageNumber + 1, pageSize},
     })
     return this.httpClient.get<
       ServerResInterface<EmployeeModel.EmployeeDetailResInterface[]>

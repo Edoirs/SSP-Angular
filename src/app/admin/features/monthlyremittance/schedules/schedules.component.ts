@@ -1,10 +1,8 @@
-import {NgxUiLoaderService} from "ngx-ui-loader"
 import {
   Component,
   inject,
   OnDestroy,
   OnInit,
-  Signal,
   signal,
 } from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
@@ -15,7 +13,6 @@ import {
   NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap"
-import {SessionService} from "src/app/session.service"
 import {environment} from "src/environments/environment"
 import Swal from "sweetalert2"
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
@@ -89,7 +86,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   businessesData = signal<ScheduleResInterface[] | null>(null)
   pageSize = signal(15)
   totalLength = signal(500)
-  pageIndex = signal(1)
+  pageIndex = signal(0)
 
   dataLoading = signal(false)
   dataMessage = signal("")
@@ -104,10 +101,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     private httpClient: HttpClient,
     private router: Router,
     private datepipe: DatePipe,
-    private sess: SessionService,
     private utilityService: UtilityService,
     private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
@@ -788,7 +783,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
               this.dataLoading.set(false)
               if (res.status === true) {
                 this.businessesData.set(res.data?.businesses)
-                this.totalLength.set(res.data.totalCount)
+                this.totalLength.set(res?.data?.totalCount || res?.data?.businesses?.length)
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)

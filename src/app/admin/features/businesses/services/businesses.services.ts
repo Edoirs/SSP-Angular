@@ -12,10 +12,10 @@ export class BusinessService {
   private readonly httpClient = inject(HttpClient)
   private readonly tokenService = inject(TokenService)
 
-  getBusinesses(pageNumber = 1, pageSize = 15, search?: string) {
+  getBusinesses(pageNumber: number, pageSize = 15, search?: string) {
     const params = new HttpParams({
       fromObject: {
-        pageNumber,
+        pageNumber: pageNumber + 1,
         pageSize,
         ...(search && {businessName: search}),
       },

@@ -76,7 +76,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   assementsData = signal<any[] | null>(null)
   pageSize = signal(15)
   totalLength = signal(500)
-  pageIndex = signal(1)
+  pageIndex = signal(0)
   dataLoading = signal(false)
   dataMessage = signal("")
 
@@ -241,7 +241,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
               this.dataLoading.set(false)
               if (res.status === true) {
                 this.assementsData.set(res.data.businesses)
-                this.totalLength.set(res.data?.totalCount)
+                this.totalLength.set(res?.data?.totalCount || res?.data?.length)
               } else {
                 this.ngxService.stop()
                 this.dataLoading.set(false)

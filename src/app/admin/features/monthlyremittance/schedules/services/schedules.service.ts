@@ -10,14 +10,14 @@ export class ScheduleService {
 
   getSchedules(
     companyId: string,
-    pageNumber = 1,
+    pageNumber: number,
     pageSize = 15,
     search?: string
   ) {
     const params = new HttpParams({
       fromObject: {
         companyId,
-        pageNumber,
+        pageNumber: pageNumber + 1,
         pageSize,
         ...(search && {businessName: search}),
       },

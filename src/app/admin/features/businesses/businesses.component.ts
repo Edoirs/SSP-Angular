@@ -29,7 +29,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
 
   pageSize = signal(15)
   totalLength = signal(500)
-  pageIndex = signal(1)
+  pageIndex = signal(0)
 
   businesses = signal<BusinessResInterface | null>(null)
   dataLoading = signal(false)

@@ -77,7 +77,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       .getEmployeeDetails(
         this.injectedData.businessId.toString(),
         this.injectedData.companyId.toString(),
-        pageNumber,
+        pageNumber || 0,
         pageSize
       )
       .subscribe({
