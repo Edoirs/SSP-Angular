@@ -339,8 +339,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
               this.subs.add = timer(5000).subscribe(() =>
                 window.location.reload()
               )
+            } else {
+              Swal.fire(SweetAlertOptions(res?.message))
             }
-            Swal.fire(SweetAlertOptions(res?.message))
           },
           error: (err) => {
             this.loading.set(false)

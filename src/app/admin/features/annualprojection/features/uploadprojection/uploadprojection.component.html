@@ -252,6 +252,7 @@
             </td>
             <td>
               <ng-toggle
+              [value]="mydata?.statusName?.toLowerCase() === 'active'"
               [color]="{
                 unchecked: '#939da2',
                 checked: '#00773B'

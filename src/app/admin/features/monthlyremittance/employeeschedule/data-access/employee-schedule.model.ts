@@ -33,6 +33,13 @@ export interface MarkEmployeeInterface {
   active: boolean
 }
 
+export interface MarkFormH3EmployeeInterface {
+  businessRin: string
+  companyRin: string
+  employeeRin?: string
+  active?: boolean
+}
+
 export interface EditEmployeeIncomeInterface {
   employeeRin: string
   businessRin: string

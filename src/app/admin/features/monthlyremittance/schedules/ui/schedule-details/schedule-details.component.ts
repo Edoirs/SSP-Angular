@@ -13,7 +13,6 @@ import {
   MatDialog,
   MatDialogClose,
 } from "@angular/material/dialog"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {ScheduleService} from "../../services/schedules.service"
@@ -22,13 +21,12 @@ import {
   ScheduleResInterface,
   SendRdmInterface,
 } from "../../data-access/schedule.model"
-import {
-  MaterialDialogConfig,
-  MaterialSnackErrorConfig,
-} from "@shared/utils/material.utils"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {ViewScheduleComponent} from "../view-schedule/view-schedule.component"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
+import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 
 @Component({
   selector: "app-schedule-details",
@@ -41,17 +39,16 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 })
 export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
-  private readonly snackBar = inject(MatSnackBar)
   private readonly injectedData = inject<ScheduleResInterface>(MAT_DIALOG_DATA)
   private readonly scheduleService = inject(ScheduleService)
-
-  buttonLoading = signal(false)
+  private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  btnLoading = signal(false)
 
   schedulesData = signal<ScheduleDetailResInterface[] | null>(null)
 
   showSendToRDM = computed(
     () =>
-      this.buttonLoading() ||
+      this.btnLoading() ||
       !(
         this.injectedData.assessementStatus.toLowerCase() ===
         "awaiting approval"
@@ -60,7 +57,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
 
   showResendToRDM = computed(
     () =>
-      this.buttonLoading() ||
+      this.btnLoading() ||
       !(this.injectedData.assessementStatus.toLowerCase() === "re-assessed")
   )
 
@@ -77,8 +74,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   getEmployeeDetail(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.scheduleService
       .getScheduleView(
-        this.injectedData.businessRin,
-        this.injectedData.companyRin
+        this.injectedData.businessId,
+        this.injectedData.companyId
       )
       .subscribe((res) => {
         this.schedulesData.set(res.data)
@@ -95,7 +92,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   }
 
   sendToRdm() {
-    this.buttonLoading.set(true)
+    this.btnLoading.set(true)
     const payload: SendRdmInterface = {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
@@ -104,31 +101,23 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     }
     this.subs.add = this.scheduleService.sendToRdm(payload).subscribe({
       next: (res) => {
-        this.buttonLoading.set(false)
+        this.btnLoading.set(false)
         if (res.status === true) {
           window.location.reload()
         } else {
-          this.snackBar.open(res?.message, "close", {
-            duration: 2000,
-            horizontalPosition: "right",
-            verticalPosition: "top",
-          })
+          Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         console.error(err)
-        this.buttonLoading.set(false)
-        this.snackBar.open(
-          err?.error?.message || err?.message,
-          "close",
-          MaterialSnackErrorConfig()
-        )
+        this.btnLoading.set(false)
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }
 
   reSendToRdm() {
-    this.buttonLoading.set(true)
+    this.btnLoading.set(true)
     const payload: SendRdmInterface = {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
@@ -137,27 +126,23 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     }
     this.subs.add = this.scheduleService.resendToRdm(payload).subscribe({
       next: (res) => {
-        this.buttonLoading.set(false)
+        this.btnLoading.set(false)
         if (res.status === true) {
           window.location.reload()
         } else {
-          this.snackBar.open(res?.message, "close", MaterialSnackErrorConfig())
+          Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         console.error(err)
-        this.buttonLoading.set(false)
-        this.snackBar.open(
-          err?.error?.message || err?.message,
-          "close",
-          MaterialSnackErrorConfig()
-        )
+        this.btnLoading.set(false)
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }
 
   reviseSubmission() {
-    this.buttonLoading.set(true)
+    this.btnLoading.set(true)
     const payload: SendRdmInterface = {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
@@ -166,21 +151,17 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     }
     this.subs.add = this.scheduleService.reviseSubmission(payload).subscribe({
       next: (res) => {
-        this.buttonLoading.set(false)
+        this.btnLoading.set(false)
         if (res.status === true) {
           window.location.reload()
         } else {
-          this.snackBar.open(res?.message, "close", MaterialSnackErrorConfig())
+          Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         console.error(err)
-        this.buttonLoading.set(false)
-        this.snackBar.open(
-          err?.error?.message || err?.message,
-          "close",
-          MaterialSnackErrorConfig()
-        )
+        this.btnLoading.set(false)
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }
@@ -191,7 +172,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
         "Assessment will be recomputed and new amount generated against assessment reference number?"
       )
     )
-      this.buttonLoading.set(true)
+      this.btnLoading.set(true)
     const payload: SendRdmInterface = {
       businessRin: this.injectedData.businessRin,
       companyRin: this.injectedData.companyRin,
@@ -200,48 +181,38 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     }
     this.subs.add = this.scheduleService.reAssess(payload).subscribe({
       next: (res) => {
-        this.buttonLoading.set(false)
+        this.btnLoading.set(false)
         if (res.status === true) {
           window.location.reload()
-        } else {
-          this.snackBar.open(res?.message, "close", MaterialSnackErrorConfig())
-        }
-      },
-      error: (err) => {
-        console.error(err)
-        this.buttonLoading.set(false)
-        this.snackBar.open(
-          err?.error?.message || err?.message,
-          "close",
-          MaterialSnackErrorConfig()
-        )
-      },
-    })
-  }
-
-  downloadPdf() {
-    this.buttonLoading.set(true)
-    const payload: SendRdmInterface = {
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
-      taxMonth: this.injectedData.taxMonth,
-      taxYear: this.injectedData.taxYear,
-    }
-    this.subs.add = this.scheduleService.downloadPdf(payload).subscribe({
-      next: (res) => {
-        this.buttonLoading.set(false)
-        if (res.status === true) {
-          console.log(res.data)
-          // window.location.href = res.data
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         console.error(err)
+        this.btnLoading.set(false)
         Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
-        this.buttonLoading.set(false)
       },
     })
+  }
+
+  async downloadPdf() {
+    this.btnLoading.set(true)
+    const payload = {
+      companyRin: this.injectedData.companyRin,
+      businessRin: this.injectedData.businessRin,
+    } as DownloadEmployeePdfInterface
+
+    try {
+      this.btnLoading.set(false)
+      const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
+        payload
+      )
+      window.open(pdf, "_blank")
+    } catch (err: any) {
+      console.log({err})
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
   }
 }

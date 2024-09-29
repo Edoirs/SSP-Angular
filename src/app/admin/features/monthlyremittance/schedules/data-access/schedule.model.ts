@@ -4,10 +4,13 @@ export interface SchedulesResInterface {
 }
 
 export interface ScheduleResInterface {
+  id: number
   assessementStatus: string
   businessName: string
+  businessId: string
   businessRin: string
   companyRin: string
+  companyId: string
   companyName: string
   dateForwarded: string
   employeeCount: number

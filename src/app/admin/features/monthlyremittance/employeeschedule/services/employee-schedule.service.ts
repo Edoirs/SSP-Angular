@@ -80,6 +80,15 @@ export class EmployeeScheduleService {
     )
   }
 
+  markFormH3EmployeeInactive(
+    payload: EmployeeModel.MarkFormH3EmployeeInterface
+  ) {
+    return this.httpClient.put<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseII/Mark-FileFormH3-Inactive`,
+      payload
+    )
+  }
+
   getScheduleByDate(payload: EmployeeModel.GetScheduleByDateInterface) {
     return this.httpClient.post<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/GetScheduleByDate`,

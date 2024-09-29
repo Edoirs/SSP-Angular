@@ -17,7 +17,10 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
 import {DtImage} from "./utils/upload-project.utils"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
-import {MarkEmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
+import {
+  MarkEmployeeInterface,
+  MarkFormH3EmployeeInterface,
+} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 
 @Component({
@@ -699,13 +702,12 @@ export class UploadprojectionComponent implements OnInit {
       companyRin: this.companyRIN,
       businessRin: this.corporateForm.value.businessID,
       active: false,
-      source: "formh3",
-    } as MarkEmployeeInterface
+    } as MarkFormH3EmployeeInterface
     if (
       window.confirm("Are you sure you want to mark all employees inactive?")
     ) {
       this.subs.add = this.employeeScheduleService
-        .markEmployeeInactive(payload)
+        .markFormH3EmployeeInactive(payload)
         .subscribe({
           next: (res) => {
             this.btnLoading.set(false)
@@ -728,13 +730,12 @@ export class UploadprojectionComponent implements OnInit {
       businessRin: this.corporateForm.value.businessID,
       ...(employeeRin && {employeeRin}),
       active: status,
-      source: "formh3",
-    } as MarkEmployeeInterface
+    } as MarkFormH3EmployeeInterface
     if (
       window.confirm("Are you sure you want to change this employee's status?")
     )
       this.subs.add = this.employeeScheduleService
-        .markEmployeeInactive(payload)
+        .markFormH3EmployeeInactive(payload)
         .subscribe({
           next: (res) => {
             if (res.status) Swal.fire(SweetAlertOptions(res?.message, true))
