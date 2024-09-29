@@ -178,7 +178,9 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
               this.dataLoading.set(false)
               if (res.status) {
                 this.employeesList.set(res.data)
-                this.totalLength.set(res.data?.totalCount)
+                this.totalLength.set(
+                  res?.data?.totalCount || res?.data?.businesses?.length
+                )
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)
