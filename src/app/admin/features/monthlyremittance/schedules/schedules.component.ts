@@ -397,7 +397,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   openScheduleView(data: ScheduleResInterface) {
     this.dialog.open(ScheduleDetailsComponent, {
       data,
-      minWidth: 1000,
+      minWidth: 1200,
     })
   }
 

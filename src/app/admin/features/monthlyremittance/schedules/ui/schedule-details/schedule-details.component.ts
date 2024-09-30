@@ -27,6 +27,7 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-schedule-details",
@@ -94,8 +95,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   sendToRdm() {
     this.btnLoading.set(true)
     const payload: SendRdmInterface = {
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      businessId: this.injectedData.businessId,
+      companyId: this.injectedData.companyId,
       taxMonth: this.injectedData.taxMonth,
       taxYear: this.injectedData.taxYear,
     }
@@ -103,7 +104,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.btnLoading.set(false)
         if (res.status === true) {
-          window.location.reload()
+          Swal.fire(SweetAlertOptions(res?.message, true))
+          this.subs.add = timer(5000).subscribe(() => window.location.reload())
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
@@ -119,8 +121,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   reSendToRdm() {
     this.btnLoading.set(true)
     const payload: SendRdmInterface = {
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      businessId: this.injectedData.businessId,
+      companyId: this.injectedData.companyId,
       taxMonth: this.injectedData.taxMonth,
       taxYear: this.injectedData.taxYear,
     }
@@ -128,7 +130,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.btnLoading.set(false)
         if (res.status === true) {
-          window.location.reload()
+          Swal.fire(SweetAlertOptions(res?.message, true))
+          this.subs.add = timer(5000).subscribe(() => window.location.reload())
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
@@ -144,8 +147,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   reviseSubmission() {
     this.btnLoading.set(true)
     const payload: SendRdmInterface = {
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      businessId: this.injectedData.businessId,
+      companyId: this.injectedData.companyId,
       taxMonth: this.injectedData.taxMonth,
       taxYear: this.injectedData.taxYear,
     }
@@ -153,7 +156,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.btnLoading.set(false)
         if (res.status === true) {
-          window.location.reload()
+          Swal.fire(SweetAlertOptions(res?.message, true))
+          this.subs.add = timer(5000).subscribe(() => window.location.reload())
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
@@ -174,8 +178,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     )
       this.btnLoading.set(true)
     const payload: SendRdmInterface = {
-      businessRin: this.injectedData.businessRin,
-      companyRin: this.injectedData.companyRin,
+      businessId: this.injectedData.businessId,
+      companyId: this.injectedData.companyId,
       taxMonth: this.injectedData.taxMonth,
       taxYear: this.injectedData.taxYear,
     }
@@ -183,7 +187,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.btnLoading.set(false)
         if (res.status === true) {
-          window.location.reload()
+          Swal.fire(SweetAlertOptions(res?.message, true))
+          this.subs.add = timer(5000).subscribe(() => window.location.reload())
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }

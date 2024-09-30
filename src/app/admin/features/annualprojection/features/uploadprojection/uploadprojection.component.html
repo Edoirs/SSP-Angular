@@ -30,8 +30,8 @@
                   <th>Business Address</th>
                   <th>No of Employees</th>
                   <th>Upload</th>
-                  <th>Delete</th>
-                  <th>File Form H3</th>
+                  <!-- <th>Delete</th> -->
+                  <th>View</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,12 +47,12 @@
                       <i class="nav-icon fas fa-upload"></i>
                     </button>
                   </td>
-                  <td title="View">
+                  <!-- <td title="View">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           deleteBusiness(mydata)">
                       <i class="nav-icon far fa-trash-alt"></i>
                     </button>
-                  </td>
+                  </td> -->
                   <td title="File Form H3">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           createSchedule(annualReturnModal, mydata)">
@@ -191,7 +191,7 @@
           type="button"
           class="btn btn-outline-success role float-right mx-2"
           style="font-size: 12px; padding: 5px; margin-top: -3px"
-          (click)="markAllEmployeeInActive()" [disabled]="btnLoading()"
+          (click)="markAllEmployeeInActive()" [disabled]="btnLoading() || !anyEmployeeActive()"
           >
           Mark All Inactive
         </button>
@@ -227,7 +227,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let mydata of annualReturnsData; index as i">
+          <tr *ngFor="let mydata of annualReturnsData(); index as i">
             <td>{{ i + 1 }}</td>
             <td>{{ mydata.rin }}</td>
             <td>

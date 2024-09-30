@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from "@angular/core"
+import {Component, computed, inject, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {ActivatedRoute, Router} from "@angular/router"
@@ -22,6 +22,7 @@ import {
   MarkFormH3EmployeeInterface,
 } from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-uploadprojection",
@@ -55,7 +56,6 @@ export class UploadprojectionComponent implements OnInit {
   companyId: any
   fileFormH3Form!: FormGroup
   corporateForm!: FormGroup
-  annualReturnsData: any
   apidataEmpty: boolean = false
   companyName: any
   companyRIN: any
@@ -73,6 +73,15 @@ export class UploadprojectionComponent implements OnInit {
   disableEmployeeControl: any = false
   taxpayerID: any
   assessmentYears: any[] = []
+
+  annualReturnsData = signal<any[] | null>(null)
+
+  anyEmployeeActive = computed(
+    () =>
+      !!this.annualReturnsData()?.find(
+        (employee) => employee?.statusName?.toLowerCase() === "active"
+      )
+  )
 
   btnLoading = signal(false)
 
@@ -375,7 +384,7 @@ export class UploadprojectionComponent implements OnInit {
 
   getAnnualReturns(businessId: any, companyId: any) {
     this.ngxService.start()
-    this.annualReturnsData = ""
+    this.annualReturnsData.set(null)
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}`
 
     const reqHeader = new HttpHeaders({
@@ -387,7 +396,7 @@ export class UploadprojectionComponent implements OnInit {
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         console.log("annualReturnsDataU: ", data)
-        this.annualReturnsData = data
+        this.annualReturnsData.set(data)
 
         if (data?.length > 0) {
           this.apidataEmpty = true
@@ -711,8 +720,14 @@ export class UploadprojectionComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.btnLoading.set(false)
-            if (res.status) return window.location.reload()
-            Swal.fire(SweetAlertOptions(res?.message))
+            if (res.status) {
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.subs.add = timer(5000).subscribe(() =>
+                window.location.reload()
+              )
+            } else {
+              Swal.fire(SweetAlertOptions(res?.message))
+            }
           },
           error: (err) => {
             this.btnLoading.set(false)

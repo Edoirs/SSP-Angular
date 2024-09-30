@@ -27,8 +27,8 @@ export class ScheduleService {
     >(`${environment.AUTHAPIURL}PhaseII/GetAllScheduleDetails`, {params})
   }
 
-  getScheduleView(BusinessRin: string, CompanyRin: string) {
-    const params = new HttpParams({fromObject: {BusinessRin, CompanyRin}})
+  getScheduleView(BusinessId: string, CompanyId: string) {
+    const params = new HttpParams({fromObject: {BusinessId, CompanyId}})
     return this.httpClient.get<
       ServerResInterface<ScheduleModel.ScheduleDetailResInterface[]>
     >(`${environment.AUTHAPIURL}PhaseII/GetAllSchedulesView`, {params})

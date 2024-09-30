@@ -38,7 +38,7 @@
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
         (click)="openCreateSchedule()"
-        [disabled]="!anyEmployeeActive()"
+        [disabled]="!anyEmployeeActive() || btnLoading()"
         >
         <i class="fas fa-plus-square"></i> Create Schedule
       </button>
@@ -48,7 +48,7 @@
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
         (click)="markAllEmployeeInActive()" [disabled]="btnLoading()"
-        [disabled]="!anyEmployeeActive()"
+        [disabled]="!anyEmployeeActive() || btnLoading()"
         >
         Mark Inactive
       </button>

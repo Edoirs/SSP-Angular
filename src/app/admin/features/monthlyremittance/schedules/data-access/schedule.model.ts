@@ -33,8 +33,8 @@ export interface ScheduleDetailResInterface {
 }
 
 export interface SendRdmInterface {
-  businessRin: string
-  companyRin: string
+  businessId: string
+  companyId: string
   taxMonth: string
   taxYear: number
 }

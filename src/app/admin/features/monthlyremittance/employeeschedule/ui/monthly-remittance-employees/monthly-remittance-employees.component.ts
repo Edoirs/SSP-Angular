@@ -33,6 +33,7 @@ import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -157,8 +158,14 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.btnLoading.set(false)
-            if (res.status) return window.location.reload()
-            Swal.fire(SweetAlertOptions(res?.message))
+            if (res.status) {
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.subs.add = timer(5000).subscribe(() =>
+                window.location.reload()
+              )
+            } else {
+              Swal.fire(SweetAlertOptions(res?.message))
+            }
           },
           error: (err) => {
             this.btnLoading.set(false)
