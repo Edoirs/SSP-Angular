@@ -56,46 +56,34 @@
                     <td>{{ mydata?.companyRin }}</td>
                     <td>{{ mydata?.companyName }}</td>
                   }
-                  <td>{{ mydata.business_id }}</td>
-                  <td>{{ mydata.business_name | titlecase }}</td>
+                  <td>{{ mydata?.businessRin }}</td>
+                  <td>{{ mydata?.business_name | titlecase }}</td>
                   <td>
-                    {{
-                      mydata.industry_sector_name == null
-                        ? "N/A"
-                        : mydata.industry_sector_name
-                    }}
+                    {{ mydata?.date_generated | date }}
                   </td>
                   <td>
-                    {{
-                      mydata.industry_subsector_name == null
-                        ? "N/A"
-                        : mydata.industry_subsector_name
-                    }}
+                    {{ mydata?.tax_year || "N/A" }}
                   </td>
                   <td>
-                    {{
-                      mydata.business_address == null
-                        ? "N/A"
-                        : mydata.business_address
-                    }}
+                    {{ mydata?.tax_month || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.employees_count | number }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.assessment_ref_no || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.total_monthly_tax || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.amount_paid || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.balance || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                    {{ mydata?.payment_status || "N/A" }}
                   </td>
 
                   <td title="View">
@@ -178,77 +166,77 @@
           <tbody>
             <tr *ngFor="let mydata of assessmentsData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ mydata.created_at | date : "dd MMM yyyy" }}</td>
-              <td>{{ mydata.assessment_id }}</td>
-              <td>{{ mydata.business_name }}</td>
+              <td>{{ mydata?.created_at | date : "dd MMM yyyy" }}</td>
+              <td>{{ mydata?.assessment_id }}</td>
+              <td>{{ mydata?.business_name }}</td>
               <td>
                 {{
-                  mydata.invoice_number == null ? "N/A" : mydata.invoice_number
+                  mydata?.invoice_number == null ? "N/A" : mydata?.invoice_number
                 }}
               </td>
               <td>
                 {{
-                  mydata.application_id == 1
+                  mydata?.application_id == 1
                     ? "Self Service Portal"
                     : "Admin Portal"
                 }}
               </td>
 
-              <td>{{ getTaxYear(mydata.due_date) }}</td>
-              <td>{{ getTaxMonth(mydata.due_date) }}</td>
-              <td>{{ mydata.employees_count | number }}</td>
-              <td>{{ mydata.monthly_tax_due | number : "1.2-2" }}</td>
+              <td>{{ getTaxYear(mydata?.due_date) }}</td>
+              <td>{{ getTaxMonth(mydata?.due_date) }}</td>
+              <td>{{ mydata?.employees_count | number }}</td>
+              <td>{{ mydata?.monthly_tax_due | number : "1.2-2" }}</td>
               <td>
                 {{
-                  mydata.amount_paid == null
+                  mydata?.amount_paid == null
                     ? "0"
-                    : (mydata.amount_paid | number : "1.2-2")
+                    : (mydata?.amount_paid | number : "1.2-2")
                 }}
               </td>
               <td>
                 {{
-                  mydata.invoice_amount_due == null
+                  mydata?.invoice_amount_due == null
                     ? "0"
-                    : (mydata.invoice_amount_due - mydata.amount_paid
+                    : (mydata?.invoice_amount_due - mydata?.amount_paid
                       | number : "1.2-2")
                 }}
               </td>
-              <!-- <td>{{ mydata.payment_status == null ? 'No invoice' : mydata.payment_status == 0 ? "Unsettled" : "Settled" }}</td> -->
+              <!-- <td>{{ mydata?.payment_status == null ? 'No invoice' : mydata?.payment_status == 0 ? "Unsettled" : "Settled" }}</td> -->
 
-              <!-- <td *ngIf="mydata.payment_status == 0">
+              <!-- <td *ngIf="mydata?.payment_status == 0">
                   <span class="text-danger" style="font-weight: 500"
                     >Unsettled</span
                   >
                 </td>
-                <td *ngIf="mydata.payment_status == 1">
+                <td *ngIf="mydata?.payment_status == 1">
                   <span class="text-success" style="font-weight: 500"
                     >Settled</span
                   >
                 </td> -->
-              <td *ngIf="mydata.invoice_number == null">
+              <td *ngIf="mydata?.invoice_number == null">
                 <span class="text-primary" style="font-weight: 500"
                   >No invoice</span
                 >
               </td>
               <td
                 *ngIf="
-                  mydata.invoice_number != null && mydata.payment_status == 0
+                  mydata?.invoice_number != null && mydata?.payment_status == 0
                 ">
                 <span class="text-danger" style="font-weight: 600"
                   >Unsettled</span
                 >
               </td>
-              <td *ngIf="mydata.payment_status == 1">
+              <td *ngIf="mydata?.payment_status == 1">
                 <span class="text-success" style="font-weight: 600"
                   >Settled</span
                 >
               </td>
-              <td *ngIf="mydata.payment_status == 2">
+              <td *ngIf="mydata?.payment_status == 2">
                 <span class="text-warning" style="font-weight: 600"
                   >Partially Settled</span
                 >
               </td>
-              <!-- <td *ngIf="mydata.payment_status == null">
+              <!-- <td *ngIf="mydata?.payment_status == null">
                   <span class="text-primary" style="font-weight: 500"
                     >No invoice</span
                   >
@@ -256,14 +244,14 @@
 
               <td style="width: 10%" title="View">
                 <button
-                  *ngIf="mydata.payment_status != 1"
+                  *ngIf="mydata?.payment_status != 1"
                   class="btn btn-sm btn-outline-success"
                   (click)="viewAssessment(mymodal, mydata)">
                   <i class="nav-icon fas fa-eye"></i>
                 </button>
 
                 <button
-                  *ngIf="mydata.payment_status == 1"
+                  *ngIf="mydata?.payment_status == 1"
                   class="btn btn-sm btn-outline-success"
                   (click)="viewAssessment(mymodal, mydata)">
                   <i class="nav-icon fas fa-eye"></i>
@@ -493,19 +481,19 @@
             <tbody>
               <tr *ngFor="let mydata of assessmentEmployeesData; index as i">
                 <td>{{ i + 1 }}</td>
-                <td>{{ mydata.taxpayer_id }}</td>
+                <td>{{ mydata?.taxpayer_id }}</td>
 
-                <td>{{ mydata.first_name }} {{ mydata.last_name }}</td>
-                <td>{{ mydata.total_income | number : "1.2-2" }}</td>
-                <td>{{ mydata.pension | number : "1.2-2" }}</td>
-                <td>{{ mydata.nhf | number : "1.2-2" }}</td>
-                <td>{{ mydata.nhis | number : "1.2-2" }}</td>
-                <td>{{ mydata.life_assurance | number : "1.2-2" }}</td>
-                <td>{{ mydata.cra | number : "1.2-2" }}</td>
+                <td>{{ mydata?.first_name }} {{ mydata?.last_name }}</td>
+                <td>{{ mydata?.total_income | number : "1.2-2" }}</td>
+                <td>{{ mydata?.pension | number : "1.2-2" }}</td>
+                <td>{{ mydata?.nhf | number : "1.2-2" }}</td>
+                <td>{{ mydata?.nhis | number : "1.2-2" }}</td>
+                <td>{{ mydata?.life_assurance | number : "1.2-2" }}</td>
+                <td>{{ mydata?.cra | number : "1.2-2" }}</td>
 
-                <td>{{ mydata.nontaxable_income | number : "1.2-2" }}</td>
-                <td>{{ mydata.taxable_income | number : "1.2-2" }}</td>
-                <td>{{ mydata.monthly_tax_due | number : "1.2-2" }}</td>
+                <td>{{ mydata?.nontaxable_income | number : "1.2-2" }}</td>
+                <td>{{ mydata?.taxable_income | number : "1.2-2" }}</td>
+                <td>{{ mydata?.monthly_tax_due | number : "1.2-2" }}</td>
               </tr>
             </tbody>
           </table>
