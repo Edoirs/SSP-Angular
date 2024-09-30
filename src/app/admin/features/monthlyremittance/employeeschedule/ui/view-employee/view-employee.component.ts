@@ -12,7 +12,7 @@ import {
   MatDialogRef,
 } from "@angular/material/dialog"
 import {EmployeescheduleComponent} from "../../employeeschedule.component"
-import {CommonModule} from "@angular/common"
+import {CommonModule, DecimalPipe} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeDetailResInterface} from "../../data-access/employee-schedule.model"
 
@@ -21,7 +21,7 @@ import {EmployeeDetailResInterface} from "../../data-access/employee-schedule.mo
   templateUrl: "./view-employee.component.html",
   styleUrl: "./view-employee.component.css",
   standalone: true,
-  imports: [CommonModule, MatDialogClose],
+  imports: [CommonModule, MatDialogClose, DecimalPipe],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

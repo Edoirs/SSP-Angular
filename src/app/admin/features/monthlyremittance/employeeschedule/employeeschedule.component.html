@@ -61,7 +61,7 @@
                   <td>
                     {{ employee?.businessLga || "N/A" }}
                   </td>
-                  <td>{{ employee?.noOfEmployees }}</td>
+                  <td>{{ employee?.noOfEmployees | number }}</td>
                   <td title="View">
                     <button
                       class="btn btn-sm btn-outline-success"

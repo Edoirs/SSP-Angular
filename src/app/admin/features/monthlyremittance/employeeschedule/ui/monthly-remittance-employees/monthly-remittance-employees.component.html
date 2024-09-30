@@ -86,13 +86,13 @@
           } @else { @for (employee of employeeDetails(); track $index) {
           <tr>
             <td>{{ $index + 1 }}</td>
-            <td>{{ employee.employeeRin }}</td>
-            <td>{{ employee.fullName | titlecase }}</td>
+            <td>{{ employee?.employeeRin }}</td>
+            <td>{{ employee?.fullName | titlecase }}</td>
 
-            <td>{{ employee.totalIncome }}</td>
-            <td>{{ employee.non_TaxableIncome }}</td>
-            <td>{{ employee.grossIncome }}</td>
-            <td>{{ employee.status }}</td>
+            <td>{{ employee?.totalIncome | number : '1.2-2'}}</td>
+            <td>{{ employee?.non_TaxableIncome | number : '1.2-2'}}</td>
+            <td>{{ employee?.grossIncome | number : '1.2-2'}}</td>
+            <td>{{ employee?.status }}</td>
 
             <td title="edit">
               <button

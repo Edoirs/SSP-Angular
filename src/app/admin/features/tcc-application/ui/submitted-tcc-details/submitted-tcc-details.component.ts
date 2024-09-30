@@ -1,4 +1,4 @@
-import {TitleCasePipe} from "@angular/common"
+import {DecimalPipe, TitleCasePipe} from "@angular/common"
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,7 +31,13 @@ import {TccSubmittedApplicationViewComponent} from "../submitted-tcc-view/submit
   templateUrl: "./submitted-tcc-details.component.html",
   styleUrl: "./submitted-tcc-details.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
+  imports: [
+    TitleCasePipe,
+    DecimalPipe,
+    MatPaginatorModule,
+    MatDialogClose,
+    NgToggleModule,
+  ],
   providers: [TccService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

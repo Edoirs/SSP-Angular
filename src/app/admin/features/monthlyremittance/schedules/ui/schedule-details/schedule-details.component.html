@@ -39,12 +39,12 @@
               <td>{{mydata.employeeRin}}</td>
   
               <td>{{mydata?.employeeName}}</td>
-              <td>{{mydata?.totalIncome}}</td>
-              <td>{{mydata?.nonTaxableIncome}}</td>
-              <td>{{mydata?.cra}}</td>
-              <td>{{mydata?.taxFreePay}}</td>
-              <td>{{mydata?.chargableIncome}}</td>
-              <td>{{mydata?.monthlyTax}}</td>
+              <td>{{mydata?.totalIncome | number : '1.2-2'}}</td>
+              <td>{{mydata?.nonTaxableIncome | number : '1.2-2'}}</td>
+              <td>{{mydata?.cra | number : '1.2-2'}}</td>
+              <td>{{mydata?.taxFreePay | number : '1.2-2'}}</td>
+              <td>{{mydata?.chargableIncome | number : '1.2-2'}}</td>
+              <td>{{mydata?.monthlyTax | number : '1.2-2'}}</td>
               <td title="View">
                 <button
                   class="btn btn-sm btn-outline-success"

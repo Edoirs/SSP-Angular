@@ -77,7 +77,7 @@
                   <td>{{ business?.businessRIN }}</td>
                   <td>{{ business?.businessName }}</td>
                   <td>{{ business?.businessAddress }}</td>
-                  <td>{{ business?.noOfEmployees }}</td>
+                  <td>{{ business?.noOfEmployees | number }}</td>
                   <td title="View"><button class="btn btn-sm btn-outline-success" (click)="openTccDetails(business)"><i
                       class="nav-icon fas fa-eye"></i>
                   </button></td>

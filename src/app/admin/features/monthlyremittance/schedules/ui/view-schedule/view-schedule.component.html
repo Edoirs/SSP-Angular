@@ -25,32 +25,32 @@
 
           <tr>
             <td>Total Income</td>
-            <td>{{ injectedData.totalIncome }}</td>
+            <td>{{ injectedData.totalIncome | number : '1.2-2' }}</td>
           </tr>
 
           <tr>
             <td>Non Taxable Income</td>
-            <td>{{ injectedData.nonTaxableIncome }}</td>
+            <td>{{ injectedData.nonTaxableIncome | number : '1.2-2' }}</td>
           </tr>
 
           <tr>
             <td>CRA</td>
-            <td>{{ injectedData.cra }}</td>
+            <td>{{ injectedData.cra | number : '1.2-2' }}</td>
           </tr>
 
           <tr>
             <td>Chargable Income</td>
-            <td>{{ injectedData.chargableIncome }}</td>
+            <td>{{ injectedData.chargableIncome | number : '1.2-2' }}</td>
           </tr>
 
           <tr>
             <td>Tax Free Pay</td>
-            <td>{{ injectedData.taxFreePay }}</td>
+            <td>{{ injectedData.taxFreePay | number : '1.2-2' }}</td>
           </tr>
 
           <tr>
             <td>Monthly Tax</td>
-            <td>{{ injectedData.monthlyTax }}</td>
+            <td>{{ injectedData.monthlyTax | number : '1.2-2' }}</td>
           </tr>
         </tbody>
       </table>

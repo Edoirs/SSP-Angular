@@ -78,10 +78,10 @@
                   <td>{{ mydata?.taxMonth }}</td>
                   <td>{{ mydata?.employeeCount }}</td>
                   <td>
-                    {{ mydata?.totalIncome }}
+                    {{ mydata?.totalIncome | number : '1.2-2' }}
                   </td>
                   <td>
-                    {{ mydata?.monthlyTax }}
+                    {{ mydata?.monthlyTax | number : '1.2-2' }}
                   </td>
                   <td>
                     {{ mydata?.dateForwarded | date }}

@@ -1,4 +1,4 @@
-import {CommonModule, TitleCasePipe} from "@angular/common"
+import {CommonModule, DecimalPipe, TitleCasePipe} from "@angular/common"
 import {
   ChangeDetectionStrategy,
   Component,

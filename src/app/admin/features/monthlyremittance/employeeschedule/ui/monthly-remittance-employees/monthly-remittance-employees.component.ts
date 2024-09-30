@@ -1,4 +1,4 @@
-import {TitleCasePipe} from "@angular/common"
+import {DecimalPipe, TitleCasePipe} from "@angular/common"
 import {
   ChangeDetectionStrategy,
   Component,
@@ -40,7 +40,13 @@ import {timer} from "rxjs"
   templateUrl: "./monthly-remittance-employees.component.html",
   styleUrl: "./monthly-remittance-employees.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
+  imports: [
+    TitleCasePipe,
+    DecimalPipe,
+    MatPaginatorModule,
+    MatDialogClose,
+    NgToggleModule,
+  ],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
