@@ -185,12 +185,12 @@
               <td>{{ getTaxYear(mydata?.due_date) }}</td>
               <td>{{ getTaxMonth(mydata?.due_date) }}</td>
               <td>{{ mydata?.employees_count | number }}</td>
-              <td>{{ mydata?.monthly_tax_due | number : "1.2-2" }}</td>
+              <td>{{ mydata?.monthly_tax_due | number : "1.0-2" }}</td>
               <td>
                 {{
                   mydata?.amount_paid == null
                     ? "0"
-                    : (mydata?.amount_paid | number : "1.2-2")
+                    : (mydata?.amount_paid | number : "1.0-2")
                 }}
               </td>
               <td>
@@ -198,7 +198,7 @@
                   mydata?.invoice_amount_due == null
                     ? "0"
                     : (mydata?.invoice_amount_due - mydata?.amount_paid
-                      | number : "1.2-2")
+                      | number : "1.0-2")
                 }}
               </td>
               <!-- <td>{{ mydata?.payment_status == null ? 'No invoice' : mydata?.payment_status == 0 ? "Unsettled" : "Settled" }}</td> -->
@@ -484,16 +484,16 @@
                 <td>{{ mydata?.taxpayer_id }}</td>
 
                 <td>{{ mydata?.first_name }} {{ mydata?.last_name }}</td>
-                <td>{{ mydata?.total_income | number : "1.2-2" }}</td>
-                <td>{{ mydata?.pension | number : "1.2-2" }}</td>
-                <td>{{ mydata?.nhf | number : "1.2-2" }}</td>
-                <td>{{ mydata?.nhis | number : "1.2-2" }}</td>
-                <td>{{ mydata?.life_assurance | number : "1.2-2" }}</td>
-                <td>{{ mydata?.cra | number : "1.2-2" }}</td>
+                <td>{{ mydata?.total_income | number : "1.0-2" }}</td>
+                <td>{{ mydata?.pension | number : "1.0-2" }}</td>
+                <td>{{ mydata?.nhf | number : "1.0-2" }}</td>
+                <td>{{ mydata?.nhis | number : "1.0-2" }}</td>
+                <td>{{ mydata?.life_assurance | number : "1.0-2" }}</td>
+                <td>{{ mydata?.cra | number : "1.0-2" }}</td>
 
-                <td>{{ mydata?.nontaxable_income | number : "1.2-2" }}</td>
-                <td>{{ mydata?.taxable_income | number : "1.2-2" }}</td>
-                <td>{{ mydata?.monthly_tax_due | number : "1.2-2" }}</td>
+                <td>{{ mydata?.nontaxable_income | number : "1.0-2" }}</td>
+                <td>{{ mydata?.taxable_income | number : "1.0-2" }}</td>
+                <td>{{ mydata?.monthly_tax_due | number : "1.0-2" }}</td>
               </tr>
             </tbody>
           </table>
