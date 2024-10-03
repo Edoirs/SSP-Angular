@@ -27,7 +27,11 @@
                   <tr>
                     <th>S/N</th>
                     <th>Tax Year</th>
-                    <th>Business ID</th>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <th>Company RIN</th>
+                      <th>Company Name</th>
+                    }
+                    <th>Business RIN</th>
                     <th>Business Name</th>
                     <th>Taxpayer ID</th>
                     <th>Sum Assessment</th>
@@ -44,8 +48,12 @@
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
                     <td>{{ '2024' }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <td>{{ mydata?.companyRin }}</td>
+                      <td>{{ mydata?.companyName }}</td>
+                    }
+                    <td>{{ mydata?.businessRIN }}</td>
+                    <td>{{ mydata?.businessName | titlecase }}</td>
                     <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
                     <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>
                     <td>{{ mydata.lga_name ? mydata.lga_name : 'N/A' }}</td>

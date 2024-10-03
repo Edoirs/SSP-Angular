@@ -1,6 +1,7 @@
 :host{
     position: relative;
     margin-right: 12px;
+    cursor: pointer;
 }
 
 a{

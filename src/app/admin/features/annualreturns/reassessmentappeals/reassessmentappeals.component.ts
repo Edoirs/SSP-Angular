@@ -1,60 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import {Component, inject, OnInit} from "@angular/core"
+import {HttpClient, HttpHeaders} from "@angular/common/http"
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {Router} from "@angular/router"
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModalOptions,
-} from "@ng-bootstrap/ng-bootstrap";
-import { SessionService } from "src/app/session.service";
-import { environment } from "src/environments/environment";
-import Swal from "sweetalert2";
-import { DatePipe } from "@angular/common";
-import { Title } from "@angular/platform-browser";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-
+} from "@ng-bootstrap/ng-bootstrap"
+import {SessionService} from "src/app/session.service"
+import {environment} from "src/environments/environment"
+import Swal from "sweetalert2"
+import {DatePipe} from "@angular/common"
+import {Title} from "@angular/platform-browser"
+import {NgxUiLoaderService} from "ngx-ui-loader"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
-  selector: 'app-reassessmentappeals',
-  templateUrl: './reassessmentappeals.component.html',
-  styleUrls: ['./reassessmentappeals.component.css']
+  selector: "app-reassessmentappeals",
+  templateUrl: "./reassessmentappeals.component.html",
+  styleUrls: ["./reassessmentappeals.component.css"],
 })
 export class ReassessmentappealsComponent implements OnInit {
-  apiUrl!: string;
-  assessmentsData!: [];
-  dtOptions: any = {};
-  modalOptions!: NgbModalOptions;
-  closeResult!: string;
-  reassessmentAppealsData: any;
-  appealForm!: FormGroup;
-  selectedAppeal: any;
-  submitted: boolean = false;
-  taxpayerId: any;
-  reassessmentAppealsComments: any;
-  date!: Date;
-  forwardApealForm!: FormGroup;
-  submitApealForm!: FormGroup;
-  managerRole!: boolean;
-  roleID: any;
-  editorRole!: boolean;
-  disableEditor!: boolean;
-  disableManager!: boolean;
-  title = "PAYE - Reassessment Objections Report";
-  approvalStatus: any;
-  searchObject!: {};
-  searchForm!: FormGroup;
-  appealSubmitted: any;
-  invites: any;
-  files: any;
-  inviteForm!: FormGroup;
-  appealId: any;
-  showInvite!: boolean;
-  disableInviteForm: any;
-  businessesData: any;
-  selectedBusiness: any;
-  businessId: any;
-  companyId: any;
+  public readonly tokenService = inject(TokenService)
+  apiUrl!: string
+  assessmentsData!: []
+  dtOptions: any = {}
+  modalOptions!: NgbModalOptions
+  closeResult!: string
+  reassessmentAppealsData: any
+  appealForm!: FormGroup
+  selectedAppeal: any
+  submitted: boolean = false
+  taxpayerId: any
+  reassessmentAppealsComments: any
+  date!: Date
+  forwardApealForm!: FormGroup
+  submitApealForm!: FormGroup
+  managerRole!: boolean
+  roleID: any
+  editorRole!: boolean
+  disableEditor!: boolean
+  disableManager!: boolean
+  title = "PAYE - Reassessment Objections Report"
+  approvalStatus: any
+  searchObject!: {}
+  searchForm!: FormGroup
+  appealSubmitted: any
+  invites: any
+  files: any
+  inviteForm!: FormGroup
+  appealId: any
+  showInvite!: boolean
+  disableInviteForm: any
+  businessesData: any
+  selectedBusiness: any
+  businessId: any
+  companyId: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,7 +67,7 @@ export class ReassessmentappealsComponent implements OnInit {
     private sess: SessionService,
     private modalService: NgbModal,
     private ngxService: NgxUiLoaderService
-  ) { }
+  ) {}
 
   ngOnInit(searchObj = null): void {
     // this.sess.isCorporate();
@@ -165,57 +166,57 @@ export class ReassessmentappealsComponent implements OnInit {
       approvalStatus: [""],
       comment: [""],
       assessmentId: [""],
-    });
+    })
 
     this.forwardApealForm = this.formBuilder.group({
       comment: ["", Validators.required],
-    });
+    })
 
     this.submitApealForm = this.formBuilder.group({
       comment: ["", Validators.required],
       messageTitle: ["", Validators.required],
-    });
+    })
 
     this.inviteForm = this.formBuilder.group({
       inviteMessage: [""],
       inviteDate: [""],
       inviteTime: [""],
-    });
+    })
   }
 
   getReassessmentAppeals(businessId: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals/list";
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals/list"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    let corporateId = localStorage.getItem("corporate_id");
+    let corporateId = localStorage.getItem("corporate_id")
 
     const obj = {
       corporate_id: [corporateId],
       business_id: businessId,
-    };
+    }
 
     this.httpClient
-      .post<any>(this.apiUrl, this.searchObject, { headers: reqHeader })
+      .post<any>(this.apiUrl, this.searchObject, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("reassessmentAppealsData: ", data);
+        console.log("reassessmentAppealsData: ", data)
         this.reassessmentAppealsData =
-          data.response == null ? [] : data.data.reverse();
-        this.taxpayerId = data.data[0]?.taxpayer_id;
+          data.response == null ? [] : data.data.reverse()
+        this.taxpayerId = data.data[0]?.taxpayer_id
         // this.ngxService.stop();
-      });
+      })
   }
 
   viewReassessmentAppeal(modal: any, selectedAppeal: any) {
-    console.log("selectedAppeal: ", selectedAppeal);
-    this.appealId = selectedAppeal.id;
-    this.showModal(modal);
+    console.log("selectedAppeal: ", selectedAppeal)
+    this.appealId = selectedAppeal.id
+    this.showModal(modal)
 
-    this.getSingleReassessmentAppeal(selectedAppeal.id);
+    this.getSingleReassessmentAppeal(selectedAppeal.id)
   }
 
   loadSelectedAppealData(selectedAppeal: any) {
@@ -224,27 +225,27 @@ export class ReassessmentappealsComponent implements OnInit {
         ? "Forwarded to Editor"
         : selectedAppeal.forwarded_to == 2
         ? "Forwarded to Manager"
-        : "Not forwarded";
+        : "Not forwarded"
     if (selectedAppeal.forwarded_to == 2) {
-      this.disableEditor = false;
-      this.disableManager = true;
+      this.disableEditor = false
+      this.disableManager = true
     } else {
-      this.disableEditor = true;
-      this.disableManager = false;
+      this.disableEditor = true
+      this.disableManager = false
     }
 
     // let submit = selectedAppeal.submitted == 1 ? 'Submitted' : 'Not Submitted';
-    this.approvalStatus = selectedAppeal.status;
-    this.appealSubmitted = selectedAppeal.submitted;
+    this.approvalStatus = selectedAppeal.status
+    this.appealSubmitted = selectedAppeal.submitted
     let approvalStatus =
       selectedAppeal.status == 0
         ? "In Progress"
         : selectedAppeal.status == 1
         ? "Approved"
-        : "Rejected";
+        : "Rejected"
 
-    this.date = new Date(selectedAppeal.created_at);
-    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd");
+    this.date = new Date(selectedAppeal.created_at)
+    let latest_date = this.datepipe.transform(this.date, "yyyy-MM-dd")
     this.appealForm = this.formBuilder.group({
       dateAppealed: [latest_date],
       // documentUrl: [selectedAppeal.file_url],
@@ -253,8 +254,7 @@ export class ReassessmentappealsComponent implements OnInit {
       approvalStatus: [approvalStatus],
       comment: [selectedAppeal.admin_message],
       assessmentId: [selectedAppeal.reassessment_id],
-    });
-
+    })
 
     if (selectedAppeal.invites[0]) {
       // this.showInvite = true;
@@ -262,49 +262,49 @@ export class ReassessmentappealsComponent implements OnInit {
         inviteMessage: [selectedAppeal.invites[0].comments],
         inviteDate: [selectedAppeal.invites[0].invite_date],
         inviteTime: [selectedAppeal.invites[0].invite_time],
-      });
+      })
     }
 
-    this.reassessmentAppealsComments = selectedAppeal.comments;
+    this.reassessmentAppealsComments = selectedAppeal.comments
   }
-  inviteChange(){
-  this.inviteForm.reset();
-}
+  inviteChange() {
+    this.inviteForm.reset()
+  }
   getSingleReassessmentAppeal(reassessmentId: any) {
     // this.ngxService.start();
     this.apiUrl =
-      environment.AUTHAPIURL + "reassessment-appeals/" + reassessmentId;
+      environment.AUTHAPIURL + "reassessment-appeals/" + reassessmentId
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
+      .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("selectedAppealData: ", data);
-        this.selectedAppeal = data.response;
-        this.files = data.response.files;
-        this.loadSelectedAppealData(this.selectedAppeal);
+        console.log("selectedAppealData: ", data)
+        this.selectedAppeal = data.response
+        this.files = data.response.files
+        this.loadSelectedAppealData(this.selectedAppeal)
         // this.ngxService.stop();
-      });
+      })
   }
 
-  public daterange: any = {};
+  public daterange: any = {}
 
   public options: any = {
-    locale: { format: "YYYY-MM-DD" },
+    locale: {format: "YYYY-MM-DD"},
     alwaysShowCalendars: false,
-  };
+  }
 
   public selectedDate(value: any, datepicker?: any) {
     // this is the date  selected
-    console.log("selectedDate: ", value);
+    console.log("selectedDate: ", value)
 
-    this.daterange.start = value.start.format("YYYY-MM-DD");
-    this.daterange.end = value.end.format("YYYY-MM-DD");
-    this.daterange.label = value.label;
+    this.daterange.start = value.start.format("YYYY-MM-DD")
+    this.daterange.end = value.end.format("YYYY-MM-DD")
+    this.daterange.label = value.label
   }
 
   initialiseSearch() {
@@ -320,18 +320,18 @@ export class ReassessmentappealsComponent implements OnInit {
       ],
       objectionFromId: [""],
       daterangeInput: [""],
-    });
+    })
   }
 
   onForwardAppeal(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.forwardApealForm.invalid) {
-      return;
+      return
     }
 
-    let corporateId = localStorage.getItem("corporate_id");
+    let corporateId = localStorage.getItem("corporate_id")
 
     const obj = {
       comment: formAllData.comment,
@@ -339,32 +339,32 @@ export class ReassessmentappealsComponent implements OnInit {
       corporate_id: corporateId,
       business_id: this.businessId,
       // submitted: true,
-    };
+    }
 
-    console.log("appealFormFormData: ", obj);
-    this.postAppeal(obj);
+    console.log("appealFormFormData: ", obj)
+    this.postAppeal(obj)
   }
 
   postAppeal(jsonData: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data);
+        console.log("appealApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.appealForm.reset();
+          this.appealForm.reset()
           Object.keys(this.appealForm.controls).forEach((key) => {
-            this.appealForm.get(key)?.setErrors(null);
-          });
+            this.appealForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -376,11 +376,10 @@ export class ReassessmentappealsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
           // this.ngxService.stop();
-          this.modalService.dismissAll();
-        } 
-        else {
+          this.modalService.dismissAll()
+        } else {
           // this.ngxService.stop();
 
           Swal.fire({
@@ -393,20 +392,20 @@ export class ReassessmentappealsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         }
-      });
+      })
   }
 
   submitAppealToAdmin(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.submitApealForm.invalid) {
-      return;
+      return
     }
 
-    let corporateId = localStorage.getItem("corporate_id");
+    let corporateId = localStorage.getItem("corporate_id")
 
     const obj = {
       // comment: formAllData.comment,
@@ -416,32 +415,32 @@ export class ReassessmentappealsComponent implements OnInit {
       submitted: true,
       message_title: formAllData.messageTitle,
       message: formAllData.comment,
-    };
+    }
 
-    console.log("appealFormFormData: ", obj);
-    this.Appeal(obj);
+    console.log("appealFormFormData: ", obj)
+    this.Appeal(obj)
   }
 
   Appeal(jsonData: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals";
+    this.apiUrl = environment.AUTHAPIURL + "reassessment-appeals"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data);
+        console.log("appealApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.appealForm.reset();
+          this.appealForm.reset()
           Object.keys(this.appealForm.controls).forEach((key) => {
-            this.appealForm.get(key)?.setErrors(null);
-          });
+            this.appealForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -453,11 +452,10 @@ export class ReassessmentappealsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
           // this.ngxService.stop();
-          this.modalService.dismissAll();
-        } 
-        else {
+          this.modalService.dismissAll()
+        } else {
           // this.ngxService.stop();
 
           Swal.fire({
@@ -470,75 +468,77 @@ export class ReassessmentappealsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         }
-      });
+      })
   }
 
   forwardAppeal(modal: any) {
-    this.showModal(modal);
+    this.showModal(modal)
   }
 
   submitAppeal(modal: any) {
-    this.showModal(modal);
+    this.showModal(modal)
   }
 
   getBusinesses() {
-    const obj = {};
-    this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`;
+    const obj = {}
+    this.ngxService.start()
+    this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("BusinessData: ", data);
+    this.httpClient
+      .get<any>(this.apiUrl, {headers: reqHeader})
+      .subscribe((data) => {
+        console.log("BusinessData: ", data)
 
-      this.businessesData = data.data;
-      this.ngxService.stop();
-    });
+        this.businessesData = data.data
+        this.ngxService.stop()
+      })
   }
 
   getSingleBusiness(businessId: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId;
+    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
+      .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data);
+        console.log("singleBusinessData: ", data)
 
-        this.selectedBusiness = data.response;
+        this.selectedBusiness = data.response
         // this.ngxService.stop();
-      });
+      })
   }
 
   viewBusinessAnnualReturn(modal: any, data: any) {
-    this.businessId = data.id;
-    let searchObj = null;
+    this.businessId = data.id
+    let searchObj = null
     if (searchObj == null || searchObj == "") {
-      this.reassessmentAppealsData = "";
-      this.initialiseForms();
-      this.getReassessmentAppeals(this.businessId);
+      this.reassessmentAppealsData = ""
+      this.initialiseForms()
+      this.getReassessmentAppeals(this.businessId)
     } else {
-      this.getReassessmentAppeals(this.businessId);
+      this.getReassessmentAppeals(this.businessId)
     }
-    this.showModal(modal);
+    this.showModal(modal)
   }
 
   onSubmitSearch(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.searchForm.invalid) {
-      return;
+      return
     }
 
     this.searchObject = {
@@ -548,38 +548,37 @@ export class ReassessmentappealsComponent implements OnInit {
         this.daterange.start !== undefined ? this.daterange.start : null,
       date_end: this.daterange.end !== undefined ? this.daterange.end : null,
       application_id: formAllData.objectionFromId,
-    };
+    }
 
-    console.log("searchFormData: ", this.searchObject);
-    this.getReassessmentAppeals(this.businessId);
+    console.log("searchFormData: ", this.searchObject)
+    this.getReassessmentAppeals(this.businessId)
   }
 
   clearSearch() {
-    this.reassessmentAppealsData = "";
-    this.searchObject = {};
-    this.initialiseSearch();
-    this.getReassessmentAppeals(this.businessId);
+    this.reassessmentAppealsData = ""
+    this.searchObject = {}
+    this.initialiseSearch()
+    this.getReassessmentAppeals(this.businessId)
   }
 
   showModal(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(
       (result) => {
-        this.closeResult = `Closed with: ${result}`;
+        this.closeResult = `Closed with: ${result}`
       },
       (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
-    );
+    )
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return "by pressing ESC"
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
+      return "by clicking on a backdrop"
     } else {
-      return `with: ${reason}`;
+      return `with: ${reason}`
     }
   }
-
 }

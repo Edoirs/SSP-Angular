@@ -26,6 +26,10 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <th>Company RIN</th>
+                      <th>Company Name</th>
+                    }
                     <th>Business ID</th>
                     <th>Business Name</th>
                     <th>Sector</th>
@@ -38,8 +42,12 @@
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name | titlecase }}</td>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <td>{{ mydata?.companyRin }}</td>
+                      <td>{{ mydata?.companyName }}</td>
+                    }
+                    <td>{{ mydata.businessRin }}</td>
+                    <td>{{ mydata.businessName | titlecase }}</td>
                     <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
                     <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
                     <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>

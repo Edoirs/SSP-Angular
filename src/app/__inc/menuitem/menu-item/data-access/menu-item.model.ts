@@ -37,12 +37,12 @@ export const MenuListRecord: MenuItemInterface[] = [
         faIcon: "fa-circle",
         faIconType: "outline",
       },
-      {
-        name: "Deleted Employees",
-        url: ["admin", "deleted-employees"],
-        faIcon: "fa-circle",
-        faIconType: "outline",
-      },
+      // {
+      //   name: "Deleted Employees",
+      //   url: ["admin", "deleted-employees"],
+      //   faIcon: "fa-circle",
+      //   faIconType: "outline",
+      // },
       {
         name: "Schedules",
         url: ["admin", "schedules"],
