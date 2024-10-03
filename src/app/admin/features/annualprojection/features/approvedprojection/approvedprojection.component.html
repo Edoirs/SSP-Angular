@@ -89,19 +89,25 @@ reass<div class="content-wrapper">
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let mydata of fileDetailsData; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ mydata.taxPayerId }}</td>
-          <td>
-            {{ mydata.fullName == null ? "N/A" : mydata.fullName | titlecase }}
-          </td>
-          <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
-          <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
-          <td>{{ mydata.otherIncome | number }}</td>
-          <td>{{ mydata.basic | number }}</td>
-          <td>{{ mydata.annualtaxpaid == undefined ? "N/A" : mydata.annualtaxpaid | number }}</td>
-          <td>{{ mydata.datetcreated | date: "dd MMM yyyy" }}</td>
-        </tr>
+        @for (mydata of fileDetailsData; track $index) {
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ mydata.taxPayerId }}</td>
+            <td>
+              {{ (mydata.fullName | titlecase) || "N/A" }}
+            </td>
+            <td>{{ (mydata.designation | titlecase) || "N/A" }}</td>
+            <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
+            <td>{{ mydata.otherIncome | number }}</td>
+            <td>{{ mydata.basic | number }}</td>
+            <td>{{ (mydata.annualtaxpaid | number) || "N/A" }}</td>
+            <td>{{ mydata.datetcreated | date: "dd MMM yyyy" }}</td>
+          </tr>
+        }@empty {
+          <tr>
+            <td colspan="100%"><span>No Projection Found.</span></td>
+          </tr>
+        } 
       </tbody>
     </table>
   </div>
