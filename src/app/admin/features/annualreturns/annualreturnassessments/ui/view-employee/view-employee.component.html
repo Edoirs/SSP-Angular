@@ -1,0 +1,87 @@
+<div class="card card-secondary view-employee">
+  <div class="card-header custome">
+    <h3 class="card-title">Employee Details</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="over-auto">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if(tokenService.getLoginResData.isAdminUser){
+            <tr>
+              <td>Company Rin</td>
+              <td>{{ injectedData?.companyRin }}</td>
+            </tr>
+
+            <tr>
+              <td>Company Name</td>
+              <td>{{ injectedData?.companyName }}</td>
+            </tr>
+          }
+
+          <tr>
+            <td>Business RIN</td>
+            <td>{{ injectedData?.businessRIN }}</td>
+          </tr>
+
+          <tr>
+            <td>Business Name</td>
+            <td>{{ injectedData?.businessName | titlecase }}</td>
+          </tr>
+
+          <tr>
+            <td>Employee Count/td>
+            <td>{{ (injectedData?.employeeCount| number : '1.0-2') || 'N/A' }}</td>
+          </tr>
+
+          <tr>
+            <td>Sum Assessment</td>
+            <td>{{ '0.00' | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>H1 Tax Paid</td>
+            <td>{{ injectedData?.taxPaid || 'N/A' }}</td>
+          </tr>
+
+          <tr>
+            <td>Under Remittance</td>
+            <td>{{ '0.00' | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Status</td>
+            <td>{{ injectedData?.status || 'N/A' }}</td>
+          </tr>
+
+          <tr>
+            <td>Date Filled</td>
+            <td>{{ injectedData?.dateFilled || 'N/A' }}</td>
+          </tr>
+
+          <tr>
+            <td>Date Reassessed</td>
+            <td>{{ injectedData?.Reassessed || 'N/A' }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close>
+        Ok
+      </button>
+    </div>
+
+  </div>
+</div>
