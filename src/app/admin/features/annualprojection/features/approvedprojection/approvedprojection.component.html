@@ -15,8 +15,8 @@ reass<div class="content-wrapper">
         <!-- /.card-header -->
         <div class="card-body">
           <div class="over-auto">
-            <table class="table table-bordered table-condensed" *ngIf="businessesData;" datatable
-            [dtOptions]="dtOptions" width="100%">
+            <table class="table table-bordered table-condensed"
+            width="100%">
             <thead>
               <tr>
                 <th>S/N</th>
@@ -31,22 +31,29 @@ reass<div class="content-wrapper">
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let mydata of businessesData; index as i">
-                <td>{{ i + 1 }}</td>
-                <td>{{ mydata.businessRIN }}</td>
-                <td>{{ mydata.businessName == null ? "N/A" : mydata.businessName | titlecase }}</td>
-                <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>
-                <td>{{ mydata.taxYear }}</td>
-                <td>{{ mydata.noOfEmployees }}</td>
-                <!-- <td>{{ mydata.annualtaxpaid }}</td> -->
-                <td>{{ mydata.dateForwarded | date: "dd MMM yyyy" }}</td>
-
-                <td title="View"><button class="btn btn-sm btn-outline-success"
-                    (click)="viewApprovedProjection(approvedProjectionModal, mydata)"><i
-                      class="nav-icon fas fa-eye"></i>
-                  </button></td>
-
-              </tr>
+              @for (mydata of businessesData; track $index) {
+                <tr>
+                  <td>{{ $index }}</td>
+                  <td>{{ mydata.businessRIN }}</td>
+                  <td>{{ mydata.businessName == null ? "N/A" : mydata.businessName | titlecase }}</td>
+                  <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>
+                  <td>{{ mydata.taxYear }}</td>
+                  <td>{{ mydata.noOfEmployees }}</td>
+                  <!-- <td>{{ mydata.annualtaxpaid }}</td> -->
+                  <td>{{ mydata.dateForwarded | date: "dd MMM yyyy" }}</td>
+  
+                  <td title="View"><button class="btn btn-sm btn-outline-success"
+                      (click)="viewApprovedProjection(approvedProjectionModal, mydata)"><i
+                        class="nav-icon fas fa-eye"></i>
+                    </button></td>
+  
+                </tr>
+              }
+              @empty {
+                <tr>
+                  <td colspan="100%"><span>No Projection Found.</span></td>
+                </tr>
+              } 
             </tbody>
           </table>
 
@@ -71,7 +78,6 @@ reass<div class="content-wrapper">
   <div class="modal-body">
     <table
       class="table table-bordered table-condensed"
-      *ngIf="fileDetailsData;"
       datatable
       [dtOptions]="dtOptions"
       width="100%">
@@ -103,11 +109,12 @@ reass<div class="content-wrapper">
             <td>{{ (mydata.annualtaxpaid | number) || "N/A" }}</td>
             <td>{{ mydata.datetcreated | date: "dd MMM yyyy" }}</td>
           </tr>
-        }@empty {
+        }
+        <!-- @empty {
           <tr>
             <td colspan="100%"><span>No Projection Found.</span></td>
           </tr>
-        } 
+        }  -->
       </tbody>
     </table>
   </div>
