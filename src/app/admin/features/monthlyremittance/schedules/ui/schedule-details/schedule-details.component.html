@@ -9,7 +9,7 @@
       <button [disabled]="showResendToRDM()" (click)="reSendToRdm()">Re-Send to RDM</button>
       <button [disabled]="showSendToRDM()" (click)="reviseSubmission()">Revise Submission</button>
       <button [disabled]="btnLoading()" (click)="reAssess()">Re-Assess</button>
-      <button [disabled]="btnLoading()" (click)="downloadPdf()">Download PDF</button>
+      <button [disabled]="showDownloadPdf()" (click)="downloadPdf()">Download PDF</button>
     </div>
     <!-- /.card-header -->
     <!-- /.card-body -->

@@ -62,6 +62,12 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       !(this.injectedData.assessementStatus.toLowerCase() === "re-assessed")
   )
 
+  showDownloadPdf = computed(
+    () =>
+      this.btnLoading() ||
+      !(this.injectedData.assessementStatus.toLowerCase() === "approved")
+  )
+
   subs = new SubscriptionHandler()
 
   ngOnInit(): void {
