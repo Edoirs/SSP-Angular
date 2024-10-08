@@ -28,6 +28,7 @@ import {
 } from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-tcc-details",
@@ -122,7 +123,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
         if (res.status) {
           this.employeeIds.set([])
           Swal.fire(SweetAlertOptions(res?.message, true))
-          window.location.reload()
+          this.subs.add = timer(5000).subscribe(() => window.location.reload())
         } else {
           this.employeeIds.set([])
           this.dataLoading.set(false)

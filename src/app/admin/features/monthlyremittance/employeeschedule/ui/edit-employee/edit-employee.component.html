@@ -5,282 +5,237 @@
     </span>
   </div>
 
-  <div class="modal-body">
-    <div class="container">
-      <form [formGroup]="editEmployeeForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
+  <div class="modal-body my-3">
 
-          <div class="form-group col-md-6">
-            <label for="basic"
-              >Basic Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="basic"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('basic')?.errors"
-              class="text-danger">
+    @if (employeeLoading()) {
+      <span class="loading-text">fetching employee data</span>
+      <ngx-skeleton-loader count="5" appearance="line" />
+    }@else {
+      <div class="">
+        <form [formGroup]="editEmployeeForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+  
+            <div class="form-group col-md-6">
+              <label for="basic"
+                >Basic Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="basic"
+                maxlength="4"
+                class="form-control"
+                placeholder="Basic Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('basic')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('basic')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('basic')?.hasError('pattern')
+                  ">
+                  Basic Income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="rent"
-              >Rent Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="rent"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('rent')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="rent"
+                >Rent Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="rent"
+                maxlength="4"
+                class="form-control"
+                placeholder="Rent Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('rent')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('rent')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('rent')?.hasError('pattern')
+                  ">
+                  Rent Income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div class="form-group col-md-6">
-            <label for="transport"
-              >transport Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="transport"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('transport')?.errors"
-              class="text-danger">
+            
+            <div class="form-group col-md-6">
+              <label for="transport"
+                >Transport Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="transport"
+                maxlength="4"
+                class="form-control"
+                placeholder="Transport Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('transport')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('transport')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('transport')?.hasError('pattern')
+                  ">
+                  Transport Income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="ltg"
-              >LTG Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="ltg"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('ltg')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="transport"
+                >Other Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="others"
+                maxlength="4"
+                class="form-control"
+                placeholder="Other Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('ltg')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('others')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('others')?.hasError('pattern')
+                  ">
+                  Other income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="utility"
-              >Utility Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="utility"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('utility')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="nhf"
+                >NHF Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="nhf"
+                maxlength="4"
+                class="form-control"
+                placeholder="NHF Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('utility')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('nhf')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('nhf')?.hasError('pattern')
+                  ">
+                  NHF income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="meal"
-              >Meal Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="meal"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('meal')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="nhis"
+                >NHIS Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="nhis"
+                maxlength="4"
+                class="form-control"
+                placeholder="NHIS Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('meal')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('nhis')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('nhis')?.hasError('pattern')
+                  ">
+                  NHIS income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="nhf"
-              >NHF Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="nhf"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('nhf')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="pension"
+                >Pension Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="pension"
+                maxlength="4"
+                class="form-control"
+                placeholder="Pension Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('nhf')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('pension')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('pension')?.hasError('pattern')
+                  ">
+                  Pension income must be Number Only
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="nhis"
-              >NHIS Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="nhis"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('nhis')?.errors"
-              class="text-danger">
+  
+            <div class="form-group col-md-6">
+              <label for="lifeAssurance"
+                >Life Assurance Income<sup class="font-wegiht-bold text-danger"
+                  >*</sup
+                ></label
+              >
+              <input
+                type="number"
+                pattern="[^\s]+"
+                formControlName="lifeAssurance"
+                maxlength="4"
+                class="form-control"
+                placeholder="Life Assurance Income Eg: 2019" />
               <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('nhis')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
+                *ngIf="editEmployeeForm.get('lifeAssurance')?.errors"
+                class="text-danger">
+                <div
+                  *ngIf="
+                    editEmployeeForm.touched &&
+                    editEmployeeForm.get('lifeAssurance')?.hasError('pattern')
+                  ">
+                  Life assurance income must be Number Only
+                </div>
               </div>
             </div>
+            
+  
           </div>
+  
+          <button
+            type="submit"
+            [disabled]="editEmployeeForm.invalid"
+            class="">
+            <i class="far fa-save"></i> Save
+          </button>
+        </form>
+      </div>
+    }
 
-          <div class="form-group col-md-6">
-            <label for="pension"
-              >Pension Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="pension"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('pension')?.errors"
-              class="text-danger">
-              <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('pension')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="lifeAssurance"
-              >Life Assurance Income<sup class="font-wegiht-bold text-danger"
-                >*</sup
-              ></label
-            >
-            <input
-              type="number"
-              pattern="[^\s]+"
-              formControlName="lifeAssurance"
-              maxlength="4"
-              class="form-control"
-              placeholder="Total Income Eg: 2019" />
-            <div
-              *ngIf="editEmployeeForm.get('lifeAssurance')?.errors"
-              class="text-danger">
-              <div
-                *ngIf="
-                  editEmployeeForm.touched &&
-                  editEmployeeForm.get('lifeAssurance')?.hasError('pattern')
-                ">
-                Total Income must be Number Only
-              </div>
-            </div>
-          </div>
-          
-
-        </div>
-
-        <button
-          type="submit"
-          [disabled]="editEmployeeForm.invalid"
-          class="">
-          <i class="far fa-save"></i> Save
-        </button>
-      </form>
-    </div>
   </div>
 
   <div class="modal-footer">

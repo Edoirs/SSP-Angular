@@ -5,6 +5,10 @@
   <!-- /.card-header -->
   <div class="card-body">
     <div class="over-auto">
+      @if (loading()) {
+        <span class="loading-text">fetching employee data</span>
+        <ngx-skeleton-loader count="8"/>
+      }@else {
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
@@ -15,36 +19,62 @@
         <tbody>
           <tr>
             <td>RIN</td>
-            <td>{{ injectedData.employeeRin }}</td>
+            <td>{{ injectedData.employee.employeeRin }}</td>
           </tr>
 
           <tr>
             <td>Full Name</td>
-            <td>{{ injectedData.fullName }}</td>
-          </tr>
-
-          <tr>
-            <td>Total Income</td>
-            <td>{{ injectedData.totalIncome | number : '1.0-2' }}</td>
-          </tr>
-
-          <tr>
-            <td>Non Taxable Income</td>
-            <td>{{ injectedData.non_TaxableIncome | number : '1.0-2' }}</td>
-          </tr>
-
-          <tr>
-            <td>Gross Income</td>
-            <td>{{ injectedData.grossIncome | number : '1.0-2' }}</td>
+            <td>{{ injectedData.employee.fullName }}</td>
           </tr>
 
           <tr>
             <td>Status</td>
-            <td>{{ injectedData.status }}</td>
+            <td>{{ injectedData.employee.status }}</td>
+          </tr>
+
+          <tr>
+            <td>Basic Income</td>
+            <td>{{ employeeDetail()?.basic | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Rent Income</td>
+            <td>{{ employeeDetail()?.rent | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Transport Income</td>
+            <td>{{ employeeDetail()?.transport | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Other Income</td>
+            <td>{{ employeeDetail()?.others | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>NHF Income</td>
+            <td>{{ employeeDetail()?.nhf | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>NHIS Income</td>
+            <td>{{ employeeDetail()?.nhis | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Pension Income</td>
+            <td>{{ employeeDetail()?.pension | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Life Assurance Income</td>
+            <td>{{ employeeDetail()?.lifeAssurance | number : '1.0-2' }}</td>
           </tr>
 
         </tbody>
       </table>
+    }
     </div>
 
     <div class="modal-footer">

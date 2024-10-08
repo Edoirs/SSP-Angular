@@ -141,7 +141,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openViewEmployee(data: EmployeeDetailResInterface) {
-    this.dialog.open(ViewEmployeeComponent, MaterialDialogConfig(data))
+    this.dialog.open(
+      ViewEmployeeComponent,
+      MaterialDialogConfig({employee: data, company: this.injectedData})
+    )
   }
 
   closeModal() {}

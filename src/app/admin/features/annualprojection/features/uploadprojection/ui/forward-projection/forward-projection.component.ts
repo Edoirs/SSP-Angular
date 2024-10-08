@@ -24,6 +24,7 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {UploadprojectionComponent} from "../../uploadprojection.component"
 import {PositiveNumberRegex} from "@admin-pages/monthlyremittance/employeeschedule/utils/employeeschedule.utils"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-edit-employee",
@@ -72,7 +73,10 @@ export class ForwaedProjectionComponent implements OnInit, OnDestroy {
           next: (res) => {
             this.loading.set(false)
             if (res.status === true) {
-              window.location.reload()
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.subs.add = timer(5000).subscribe(() =>
+                window.location.reload()
+              )
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }

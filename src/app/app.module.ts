@@ -60,6 +60,7 @@ import {NgToggleModule} from "ng-toggle-button"
 import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
 import {ExportAsModule} from "ngx-export-as"
 import {MenuItemComponent} from "./__inc/menuitem/menu-item/menu-item.component"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @NgModule({
   declarations: [
@@ -118,6 +119,7 @@ import {MenuItemComponent} from "./__inc/menuitem/menu-item/menu-item.component"
     MatPaginatorModule,
     ExportAsModule,
     NgToggleModule.forRoot(),
+    NgxSkeletonLoaderModule.forRoot({loadingText: "loading..."}),
   ],
   providers: [
     DatePipe,

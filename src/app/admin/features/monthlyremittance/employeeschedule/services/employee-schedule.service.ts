@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http"
+import {HttpClient, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
@@ -96,6 +96,21 @@ export class EmployeeScheduleService {
       `${environment.AUTHAPIURL}PhaseII/GetScheduleByDate`,
       payload
     )
+  }
+
+  getSingleEmployeeDetail(
+    BusinessId: string,
+    CompanyId: string,
+    EmployeeId: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {BusinessId, CompanyId, EmployeeId},
+    })
+    return this.httpClient.get<
+      ServerResInterface<EmployeeModel.SingleEmployeeDetailResInterface>
+    >(`${environment.AUTHAPIURL}PhaseII/GetEmployeeMonthlyIncomeDetail`, {
+      params,
+    })
   }
 
   async downloadEmployeePdfMonthly(

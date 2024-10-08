@@ -42,6 +42,7 @@
     "ng2-charts": "^4.1.1",
     "ngx-export-as": "^1.16.0",
     "ngx-pagination": "^6.0.3",
+    "ngx-skeleton-loader": "^9.0.0",
     "ngx-spinner": "^17.0.0",
     "ngx-ui-loader": "^13.0.0",
     "rxjs": "~7.8.0",

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   OnDestroy,
   OnInit,
@@ -24,17 +25,26 @@ import {
   BusinessesResInterface,
   EditEmployeeIncomeInterface,
   EmployeeDetailResInterface,
+  SingleEmployeeDetailResInterface,
 } from "../../data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
 import {PositiveNumberRegex} from "../../utils/employeeschedule.utils"
-import {MatSnackBar} from "@angular/material/snack-bar"
+import Swal from "sweetalert2"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-edit-employee",
   templateUrl: "./edit-employee.component.html",
   styleUrl: "./edit-employee.component.css",
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogClose],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatDialogClose,
+    NgxSkeletonLoaderModule,
+  ],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,7 +56,13 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   }>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
-  private readonly snackBar = inject(MatSnackBar)
+  employeeDetail = signal<SingleEmployeeDetailResInterface | null>(null)
+
+  checkFetchedEmployee = effect(() => {
+    if (this.employeeDetail()) this.populateForm()
+  })
+
+  employeeLoading = signal(false)
 
   loading = signal(false)
   message = signal("")
@@ -63,13 +79,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     transport: new FormControl(0, {
       validators: [Validators.pattern(PositiveNumberRegex)],
     }),
-    ltg: new FormControl(0, {
-      validators: [Validators.pattern(PositiveNumberRegex)],
-    }),
-    utility: new FormControl(0, {
-      validators: [Validators.pattern(PositiveNumberRegex)],
-    }),
-    meal: new FormControl(0, {
+    others: new FormControl(0, {
       validators: [Validators.pattern(PositiveNumberRegex)],
     }),
     nhf: new FormControl(0, {
@@ -86,7 +96,13 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     }),
   })
 
-  ngOnInit(): void {}
+  constructor() {
+    this.checkFetchedEmployee
+  }
+
+  ngOnInit(): void {
+    this.getEmployeeDetails()
+  }
 
   ngOnDestroy(): void {
     this.subs.clear()
@@ -94,6 +110,43 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.dialogRef.close()
+  }
+
+  getEmployeeDetails() {
+    this.employeeLoading.set(true)
+    this.subs.add = this.employeeScheduleService
+      .getSingleEmployeeDetail(
+        this.injectedData.company.businessId.toString(),
+        this.injectedData.company.companyId.toString(),
+        this.injectedData.employee.employeeId
+      )
+      .subscribe({
+        next: (res) => {
+          this.employeeLoading.set(false)
+          if (res.status) {
+            this.employeeDetail.set(res.data)
+          } else {
+            Swal.fire(SweetAlertOptions(res?.message))
+          }
+        },
+        error: (err) => {
+          this.employeeLoading.set(false)
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
+      })
+  }
+
+  populateForm() {
+    this.editEmployeeForm.setValue({
+      basic: this.employeeDetail()?.basic as number,
+      rent: this.employeeDetail()?.rent as number,
+      transport: this.employeeDetail()?.transport as number,
+      others: this.employeeDetail()?.others as number,
+      nhf: this.employeeDetail()?.nhf as number,
+      nhis: this.employeeDetail()?.nhis as number,
+      pension: this.employeeDetail()?.pension as number,
+      lifeAssurance: this.employeeDetail()?.lifeAssurance as number,
+    })
   }
 
   onSubmit() {
@@ -109,14 +162,19 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
         .editEmployee(payload as EditEmployeeIncomeInterface)
         .subscribe({
           next: (res) => {
+            this.loading.set(false)
             if (res.status === true) {
-              window.location.reload()
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.subs.add = timer(5000).subscribe(() =>
+                window.location.reload()
+              )
             } else {
-              this.snackBar.open(res.message, "close", {duration: 2000})
+              Swal.fire(SweetAlertOptions(res?.message))
             }
           },
-          complete: () => {
+          error: (err) => {
             this.loading.set(false)
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
   }

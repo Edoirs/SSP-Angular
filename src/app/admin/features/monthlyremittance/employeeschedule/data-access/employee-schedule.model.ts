@@ -18,6 +18,7 @@ export interface BusinessesResInterface {
 
 export interface EmployeeDetailResInterface {
   employeeRin: string
+  employeeId: string
   fullName: string
   totalIncome: number
   non_TaxableIncome: number
@@ -87,6 +88,29 @@ export interface AddEmployeeInterface {
   source: "monthly" | "formh3"
   asset_id: string
   business_id: number
+}
+
+export interface SingleEmployeeDetailResInterface {
+  id: number
+  employeeId: string
+  businessId: string
+  companyId: string
+  basic: number
+  rent: number
+  transport: number
+  ltg?: number
+  utility?: number
+  meal?: number
+  others: number
+  nhf: number
+  nhis: number
+  pension: number
+  lifeAssurance: number
+  status: boolean
+  createdDate: string
+  modifiedDate: string
+  createdBy?: string
+  modifiedBy?: string
 }
 
 export interface GetScheduleByDateInterface {
