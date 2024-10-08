@@ -102,7 +102,7 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     if (this.uploadForm.invalid) return
 
     const formData = new FormData()
-    formData.append("file", this.file() as File)
+    formData.append("File", this.file() as File)
     formData.append("BusinessId", this.injectedData.businessId.toString())
     formData.append("CompanyId", this.injectedData.companyId.toString())
 
