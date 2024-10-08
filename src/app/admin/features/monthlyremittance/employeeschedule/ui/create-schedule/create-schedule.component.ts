@@ -72,10 +72,6 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
-  closeAllModal() {
-    this.dialog.closeAll()
-  }
-
   checkYear() {
     this.subs.add = this.createScheduleForm
       .get("year")!
@@ -105,7 +101,7 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
             if (res.status === true) {
               Swal.fire(SweetAlertOptions(res?.message, true, 2000))
               this.subs.add = timer(2500).subscribe(() => {
-                this.closeAllModal()
+                this.dialog.closeAll()
                 this.router.navigate(["/admin/schedules"])
               })
             } else {

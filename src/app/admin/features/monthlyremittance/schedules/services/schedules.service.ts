@@ -27,11 +27,18 @@ export class ScheduleService {
     >(`${environment.AUTHAPIURL}PhaseII/GetAllScheduleDetails`, {params})
   }
 
-  getScheduleView(BusinessId: string, CompanyId: string) {
-    const params = new HttpParams({fromObject: {BusinessId, CompanyId}})
+  getScheduleView(
+    BusinessId: string,
+    CompanyId: string,
+    Month: string,
+    TaxYear: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {BusinessId, CompanyId, Month, TaxYear},
+    })
     return this.httpClient.get<
       ServerResInterface<ScheduleModel.ScheduleDetailResInterface[]>
-    >(`${environment.AUTHAPIURL}PhaseII/GetAllSchedulesView`, {params})
+    >(`${environment.AUTHAPIURL}PhaseII/GetAllSchedulesViewWithYear`, {params})
   }
 
   sendToRdm(payload: ScheduleModel.SendRdmInterface) {

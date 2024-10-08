@@ -28,6 +28,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {timer} from "rxjs"
+import {Router} from "@angular/router"
 
 @Component({
   selector: "app-schedule-details",
@@ -42,6 +43,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   private readonly injectedData = inject<ScheduleResInterface>(MAT_DIALOG_DATA)
   private readonly scheduleService = inject(ScheduleService)
+  private readonly router = inject(Router)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   btnLoading = signal(false)
 
@@ -82,7 +84,9 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     this.subs.add = this.scheduleService
       .getScheduleView(
         this.injectedData.businessId,
-        this.injectedData.companyId
+        this.injectedData.companyId,
+        this.injectedData.taxMonth,
+        this.injectedData.taxYear.toString()
       )
       .subscribe((res) => {
         this.schedulesData.set(res.data)
@@ -110,14 +114,20 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.btnLoading.set(false)
         if (res.status === true) {
-          Swal.fire(SweetAlertOptions(res?.message, true))
-          this.subs.add = timer(5000).subscribe(() => window.location.reload())
+          Swal.fire(
+            SweetAlertOptions(
+              `${res?.message}. Redirecting to assessments`,
+              true
+            )
+          )
+          this.dialog.closeAll()
+          this.router.navigate(["/admin/assessments"])
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
-        console.error(err)
+        // console.error(err)
         this.btnLoading.set(false)
         Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },

@@ -13,7 +13,6 @@ import {
   MatDialog,
   MatDialogClose,
 } from "@angular/material/dialog"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import {
   BusinessesResInterface,
   DownloadEmployeePdfInterface,
@@ -33,7 +32,6 @@ import {ViewEmployeeComponent} from "../view-employee/view-employee.component"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
-import {timer} from "rxjs"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
@@ -153,12 +151,12 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   viewAddEmployee(modal: any) {}
 
-  markAllEmployeeInActive() {
+  markAllEmployeeInActive(activate?: boolean) {
     this.btnLoading.set(true)
     const payload = {
       companyRin: this.injectedData.companyRin,
       businessRin: this.injectedData.businessRin,
-      active: false,
+      active: activate || false,
       source: "monthly",
     } as MarkEmployeeInterface
     if (
@@ -171,9 +169,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
             this.btnLoading.set(false)
             if (res.status) {
               Swal.fire(SweetAlertOptions(res?.message, true))
-              this.subs.add = timer(5000).subscribe(() =>
-                window.location.reload()
-              )
+              this.dialog.closeAll()
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }

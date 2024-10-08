@@ -43,15 +43,28 @@
         <i class="fas fa-plus-square"></i> Create Schedule
       </button>
 
-      <button
+      @if (anyEmployeeActive()) {
+        <button
         type="button"
         class="btn btn-outline-success role float-right mx-2"
         style="font-size: 12px; padding: 5px; margin-top: -3px"
         (click)="markAllEmployeeInActive()" [disabled]="btnLoading()"
         [disabled]="!anyEmployeeActive() || btnLoading()"
         >
-        Mark Inactive
-      </button>
+        Mark All Inactive
+        </button>
+      }@else {
+        <button
+        type="button"
+        class="btn btn-outline-success role float-right mx-2"
+        style="font-size: 12px; padding: 5px; margin-top: -3px"
+        (click)="markAllEmployeeInActive(true)" [disabled]="btnLoading()"
+        [disabled]="anyEmployeeActive() || btnLoading()"
+        >
+        Mark All Active
+        </button>
+      }
+      
     </div>
   </div>
 

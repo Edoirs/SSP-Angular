@@ -14,10 +14,9 @@ import {
 } from "@angular/forms"
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogClose,
-  MatDialogRef,
 } from "@angular/material/dialog"
-import {EmployeescheduleComponent} from "../../employeeschedule.component"
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
@@ -38,7 +37,7 @@ import {timer} from "rxjs"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BulkUploadComponent implements OnInit, OnDestroy {
-  private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
+  private readonly dialog = inject(MatDialog)
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
@@ -122,9 +121,8 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
                   SweetAlertOptions("Confirm the file content and try again")
                 )
               } else {
-                this.subs.add = this.reloadWindow()
                 Swal.fire(SweetAlertOptions(res?.message, true))
-                this.router.navigate(["/admin", "employee-schedule"])
+                this.dialog.closeAll()
               }
             } else {
               this.loading.set(false)

@@ -15,10 +15,9 @@ import {
 } from "@angular/forms"
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogClose,
-  MatDialogRef,
 } from "@angular/material/dialog"
-import {EmployeescheduleComponent} from "../../employeeschedule.component"
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "../../services/employee-schedule.service"
@@ -28,10 +27,9 @@ import {
   AddEmployeeInterface,
   BusinessesResInterface,
 } from "../../data-access/employee-schedule.model"
-import {MatSnackBar} from "@angular/material/snack-bar"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
-import {combineLatest, forkJoin, Observable, of, Subject, timer} from "rxjs"
+import {combineLatest, of, Subject} from "rxjs"
 
 @Component({
   selector: "app-add-employee",
@@ -43,7 +41,7 @@ import {combineLatest, forkJoin, Observable, of, Subject, timer} from "rxjs"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
-  private readonly dialogRef = inject(MatDialogRef<EmployeescheduleComponent>)
+  private readonly dialog = inject(MatDialog)
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
@@ -193,10 +191,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
-  closeModal() {
-    this.dialogRef.close()
-  }
-
   get basic() {
     return this.addEmployeeForm.get("basic")
   }
@@ -336,9 +330,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
             this.loading.set(false)
             if (res.status) {
               Swal.fire(SweetAlertOptions(res?.message, true))
-              this.subs.add = timer(5000).subscribe(() =>
-                window.location.reload()
-              )
+              this.dialog.closeAll()
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }
