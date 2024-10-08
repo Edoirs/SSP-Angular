@@ -120,7 +120,7 @@ export class DisplayuserComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, {}, {headers: reqHeader})
       .subscribe((data) => {
-        console.log(data)
+        // console.log(data)
         this.apidata = data.data
         // this.ngxService.stop();
       })
@@ -149,7 +149,7 @@ export class DisplayuserComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log(data)
+        // console.log(data)
         this.apidata = data.response
         this.getUserData()
         // this.ngxService.stop(); // hide the spinner if success

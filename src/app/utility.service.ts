@@ -37,9 +37,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-category";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessCategorData: ", data);
-      this.businessCategorData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessCategorData: ", data);
+      this.businessCategorData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -48,9 +48,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-Sector";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessSectorData: ", data);
-      this.businessSectorData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessSectorData: ", data);
+      this.businessSectorData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -59,9 +59,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-operation";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessOperationData: ", data);
-      this.businessOperationData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessOperationData: ", data);
+      this.businessOperationData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -70,9 +70,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-structure";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessStructureData: ", data);
-      this.businessStructureData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessStructureData: ", data);
+      this.businessStructureData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -81,9 +81,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "get-business-subsector";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessSubsectorData: ", data);
-      this.businessSubsectorData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessSubsectorData: ", data);
+      this.businessSubsectorData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -92,9 +92,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-business-type";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("businessTypeData: ", data);
-      this.businessTypeData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("businessTypeData: ", data);
+      this.businessTypeData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -103,9 +103,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-economic-activity";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("economicActivityData: ", data);
-      this.economicActivityData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("economicActivityData: ", data);
+      this.economicActivityData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -114,9 +114,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-gender";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("genderData: ", data);
-      this.genderData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("genderData: ", data);
+      this.genderData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -125,9 +125,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-lga";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("localGovernmentsData: ", data);
-      this.localGovernmentsData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("localGovernmentsData: ", data);
+      this.localGovernmentsData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -136,9 +136,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-nationality";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("nationalityData: ", data);
-      this.nationalityData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("nationalityData: ", data);
+      this.nationalityData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -147,9 +147,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-tax-office";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("taxOfficesData: ", data);
-      this.taxOfficesData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("taxOfficesData: ", data);
+      this.taxOfficesData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -158,9 +158,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-title";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("titleData: ", data);
-      this.titleData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("titleData: ", data);
+      this.titleData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -169,9 +169,9 @@ export class UtilityService {
     this.apiUrl = environment.AUTHAPIURL + "Utility/get-zone";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("zoneData: ", data);
-      this.zoneData = data.data == null ? [] : data.data;
-      this.ngxService.stop();
+      // console.log("zoneData: ", data);
+      this.zoneData = data.data == null ? [] : data.data
+      this.ngxService.stop()
     });
   }
 
@@ -306,82 +306,82 @@ export class UtilityService {
 
   calculateAmountTaxDue(totalIncome: number) {
     // let totalIncome = Number(reassessmentForm.get('estimatedTotalIncome').value);
-    let grossIncome = totalIncome - 0; // totalIncome equals grossIncome
+    let grossIncome = totalIncome - 0 // totalIncome equals grossIncome
 
-    let cra = grossIncome * 0.2 + 200000;
-    let cra1 = grossIncome * 0.21;
-    let taxableIncome = 0;
-    let amountTaxDue = 0;
-    let taxableIncomeNet = 0;
+    let cra = grossIncome * 0.2 + 200000
+    let cra1 = grossIncome * 0.21
+    let taxableIncome = 0
+    let amountTaxDue = 0
+    let taxableIncomeNet = 0
 
     if (cra > cra1) {
-      taxableIncome = totalIncome - cra;
+      taxableIncome = totalIncome - cra
     } else {
-      taxableIncome = totalIncome - cra1;
+      taxableIncome = totalIncome - cra1
     }
 
-    console.log("taxableIncome: ", taxableIncome);
+    // console.log("taxableIncome: ", taxableIncome);
 
     if (taxableIncome > 0) {
-      amountTaxDue += 300000 * 0.07;
-      taxableIncomeNet = taxableIncome - 300000;
+      amountTaxDue += 300000 * 0.07
+      taxableIncomeNet = taxableIncome - 300000
     }
 
     if (taxableIncomeNet > 0) {
       if (taxableIncomeNet - 300000 < 0) {
-        amountTaxDue += taxableIncomeNet * 0.11;
+        amountTaxDue += taxableIncomeNet * 0.11
       } else {
-        amountTaxDue += 300000 * 0.11;
+        amountTaxDue += 300000 * 0.11
       }
 
-      taxableIncomeNet = taxableIncomeNet - 300000;
+      taxableIncomeNet = taxableIncomeNet - 300000
     }
 
     if (taxableIncomeNet > 0) {
       if (taxableIncomeNet - 500000 < 0) {
-        amountTaxDue += taxableIncomeNet * 0.15;
+        amountTaxDue += taxableIncomeNet * 0.15
       } else {
-        amountTaxDue += 500000 * 0.15;
+        amountTaxDue += 500000 * 0.15
       }
 
-      taxableIncomeNet = taxableIncomeNet - 500000;
+      taxableIncomeNet = taxableIncomeNet - 500000
     }
 
     if (taxableIncomeNet > 0) {
       if (taxableIncomeNet - 500000 < 0) {
-        amountTaxDue += taxableIncomeNet * 0.19;
+        amountTaxDue += taxableIncomeNet * 0.19
       } else {
-        amountTaxDue += 500000 * 0.19;
+        amountTaxDue += 500000 * 0.19
       }
 
-      taxableIncomeNet = taxableIncomeNet - 500000;
+      taxableIncomeNet = taxableIncomeNet - 500000
     }
 
     if (taxableIncomeNet > 0) {
       if (taxableIncomeNet - 1600000 < 0) {
-        amountTaxDue += taxableIncomeNet * 0.21;
+        amountTaxDue += taxableIncomeNet * 0.21
       } else {
-        amountTaxDue += 1600000 * 0.21;
+        amountTaxDue += 1600000 * 0.21
       }
 
-      taxableIncomeNet = taxableIncomeNet - 1600000;
+      taxableIncomeNet = taxableIncomeNet - 1600000
     }
 
     if (taxableIncomeNet > 0) {
       // console.log("amountTaxDue5: ", amountTaxDue);
-      amountTaxDue += taxableIncomeNet * 0.24;
+      amountTaxDue += taxableIncomeNet * 0.24
     }
 
-    let amountTaxDue1 = totalIncome * 0.01;
-    amountTaxDue = this.roundUpToTwoDecimalPlaces(amountTaxDue);
-    amountTaxDue1 = this.roundUpToTwoDecimalPlaces(amountTaxDue1);
+    let amountTaxDue1 = totalIncome * 0.01
+    amountTaxDue = this.roundUpToTwoDecimalPlaces(amountTaxDue)
+    amountTaxDue1 = this.roundUpToTwoDecimalPlaces(amountTaxDue1)
 
     if (amountTaxDue > amountTaxDue1) {
       // reassessmentForm.controls['annualTaxDue'].setValue(amountTaxDue);
-      return amountTaxDue;
+      return amountTaxDue
     } else {
       // reassessmentForm.controls['annualTaxDue'].setValue(amountTaxDue1);
-      return amountTaxDue1;
+      return amountTaxDue1
     }
   }
 
@@ -420,12 +420,12 @@ export class UtilityService {
     let validExtension = true;
 
     for (let i = 0; i < files.length; i++) {
-      const name = files[i].name;
-      const ext = name.slice(((name.lastIndexOf(".") - 1) >>> 0) + 2);
-      console.log(ext);
+      const name = files[i].name
+      const ext = name.slice(((name.lastIndexOf(".") - 1) >>> 0) + 2)
+      // console.log(ext);
 
       if (!extensions.includes(ext)) {
-        validExtension = false;
+        validExtension = false
         // exit;
       }
     }

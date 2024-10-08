@@ -117,7 +117,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.corporateId = localStorage.getItem("corporate_id")
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
 
     this.listenToRoute()
 
@@ -372,7 +372,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   }
 
   viewSchedule(modal: any, selectedSchedule: any) {
-    console.log("selectedSchedule: ", selectedSchedule)
+    // console.log("selectedSchedule: ", selectedSchedule)
     this.showModal(modal)
     this.selectedScheduleId = selectedSchedule.id
     this.assessmentGenerated = selectedSchedule.assessment_status
@@ -441,7 +441,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       this.assessmentStatusTrue = false
     }
 
-    console.log("assessmentStatusTrue: ", this.assessmentStatusTrue)
+    // console.log("assessmentStatusTrue: ", this.assessmentStatusTrue)
     this.commentsData = this.selectedSchedule.comments
     // this.scheduleEmployeesData = this.selectedSchedule.schedule_records.reverse();
   }
@@ -465,7 +465,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("schedulesData: ", data)
+        // console.log("schedulesData: ", data)
         this.schedulesData = data.data == null ? [] : data.data
         // this.ngxService.stop();
       })
@@ -475,7 +475,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.apiUrl = environment.AUTHAPIURL + "LocalGovtPostalCode/getall"
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("zipcodes: ", data)
+      // console.log("zipcodes: ", data)
       this.zipCodes = data.data
     })
   }
@@ -485,7 +485,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       this.stateLocalGovts = data.data
-      console.log("stateLocalGovts: ", data)
+      // console.log("stateLocalGovts: ", data)
     })
   }
 
@@ -511,7 +511,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleScheduleData: ", data)
+        // console.log("singleScheduleData: ", data)
         this.selectedSchedule = data.data
         this.schedule = data.data.schedule
         this.loadSelectedScheduleData(this.schedule)
@@ -551,7 +551,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       corporate_ids: [corporateId],
     }
 
-    console.log("scheduleFormData: ", obj)
+    // console.log("scheduleFormData: ", obj)
     this.postForwardSchedule(obj)
   }
 
@@ -567,7 +567,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data)
+        // console.log("scheduleApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -630,7 +630,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       business_id: this.businessId,
     }
 
-    console.log("assessmentFormData: ", obj)
+    // console.log("assessmentFormData: ", obj)
     this.postGenerateAssessment(obj)
   }
 
@@ -646,7 +646,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("assessmentApiResponseData: ", data)
+        // console.log("assessmentApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -691,7 +691,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   }
 
   editEmployee(modal: any, selectedEmployee: any) {
-    // console.log("selectedEmployee: ---", selectedEmployee);
+    // // console.log("selectedEmployee: ---", selectedEmployee);
     this.submitted = false
     this.selectedEmployeeId = selectedEmployee.employee_id
     this.selectedScheduleRecordId = selectedEmployee.id
@@ -729,7 +729,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleEmployeeData: ", data)
+        // console.log("singleEmployeeData: ", data)
 
         if (data.response !== null) {
           this.loadSelectedEmployeeData(data.response)
@@ -822,7 +822,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data)
+        // console.log("singleBusinessData: ", data)
 
         this.selectedBusiness = data.response
         // this.ngxService.stop();
@@ -945,7 +945,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       business_id: this.businessId,
     }
 
-    console.log("employeeFormData: ", obj)
+    // console.log("employeeFormData: ", obj)
     this.postUpdateEmployee(obj)
   }
 
@@ -961,7 +961,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("employeeResponseData: ", data)
+        // console.log("employeeResponseData: ", data)
         this.submitted = false
         if (data.status === true) {
           Swal.fire({
@@ -992,7 +992,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   }
 
   calculateGrossIncome(event: any) {
-    // console.log("test: ", this.addEmployeeForm.get('lifeAssurance').value);
+    // // console.log("test: ", this.addEmployeeForm.get('lifeAssurance').value);
     this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
       this.addEmployeeForm
     )
@@ -1037,7 +1037,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log("invoice: ", data)
+        // console.log("invoice: ", data)
       })
   }
 

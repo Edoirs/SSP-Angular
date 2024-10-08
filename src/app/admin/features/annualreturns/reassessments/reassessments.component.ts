@@ -100,14 +100,14 @@ export class ReassessmentsComponent implements OnInit {
     }
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     this.getBusinesses()
 
     // this.getBusinesses(this.config.itemsPerPage, this.config.currentPage);
     this.initialisePaymentItemsForm()
     this.today = new Date()
 
-    console.log("token: ", localStorage.getItem("access_token"))
+    // console.log("token: ", localStorage.getItem("access_token"))
     this.roleID = localStorage.getItem("role_id")
     if (this.roleID === "5") {
       this.managerRole = true
@@ -225,10 +225,10 @@ export class ReassessmentsComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("BusinessData: ", data);
+      // console.log("BusinessData: ", data);
 
-      this.businessesData = data.data;
-      this.ngxService.stop();
+      this.businessesData = data.data
+      this.ngxService.stop()
     });
   }
 
@@ -244,9 +244,9 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data);
+        // console.log("singleBusinessData: ", data);
 
-        this.selectedBusiness = data.response;
+        this.selectedBusiness = data.response
         // this.ngxService.stop();
       });
   }
@@ -276,24 +276,24 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, objData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("reassessmentsData: ", data);
-        this.reassessmentsData = data.data.reverse();
+        // console.log("reassessmentsData: ", data);
+        this.reassessmentsData = data.data.reverse()
 
         // this.ngxService.stop();
       });
   }
 
   viewReassessment(modal: any, selectedReassessment: any) {
-    console.log("selectedReassessment: ", selectedReassessment);
-    this.reassessmentId = selectedReassessment.id;
-    this.reassessmentStatus = selectedReassessment.status == 0 ? false : true;
-    this.modalOptions.size = "xl";
-    this.taxAmountDueToPay = selectedReassessment.tax_amount;
-    this.invoiceNumber = selectedReassessment?.invoice?.invoice_number;
-    
-    this.showModal(modal);
+    // console.log("selectedReassessment: ", selectedReassessment);
+    this.reassessmentId = selectedReassessment.id
+    this.reassessmentStatus = selectedReassessment.status == 0 ? false : true
+    this.modalOptions.size = "xl"
+    this.taxAmountDueToPay = selectedReassessment.tax_amount
+    this.invoiceNumber = selectedReassessment?.invoice?.invoice_number
 
-    this.getSingleReassessment(this.reassessmentId);
+    this.showModal(modal)
+
+    this.getSingleReassessment(this.reassessmentId)
   }
 
   loadSelectedAssessmentData(selectedReassessment: any) {
@@ -349,8 +349,8 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("singleReassessmentData: ", data);
-        this.selectedReassessment = data.response;
+        // console.log("singleReassessmentData: ", data);
+        this.selectedReassessment = data.response
         // if (this.selectedReassessment.invoice != null) {
         //   this.processInvoiceBtn = false;
         //   this.previewInvoice = true;
@@ -358,36 +358,33 @@ export class ReassessmentsComponent implements OnInit {
 
         //   this.apiInvoice = data.response.invoice.invoice_preview_url;
         //   this.apiPayment = data.response.invoice.payment_url;
-        if (this.selectedReassessment?.invoice === null){
-          this.processInvoiceBtn = true;
-          this.previewInvoice = false;
-          this.paymentUrl = false;
-          this.objectDisable = true;
+        if (this.selectedReassessment?.invoice === null) {
+          this.processInvoiceBtn = true
+          this.previewInvoice = false
+          this.paymentUrl = false
+          this.objectDisable = true
+        } else if (this.selectedReassessment?.payment_status === 1) {
+          this.processInvoiceBtn = false
+          this.previewInvoice = true
+          this.paymentUrl = false
+          this.objectDisable = false
+          this.apiInvoice = data.response?.invoice?.invoice_preview_url
+        } else if (this.selectedReassessment?.payment_status === 2) {
+          this.processInvoiceBtn = false
+          this.previewInvoice = true
+          this.paymentUrl = true
+          this.objectDisable = false
+          this.invoiceNumber = data.response?.invoice?.invoice_number
+          this.apiInvoice = data.response?.invoice?.invoice_preview_url
+        } else if (this.selectedReassessment?.payment_status === 0) {
+          this.processInvoiceBtn = false
+          this.previewInvoice = true
+          this.objectDisable = true
+          this.paymentUrl = true
+          this.apiInvoice = data.response?.invoice?.invoice_preview_url
         }
-         else if (this.selectedReassessment?.payment_status === 1) {
-            this.processInvoiceBtn = false;
-            this.previewInvoice = true;
-            this.paymentUrl = false;
-            this.objectDisable = false;
-            this.apiInvoice = data.response?.invoice?.invoice_preview_url;
-          } else if (this.selectedReassessment?.payment_status === 2){
-            this.processInvoiceBtn = false;
-            this.previewInvoice = true;
-            this.paymentUrl = true;
-            this.objectDisable = false;
-            this.invoiceNumber = data.response?.invoice?.invoice_number;
-            this.apiInvoice = data.response?.invoice?.invoice_preview_url;
-          }
-         
-        else if (this.selectedReassessment?.payment_status === 0){
-          this.processInvoiceBtn = false;
-          this.previewInvoice = true;
-          this.objectDisable = true;
-          this.paymentUrl = true;
-          this.apiInvoice = data.response?.invoice?.invoice_preview_url;
-        }
-        this.invoiceNumber = data.response?.invoice?.invoice_number;
-        this.loadSelectedAssessmentData(this.selectedReassessment);
+        this.invoiceNumber = data.response?.invoice?.invoice_number
+        this.loadSelectedAssessmentData(this.selectedReassessment)
 
         this.appealForm = this.formBuilder.group({
           message: ["", [Validators.required]],
@@ -395,7 +392,7 @@ export class ReassessmentsComponent implements OnInit {
           invoiceNumber: [this.invoiceNumber],
           date: [this.datepipe.transform(this.today, "dd MMM yyyy")],
           myfile: ["", Validators.required],
-        });
+        })
 
         // this.ngxService.stop();
       });
@@ -421,16 +418,19 @@ export class ReassessmentsComponent implements OnInit {
     }
 
     this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
-      console.log("paymentItemsData: ", data);
-      this.paymentItemsData = data.response ? data.response : [];
-      this.assessmentPaymentItems = data.response?.items;
-      this.totaldueBalance = data?.response?.amount - data?.response?.amount_paid;
+      // console.log("paymentItemsData: ", data);
+      this.paymentItemsData = data.response ? data.response : []
+      this.assessmentPaymentItems = data.response?.items
+      this.totaldueBalance =
+        data?.response?.amount - data?.response?.amount_paid
       // add items to group form
-      console.log("paymentItemsData: ", this.assessmentPaymentItems);
+      // console.log("paymentItemsData: ", this.assessmentPaymentItems);
       this.assessmentPaymentItems?.forEach((paymentItem) => {
-        this.paymentItemIDsArray.push(paymentItem.id);
-        (<FormArray>this.paymentItemsForm.get("paymentItems")).push(this.addPaymentItemFormGroup(paymentItem));
-      });
+        this.paymentItemIDsArray.push(paymentItem.id)
+        ;(<FormArray>this.paymentItemsForm.get("paymentItems")).push(
+          this.addPaymentItemFormGroup(paymentItem)
+        )
+      })
 
       // this.ngxService.stop();
     });
@@ -457,25 +457,24 @@ export class ReassessmentsComponent implements OnInit {
   }
 
   sendDataToCBS(objArray: any) {
-    this.submitted = true;
+    this.submitted = true
 
-  
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs";
+    this.apiUrl = environment.AUTHAPIURL + "send_data_to_cbs"
 
     const requestObj = {
       invoice_number: this.invoiceNumber,
       assessment_items: objArray,
-    };
+    }
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.payForAssessment(requestObj);
+    this.payForAssessment(requestObj)
     // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
-    //     console.log("sendDataToCBS: ", data);
+    //     // console.log("sendDataToCBS: ", data);
     //     if (data.status == true) {
     //       this.ngxService.stop();
     //       let requestId = data.response.request_id;
@@ -519,14 +518,14 @@ export class ReassessmentsComponent implements OnInit {
     let paymentItemsArray: any[] = [];
 
     formAllData.paymentItems.forEach((obj: any) => {
-      console.log("item: ", obj);
+      // console.log("item: ", obj);
 
       let testObj = {
         item_id: obj.paymentItemId,
         amount: Number(obj.amountToPay),
-      };
+      }
 
-      paymentItemsArray.push(testObj);
+      paymentItemsArray.push(testObj)
     });
 
     // 
@@ -586,15 +585,15 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, formData, config)
       .subscribe((data) => {
-        console.log(data);
+        // console.log(data);
 
         if (data.status === true) {
           Object.keys(this.appealForm.controls).forEach((key) => {
-            this.appealForm.get(key)?.setErrors(null);
-          });
+            this.appealForm.get(key)?.setErrors(null)
+          })
 
-          this.files = [];
-          this.filePath = [];
+          this.files = []
+          this.filePath = []
 
           const obj = {
             message: formAllData.message,
@@ -605,12 +604,11 @@ export class ReassessmentsComponent implements OnInit {
             comment: formAllData.message,
             // submitted: true,
             file_url: data.response.url,
-          };
+          }
 
-          console.log("appealFormFormData: ", obj);
-          this.postGenerateAppeal(obj);
-        } 
-        else {
+          // console.log("appealFormFormData: ", obj);
+          this.postGenerateAppeal(obj)
+        } else {
           // this.ngxService.stop();
 
           Swal.fire({
@@ -619,7 +617,7 @@ export class ReassessmentsComponent implements OnInit {
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
       });
   }
@@ -636,14 +634,14 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data);
+        // console.log("appealApiResponseData: ", data);
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.appealForm.reset();
+          this.appealForm.reset()
           Object.keys(this.appealForm.controls).forEach((key) => {
-            this.appealForm.get(key)?.setErrors(null);
-          });
+            this.appealForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -654,13 +652,12 @@ export class ReassessmentsComponent implements OnInit {
                 : data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
 
-          this.getReassessments(this.businessId);
+          this.getReassessments(this.businessId)
           // this.ngxService.stop();
-          this.modalService.dismissAll();
-        } 
-        else {
+          this.modalService.dismissAll()
+        } else {
           // this.ngxService.stop();
 
           Swal.fire({
@@ -672,7 +669,7 @@ export class ReassessmentsComponent implements OnInit {
                 : data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
       });
   }
@@ -687,34 +684,31 @@ export class ReassessmentsComponent implements OnInit {
     });
 
     this.httpClient.post<any>(this.apiUrl, requestObj, { headers: reqHeader }).subscribe((data) => {
-        console.log("makePaymentForAssessment: ", data);
-        if (data.status == true) {
-          // this.ngxService.stop();
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          });
-          this.modalService.dismissAll();
-          this.navigationUrl = data.response.redirection_url;
-          this.goToLink(this.navigationUrl);
-        }
-        else {
-          // this.ngxService.stop();
-          Swal.fire({
-            icon: "error",
-            title: "Oops..",
-            text:
-            data.response != null ? data.response[0].message : data.message,
-       
-            showConfirmButton: true,
-            timer: 5000,
-          });
-          
-        }
-      });
+      // console.log("makePaymentForAssessment: ", data);
+      if (data.status == true) {
+        // this.ngxService.stop();
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        })
+        this.modalService.dismissAll()
+        this.navigationUrl = data.response.redirection_url
+        this.goToLink(this.navigationUrl)
+      } else {
+        // this.ngxService.stop();
+        Swal.fire({
+          icon: "error",
+          title: "Oops..",
+          text: data.response != null ? data.response[0].message : data.message,
+
+          showConfirmButton: true,
+          timer: 5000,
+        })
+      }
+    });
   }
 
   goToLink(url: string) {
@@ -735,7 +729,7 @@ export class ReassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, obj, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("invoice: ", data);
+        // console.log("invoice: ", data);
 
         if (data.status == true) {
           // this.ngxService.stop();
@@ -746,16 +740,15 @@ export class ReassessmentsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
-          this.processInvoiceBtn = false;
-          this.previewInvoice = true;
-          this.paymentUrl = true;
+          })
+          this.processInvoiceBtn = false
+          this.previewInvoice = true
+          this.paymentUrl = true
 
-          this.apiInvoice = data.response.invoice_preview_url;
-          this.apiPayment = data.response.payment_url;
-          this.invoiceNumber = data.response.invoice_number;
-        } 
-        else {
+          this.apiInvoice = data.response.invoice_preview_url
+          this.apiPayment = data.response.payment_url
+          this.invoiceNumber = data.response.invoice_number
+        } else {
           // this.ngxService.stop();
           Swal.fire({
             icon: "error",
@@ -764,7 +757,7 @@ export class ReassessmentsComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         }
       });
   }

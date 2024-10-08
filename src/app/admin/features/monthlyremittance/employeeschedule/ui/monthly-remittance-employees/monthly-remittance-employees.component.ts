@@ -225,7 +225,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       )
       window.open(pdf, "_blank")
     } catch (err: any) {
-      console.log({err})
+      // console.log({err})
       this.btnLoading.set(false)
       Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }

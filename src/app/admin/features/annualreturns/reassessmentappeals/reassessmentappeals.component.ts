@@ -74,7 +74,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     this.getBusinesses()
 
     this.initialiseSearch()
@@ -203,7 +203,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, this.searchObject, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("reassessmentAppealsData: ", data)
+        // console.log("reassessmentAppealsData: ", data)
         this.reassessmentAppealsData =
           data.response == null ? [] : data.data.reverse()
         this.taxpayerId = data.data[0]?.taxpayer_id
@@ -212,7 +212,7 @@ export class ReassessmentappealsComponent implements OnInit {
   }
 
   viewReassessmentAppeal(modal: any, selectedAppeal: any) {
-    console.log("selectedAppeal: ", selectedAppeal)
+    // console.log("selectedAppeal: ", selectedAppeal)
     this.appealId = selectedAppeal.id
     this.showModal(modal)
 
@@ -283,7 +283,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("selectedAppealData: ", data)
+        // console.log("selectedAppealData: ", data)
         this.selectedAppeal = data.response
         this.files = data.response.files
         this.loadSelectedAppealData(this.selectedAppeal)
@@ -300,7 +300,7 @@ export class ReassessmentappealsComponent implements OnInit {
 
   public selectedDate(value: any, datepicker?: any) {
     // this is the date  selected
-    console.log("selectedDate: ", value)
+    // console.log("selectedDate: ", value)
 
     this.daterange.start = value.start.format("YYYY-MM-DD")
     this.daterange.end = value.end.format("YYYY-MM-DD")
@@ -341,7 +341,7 @@ export class ReassessmentappealsComponent implements OnInit {
       // submitted: true,
     }
 
-    console.log("appealFormFormData: ", obj)
+    // console.log("appealFormFormData: ", obj)
     this.postAppeal(obj)
   }
 
@@ -357,7 +357,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data)
+        // console.log("appealApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -417,7 +417,7 @@ export class ReassessmentappealsComponent implements OnInit {
       message: formAllData.comment,
     }
 
-    console.log("appealFormFormData: ", obj)
+    // console.log("appealFormFormData: ", obj)
     this.Appeal(obj)
   }
 
@@ -433,7 +433,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data)
+        // console.log("appealApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -494,7 +494,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        // console.log("BusinessData: ", data)
 
         this.businessesData = data.data
         this.ngxService.stop()
@@ -513,7 +513,7 @@ export class ReassessmentappealsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data)
+        // console.log("singleBusinessData: ", data)
 
         this.selectedBusiness = data.response
         // this.ngxService.stop();
@@ -550,7 +550,7 @@ export class ReassessmentappealsComponent implements OnInit {
       application_id: formAllData.objectionFromId,
     }
 
-    console.log("searchFormData: ", this.searchObject)
+    // console.log("searchFormData: ", this.searchObject)
     this.getReassessmentAppeals(this.businessId)
   }
 

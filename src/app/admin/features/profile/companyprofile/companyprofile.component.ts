@@ -102,8 +102,8 @@ export class CompanyprofileComponent implements OnInit {
     this.apiUrl = environment.AUTHAPIURL + "industry-sectors";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data: any) => {
-      console.log("industrySectors: ", data);
-      this.industrySectors = data.response;
+      // console.log("industrySectors: ", data);
+      this.industrySectors = data.response
     });
   }
 
@@ -111,41 +111,41 @@ export class CompanyprofileComponent implements OnInit {
     this.apiUrl = environment.AUTHAPIURL + "tax-offices";
 
     this.httpClient.get<any>(this.apiUrl).subscribe((data: any) => {
-      console.log("taxTaxOffices: ", data);
-      this.taxTaxOffices = data.response;
+      // console.log("taxTaxOffices: ", data);
+      this.taxTaxOffices = data.response
     });
   }
 
   getCompanyData() {
-    this.apiUrl = environment.AUTHAPIURL + "corporates/" + this.corporateID;
+    this.apiUrl = environment.AUTHAPIURL + "corporates/" + this.corporateID
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
     // this.ngxService.start();
-    console.log("getCompanyData");
+    // console.log("getCompanyData");
     this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
+      .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log("companyData", data);
-        this.apidata = data.response;
-        console.log(this.apidata.company_name)
-        this.corporateLogo = data.response.corporate_logo;
+        // console.log("companyData", data);
+        this.apidata = data.response
+        // console.log(this.apidata.company_name)
+        this.corporateLogo = data.response.corporate_logo
         // this.ngxService.stop();
-      });
+      })
   }
 
   onUpdate(formAllData: any) {
-    this.submitted = true;
-    // console.log("formData: ", formAllData);
+    this.submitted = true
+    // // console.log("formData: ", formAllData);
 
     // stop the process here if form is invalid
     if (this.companyProfileForm.invalid) {
-      // console.log("NOT JUST HERE!");
-      return;
+      // // console.log("NOT JUST HERE!");
+      return
     } else {
-      // console.log("JUST HERE!");
+      // // console.log("JUST HERE!");
 
       if (formAllData.myfile === "") {
         const user = {
@@ -154,33 +154,32 @@ export class CompanyprofileComponent implements OnInit {
           tax_office_id: formAllData.taxOffice,
           contact_address: formAllData.contactAddress,
           phone: formAllData.phone,
-        };
+        }
 
-        this.postData(user);
-      } 
-      else {
-        this.apiUrl = environment.AUTHAPIURL + "file/upload";
+        this.postData(user)
+      } else {
+        this.apiUrl = environment.AUTHAPIURL + "file/upload"
 
-        const formData = new FormData();
-        formData.append("file", this.companyProfileForm.get("myfile")?.value);
+        const formData = new FormData()
+        formData.append("file", this.companyProfileForm.get("myfile")?.value)
 
         const config = {
           headers: {
             Accept: "application/json",
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
-        };
+        }
 
         // this.ngxService.start();
         this.httpClient
           .post<any>(this.apiUrl, formData, config)
           .subscribe((data: any) => {
-            console.log(data);
+            // console.log(data)
 
             if (data.status === true) {
               Object.keys(this.companyProfileForm.controls).forEach((key) => {
-                this.companyProfileForm.get(key)?.setErrors(null);
-              });
+                this.companyProfileForm.get(key)?.setErrors(null)
+              })
 
               const company = {
                 corporate_logo: data.response.url,
@@ -188,13 +187,12 @@ export class CompanyprofileComponent implements OnInit {
                 industry_sector_id: formAllData.industry,
                 tax_office_id: formAllData.taxOffice,
                 contact_address: formAllData.contactAddress,
-              };
+              }
 
-              this.corporateLogo = company.corporate_logo;
-              console.log("Image Url = " + this.imageSrc);
-              this.postData(company);
-            } 
-            else {
+              this.corporateLogo = company.corporate_logo
+              // console.log("Image Url = " + this.imageSrc);
+              this.postData(company)
+            } else {
               // this.ngxService.stop();
 
               Swal.fire({
@@ -204,12 +202,11 @@ export class CompanyprofileComponent implements OnInit {
                 showConfirmButton: true,
                 timer: 5000,
                 timerProgressBar: true,
-              });
+              })
             }
-          });
+          })
       }
     }
-
   }
 
   postData(jsonData: any) {
@@ -224,7 +221,7 @@ export class CompanyprofileComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data: any) => {
-        console.log(data);
+        //console.log(data);
         // Rest form fithout errors
 
         // this.router.navigate(['/display']);
@@ -277,7 +274,7 @@ export class CompanyprofileComponent implements OnInit {
     // };
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data: any) => {
-      console.log('employeesData: ', data);
+      //console.log('employeesData: ', data);
       this.employeesCount = data.data?.length;
     });
   }

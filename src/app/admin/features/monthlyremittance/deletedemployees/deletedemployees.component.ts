@@ -126,7 +126,7 @@ export class DeletedemployeesComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("deletedEmployees", data)
+        // console.log("deletedEmployees", data)
         this.apidata = data.data
         this.ngxService.stop()
       })

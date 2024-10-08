@@ -34,7 +34,7 @@ export class ViewScheduleComponent implements OnInit, OnDestroy {
   subs = new SubscriptionHandler()
 
   ngOnInit(): void {
-    console.log(this.injectedData)
+    // console.log(this.injectedData)
   }
 
   ngOnDestroy(): void {

@@ -120,10 +120,10 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.getZipcodes()
     this.getStateLocalGovts()
     this.userRole = localStorage.getItem("role_id")
-    console.log("userRole: ", this.userRole)
+    // console.log("userRole: ", this.userRole)
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     this.getBusinesses()
 
     if (this.userRole == 6) {
@@ -137,9 +137,9 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       this.disableEmployeeControl = true
     }
 
-    console.log("showEditEmployee: ", this.showEditEmployee)
-    console.log("showEditEmployee: ", this.showEditEmployee)
-    console.log("token: ", localStorage.getItem("access_token"))
+    // console.log("showEditEmployee: ", this.showEditEmployee)
+    // console.log("showEditEmployee: ", this.showEditEmployee)
+    // console.log("token: ", localStorage.getItem("access_token"))
     // this.ngxService.stop();
 
     this.modalOptions = {
@@ -577,7 +577,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       basic: formAllData.basicIncome,
     }
 
-    console.log("employeeFormData: ", obj)
+    // console.log("employeeFormData: ", obj)
     this.postUpdateEmployee(obj)
   }
 
@@ -593,7 +593,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   }
 
   viewEmployee(modal: any, selectedEmployee: any) {
-    console.log("selectedEmployee: ", selectedEmployee)
+    // console.log("selectedEmployee: ", selectedEmployee)
     this.submitted = false
     this.showSaveEmployee = false
     this.initialiseAddForm()
@@ -617,7 +617,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   }
 
   editEmployee(modal: any, selectedEmployee: any) {
-    // console.log("selectedEmployee: ", selectedEmployee);
+    // // console.log("selectedEmployee: ", selectedEmployee);
     this.submitted = false
     this.showSaveEmployee = true
     this.initialiseAddForm()
@@ -729,7 +729,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.apiUrl = environment.AUTHAPIURL + "LocalGovtPostalCode/getall"
 
     this.subs.add = this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      console.log("zipcodes: ", data)
+      // console.log("zipcodes: ", data)
       this.zipCodes = data.data
     })
   }
@@ -739,7 +739,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
     this.subs.add = this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
       this.stateLocalGovts = data.data
-      console.log("stateLocalGovts: ", data)
+      // console.log("stateLocalGovts: ", data)
     })
   }
 
@@ -755,7 +755,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleEmployeeData: ", data)
+        // console.log("singleEmployeeData: ", data)
         this.loadSelectedEmployeeData(data.data)
         this.selectedEmployee = data.data
         this.ngxService.stop()
@@ -775,7 +775,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        // console.log("BusinessData: ", data)
 
         this.businessesData = data.data
         this.ngxService.stop()
@@ -794,7 +794,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data)
+        // console.log("singleBusinessData: ", data)
 
         this.selectedBusiness = data.response
         // this.ngxService.stop();
@@ -804,7 +804,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   postUpdateEmployee(jsonData: any) {
     // this.ngxService.start();
     this.apiUrl = environment.AUTHAPIURL + "employees/update"
-    console.log("Okay")
+    // console.log("Okay")
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -813,7 +813,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("employeeResponseData: ", data)
+        // console.log("employeeResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -872,7 +872,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("employeesData: ", data)
+        // console.log("employeesData: ", data)
         this.employeesData = data.data == null ? [] : data.data.reverse()
         if (data.data.length > 0) {
           this.apidataEmpty = true
@@ -915,7 +915,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       business_id: this.businessId,
     }
 
-    console.log("scheduleFormData: ", obj)
+    // console.log("scheduleFormData: ", obj)
     this.postForwardSchedule(obj)
   }
 
@@ -931,7 +931,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data)
+        // console.log("scheduleApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -1109,7 +1109,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       deleted_at: "0",
     }
 
-    console.log("employeeFormData: ", obj)
+    // console.log("employeeFormData: ", obj)
     // this.postCreateEmployee(obj);
     this.apiUrl = environment.AUTHAPIURL + "Employee/AddEmployee"
 
@@ -1130,7 +1130,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("employeeResponseData: ", data)
+        // console.log("employeeResponseData: ", data)
 
         if (data.status === true) {
           this.ngxService.stop()
@@ -1182,7 +1182,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("employeeResponseData: ", data)
+        // console.log("employeeResponseData: ", data)
 
         if (data.status === true) {
           // this.ngxService.stop();
@@ -1261,7 +1261,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     let d = new Date()
     let currentYear = d.getFullYear()
     let year = event.target.value
-    console.log(year, " rtyu")
+    // console.log(year, " rtyu")
     if (year < 2000 || year > currentYear) {
       this.yearIncorrect = true
     } else {
@@ -1293,7 +1293,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.add = this.httpClient
       .post<any>(this.apiUrl + "employees/import", formData, config)
       .subscribe((res) => {
-        console.log(res)
+        // console.log(res)
 
         this.uploadForm.reset()
         Object.keys(this.uploadForm.controls).forEach((key) => {
@@ -1355,7 +1355,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
               this.error =
                 err.toUpperCase() + " " + (key.replace(regex, " ") + ":", error)
               this.columnError.push(this.error)
-              console.log(this.error)
+              // console.log(this.error)
             }
           }
 

@@ -67,11 +67,12 @@ export class AppComponent {
 
     this.bnIdle.startWatching(this.sessTimeout).subscribe((res: any) => {
       if (res) {
-        console.log('session expired');
+        // console.log('session expired');
         //  localStorage.clear();
-        Object.keys(localStorage).filter(x =>
-            x.startsWith('niswasec_')).forEach(x => localStorage.removeItem(x))
-        this.router.navigate(['/login']);
+        Object.keys(localStorage)
+          .filter((x) => x.startsWith("niswasec_"))
+          .forEach((x) => localStorage.removeItem(x))
+        this.router.navigate(["/login"])
       }
     });
 

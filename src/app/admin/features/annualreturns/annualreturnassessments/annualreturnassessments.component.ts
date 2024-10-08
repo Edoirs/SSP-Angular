@@ -80,12 +80,12 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     // this.component.checkIfEditorExist();
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     this.getBusinesses()
 
     // this.getAllMonths();
     this.initialiseForms()
-    console.log("token: ", localStorage.getItem("access_token"))
+    // console.log("token: ", localStorage.getItem("access_token"))
 
     this.modalOptions = {
       backdrop: true,
@@ -215,14 +215,14 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log("assessmentsData: ", data)
+        // console.log("assessmentsData: ", data)
         this.assessmentsData = data == null ? [] : data
         this.ngxService.stop()
       })
   }
 
   viewAssessment(modal: any, selectedAssessment: any) {
-    console.log("selectedAssessment: ", selectedAssessment)
+    // console.log("selectedAssessment: ", selectedAssessment)
     this.assessmentId = selectedAssessment.id
     this.showModal(modal)
     this.getSingleAssessment(selectedAssessment.id)
@@ -266,7 +266,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log("singleAssessmentData: ", data)
+        // console.log("singleAssessmentData: ", data)
         this.selectedAssessment = data.response
         this.loadSelectedAssessmentData(this.selectedAssessment)
         this.ngxService.stop()
@@ -295,7 +295,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
       approved: true,
     }
 
-    console.log("reassessmentFormData: ", obj)
+    // console.log("reassessmentFormData: ", obj)
     this.postGenerateReassessment(obj)
   }
 
@@ -311,7 +311,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("reassessmentApiResponseData: ", data)
+        // console.log("reassessmentApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors
@@ -366,7 +366,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        // console.log("BusinessData: ", data)
 
         this.businessesData = data.data
         this.ngxService.stop()
@@ -385,7 +385,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data)
+        // console.log("singleBusinessData: ", data)
         this.selectedBusiness = data.response
         this.ngxService.stop()
       })
@@ -433,7 +433,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, formData, config)
       .subscribe((data) => {
-        console.log(data)
+        // console.log(data)
         if (data.status === true) {
           Object.keys(this.appealForm.controls).forEach((key) => {
             this.appealForm.get(key)?.setErrors(null)
@@ -453,7 +453,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
             file_url: data.response.url,
           }
 
-          console.log("appealFormFormData: ", obj)
+          // console.log("appealFormFormData: ", obj)
           this.postGenerateAppeal(obj)
         } else {
           // this.ngxService.stop();
@@ -480,7 +480,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("appealApiResponseData: ", data)
+        // console.log("appealApiResponseData: ", data)
 
         if (data.status === true) {
           // Rest form fithout errors

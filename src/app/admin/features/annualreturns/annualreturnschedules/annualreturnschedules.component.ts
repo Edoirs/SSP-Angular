@@ -75,12 +75,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.getAllMonths()
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     // this.getBusinesses();
     this.getSchedules()
 
     this.initialiseForms()
-    console.log("token: ", localStorage.getItem("access_token"))
+    // console.log("token: ", localStorage.getItem("access_token"))
     var userRole = localStorage.getItem("role_id")
     this.corporateId = localStorage.getItem("corporate_id")
 
@@ -332,13 +332,13 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   viewSchedule(modal: any, selectedSchedule: any) {
-    console.log("selectedSchedule: ", selectedSchedule);
-    this.showModal(modal);
-    this.selectedScheduleId = selectedSchedule.id;
+    // console.log("selectedSchedule: ", selectedSchedule);
+    this.showModal(modal)
+    this.selectedScheduleId = selectedSchedule.id
     // this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
 
-    this.getAnnualReturns(selectedSchedule.businessID, selectedSchedule.taxYear);
-    this.loadSelectedScheduleData(selectedSchedule);
+    this.getAnnualReturns(selectedSchedule.businessID, selectedSchedule.taxYear)
+    this.loadSelectedScheduleData(selectedSchedule)
 
     // let filedStatus = selectedSchedule.filedStatus.trim();
     // let status = filedStatus == "1" ? "Filed" : filedStatus == "2" ? "Approved" : "Rejected";
@@ -391,10 +391,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("BusinessData: ", data);
+      // console.log("BusinessData: ", data);
 
-      this.businessesData = data;
-      this.ngxService.stop();
+      this.businessesData = data
+      this.ngxService.stop()
     });
   }
 
@@ -408,9 +408,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("singleBusinessData: ", data);
-      this.selectedBusiness = data;
-      this.ngxService.stop();
+      // console.log("singleBusinessData: ", data);
+      this.selectedBusiness = data
+      this.ngxService.stop()
     });
   }
 
@@ -431,10 +431,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("schedulesData: ", data);
+      // console.log("schedulesData: ", data);
 
-      this.schedulesData = data.data;
-      this.ngxService.stop();
+      this.schedulesData = data.data
+      this.ngxService.stop()
     });
   }
 
@@ -450,11 +450,11 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("singleScheduleData: ", data);
-      this.selectedSchedule = data.response;
-      this.isFiled = this.selectedSchedule.annual_return_assessment_status;
-      this.loadSelectedScheduleData(this.selectedSchedule);
-      this.ngxService.stop();
+      // console.log("singleScheduleData: ", data);
+      this.selectedSchedule = data.response
+      this.isFiled = this.selectedSchedule.annual_return_assessment_status
+      this.loadSelectedScheduleData(this.selectedSchedule)
+      this.ngxService.stop()
     });
   }
 
@@ -470,12 +470,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
     });
 
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      console.log("annualReturnsData: ", data);
-      this.annualReturnsData = data.data == null ? [] : data.data;
+      // console.log("annualReturnsData: ", data);
+      this.annualReturnsData = data.data == null ? [] : data.data
       if (data.data?.length > 0) {
-        this.apidataEmpty = true;
+        this.apidataEmpty = true
       }
-      this.ngxService.stop();
+      this.ngxService.stop()
     });
   }
 
@@ -495,14 +495,14 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   onSubmitSchedule(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.forwardScheduleForm.invalid) {
-      return;
+      return
     }
 
-    let corporateId = localStorage.getItem("corporate_id");
+    let corporateId = localStorage.getItem("corporate_id")
 
     const obj = {
       // comment: formAllData.comment,
@@ -513,10 +513,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
           business_id: this.businessId,
         },
       ],
-    };
+    }
 
-    console.log("scheduleFormData: ", obj);
-    this.postForwardSchedule(obj);
+    // console.log("scheduleFormData: ", obj);
+    this.postForwardSchedule(obj)
   }
 
   postForwardSchedule(jsonData: any) {
@@ -531,14 +531,14 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data);
+        // console.log("scheduleApiResponseData: ", data);
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.forwardScheduleForm.reset();
+          this.forwardScheduleForm.reset()
           Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null);
-          });
+            this.forwardScheduleForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -550,10 +550,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
 
           // this.ngxService.stop();
-          this.modalService.dismissAll();
+          this.modalService.dismissAll()
           // this.getSchedules(this.businessId);
         } else {
           // this.ngxService.stop();
@@ -568,7 +568,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
           // this.getSchedules(this.businessId);
         }
       });
@@ -579,23 +579,23 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   onSubmitAssessment(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.assessmentForm.invalid) {
-      return;
+      return
     }
 
-    let corporateId = localStorage.getItem("corporate_id");
+    let corporateId = localStorage.getItem("corporate_id")
 
     const obj = {
       due_date: formAllData.assessmentYear,
       corporate_id: corporateId,
       business_id: this.businessId,
-    };
+    }
 
-    console.log("assessmentFormData: ", obj);
-    this.postGenerateAssessment(obj);
+    // console.log("assessmentFormData: ", obj);
+    this.postGenerateAssessment(obj)
   }
 
   postGenerateAssessment(jsonData: any) {
@@ -610,14 +610,14 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("assessmentApiResponseData: ", data);
+        // console.log("assessmentApiResponseData: ", data);
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.assessmentForm.reset();
+          this.assessmentForm.reset()
           Object.keys(this.assessmentForm.controls).forEach((key) => {
-            this.assessmentForm.get(key)?.setErrors(null);
-          });
+            this.assessmentForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -629,11 +629,11 @@ export class AnnualreturnschedulesComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
 
           // this.getSchedules(this.businessId);
           // this.ngxService.stop();
-          this.modalService.dismissAll();
+          this.modalService.dismissAll()
         } else {
           // this.ngxService.stop();
 
@@ -647,15 +647,15 @@ export class AnnualreturnschedulesComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
             timerProgressBar: true,
-          });
+          })
         }
       });
   }
 
   editEmployee(modal: any, selectedAnnualReturn: any) {
-    console.log("selectedAnnualReturn: ", selectedAnnualReturn);
-    this.selectedEmployeeId = selectedAnnualReturn.employee_id;
-    this.selectedScheduleRecordId = selectedAnnualReturn.id;
+    // console.log("selectedAnnualReturn: ", selectedAnnualReturn);
+    this.selectedEmployeeId = selectedAnnualReturn.employee_id
+    this.selectedScheduleRecordId = selectedAnnualReturn.id
 
     this.annualReturnForm = this.formBuilder.group({
       taxPayerID: [selectedAnnualReturn.taxpayer_id],
@@ -706,20 +706,17 @@ export class AnnualreturnschedulesComponent implements OnInit {
       ],
       nationality: [selectedAnnualReturn.nationality, Validators.required],
       designation: [selectedAnnualReturn.designation, Validators.required],
-    });
+    })
 
-    this.editEmployeeModalRef = this.modalService.open(
-      modal,
-      this.modalOptions
-    );
+    this.editEmployeeModalRef = this.modalService.open(modal, this.modalOptions)
   }
 
   onSubmitAnnualReturn(formAllData: any) {
-    this.submitted = true;
+    this.submitted = true
 
     // stop the process here if form is invalid
     if (this.annualReturnForm.invalid) {
-      return;
+      return
     }
 
     const obj = {
@@ -736,10 +733,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
       surname: formAllData.surname,
       nationality: formAllData.nationality,
       designation: formAllData.designation,
-    };
+    }
 
-    console.log("annualReturnFormData: ", obj);
-    this.postUpdateAnnualReturn(obj);
+    // console.log("annualReturnFormData: ", obj);
+    this.postUpdateAnnualReturn(obj)
   }
 
   manageModal(modalReference: any) {
@@ -765,8 +762,8 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
       .subscribe((data) => {
-        console.log("annualReturnResponseData: ", data);
-        this.submitted = false;
+        // console.log("annualReturnResponseData: ", data);
+        this.submitted = false
 
         if (data.status === true) {
           Swal.fire({
@@ -775,13 +772,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
             text: "Annual Return has been updated successfully!",
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
 
-          this.getSingleSchedule(this.selectedScheduleId);
-          this.editEmployeeModalRef.close();
+          this.getSingleSchedule(this.selectedScheduleId)
+          this.editEmployeeModalRef.close()
           // this.ngxService.stop();
-        }
-        else {
+        } else {
           // this.ngxService.stop();
 
           Swal.fire({
@@ -791,7 +787,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
               data.response != null ? data.response[0].message : data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
       });
   }
@@ -822,7 +818,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
         this.httpClient
           .post<any>(this.apiUrl, obj, { headers: reqHeader })
           .subscribe((data) => {
-            console.log(data);
+            // console.log(data);
 
             if (data.status == true) {
               Swal.fire({
@@ -831,9 +827,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
                 text: "Annual Return Successfully Deleted",
                 showConfirmButton: false,
                 timer: 1500,
-              });
+              })
 
-              this.getSingleSchedule(this.selectedScheduleId);
+              this.getSingleSchedule(this.selectedScheduleId)
             } else {
               Swal.fire({
                 icon: "error",
@@ -841,7 +837,7 @@ export class AnnualreturnschedulesComponent implements OnInit {
                 text: data.message,
                 showConfirmButton: true,
                 timer: 5000,
-              });
+              })
             }
           });
       }

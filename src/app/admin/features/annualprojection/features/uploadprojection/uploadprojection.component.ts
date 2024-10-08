@@ -108,15 +108,15 @@ export class UploadprojectionComponent implements OnInit {
     this.loadAssessmentYears()
     this.initialiseForms()
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
     this.getBusinesses()
     this.roleID = localStorage.getItem("role_id")
 
     this.companyName = localStorage.getItem("companyName")
-    console.log("companyName: ", this.companyName)
+    // console.log("companyName: ", this.companyName)
 
     this.companyRIN = localStorage.getItem("companyRIN")
-    console.log("companyRIN: ", this.companyRIN)
+    // console.log("companyRIN: ", this.companyRIN)
 
     this.sample_file = environment.SAMPLE_FILE_URL + "FileProjection-NEW.xlsx"
 
@@ -217,7 +217,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        // console.log("BusinessData: ", data)
 
         this.businessesData = data
         this.ngxService.stop()
@@ -236,7 +236,7 @@ export class UploadprojectionComponent implements OnInit {
     }
 
     this.httpClient.get<any>(this.apiUrl, config).subscribe((data) => {
-      console.log("singleBusinessData: ", data)
+      // console.log("singleBusinessData: ", data)
 
       this.selectedBusiness = data.response
       this.ngxService.stop()
@@ -275,7 +275,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, formData, config)
       .subscribe((res) => {
-        console.log(res)
+        // console.log(res)
         // Clear form Value Without any Error
         this.myForm.reset()
         Object.keys(this.myForm.controls).forEach((key) => {
@@ -348,7 +348,7 @@ export class UploadprojectionComponent implements OnInit {
         this.httpClient
           .delete<any>(this.apiUrl, {headers: reqHeader})
           .subscribe((data) => {
-            console.log(data)
+            // console.log(data)
             if (data.status == true) {
               Swal.fire({
                 icon: "success",
@@ -373,7 +373,7 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   loadSelectedBusinessData(selectedBusiness: any) {
-    console.log("selectedProjection: ", selectedBusiness)
+    // console.log("selectedProjection: ", selectedBusiness)
     this.corporateForm = this.formBuilder.group({
       companyName: [this.companyName],
       companyID: [this.companyRIN],
@@ -395,7 +395,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("annualReturnsDataU: ", data)
+        // console.log("annualReturnsDataU: ", data)
         this.annualReturnsData.set(data)
 
         if (data?.length > 0) {
@@ -437,7 +437,7 @@ export class UploadprojectionComponent implements OnInit {
       companyId: this.companyId,
     }
 
-    console.log("scheduleFormData: ", obj)
+    // console.log("scheduleFormData: ", obj)
     // this.postForwardSchedule(obj);
     this.postFileFormH3(obj)
   }
@@ -454,7 +454,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data)
+        // console.log("scheduleApiResponseData: ", data)
         if (data.status === true) {
           // Rest form fithout errors
           this.fileFormH3Form.reset()
@@ -494,7 +494,7 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   editAnnualReturn(modal: any, selectedAnnualReturn: any) {
-    console.log("selectedAnnualReturn: ", selectedAnnualReturn)
+    // console.log("selectedAnnualReturn: ", selectedAnnualReturn)
     this.selectedEmployeeId = selectedAnnualReturn.employee_id
     this.selectedScheduleRecordId = selectedAnnualReturn.id
 
@@ -659,7 +659,7 @@ export class UploadprojectionComponent implements OnInit {
       // consolidatedreliefallowancecra: this.CRA,
     }
 
-    console.log("annualReturnFormData: ", obj)
+    // console.log("annualReturnFormData: ", obj)
     this.postUpdateAnnualReturn(obj)
   }
 
@@ -675,7 +675,7 @@ export class UploadprojectionComponent implements OnInit {
     this.httpClient
       .put<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("annualReturnResponseData: ", data)
+        // console.log("annualReturnResponseData: ", data)
         this.submitted = false
 
         if (data.status === true) {
@@ -782,7 +782,7 @@ export class UploadprojectionComponent implements OnInit {
         this.httpClient
           .delete<any>(this.apiUrl, {headers: reqHeader})
           .subscribe((data) => {
-            console.log(data)
+            // console.log(data)
             if (data.status == true) {
               Swal.fire({
                 icon: "success",

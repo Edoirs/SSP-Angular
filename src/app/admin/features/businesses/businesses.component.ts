@@ -105,10 +105,10 @@ export class BusinessesComponent implements OnInit, OnDestroy {
     try {
       this.dataLoading.set(false)
       const pdf = await this.businessService.downloadBusinessExcel()
-      console.log(pdf)
+      // console.log(pdf)
       window.open(pdf, "_blank", "download")
     } catch (err: any) {
-      console.log({err})
+      // console.log({err})
       this.dataLoading.set(false)
       Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }

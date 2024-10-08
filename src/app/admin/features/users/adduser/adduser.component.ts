@@ -91,12 +91,12 @@ export class AdduserComponent implements OnInit {
   getRole() {
     this.apiUrl = environment.AUTHAPIURL + "roles"
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response)
+      // console.log(res.response)
       this.roles = res.response
 
       const arr = []
       for (const obj of this.roles) {
-        // console.log(obj);
+        // // console.log(obj);
         arr.push({
           id: obj.id,
           role_name: obj.role_name,
@@ -110,15 +110,15 @@ export class AdduserComponent implements OnInit {
   getApplication() {
     this.apiUrl = environment.AUTHAPIURL + "applications/1/roles"
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response)
+      // console.log(res.response)
       this.applications = res.response
       this.roles = res.response
       this.rolesArr = this.roles.shift()
-      console.log(this.roles)
+      // console.log(this.roles)
 
       const arr = []
       for (const obj of this.applications) {
-        // console.log(obj);
+        // // console.log(obj);
         arr.push({
           id: obj.id,
           application_name: obj.application_name,
@@ -136,7 +136,7 @@ export class AdduserComponent implements OnInit {
       return
     }
 
-    console.log(formAllData)
+    // console.log(formAllData)
 
     const obj = {
       name: formAllData.name,
@@ -162,7 +162,7 @@ export class AdduserComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
         // Rest form fithout errors
         this.registerForm.reset()
         Object.keys(this.registerForm.controls).forEach((key) => {

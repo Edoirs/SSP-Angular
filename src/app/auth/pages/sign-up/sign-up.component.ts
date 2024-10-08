@@ -286,7 +286,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   loadCompanyDetailsData(company: any) {
-    console.log("company: ", company)
+    // console.log("company: ", company)
     let phoneNumber = `0${company[0].mobileNumber1}`
     this.createUserForm.controls["phoneNumber"].setValue(phoneNumber)
     this.createUserForm.controls["address"].setValue(company[0].contactAddress)
@@ -332,7 +332,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.http
       .post<any>(this.apiUrl, jsonData, options)
       .subscribe((data: any) => {
-        console.log("CreateAccountStepTwo: ", data)
+        // console.log("CreateAccountStepTwo: ", data)
 
         if (data.status == true) {
           this.ngxService.stop()
@@ -373,7 +373,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.http
       .post<any>(this.apiUrl, jsonData, options)
       .subscribe((data: any) => {
-        console.log("CreateAccountStepThree: ", data)
+        // console.log("CreateAccountStepThree: ", data)
 
         if (data.status == true) {
           Swal.fire({

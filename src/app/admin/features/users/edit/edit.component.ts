@@ -76,7 +76,7 @@ export class EditComponent implements OnInit {
     this.apiUrl = environment.AUTHAPIURL + "roles"
 
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response)
+      // console.log(res.response)
       this.roles = res.response
 
       const arr = []
@@ -96,7 +96,7 @@ export class EditComponent implements OnInit {
     this.apiUrl = environment.AUTHAPIURL + "applications/1/roles"
     // this.ngxService.start();
     return this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      console.log(res.response)
+      // console.log(res.response)
       this.applications = res.response
       this.roles = res.response
       // this.ngxService.stop();
@@ -119,7 +119,7 @@ export class EditComponent implements OnInit {
     if (this.editForm.invalid) {
       return
     }
-    console.log(formAllData)
+    // console.log(formAllData)
 
     const obj = {
       id: this.userId,
@@ -141,7 +141,7 @@ export class EditComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
 
         // this.router.navigate(['/display']);
         if (data.status == true) {
@@ -190,7 +190,7 @@ export class EditComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
         this.userRecord = data.response
         // this.ngxService.stop();
       })

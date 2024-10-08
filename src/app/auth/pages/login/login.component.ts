@@ -127,7 +127,7 @@ export class LoginComponent {
     this.submitted = true
 
     if (this.loginForm.invalid) {
-      console.log("Here is we!")
+      // console.log("Here is we!")
       return
     }
 
@@ -144,7 +144,7 @@ export class LoginComponent {
     this.apiUrl = environment.AUTHAPIURL + "Login/SignIn"
 
     this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
-      console.log("SignInResponse: ", data)
+      // console.log("SignInResponse: ", data)
       this.ngxService.stop()
 
       if (data != null) {
@@ -209,7 +209,7 @@ export class LoginComponent {
       verificationOtp: otpFormData.enterOtp,
     }
 
-    console.log("loginRequest: ", requestObj)
+    // console.log("loginRequest: ", requestObj)
     if (this.otpForm.valid) {
       this.userLogin(requestObj)
     } else {
@@ -231,10 +231,10 @@ export class LoginComponent {
     this.http
       .post<any>(this.apiUrl, jsonData, options)
       .subscribe((data: any) => {
-        console.log("ValidateOTPAccountResponse: ", data)
+        // console.log("ValidateOTPAccountResponse: ", data)
         this.status = data.status
         if (this.status == true) {
-          console.log("user: ", data)
+           // console.log("user: ", data)
           // localStorage.setItem('admin_email', data.response.user.email);
           // localStorage.setItem('admin_id', data.response.user.id);
           // localStorage.setItem('admin_access_token', data.response.access_token);
@@ -266,7 +266,7 @@ export class LoginComponent {
     this.apiUrl = environment.AUTHAPIURL + "Login/ResendOTPAccount"
 
     this.http.post<any>(this.apiUrl, otpObjData).subscribe((data: any) => {
-      console.log("ResendOTPAccountResponse: ", data)
+      // console.log("ResendOTPAccountResponse: ", data)
       this.ngxService.stop()
 
       if (data.status == true) {

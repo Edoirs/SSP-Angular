@@ -88,13 +88,13 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     // this.component.checkIfEditorExist();
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    // console.log("companyId: ", this.companyId)
 
     this.companyName = localStorage.getItem("companyName")
-    console.log("companyName: ", this.companyName)
+    // console.log("companyName: ", this.companyName)
 
     this.companyRIN = localStorage.getItem("companyRIN")
-    console.log("companyRIN: ", this.companyRIN)
+    // console.log("companyRIN: ", this.companyRIN)
 
     this.getBusinesses()
     this.roleID = localStorage.getItem("role_id")
@@ -214,7 +214,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        // console.log("BusinessData: ", data)
 
         this.businessesData = data.data
         this.ngxService.stop()
@@ -233,7 +233,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data: any) => {
-        console.log("singleBusinessData: ", data)
+        // console.log("singleBusinessData: ", data)
         this.selectedBusiness = data.response
         this.ngxService.stop()
       })
@@ -286,7 +286,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         this.httpClient
           .delete<any>(this.apiUrl, {headers: reqHeader})
           .subscribe((data) => {
-            console.log(data)
+            // console.log(data)
             if (data.status == true) {
               Swal.fire({
                 icon: "success",
@@ -336,7 +336,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl + "SSP/FormH1/UploadFormH1", formData, config)
       .subscribe((res: any) => {
-        console.log(res)
+        // console.log(res)
 
         // Clear form Value Without any Error
         this.myForm.reset()
@@ -410,7 +410,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       companyId: this.companyId,
     }
 
-    console.log("scheduleFormData: ", obj)
+    // console.log("scheduleFormData: ", obj)
     this.postForwardSchedule(obj)
   }
 
@@ -426,7 +426,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("scheduleApiResponseData: ", data)
+        // console.log("scheduleApiResponseData: ", data)
         if (data.status === true) {
           // Rest form fithout errors
           this.forwardScheduleForm.reset()
@@ -488,7 +488,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("annualReturnsData: ", data)
+        // console.log("annualReturnsData: ", data)
         this.annualReturnsData = data
 
         if (data?.length > 0) {
@@ -502,7 +502,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   }
 
   editAnnualReturn(modal: any, selectedAnnualReturn: any) {
-    console.log("selectedAnnualReturn: ", selectedAnnualReturn)
+    // console.log("selectedAnnualReturn: ", selectedAnnualReturn)
     this.selectedEmployeeId = selectedAnnualReturn.employee_id
     this.selectedScheduleRecordId = selectedAnnualReturn.id
 
@@ -694,7 +694,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
       consolidatedreliefallowancecra: "0",
     }
 
-    console.log("annualReturnFormData: ", obj)
+    // console.log("annualReturnFormData: ", obj)
     this.postUpdateAnnualReturn(obj)
   }
 
@@ -710,7 +710,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.httpClient
       .put<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("annualReturnResponseData: ", data)
+        // console.log("annualReturnResponseData: ", data)
         this.submitted = false
 
         if (data.status === true) {
@@ -762,7 +762,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         this.httpClient
           .delete<any>(this.apiUrl, {headers: reqHeader})
           .subscribe((data) => {
-            console.log(data)
+            // console.log(data)
             if (data.status == true) {
               Swal.fire({
                 icon: "success",

@@ -107,7 +107,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.initialiseForms()
 
     this.companyId = localStorage.getItem("companyId")
-    console.log("companyId: ", this.companyId)
+    //console.log("companyId: ", this.companyId)
     this.listenToRoute()
 
     this.roleID = localStorage.getItem("role_id")
@@ -115,7 +115,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
       this.managerRole = true
     }
     this.intialiseTableProperties()
-    console.log("token: ", localStorage.getItem("access_token"))
+    //console.log("token: ", localStorage.getItem("access_token"))
   }
 
   ngOnDestroy(): void {
@@ -221,7 +221,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleBusinessData: ", data)
+        //console.log("singleBusinessData: ", data)
 
         this.selectedBusiness = data.response
         // this.ngxService.stop();
@@ -282,7 +282,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("BusinessData: ", data)
+        //console.log("BusinessData: ", data)
 
         this.businessesData = data.data
         this.ngxService.stop()
@@ -308,14 +308,14 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("assessmentsData: ", data)
+        //console.log("assessmentsData: ", data)
         this.assessmentsData = data.data == null ? [] : data.data
         // this.ngxService.stop();
       })
   }
 
   viewAssessment(modal: any, selectedAssessment: any) {
-    console.log("selectedAssessment: ", selectedAssessment)
+    //console.log("selectedAssessment: ", selectedAssessment)
     this.assessmentYear = this.getTaxYear(selectedAssessment.due_date)
     this.assessmentMonth = this.getTaxMonth(selectedAssessment.due_date)
     this.totalMonthlyTaxDue = selectedAssessment.monthly_tax_due
@@ -382,7 +382,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, requestObj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("makePaymentForAssessment: ", data)
+        //console.log("makePaymentForAssessment: ", data)
         if (data.status == true) {
           // this.ngxService.stop();
           Swal.fire({
@@ -427,13 +427,13 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, requestObj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("paymentItemsData: ", data)
+        //console.log("paymentItemsData: ", data)
         this.paymentItemsData = data.response ? data.response : []
         this.assessmentPaymentItems = data.response?.items
         this.totaldueBalance =
           data?.response?.monthly_tax_due - data?.response?.amount_paid
         // add items to group form
-        console.log("paymentItemsData: ", this.assessmentPaymentItems)
+        //console.log("paymentItemsData: ", this.assessmentPaymentItems)
         this.assessmentPaymentItems.forEach((paymentItem) => {
           this.paymentItemIDsArray.push(paymentItem.id)
           ;(<FormArray>this.paymentItemsForm.get("paymentItems")).push(
@@ -489,7 +489,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
 
     this.payForAssessment(requestObj)
     // this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
-    //     console.log("sendDataToCBS: ", data);
+    //     //console.log("sendDataToCBS: ", data);
     //     if (data.status == true) {
     //       this.ngxService.stop();
     //       let requestId = data.response.request_id;
@@ -533,7 +533,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     let paymentItemsArray: any[] = []
 
     formAllData.paymentItems.forEach((obj: any) => {
-      console.log("item: ", obj)
+      //console.log("item: ", obj)
 
       let testObj = {
         item_id: obj.paymentItemId,
@@ -587,7 +587,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("invoice: ", data)
+        //console.log("invoice: ", data)
         this.invoiceNumber = data.response?.invoice_number
         if (data.status == true) {
           // this.ngxService.stop();
@@ -637,7 +637,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.httpClient
       .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
-        console.log("singleAssessmentData: ", data)
+        //console.log("singleAssessmentData: ", data)
         this.selectedAssessment = data.response
         this.assessmentEmployeesData = data.response.schedule.schedule_records
         this.invoiceNumber = this.selectedAssessment?.invoice?.invoice_number
