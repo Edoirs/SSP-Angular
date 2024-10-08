@@ -53,23 +53,33 @@
           </tr>
 
           <tr>
-            <td>NHF Income</td>
+            <td>NHF Contribution</td>
             <td>{{ employeeDetail()?.nhf | number : '1.0-2' }}</td>
           </tr>
 
           <tr>
-            <td>NHIS Income</td>
+            <td>NHIS Contribution</td>
             <td>{{ employeeDetail()?.nhis | number : '1.0-2' }}</td>
           </tr>
 
           <tr>
-            <td>Pension Income</td>
+            <td>Pension Contribution</td>
             <td>{{ employeeDetail()?.pension | number : '1.0-2' }}</td>
           </tr>
 
           <tr>
-            <td>Life Assurance Income</td>
+            <td>Life Assurance Contribution</td>
             <td>{{ employeeDetail()?.lifeAssurance | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Total Income (Basic + Rent + Transport + Others)</td>
+            <td>{{ totalIncome() | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Gross Income (Total Income + Pension + NHF + NHIS + Life Assurance)</td>
+            <td>{{ grossIncome() | number : '1.0-2' }}</td>
           </tr>
 
         </tbody>

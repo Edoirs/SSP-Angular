@@ -774,11 +774,19 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
     this.subs.add = this.httpClient
       .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("BusinessData: ", data)
-
-        this.businessesData = data.data
-        this.ngxService.stop()
+      .subscribe({
+        next: (res) => {
+          if (res.status) {
+            this.businessesData = res.data
+          } else {
+            Swal.fire(SweetAlertOptions(res?.message))
+          }
+          this.ngxService.stop()
+        },
+        error: (err) => {
+          this.ngxService.stop()
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
       })
   }
 

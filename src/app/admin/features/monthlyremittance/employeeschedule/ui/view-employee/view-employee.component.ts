@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnDestroy,
   OnInit,
@@ -42,6 +43,23 @@ export class ViewEmployeeComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
 
   employeeDetail = signal<SingleEmployeeDetailResInterface | null>(null)
+
+  totalIncome = computed(
+    () =>
+      (this.employeeDetail()?.basic || 0) +
+      (this.employeeDetail()?.rent || 0) +
+      (this.employeeDetail()?.basic || 0) +
+      (this.employeeDetail()?.others || 0)
+  )
+
+  grossIncome = computed(
+    () =>
+      (this.totalIncome() || 0) +
+      (this.employeeDetail()?.pension || 0) +
+      (this.employeeDetail()?.nhf || 0) +
+      (this.employeeDetail()?.nhis || 0) +
+      (this.employeeDetail()?.lifeAssurance || 0)
+  )
 
   loading = signal(false)
   message = signal("")

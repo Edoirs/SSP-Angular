@@ -1,9 +1,13 @@
-export const SweetAlertOptions = (message?: string, status?: boolean): any => ({
+export const SweetAlertOptions = (
+  message?: string,
+  status?: boolean,
+  timer?: number
+): any => ({
   icon: status ? "success" : "error",
   title: status ? "" : "Oops...",
   text: message,
   showConfirmButton: true,
-  timer: 5000,
+  timer: timer || 5000,
 })
 
 export const SweetAlertInfoOption = (message: string): any => ({
