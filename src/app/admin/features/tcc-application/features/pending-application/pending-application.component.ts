@@ -15,13 +15,14 @@ import {TccApplicationDetailsComponent} from "../../ui/tcc-details/tcc-details.c
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {DecimalPipe} from "@angular/common"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-pending-application",
   templateUrl: "./pending-application.component.html",
   styleUrl: "./pending-application.component.scss",
   standalone: true,
-  imports: [MatPaginatorModule, DecimalPipe],
+  imports: [MatPaginatorModule, DecimalPipe, NgxSkeletonLoaderModule],
   providers: [TccService],
 })
 export class TccPendingApplicationComponent implements OnInit, OnDestroy {

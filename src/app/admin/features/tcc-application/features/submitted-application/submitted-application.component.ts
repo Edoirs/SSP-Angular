@@ -19,13 +19,14 @@ import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccSubmittedApplicationDetailsComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-details/submitted-tcc-details.component"
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {DecimalPipe} from "@angular/common"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-submitted-application",
   templateUrl: "./submitted-application.component.html",
   styleUrl: "./submitted-application.component.scss",
   standalone: true,
-  imports: [MatPaginatorModule, DecimalPipe],
+  imports: [MatPaginatorModule, DecimalPipe, NgxSkeletonLoaderModule],
   providers: [TccService],
 })
 export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {

@@ -29,13 +29,20 @@ import {
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 import {timer} from "rxjs"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-tcc-details",
   templateUrl: "./tcc-details.component.html",
   styleUrl: "./tcc-details.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
+  imports: [
+    TitleCasePipe,
+    MatPaginatorModule,
+    MatDialogClose,
+    NgToggleModule,
+    NgxSkeletonLoaderModule,
+  ],
   providers: [TccService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

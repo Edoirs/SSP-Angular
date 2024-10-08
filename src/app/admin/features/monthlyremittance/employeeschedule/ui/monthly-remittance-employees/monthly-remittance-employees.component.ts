@@ -34,6 +34,7 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {timer} from "rxjs"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -46,6 +47,7 @@ import {timer} from "rxjs"
     MatPaginatorModule,
     MatDialogClose,
     NgToggleModule,
+    NgxSkeletonLoaderModule,
   ],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,

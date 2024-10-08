@@ -25,6 +25,7 @@ import {SubmittedTccAppResInterface} from "@admin-pages/tcc-application/data-acc
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 import {TccSubmittedApplicationViewComponent} from "../submitted-tcc-view/submitted-tcc-view.component"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-submitted-tcc-details",
@@ -37,6 +38,7 @@ import {TccSubmittedApplicationViewComponent} from "../submitted-tcc-view/submit
     MatPaginatorModule,
     MatDialogClose,
     NgToggleModule,
+    NgxSkeletonLoaderModule,
   ],
   providers: [TccService],
   changeDetection: ChangeDetectionStrategy.OnPush,

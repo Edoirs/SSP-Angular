@@ -27,13 +27,20 @@ import {
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 import {ViewSubmittedTccApplicationComponent} from "../view-submitted-tcc/view-submitted-tcc.component"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-submitted-tcc-view",
   templateUrl: "./submitted-tcc-view.component.html",
   styleUrl: "./submitted-tcc-view.component.css",
   standalone: true,
-  imports: [TitleCasePipe, MatPaginatorModule, MatDialogClose, NgToggleModule],
+  imports: [
+    TitleCasePipe,
+    MatPaginatorModule,
+    MatDialogClose,
+    NgToggleModule,
+    NgxSkeletonLoaderModule,
+  ],
   providers: [TccService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

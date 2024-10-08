@@ -11,13 +11,14 @@ import Swal from "sweetalert2"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {TokenService} from "@shared/services/token.service"
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
+import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 
 @Component({
   selector: "app-businesses",
   templateUrl: "./businesses.component.html",
   styleUrl: "./businesses.component.scss",
   standalone: true,
-  imports: [MatPaginatorModule],
+  imports: [MatPaginatorModule, NgxSkeletonLoaderModule],
   providers: [BusinessService],
 })
 export class BusinessesComponent implements OnInit, OnDestroy {

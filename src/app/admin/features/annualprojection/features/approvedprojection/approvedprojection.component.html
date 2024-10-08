@@ -86,7 +86,7 @@ reass<div class="content-wrapper">
           <th>S/N</th>
           <th>Taxpayer ID</th>
           <th>Taxpayer Name</th>
-          <th>Designation</th>
+          <!-- <th>Designation</th> -->
           <th>Total Income (₦)</th>
           <th>Tax Free Pay (₦)</th>
           <th>Chargeable Income (₦)</th>
@@ -102,7 +102,7 @@ reass<div class="content-wrapper">
             <td>
               {{ (mydata.fullName | titlecase) || "N/A" }}
             </td>
-            <td>{{ (mydata.designation | titlecase) || "N/A" }}</td>
+            <!-- <td>{{ (mydata.designation | titlecase) || "N/A" }}</td> -->
             <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
             <td>{{ mydata.otherIncome | number }}</td>
             <td>{{ mydata.basic | number }}</td>

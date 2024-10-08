@@ -56,7 +56,9 @@
               <tbody>
                 @if(dataLoading()){
                 <tr>
-                  <td colspan="100%"><span>Loading...</span></td>
+                  <td colspan="100%">
+                    <ngx-skeleton-loader count="2" />
+                  </td>
                 </tr>
                 } @else if (dataMessage()) {
                 <tr>
