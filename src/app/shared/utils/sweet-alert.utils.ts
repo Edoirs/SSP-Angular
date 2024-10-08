@@ -5,3 +5,11 @@ export const SweetAlertOptions = (message?: string, status?: boolean): any => ({
   showConfirmButton: true,
   timer: 5000,
 })
+
+export const SweetAlertInfoOption = (message: string): any => ({
+  icon: "info",
+  title: "Info",
+  text: message,
+  showConfirmButton: true,
+  timer: 5000,
+})

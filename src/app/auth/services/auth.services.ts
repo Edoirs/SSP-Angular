@@ -69,4 +69,10 @@ export class AuthService {
         })
       )
   }
+
+  signUpUserStepOne(payload: {companyRin: string}) {
+    return this.httpClient.post<
+      ServerResInterface<AuthModels.UserRegisterStepOneInterface>
+    >(`${environment.AUTHAPIURL}Login/CreateAccountStepOne`, payload)
+  }
 }

@@ -27,3 +27,11 @@ export interface TaxOfficeResInterface {
   zoneId: number
   zoneName: string
 }
+
+
+export interface UserRegisterStepOneInterface {
+  companyName: string
+  phoneNumber: string
+  companyRin: string
+  screenDet: "LOGIN" | any
+}

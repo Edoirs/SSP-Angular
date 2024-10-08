@@ -8,9 +8,14 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {AuthService} from "../../services/auth.services"
-import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {
+  SweetAlertInfoOption,
+  SweetAlertOptions,
+} from "@shared/utils/sweet-alert.utils"
 import {AuthUtilsService} from "../../services/auth-utils.service"
 import * as AuthModels from "../../data-access/auth.models"
+import {ServerResInterface} from "@shared/types/server-response.model"
+import {timer} from "rxjs"
 
 @Component({
   selector: "app-sign-up",
@@ -20,6 +25,10 @@ import * as AuthModels from "../../data-access/auth.models"
 export class SignUpComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService)
   public readonly authUtilsService = inject(AuthUtilsService)
+  private readonly http = inject(HttpClient)
+  private readonly router = inject(Router)
+  private readonly formBuilder = inject(FormBuilder)
+  private readonly ngxService = inject(NgxUiLoaderService)
   createUserForm!: FormGroup
   enterOtpForm!: FormGroup
   submitted = false
@@ -53,12 +62,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }),
   })
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private ngxService: NgxUiLoaderService
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     // this.showEnterOtpForm = false
@@ -122,6 +126,14 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   get taxTypeId() {
     return this.createUserForm.get("taxTypeId")
+  }
+
+  get phoneNumber() {
+    return this.createUserForm.get("phoneNumber")
+  }
+
+  get companyName() {
+    return this.createUserForm.get("companyName")
   }
 
   getTaxOffices() {
@@ -238,44 +250,39 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }
   }
 
-  postCreateAccountStepOne(jsonData: any) {
+  postCreateAccountStepOne(payload: {companyRin: string}) {
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Login/CreateAccountStepOne"
+    this.subs.add = this.authService.signUpUserStepOne(payload).subscribe({
+      next: (res) => {
+        if (res.status == true) {
+          Swal.fire(SweetAlertInfoOption(res?.message))
+          this.loadCompanyDetailsData(res.data)
 
-    const myheaders = new HttpHeaders({
-      "Content-Type": "application/json",
-    })
-
-    const options = {headers: myheaders}
-
-    this.http
-      .post<any>(this.apiUrl, jsonData, options)
-      .subscribe((data: any) => {
-        console.log("CreateAccountStepOne: ", data)
-
-        if (data.status == true) {
-          Swal.fire({
-            icon: "info",
-            title: "Info",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-          let companyDetail = data.data
-          this.loadCompanyDetailsData(companyDetail)
           this.ngxService.stop()
           // this.router.navigate(['/admin', 'dashboard']);
         } else {
+          switch (res.data?.screenDet) {
+            case "LOGIN":
+              Swal.fire(SweetAlertInfoOption(res?.message))
+              this.subs.add = timer(5000).subscribe(() => {
+                this.router.navigate(["/login"])
+              })
+              break
+            case "OTP":
+              Swal.fire(SweetAlertInfoOption(res?.message))
+              this.loadCompanyOtpDetailData(res.data)
+              break
+            default:
+              Swal.fire(SweetAlertOptions(res?.message))
+          }
           this.ngxService.stop()
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
         }
-      })
+      },
+      error: (err) => {
+        this.ngxService.stop()
+        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+      },
+    })
   }
 
   loadCompanyDetailsData(company: any) {
@@ -287,6 +294,21 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
     //Disable fields
     this.disbableFormFields()
+  }
+
+  loadCompanyOtpDetailData(company: AuthModels.UserRegisterStepOneInterface) {
+    this.createUserForm.patchValue({
+      companyName: company.companyName,
+      ...(company?.phoneNumber && {
+        phoneNumber: `0${company?.phoneNumber}`,
+      }),
+    })
+
+    this.companyName?.disable()
+
+    if (company?.phoneNumber) {
+      this.phoneNumber?.disable()
+    }
   }
 
   disbableFormFields(): void {
