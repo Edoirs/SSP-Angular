@@ -75,7 +75,7 @@ export const MenuListRecord: MenuItemInterface[] = [
         faIconType: "outline",
       },
       {
-        name: "Filled / Reassessed Form H1",
+        name: "Re-assessed",
         url: ["admin", "annual-return-assessments"],
         faIcon: "fa-circle",
         faIconType: "outline",

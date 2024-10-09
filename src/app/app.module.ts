@@ -61,6 +61,7 @@ import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
 import {ExportAsModule} from "ngx-export-as"
 import {MenuItemComponent} from "./__inc/menuitem/menu-item/menu-item.component"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {ComingSoonComponent} from "@shared/components/coming-soon.component"
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
     AppRoutingModule,
     ReactiveFormsModule,
     MenuItemComponent,
+    ComingSoonComponent,
     NgxUiLoaderModule,
     FormsModule,
     DataTablesModule,

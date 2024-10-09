@@ -13,68 +13,68 @@
         <div class="card card-secondary">
           <div class="card-header custome">
             <h3 class="card-title">List of Businesses</h3>
-  
-  
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-  
-            <div  class="over-auto">
-              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-              <table class="table table-bordered table-condensed" *ngIf="businessesData;" datatable [dtOptions]="dtOptions"
-                width="100%">
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    <th>Tax Year</th>
-                    @if(tokenService.getLoginResData.isAdminUser){
-                      <th>Company RIN</th>
-                      <th>Company Name</th>
-                    }
-                    <th>Business RIN</th>
-                    <th>Business Name</th>
-                    <th>Employee Count</th>
-                    <th>Sum Assessment</th>
-                    <th>H1 Tax Paid</th>
-                    <th>Under Remittance</th>
-                    <th>Status</th>
-                    <th>Date Filled</th>
-                    <th>Date Reassessed</th>
-                    <th>View</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let mydata of businessesData; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ mydata?.taxYear || '2024' }}</td>
-                    @if(tokenService.getLoginResData.isAdminUser){
-                      <td>{{ mydata?.companyRin }}</td>
-                      <td>{{ mydata?.companyName }}</td>
-                    }
-                    <td>{{ mydata?.businessRIN }}</td>
-                    <td>{{ mydata?.businessName | titlecase }}</td>
-                    <td>{{ mydata?.employeeCount || 'N/A' }}</td>
-                    <td>{{ '0.00' }}</td>
-                    <td>{{ mydata?.taxPaid || 'N/A' }}</td>
-                    <td>{{ '0.00' }}</td>
-                    <td>{{ mydata?.status || 'N/A' }}</td>
-                    <td>{{ mydata?.dateFilled || 'N/A' }}</td>
-                    <td>{{ mydata?.Reassessed || 'N/A' }}</td>
 
-                    <td title="View"><button class="btn btn-sm btn-outline-success"
-                        (click)="openViewEmployee(mydata)"><i class="nav-icon fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+
           </div>
-          <!-- /.card-body -->
-          <!-- <div class="card-footer" *ngIf="apidataEmpty">
-            <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
-              class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
-          </div> -->
+
+          @if (comingSoon()) {
+            <app-coming-soon />
+          }@else {
+            <div class="card-body">
+
+              <div  class="over-auto">
+                <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+                  <table class="table table-bordered table-condensed" *ngIf="businessesData;" datatable [dtOptions]="dtOptions"
+                    width="100%">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Tax Year</th>
+                        @if(tokenService.getLoginResData.isAdminUser){
+                          <th>Company RIN</th>
+                          <th>Company Name</th>
+                        }
+                        <th>Business RIN</th>
+                        <th>Business Name</th>
+                        <th>Employee Count</th>
+                        <th>Sum Assessment</th>
+                        <th>H1 Tax Paid</th>
+                        <th>Under Remittance</th>
+                        <th>Status</th>
+                        <th>Date Filled</th>
+                        <th>Date Reassessed</th>
+                        <th>View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let mydata of businessesData; index as i">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ mydata?.taxYear || '2024' }}</td>
+                        @if(tokenService.getLoginResData.isAdminUser){
+                          <td>{{ mydata?.companyRin }}</td>
+                          <td>{{ mydata?.companyName }}</td>
+                        }
+                        <td>{{ mydata?.businessRIN }}</td>
+                        <td>{{ mydata?.businessName | titlecase }}</td>
+                        <td>{{ mydata?.employeeCount || 'N/A' }}</td>
+                        <td>{{ '0.00' }}</td>
+                        <td>{{ mydata?.taxPaid || 'N/A' }}</td>
+                        <td>{{ '0.00' }}</td>
+                        <td>{{ mydata?.status || 'N/A' }}</td>
+                        <td>{{ mydata?.dateFilled || 'N/A' }}</td>
+                        <td>{{ mydata?.Reassessed || 'N/A' }}</td>
+
+                        <td title="View"><button class="btn btn-sm btn-outline-success"
+                            (click)="openViewEmployee(mydata)"><i class="nav-icon fas fa-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          }
+
         </div>
   
       </div><!-- /.container-fluid -->

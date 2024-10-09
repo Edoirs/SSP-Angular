@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {Router} from "@angular/router"
@@ -57,6 +57,8 @@ export class ReassessmentappealsComponent implements OnInit {
   businessId: any
   companyId: any
 
+  comingSoon = signal(true)
+
   constructor(
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -70,15 +72,14 @@ export class ReassessmentappealsComponent implements OnInit {
   ) {}
 
   ngOnInit(searchObj = null): void {
-    // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
-    // this.component.checkIfEditorExist();
-    this.companyId = localStorage.getItem("companyId")
-    // console.log("companyId: ", this.companyId)
-    this.getBusinesses()
 
-    this.initialiseSearch()
-    this.roleID = localStorage.getItem("role_id")
+    // this.companyId = localStorage.getItem("companyId")
+
+    // this.getBusinesses()
+
+    // this.initialiseSearch()
+    // this.roleID = localStorage.getItem("role_id")
 
     if (this.roleID === "5") {
       this.managerRole = true

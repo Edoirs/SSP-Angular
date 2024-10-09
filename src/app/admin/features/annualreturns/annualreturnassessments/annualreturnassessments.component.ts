@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {Router} from "@angular/router"
@@ -29,6 +29,7 @@ import {FormDtH1Image} from "./utils/annual-return.utils"
 export class AnnualreturnassessmentsComponent implements OnInit {
   public readonly tokenService = inject(TokenService)
   private readonly dialog = inject(MatDialog)
+
   apiUrl!: string
   assessmentsData: any
   assessmentEmployeesData: any
@@ -57,6 +58,8 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   files: any
   filePath: string[] = []
 
+  comingSoon = signal(true)
+
   constructor(
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -75,17 +78,13 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
-    // this.component.checkIfEditorExist();
 
-    this.companyId = localStorage.getItem("companyId")
-    // console.log("companyId: ", this.companyId)
-    this.getBusinesses()
+    // this.companyId = localStorage.getItem("companyId")
 
-    // this.getAllMonths();
-    this.initialiseForms()
-    // console.log("token: ", localStorage.getItem("access_token"))
+    // this.getBusinesses()
+
+    // this.initialiseForms()
 
     this.modalOptions = {
       backdrop: true,

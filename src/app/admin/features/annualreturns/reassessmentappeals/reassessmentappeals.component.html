@@ -12,67 +12,66 @@
           <div class="card-header custome">
             <h3 class="card-title">List of Businesses</h3>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="over-auto">
-              <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-              <table
-                class="table table-bordered table-condensed"
-                *ngIf="businessesData"
-                datatable
-                [dtOptions]="dtOptions"
-                width="100%"
-              >
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    @if(tokenService.getLoginResData.isAdminUser){
-                      <th>Company RIN</th>
-                      <th>Company Name</th>
-                    }
-                    <th>Business RIN</th>
-                    <th>Business Name</th>
-                    <th>Sector</th>
-                    <th>Subsector</th>
-                    <th>Address</th>
-                    <th>LGA</th>
-                    <th>View</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let mydata of businessesData; index as i">
-                    <td>{{ i + 1 }}</td>
-                    @if(tokenService.getLoginResData.isAdminUser){
-                      <td>{{ mydata?.companyRin }}</td>
-                      <td>{{ mydata?.companyName }}</td>
-                    }
-                    <td>{{ mydata.businessRin }}</td>
-                    <td>{{ mydata.businessName | titlecase }}</td>
-                    <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
-                    <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
-                    <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
-                    <td>
-                      {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
-                    </td>
-  
-                    <td title="View">
-                      <button
-                        class="btn btn-sm btn-outline-success"
-                        (click)="viewBusinessAnnualReturn(reassessment, mydata)"
-                      >
-                        <i class="nav-icon fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+          @if (comingSoon()) {
+            <app-coming-soon />
+          }@else {
+            <div class="card-body">
+              <div class="over-auto">
+                <table
+                  class="table table-bordered table-condensed"
+                  *ngIf="businessesData"
+                  datatable
+                  [dtOptions]="dtOptions"
+                  width="100%"
+                >
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      @if(tokenService.getLoginResData.isAdminUser){
+                        <th>Company RIN</th>
+                        <th>Company Name</th>
+                      }
+                      <th>Business RIN</th>
+                      <th>Business Name</th>
+                      <th>Sector</th>
+                      <th>Subsector</th>
+                      <th>Address</th>
+                      <th>LGA</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let mydata of businessesData; index as i">
+                      <td>{{ i + 1 }}</td>
+                      @if(tokenService.getLoginResData.isAdminUser){
+                        <td>{{ mydata?.companyRin }}</td>
+                        <td>{{ mydata?.companyName }}</td>
+                      }
+                      <td>{{ mydata.businessRin }}</td>
+                      <td>{{ mydata.businessName | titlecase }}</td>
+                      <td>{{ mydata.industry_sector_name == null ? "N/A" : mydata.industry_sector_name }}</td>
+                      <td>{{ mydata.industry_subsector_name == null ? "N/A" : mydata.industry_subsector_name }}</td>
+                      <td>{{ mydata.business_address == null ? "N/A" : mydata.business_address }}</td>
+                      <td>
+                        {{ mydata.lga_name == null ? "N/A" : mydata.lga_name }}
+                      </td>
+    
+                      <td title="View">
+                        <button
+                          class="btn btn-sm btn-outline-success"
+                          (click)="viewBusinessAnnualReturn(reassessment, mydata)"
+                        >
+                          <i class="nav-icon fas fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <!-- /.card-body -->
-          <!-- <div class="card-footer" *ngIf="apidataEmpty">
-            <button *ngIf="showCreateSchedule" type="submit" (click)="forwardSchedule(schedulemodal)"
-              class="btn btn button-login"><i class="fas fa-plus-square"></i> Create Schedule</button>
-          </div> -->
+          }
+
         </div>
       </div>
       <!-- /.container-fluid -->
