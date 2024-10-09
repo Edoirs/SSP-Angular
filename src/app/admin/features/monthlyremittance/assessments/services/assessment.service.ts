@@ -3,6 +3,7 @@ import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {TokenService} from "@shared/services/token.service"
 import {ServerResInterface} from "@shared/types/server-response.model"
+import {AssessmentResInterface} from "../data-access/assessment.model"
 
 @Injectable({providedIn: "root"})
 export class AssessmentService {
@@ -14,11 +15,10 @@ export class AssessmentService {
       fromObject: {
         pageNumber: pageNumber + 1,
         pageSize,
-        BusinessId: this.tokenService.getLoginResData.businessRins[0].id,
         CompanyID: this.tokenService.getLoginResData.companyId,
       },
     })
-    return this.httpClient.get<ServerResInterface<any>>(
+    return this.httpClient.get<ServerResInterface<AssessmentResInterface[]>>(
       `${environment.AUTHAPIURL}PhaseII/GetAllAssessments`,
       {params}
     )

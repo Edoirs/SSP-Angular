@@ -1,0 +1,90 @@
+<div class="card card-secondary view-employee">
+  <div class="card-header custome">
+    <h3 class="card-title">Employee Details</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="over-auto">
+      @if (loading()) {
+        <span class="loading-text">fetching employee data</span>
+        <ngx-skeleton-loader count="8"/>
+      }@else {
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Businness RIN</td>
+            <td>{{ injectedData.data.businessRin }}</td>
+          </tr>
+
+          <tr>
+            <td>Business Name</td>
+            <td>{{ injectedData.data.businessName | titlecase }}</td>
+          </tr>
+
+          <tr>
+            <td>Date Generated</td>
+            <td>{{ injectedData.data.dateGenerated | date }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Year</td>
+            <td>{{ injectedData.data.taxYear || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Month</td>
+            <td>{{ injectedData.data.taxMonth || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Employees Count</td>
+            <td>{{ injectedData.data.listofEmployees | number : '1.0-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Assessment ReF No</td>
+            <td>{{  injectedData.data.assessmentRefNo || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Total Monthly Tax(₦)</td>
+            <td>{{ (injectedData.data.totalMonthlyTax | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Amount Paid(₦)</td>
+            <td>{{ (injectedData.data.amountPaid | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Balance (₦)</td>
+            <td>{{ (injectedData.data.balance | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Payment Status</td>
+            <td>{{injectedData.data.paymentStatus || "N/A" }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    }
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close>
+        Ok
+      </button>
+    </div>
+
+  </div>
+</div>

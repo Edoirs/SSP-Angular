@@ -20,6 +20,10 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {TokenService} from "@shared/services/token.service"
+import {AssessmentResInterface} from "./data-access/assessment.model"
+import {MatDialog} from "@angular/material/dialog"
+import {ViewAssesmentComponent} from "./ui/view-assessment/view-assessment.component"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
   selector: "app-assessments",
@@ -29,6 +33,7 @@ import {TokenService} from "@shared/services/token.service"
 export class AssessmentsComponent implements OnInit, OnDestroy {
   private readonly assessmentService = inject(AssessmentService)
   public readonly tokenService = inject(TokenService)
+  private readonly dialog = inject(MatDialog)
   apiUrl!: string
   assessmentsData: any = {}
   objectDisable!: boolean
@@ -73,7 +78,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   validAmountAssessed: boolean = false
   companyId: any
 
-  assementsData = signal<any[] | null>(null)
+  assementsData = signal<AssessmentResInterface[] | null>(null)
   pageSize = signal(15)
   totalLength = signal(500)
   pageIndex = signal(0)
@@ -240,8 +245,8 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
             next: (res) => {
               this.dataLoading.set(false)
               if (res.status === true) {
-                this.assementsData.set(res.data.businesses)
-                this.totalLength.set(res?.data?.totalCount || res?.data?.length)
+                this.assementsData.set(res.data)
+                this.totalLength.set(res?.data?.length || 0)
               } else {
                 this.ngxService.stop()
                 this.dataLoading.set(false)
@@ -287,6 +292,10 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
         this.businessesData = data.data
         this.ngxService.stop()
       })
+  }
+
+  openDetailView(data: AssessmentResInterface) {
+    this.dialog.open(ViewAssesmentComponent, MaterialDialogConfig({data}))
   }
 
   getAssessments(businessId: any) {

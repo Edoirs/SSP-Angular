@@ -51,7 +51,7 @@
                     <span>{{ dataMessage() }}</span>
                   </td>
                 </tr>
-                } @else { @for (mydata of businessesData; track $index) {
+                } @else { @for (mydata of assementsData(); track $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   @if(tokenService.getLoginResData.isAdminUser){
@@ -59,40 +59,40 @@
                     <td>{{ mydata?.companyName }}</td>
                   }
                   <td>{{ mydata?.businessRin }}</td>
-                  <td>{{ mydata?.business_name | titlecase }}</td>
+                  <td>{{ mydata?.businessName | titlecase }}</td>
                   <td>
-                    {{ mydata?.date_generated | date }}
+                    {{ mydata?.dateGenerated | date }}
                   </td>
                   <td>
-                    {{ mydata?.tax_year || "N/A" }}
+                    {{ mydata?.taxYear || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.tax_month || "N/A" }}
+                    {{ mydata?.taxMonth || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.employees_count | number }}
+                    {{ mydata?.listofEmployees | number : '1.0-2' }}
                   </td>
                   <td>
-                    {{ mydata?.assessment_ref_no || "N/A" }}
+                    {{ mydata?.assessmentRefNo || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.total_monthly_tax || "N/A" }}
+                    {{ (mydata?.totalMonthlyTax | number : '1.0-2') || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.amount_paid || "N/A" }}
+                    {{ (mydata?.amountPaid | number : '1.0-2') || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.balance || "N/A" }}
+                    {{ (mydata?.balance | number : '1.0-2') || "N/A" }}
                   </td>
                   <td>
-                    {{ mydata?.payment_status || "N/A" }}
+                    {{ mydata?.paymentStatus || "N/A" }}
                   </td>
 
                   <td title="View">
                     <button
                       class="btn btn-sm btn-outline-success"
                       (click)="
-                        viewBusinessAssessments(assessmentsModal, mydata)
+                        openDetailView(mydata)
                       ">
                       <i class="nav-icon fas fa-eye"></i>
                     </button>
