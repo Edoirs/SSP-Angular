@@ -361,10 +361,10 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
             title: "Success",
             text: res.message,
             showConfirmButton: true,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           })
-          // this.router.navigate(['/admin', 'annual-returns']);
+          this.router.navigate(["/admin/annual-return-schedules"])
         } else {
           // this.file = null;
           // this.filePath = null;

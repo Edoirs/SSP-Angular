@@ -228,26 +228,38 @@
             <th>Designation</th>
             <th>Nationality</th>
             <th>Total Income (₦)</th>
+            <th>Tax Free Pay(₦)</th>
             <th>Annual Tax Paid (₦)</th>
-            <th>Months</th>
+            <th>No of Months</th>
+            <th>View</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let mydata of annualReturnsData; index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ mydata.rin }}</td>
+            <td>{{ mydata?.rin }}</td>
             <td>
-              {{ mydata.fullName == null ? "N/A" : mydata.fullName | titlecase }}
+              {{(mydata?.fullName | titlecase) || "N/A" }}
             </td>
             <!-- <td>
-              {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
+              {{ mydata?.surname == null ? "N/A" : mydata?.surname | titlecase }}
             </td> -->
-            <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
-            <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
+            <td>{{ (mydata?.designation | titlecase) || "N/A" }}</td>
+            <td>{{ (mydata?.nationality | titlecase) || "N/A" }}</td>
 
-            <td>{{ (mydata.basic + mydata.rent + mydata.transport) | number }}</td>
-            <td>{{ mydata.annualtaxpaid | number }}</td>
-            <td>{{ mydata.totalmonthspaid | number }}</td>
+            <td>{{ mydata?.totalIncome | number: '1.0-2' }}</td>
+            <td>{{ mydata?.taxFreePay | number: '1.0-2' }}</td>
+            <td>{{ mydata?.annualtaxpaid | number: '1.0-2' }}</td>
+            <td>{{ mydata?.totalmonthspaid | number: '1.0-2' }}</td>
+            <td title="View">
+              <button
+                class="btn btn-sm btn-outline-success"
+                (click)="
+                  openDetailView(mydata)
+                ">
+                <i class="nav-icon fas fa-eye"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

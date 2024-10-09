@@ -1,0 +1,116 @@
+<div class="card card-secondary view-employee">
+  <div class="card-header custome">
+    <h3 class="card-title">Employee Details</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="over-auto">
+      @if (loading()) {
+        <span class="loading-text">fetching employee data</span>
+        <ngx-skeleton-loader count="8"/>
+      }@else {
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Businness ID</td>
+            <td>{{ injectedData.data.businessId }}</td>
+          </tr>
+          
+          <tr>
+            <td>Business Name</td>
+            <td>{{ (injectedData.data.businessName | titlecase) || "N/A" }}</td>
+          </tr>
+          
+          <tr>
+            <td>Rin</td>
+            <td>{{  injectedData.data.rin }}</td>
+          </tr>
+
+          <tr>
+            <td>Due Date</td>
+            <td>{{ injectedData.data.dueDate | date }}</td>
+          </tr>
+
+          <tr>
+            <td>Asset Name</td>
+            <td>{{ injectedData.data.assetName || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Full Name</td>
+            <td>{{ injectedData.data.fullName || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Payer ID</td>
+            <td>{{ injectedData.data.taxPayerId || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Individual ID</td>
+            <td>{{ injectedData.data.individalId }}</td>
+          </tr>
+
+
+          <tr>
+            <td>Total Income(₦)</td>
+            <td>{{ (injectedData.data.totalIncome | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Free Pay(₦)</td>
+            <td>{{ (injectedData.data.taxFreePay | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Annula Tax Paid (₦)</td>
+            <td>{{ (injectedData.data.annualtaxpaid | number : '1.0-2') || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Number of Months</td>
+            <td>{{ injectedData.data.totalmonthspaid }}</td>
+          </tr>
+          
+          <tr>
+            <td>Filled Status</td>
+            <td>{{ injectedData.data.filedStatus }}</td>
+          </tr>
+
+          <tr>
+            <td>Tax Year</td>
+            <td>{{ injectedData.data.taxYear }}</td>
+          </tr>
+
+          <tr>
+            <td>Complaince Status</td>
+            <td>{{ injectedData.data.complianceStatus || "N/A" }}</td>
+          </tr>
+
+          <tr>
+            <td>Date Created</td>
+            <td>{{ (injectedData.data.datetcreated | date) || "N/A" }}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    }
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark button-login"
+        mat-dialog-close>
+        Ok
+      </button>
+    </div>
+
+  </div>
+</div>
