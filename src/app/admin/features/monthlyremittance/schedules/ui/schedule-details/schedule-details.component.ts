@@ -187,34 +187,36 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   }
 
   reAssess() {
-    if (
-      confirm(
-        "Assessment will be recomputed and new amount generated against assessment reference number?"
-      )
+    const ask = confirm(
+      "Assessment will be recomputed and new amount generated against assessment reference number?"
     )
+    if (ask) {
       this.btnLoading.set(true)
-    const payload: SendRdmInterface = {
-      businessId: this.injectedData.businessId,
-      companyId: this.injectedData.companyId,
-      taxMonth: this.injectedData.taxMonth,
-      taxYear: this.injectedData.taxYear,
+      const payload: SendRdmInterface = {
+        businessId: this.injectedData.businessId,
+        companyId: this.injectedData.companyId,
+        taxMonth: this.injectedData.taxMonth,
+        taxYear: this.injectedData.taxYear,
+      }
+      this.subs.add = this.scheduleService.reAssess(payload).subscribe({
+        next: (res) => {
+          this.btnLoading.set(false)
+          if (res.status === true) {
+            Swal.fire(SweetAlertOptions(res?.message, true))
+            this.subs.add = timer(5000).subscribe(() =>
+              window.location.reload()
+            )
+          } else {
+            Swal.fire(SweetAlertOptions(res?.message))
+          }
+        },
+        error: (err) => {
+          console.error(err)
+          this.btnLoading.set(false)
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+        },
+      })
     }
-    this.subs.add = this.scheduleService.reAssess(payload).subscribe({
-      next: (res) => {
-        this.btnLoading.set(false)
-        if (res.status === true) {
-          Swal.fire(SweetAlertOptions(res?.message, true))
-          this.subs.add = timer(5000).subscribe(() => window.location.reload())
-        } else {
-          Swal.fire(SweetAlertOptions(res?.message))
-        }
-      },
-      error: (err) => {
-        console.error(err)
-        this.btnLoading.set(false)
-        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
-      },
-    })
   }
 
   async downloadPdf() {

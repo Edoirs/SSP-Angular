@@ -712,9 +712,10 @@ export class UploadprojectionComponent implements OnInit {
       businessRin: this.corporateForm.value.businessID,
       active: false,
     } as MarkFormH3EmployeeInterface
-    if (
-      window.confirm("Are you sure you want to mark all employees inactive?")
-    ) {
+    const ask = window.confirm(
+      "Are you sure you want to mark all employees inactive?"
+    )
+    if (ask) {
       this.subs.add = this.employeeScheduleService
         .markFormH3EmployeeInactive(payload)
         .subscribe({
@@ -746,9 +747,10 @@ export class UploadprojectionComponent implements OnInit {
       ...(employeeRin && {employeeRin}),
       active: status,
     } as MarkFormH3EmployeeInterface
-    if (
-      window.confirm("Are you sure you want to change this employee's status?")
+    const ask = window.confirm(
+      "Are you sure you want to change this employee's status?"
     )
+    if (ask) {
       this.subs.add = this.employeeScheduleService
         .markFormH3EmployeeInactive(payload)
         .subscribe({
@@ -759,6 +761,7 @@ export class UploadprojectionComponent implements OnInit {
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
+    }
   }
 
   deleteAnnualReturn(individualId: number) {

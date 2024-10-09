@@ -159,9 +159,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       active: activate || false,
       source: "monthly",
     } as MarkEmployeeInterface
-    if (
-      window.confirm("Are you sure you want to mark all employees inactive?")
-    ) {
+    const ask = window.confirm(
+      "Are you sure you want to mark all employees inactive?"
+    )
+    if (ask) {
       this.subs.add = this.employeeScheduleService
         .markEmployeeInactive(payload)
         .subscribe({
@@ -192,9 +193,11 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       active: status,
       source: "monthly",
     } as MarkEmployeeInterface
-    if (
-      window.confirm("Are you sure you want to change this employee's status?")
+
+    const ask = window.confirm(
+      "Are you sure you want to change this employee's status?"
     )
+    if (ask) {
       this.subs.add = this.employeeScheduleService
         .markEmployeeInactive(payload)
         .subscribe({
@@ -205,6 +208,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
+    }
   }
 
   async downloadPdf() {
