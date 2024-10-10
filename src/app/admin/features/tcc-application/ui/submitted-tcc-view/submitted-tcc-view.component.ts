@@ -28,6 +28,7 @@ import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 import {ViewSubmittedTccApplicationComponent} from "../view-submitted-tcc/view-submitted-tcc.component"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 
 @Component({
   selector: "app-submitted-tcc-view",
@@ -48,7 +49,7 @@ export class TccSubmittedApplicationViewComponent implements OnInit, OnDestroy {
   private readonly tccService = inject(TccService)
   private readonly dialog = inject(MatDialog)
   private readonly injectedData =
-    inject<SubmittedTccAppResInterface>(MAT_DIALOG_DATA)
+    inject<UploadProjectionInterface>(MAT_DIALOG_DATA)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
@@ -73,7 +74,7 @@ export class TccSubmittedApplicationViewComponent implements OnInit, OnDestroy {
 
   getTccDetails(pageNumber?: number, pageSize?: number) {
     this.subs.add = this.tccService
-      .getSubmittedTccView(pageNumber, pageSize, this.injectedData.businessId)
+      .getSubmittedTccView(pageNumber, pageSize, this.injectedData.businessID)
       .subscribe({
         next: (res) => {
           this.dataLoading.set(false)

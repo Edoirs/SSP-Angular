@@ -1,13 +1,13 @@
 <div class="monthly-remittance">
   <div class="monthly-remittance-header">
-    <h4 class="monthly-remittance-header-title">
-      TCC Application
-    </h4>
+    <h4 class="monthly-remittance-header-title">TCC Application</h4>
 
     <div class="table-header">
-
       <div class="table-header-cont-1">
-        <button class="btn btn-outline-success" (click)="processTCC()" [disabled]="btnLoading() || dataLoading() || !employeeIds().length">
+        <button
+          class="btn btn-outline-success"
+          (click)="processTCC()"
+          [disabled]="btnLoading() || dataLoading() || !employeeIds().length">
           Process TCC Request
         </button>
       </div>
@@ -22,7 +22,6 @@
           (keyup)="queryTable(searchTable)"
           (search)="queryTable(searchTable)" />
       </div> -->
-
     </div>
   </div>
 
@@ -64,15 +63,27 @@
             </td>
 
             <td>
-              <button (click)="processTCC(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction' || dataLoading()">
+              <button
+                (click)="processTCC(employee.employeeId)"
+                [disabled]="
+                  employee?.tccStatus?.toLowerCase() ===
+                    'submitted' || dataLoading()
+                ">
                 <i class="nav-icon fas fa-folder-open"></i>
               </button>
             </td>
 
             <td>
-              <input type="checkbox" name="status" (click)="addEmployeeId(employee.employeeId)" [disabled]="employee?.tccStatus !== 'noaction'">
+              <input
+                type="checkbox"
+                name="status"
+                (click)="addEmployeeId(employee.employeeId)"
+                [disabled]="
+                  employee?.tccStatus?.toLowerCase() ===
+                  'submitted'
+                " />
             </td>
-            
+
             <td title="View">
               <button
                 class="btn btn-sm btn-outline-success"

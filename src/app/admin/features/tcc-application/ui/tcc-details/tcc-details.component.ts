@@ -28,8 +28,8 @@ import {
 } from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
-import {timer} from "rxjs"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {NgxUiLoaderService} from "ngx-ui-loader"
 
 @Component({
   selector: "app-tcc-details",
@@ -53,6 +53,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     inject<UploadProjectionInterface>(MAT_DIALOG_DATA)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
+  private readonly ngxService = inject(NgxUiLoaderService)
 
   employeeDetails = signal<PendingTccResInterface[] | null>(null)
   dataLoading = signal(false)
@@ -122,24 +123,24 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.dataLoading.set(true)
+    this.ngxService.start()
 
     this.subs.add = this.tccService.processTcc(payload).subscribe({
       next: (res) => {
-        this.dataLoading.set(false)
+        this.ngxService.stop()
         if (res.status) {
           this.employeeIds.set([])
           Swal.fire(SweetAlertOptions(res?.message, true))
-          this.subs.add = timer(5000).subscribe(() => window.location.reload())
+          this.getTccDetails()
         } else {
           this.employeeIds.set([])
-          this.dataLoading.set(false)
+          this.ngxService.stop()
           Swal.fire(SweetAlertOptions(res?.message))
         }
       },
       error: (err) => {
         this.employeeIds.set([])
-        this.dataLoading.set(false)
+        this.ngxService.stop()
         Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
       },
     })

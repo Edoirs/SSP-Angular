@@ -12,7 +12,7 @@ import {Component} from "@angular/core"
         </li>
         <li>
           <div>
-            <p>Provide at least:</p>
+            <p>Provide at least one of:</p>
             <ol class="bulk-list">
               <li>Basic salary</li>
               <li>Transport allowance</li>
@@ -31,7 +31,7 @@ import {Component} from "@angular/core"
     }
 
     .bulk-notice, .bulk-notice p, li::marker{
-        color: #000;
+        color: red;
     }
 
     .bulk-notice h4{

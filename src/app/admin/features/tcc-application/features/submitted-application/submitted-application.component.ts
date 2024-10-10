@@ -20,6 +20,7 @@ import {TccSubmittedApplicationDetailsComponent} from "@admin-pages/tcc-applicat
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {DecimalPipe} from "@angular/common"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {TccSubmittedApplicationViewComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-view/submitted-tcc-view.component"
 
 @Component({
   selector: "app-submitted-application",
@@ -131,7 +132,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
 
   openTccDetails(business: UploadProjectionInterface) {
     this.dialog.open(
-      TccSubmittedApplicationDetailsComponent,
+      TccSubmittedApplicationViewComponent,
       MaterialDialogConfig(business)
     )
   }
