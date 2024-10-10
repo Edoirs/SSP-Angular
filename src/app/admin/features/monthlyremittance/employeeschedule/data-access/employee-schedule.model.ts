@@ -28,15 +28,15 @@ export interface EmployeeDetailResInterface {
 
 export interface MarkEmployeeInterface {
   source: "formh3" | "monthly"
-  businessRin: string
-  companyRin: string
+  businessId: "string"
+  companyId: "string"
   employeeRin?: string
   active: boolean
 }
 
 export interface MarkFormH3EmployeeInterface {
-  businessRin: string
-  companyRin: string
+  businessId: string
+  companyId: string
   employeeRin?: string
   active?: boolean
 }

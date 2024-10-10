@@ -17,12 +17,8 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
 import {DtImage} from "./utils/upload-project.utils"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
-import {
-  MarkEmployeeInterface,
-  MarkFormH3EmployeeInterface,
-} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
+import {MarkFormH3EmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
-import {timer} from "rxjs"
 
 @Component({
   selector: "app-uploadprojection",
@@ -54,6 +50,7 @@ export class UploadprojectionComponent implements OnInit {
   closeResult!: string
   businessId: any
   companyId: any
+  companyID?: string
   fileFormH3Form!: FormGroup
   corporateForm!: FormGroup
   apidataEmpty: boolean = false
@@ -387,29 +384,23 @@ export class UploadprojectionComponent implements OnInit {
     this.annualReturnsData.set(null)
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      // console.log("annualReturnsDataU: ", data)
+      this.annualReturnsData.set(data)
+
+      if (data?.length > 0) {
+        this.apidataEmpty = true
+      } else {
+        this.apidataEmpty = false
+      }
+
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("annualReturnsDataU: ", data)
-        this.annualReturnsData.set(data)
-
-        if (data?.length > 0) {
-          this.apidataEmpty = true
-        } else {
-          this.apidataEmpty = false
-        }
-
-        this.ngxService.stop()
-      })
   }
 
   createSchedule(modal: any, data: any) {
     this.businessId = data.businessID
+    this.companyID = data.companyID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(this.businessId, this.companyId)
     this.showModal(modal)
@@ -667,50 +658,42 @@ export class UploadprojectionComponent implements OnInit {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/update-TaxpayerH3`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.put<any>(this.apiUrl, jsonData).subscribe((data) => {
+      // console.log("annualReturnResponseData: ", data)
+      this.submitted = false
+
+      if (data.status === true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Annual Return has been updated successfully!",
+          showConfirmButton: true,
+          timer: 5000,
+        })
+
+        this.getAnnualReturns(this.businessId, this.companyId)
+        this.editEmployeeModalRef.close()
+        this.ngxService.stop()
+      } else {
+        this.ngxService.stop()
+
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: data.response != null ? data.response[0].message : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        })
+      }
     })
-
-    this.httpClient
-      .put<any>(this.apiUrl, jsonData, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("annualReturnResponseData: ", data)
-        this.submitted = false
-
-        if (data.status === true) {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Annual Return has been updated successfully!",
-            showConfirmButton: true,
-            timer: 5000,
-          })
-
-          this.getAnnualReturns(this.businessId, this.companyId)
-          this.editEmployeeModalRef.close()
-          this.ngxService.stop()
-        } else {
-          this.ngxService.stop()
-
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null ? data.response[0].message : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-        }
-      })
   }
 
-  markAllEmployeeInActive() {
+  markAllEmployeeInActive(activate?: boolean) {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.companyRIN,
-      businessRin: this.corporateForm.value.businessID,
-      active: false,
+      companyId: this.companyID?.toString(),
+      businessId: this.businessId,
+      active: activate || false,
     } as MarkFormH3EmployeeInterface
     const ask = window.confirm(
       "Are you sure you want to mark all employees inactive?"
@@ -723,9 +706,7 @@ export class UploadprojectionComponent implements OnInit {
             this.btnLoading.set(false)
             if (res.status) {
               Swal.fire(SweetAlertOptions(res?.message, true))
-              this.subs.add = timer(5000).subscribe(() =>
-                window.location.reload()
-              )
+              this.getAnnualReturns(this.businessId, this.companyId)
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }
@@ -739,12 +720,12 @@ export class UploadprojectionComponent implements OnInit {
     this.btnLoading.set(false)
   }
 
-  switchStatus(event: any, employeeRin?: string) {
+  switchStatus(event: any, data?: any) {
     const status = event.target.checked as boolean
     const payload = {
-      companyRin: this.companyRIN,
-      businessRin: this.corporateForm.value.businessID,
-      ...(employeeRin && {employeeRin}),
+      companyId: data.companyId,
+      businessId: data.businessId,
+      employeeRin: data.rin,
       active: status,
     } as MarkFormH3EmployeeInterface
     const ask = window.confirm(

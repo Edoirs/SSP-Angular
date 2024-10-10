@@ -179,19 +179,15 @@ export class PendingprojectionComponent implements OnInit {
   getBusinesses() {
     const obj = {};
     this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallformh3WithcompanyId/${this.companyId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
+    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
       // console.log("BusinessData: ", data);
 
-      this.businessesData = data
+      this.businessesData = res.data
       this.ngxService.stop()
-    });
+    })
   }
 
   viewBusinessProjection(modal: any, data: any) {

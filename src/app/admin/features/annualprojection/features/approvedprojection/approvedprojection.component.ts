@@ -1,62 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, signal} from "@angular/core"
 // import { DashboardComponent } from "../../dashboard/dashboard.component";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
+import {HttpClient, HttpHeaders} from "@angular/common/http"
+// import {ActivatedRoute, Router} from "@angular/router"
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModalOptions,
-} from "@ng-bootstrap/ng-bootstrap";
+} from "@ng-bootstrap/ng-bootstrap"
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
-import { SessionService } from "src/app/session.service";
-import { environment } from "src/environments/environment";
-import { Title } from "@angular/platform-browser";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-
+// import {SessionService} from "src/app/session.service"
+import {environment} from "src/environments/environment"
+import {Title} from "@angular/platform-browser"
+import {NgxUiLoaderService} from "ngx-ui-loader"
 
 @Component({
-  selector: 'app-approvedprojection',
-  templateUrl: './approvedprojection.component.html',
-  styleUrls: ['./approvedprojection.component.css']
+  selector: "app-approvedprojection",
+  templateUrl: "./approvedprojection.component.html",
+  styleUrls: ["./approvedprojection.component.css"],
 })
 export class ApprovedprojectionComponent implements OnInit {
-  dtOptions: any = {};
-  dtSmOptions: any = {};
-  roleID: any;
-  submitted: boolean = false;
-  apidata: any;
-  singleCorporate = [] as any;
-  apiUrl!: string;
-  corporateId = localStorage.getItem("corporate_id");
-  selectedProjection: any;
-  modalOptions!: NgbModalOptions;
-  closeResult!: string;
-  projectionData: any;
-  fileDetailsData: any;
-  companyName: any;
-  projectionYear: any;
-  title = "PAYE - Filed Projections Report";
-  businessesData: any;
-  selectedBusiness: any;
-  businessId: any;
-  companyId: any;
+  dtOptions: any = {}
+  dtSmOptions: any = {}
+  roleID: any
+  submitted: boolean = false
+  apidata: any
+  singleCorporate = [] as any
+  apiUrl!: string
+  corporateId = localStorage.getItem("corporate_id")
+  selectedProjection: any
+  modalOptions!: NgbModalOptions
+  closeResult!: string
+  projectionData: any
+  fileDetailsData: any
+  companyName: any
+  projectionYear: any
+  title = "PAYE - Filed Projections Report"
+  businessesData: any
+  selectedBusiness: any
+  businessId: any
+  companyId: any
   // annualReturnsData: any;
-  apidataEmpty: boolean = false;
-  assessmentsData: any;
-  singleAssessmentData: any;
-  assessmentEmployeesData: any;
+  apidataEmpty: boolean = false
+  assessmentsData: any
+  singleAssessmentData: any
+  assessmentEmployeesData: any
+
+  comingSoon = signal(true)
 
   constructor(
     private titleService: Title,
     private httpClient: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router,
+    // private route: ActivatedRoute,
+    // private router: Router,
     // private component: DashboardComponent,
     private modalService: NgbModal,
-    private sess: SessionService,
+    // private sess: SessionService,
     // private spinnerService: Ng4LoadingSpinnerService
     private ngxService: NgxUiLoaderService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // this.sess.isCorporate();
@@ -71,9 +72,8 @@ export class ApprovedprojectionComponent implements OnInit {
     this.roleID = localStorage.getItem("role_id")
 
     this.companyId = localStorage.getItem("companyId")
-    // console.log("companyId: ", this.companyId);
-    this.getBusinesses()
-    // this.getApprovedProjectionRecord();
+
+    // this.getBusinesses()
 
     this.dtOptions = {
       paging: true,
@@ -178,59 +178,62 @@ export class ApprovedprojectionComponent implements OnInit {
   }
 
   getBusinesses() {
-    this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`;
+    this.ngxService.start()
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
     // this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}`;
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      // console.log("BusinessData: ", data);
+    this.httpClient
+      .get<any>(this.apiUrl, {headers: reqHeader})
+      .subscribe((data) => {
+        // console.log("BusinessData: ", data);
 
-      this.businessesData = data.data
-      this.ngxService.stop()
-    });
+        this.businessesData = data.data
+        this.ngxService.stop()
+      })
   }
 
- 
   getApprovedProjections(businessId: any, year: any) {
     // this.apiUrl = environment.AUTHAPIURL + "projections/approvedList";
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`;
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`
 
-    this.ngxService.start();
+    this.ngxService.start()
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      // console.log(data);
-      this.ngxService.stop()
-      this.fileDetailsData = data.data
-    });
+    this.httpClient
+      .get<any>(this.apiUrl, {headers: reqHeader})
+      .subscribe((data) => {
+        // console.log(data);
+        this.ngxService.stop()
+        this.fileDetailsData = data.data
+      })
   }
 
   showModal(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(
       (result) => {
-        this.closeResult = `Closed with: ${result}`;
+        this.closeResult = `Closed with: ${result}`
       },
       (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
-    );
+    )
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return "by pressing ESC"
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
+      return "by clicking on a backdrop"
     } else {
-      return `with: ${reason}`;
+      return `with: ${reason}`
     }
   }
 
@@ -239,5 +242,4 @@ export class ApprovedprojectionComponent implements OnInit {
     this.getApprovedProjections(data.businessID, data.taxYear)
     this.showModal(modal)
   }
-
 }

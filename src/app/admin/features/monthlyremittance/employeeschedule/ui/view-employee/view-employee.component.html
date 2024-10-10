@@ -73,13 +73,13 @@
           </tr>
 
           <tr>
-            <td>Total Income (Basic + Rent + Transport + Others)</td>
-            <td>{{ totalIncome() | number : '1.0-2' }}</td>
+            <td>Gross Income (Basic + Rent + Transport + Others)</td>
+            <td>{{ grossIncome() | number : '1.0-2' }}</td>
           </tr>
 
           <tr>
-            <td>Gross Income (Total Income + Pension + NHF + NHIS + Life Assurance)</td>
-            <td>{{ grossIncome() | number : '1.0-2' }}</td>
+            <td>Total Income (Gross Income + Pension + NHF + NHIS + Life Assurance)</td>
+            <td>{{ totalIncome() | number : '1.0-2' }}</td>
           </tr>
 
         </tbody>

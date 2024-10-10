@@ -30,6 +30,7 @@ import {ScheduleDetailsComponent} from "./ui/schedule-details/schedule-details.c
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {TokenService} from "@shared/services/token.service"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
   selector: "app-schedules",
@@ -395,10 +396,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   }
 
   openScheduleView(data: ScheduleResInterface) {
-    this.dialog.open(ScheduleDetailsComponent, {
-      data,
-      minWidth: 1200,
-    })
+    this.dialog.open(ScheduleDetailsComponent, MaterialDialogConfig(data))
   }
 
   viewBusinessSchedules(modal: any, selectedBusiness: any) {

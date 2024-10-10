@@ -25,6 +25,7 @@ import {PageEvent} from "@angular/material/paginator"
 import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-employees/monthly-remittance-employees.component"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {TokenService} from "@shared/services/token.service"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
 
 @Component({
   selector: "app-employeeschedule",
@@ -894,14 +895,14 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   }
 
   openCreateScheduleModal() {
-    this.dialog.open(CreateScheduleComponent)
+    this.dialog.open(CreateScheduleComponent, MaterialDialogConfig())
   }
 
   openEmployeeDetails(data: any) {
-    this.dialog.open(MonthlyRemittanceEmployeesComponent, {
-      data,
-      minWidth: 1000,
-    })
+    this.dialog.open(
+      MonthlyRemittanceEmployeesComponent,
+      MaterialDialogConfig(data)
+    )
   }
 
   onSubmitSchedule(formAllData: any) {

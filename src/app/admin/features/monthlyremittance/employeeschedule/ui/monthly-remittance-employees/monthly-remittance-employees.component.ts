@@ -126,11 +126,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   }
 
   openAddEmployee() {
-    this.dialog.open(AddEmployeeComponent, {
-      data: this.injectedData,
-      minWidth: 1000,
-      maxHeight: 700,
-    })
+    this.dialog.open(
+      AddEmployeeComponent,
+      MaterialDialogConfig(this.injectedData)
+    )
   }
 
   openEditEmployee(data: EmployeeDetailResInterface) {
@@ -154,8 +153,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   markAllEmployeeInActive(activate?: boolean) {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.injectedData.companyRin,
-      businessRin: this.injectedData.businessRin,
+      companyId: this.injectedData.companyId.toString(),
+      businessId: this.injectedData.businessId.toString(),
       active: activate || false,
       source: "monthly",
     } as MarkEmployeeInterface
@@ -169,8 +168,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
           next: (res) => {
             this.btnLoading.set(false)
             if (res.status) {
+              this.getEmployeeDetail()
               Swal.fire(SweetAlertOptions(res?.message, true))
-              this.dialog.closeAll()
             } else {
               Swal.fire(SweetAlertOptions(res?.message))
             }
@@ -187,8 +186,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   switchStatus(event: any, employeeRin?: string) {
     const status = event.target.checked as boolean
     const payload = {
-      companyRin: this.injectedData.companyRin,
-      businessRin: this.injectedData.businessRin,
+      companyId: this.injectedData.companyId.toString(),
+      businessId: this.injectedData.businessId.toString(),
       ...(employeeRin && {employeeRin}),
       active: status,
       source: "monthly",

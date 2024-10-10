@@ -44,17 +44,17 @@ export class ViewEmployeeComponent implements OnInit, OnDestroy {
 
   employeeDetail = signal<SingleEmployeeDetailResInterface | null>(null)
 
-  totalIncome = computed(
+  grossIncome = computed(
     () =>
       (this.employeeDetail()?.basic || 0) +
       (this.employeeDetail()?.rent || 0) +
-      (this.employeeDetail()?.basic || 0) +
+      (this.employeeDetail()?.transport || 0) +
       (this.employeeDetail()?.others || 0)
   )
 
-  grossIncome = computed(
+  totalIncome = computed(
     () =>
-      (this.totalIncome() || 0) +
+      (this.grossIncome() || 0) +
       (this.employeeDetail()?.pension || 0) +
       (this.employeeDetail()?.nhf || 0) +
       (this.employeeDetail()?.nhis || 0) +

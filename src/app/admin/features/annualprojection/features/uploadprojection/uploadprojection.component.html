@@ -42,7 +42,8 @@
                   <td>{{ mydata.businessAddress ? mydata.businessAddress : 'N/A' }}</td>
                   <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
 
-                  <td title="View"><button class="btn btn-sm btn-outline-success"
+                  <td title="View">
+                    <button class="btn btn-sm btn-outline-success"
                       (click)="viewBusinessProjection(uploadProjectionModal, mydata)">
                       <i class="nav-icon fas fa-upload"></i>
                     </button>
@@ -84,7 +85,7 @@
 
   <div class="modal-body">
     <form [formGroup]="myForm" (ngSubmit)="submit()">
-      <div class="form-row">
+      <div class="form-row gap-4">
         <div class="form-group col-md-6">
           <label for="myfile">Select File to Upload<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
 
@@ -99,22 +100,10 @@
           </div>
         </div>
 
-        <!-- <div class="form-group col-md-4 ml-5">
-          <label for="year">Projection Year<sup class="ml-1 font-wegiht-bold text-danger">*</sup></label>
-          <input type="text" pattern="[^\s]+" formControlName="year" maxlength="4" class="form-control"
-            placeholder="Projection Year Eg: 2019"
-            [ngClass]="{ 'is-invalid': submitted &amp;&amp; myForm.controls['year'].errors }" />
-          <div *ngIf="submitted &amp;&amp; myForm.controls['year'].errors" class="text-danger">
-            <div *ngIf="myForm.controls['year'].errors['required']">Projection Year is
-              required</div>
-            <div *ngIf="myForm.controls['year'].errors['minlength']">Projection Year must
-              be at least 4 characters long.</div>
-            <div *ngIf="myForm.controls['year'].errors['maxLength']">Projection Year must
-              be 4 characters long.</div>
-            <div *ngIf="myForm.controls['year'].errors['pattern']">Projection Year must be
-              Number Only</div>
-          </div>
-        </div> -->
+        <div class="form-group col-md-6 ml-3 mb-4">
+          <app-bulk-upload-notice />
+        </div>
+
       </div>
 
       <button type="submit" [disabled]="file==null " class="btn btn button-login" style="border: 1px solid;">Upload File</button>
@@ -186,15 +175,28 @@
       </form>
 
       <div class="header-btn">
-    
-        <button
+
+        @if (anyEmployeeActive()) {
+          <button
           type="button"
           class="btn btn-outline-success role float-right mx-2"
           style="font-size: 12px; padding: 5px; margin-top: -3px"
-          (click)="markAllEmployeeInActive()" [disabled]="btnLoading() || !anyEmployeeActive()"
+          (click)="markAllEmployeeInActive()" [disabled]="btnLoading()"
+          [disabled]="!anyEmployeeActive() || btnLoading()"
           >
           Mark All Inactive
-        </button>
+          </button>
+        }@else {
+          <button
+          type="button"
+          class="btn btn-outline-success role float-right mx-2"
+          style="font-size: 12px; padding: 5px; margin-top: -3px"
+          (click)="markAllEmployeeInActive(true)" [disabled]="btnLoading()"
+          [disabled]="anyEmployeeActive() || btnLoading()"
+          >
+          Mark All Active
+          </button>
+        }
 
         <button
         *ngIf="apidataEmpty"
@@ -258,7 +260,7 @@
                 checked: '#00773B'
               }"
               (change)="
-                switchStatus($event, mydata.rin)
+                switchStatus($event, mydata)
               " />
             </td>
           </tr>

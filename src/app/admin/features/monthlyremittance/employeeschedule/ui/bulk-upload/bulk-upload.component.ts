@@ -26,13 +26,20 @@ import {Router} from "@angular/router"
 import {BusinessesResInterface} from "../../data-access/employee-schedule.model"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {timer} from "rxjs"
+import {BulkUploadNoticeComponent} from "../../../../../../shared/components/bulk-upload-notice.component"
+import {NgxUiLoaderService} from "ngx-ui-loader"
 
 @Component({
   selector: "app-bulk-upload",
   templateUrl: "./bulk-upload.component.html",
   styleUrl: "./bulk-upload.component.css",
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogClose],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatDialogClose,
+    BulkUploadNoticeComponent,
+  ],
   providers: [EmployeeScheduleService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -42,7 +49,7 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly utilityService = inject(UtilityService)
-  private readonly router = inject(Router)
+  private ngxService = inject(NgxUiLoaderService)
 
   file = signal<File | null>(null)
   filePath = signal("")
@@ -107,12 +114,14 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
 
     if (this.file()) {
       this.loading.set(true)
+      this.ngxService.start()
       this.subs.add = this.employeeScheduleService
         .bulkEmployeeUpload(formData)
         .subscribe({
           next: (res) => {
             if (res.status == true) {
               this.loading.set(false)
+              this.ngxService.stop()
               this.file.set(null)
               this.uploadForm.reset()
               this.subs.add = this.reloadWindow()
@@ -126,6 +135,7 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
               }
             } else {
               this.loading.set(false)
+              this.ngxService.stop()
               if (res.response == null) {
                 Swal.fire(SweetAlertOptions(res?.message))
               }

@@ -10,5 +10,5 @@ export const MaterialSnackErrorConfig = (): MatSnackBarConfig => ({
 export const MaterialDialogConfig = (data?: any): MatDialogConfig => ({
   data,
   minWidth: 1000,
-  maxHeight: 800,
+  maxHeight: 550,
 })
