@@ -72,7 +72,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     private httpClient: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private sess: SessionService,
     private utilityService: UtilityService,
     private modalService: NgbModal,
     private ngxService: NgxUiLoaderService
@@ -364,7 +363,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
             timer: 2000,
             timerProgressBar: true,
           })
-          this.router.navigate(["/admin/annual-return-schedules"])
         } else {
           // this.file = null;
           // this.filePath = null;
@@ -418,51 +416,45 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
     this.ngxService.start()
     this.apiUrl = environment.AUTHAPIURL + "SSP/FormH1/FileFormH1"
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.post<any>(this.apiUrl, jsonData).subscribe((data) => {
+      // console.log("scheduleApiResponseData: ", data)
+      if (data.status === true) {
+        // Rest form fithout errors
+        this.forwardScheduleForm.reset()
+        Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
+          this.forwardScheduleForm.get(key)?.setErrors(null)
+        })
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true,
+        })
+
+        this.ngxService.stop()
+        this.modalService.dismissAll()
+        this.router.navigate(["/admin/annual-return-schedules"])
+        // this.getAnnualReturns(this.businessId, this.companyId);
+      } else {
+        this.ngxService.stop()
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        })
+      }
     })
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("scheduleApiResponseData: ", data)
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.forwardScheduleForm.reset()
-          Object.keys(this.forwardScheduleForm.controls).forEach((key) => {
-            this.forwardScheduleForm.get(key)?.setErrors(null)
-          })
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
-
-          this.ngxService.stop()
-          this.modalService.dismissAll()
-          // this.getAnnualReturns(this.businessId, this.companyId);
-        } else {
-          this.ngxService.stop()
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-        }
-      })
   }
 
   loadSelectedBusinessData(selectedBusiness: any) {

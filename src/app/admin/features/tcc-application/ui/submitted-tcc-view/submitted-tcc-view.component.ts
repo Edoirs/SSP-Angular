@@ -20,10 +20,7 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {TccService} from "@admin-pages/tcc-application/services/tcc-application.services"
-import {
-  SubmittedTccAppResInterface,
-  TccAppDetailsInterface,
-} from "@admin-pages/tcc-application/data-access/tcc.model"
+import {TccAppDetailsInterface} from "@admin-pages/tcc-application/data-access/tcc.model"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {ActivatedRoute, Router} from "@angular/router"
 import {ViewSubmittedTccApplicationComponent} from "../view-submitted-tcc/view-submitted-tcc.component"

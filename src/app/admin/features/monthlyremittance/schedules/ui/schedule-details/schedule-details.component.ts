@@ -1,4 +1,4 @@
-import {CommonModule, DecimalPipe, TitleCasePipe} from "@angular/common"
+import {CommonModule} from "@angular/common"
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,7 +27,6 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
-import {timer} from "rxjs"
 import {Router} from "@angular/router"
 
 @Component({
@@ -147,7 +146,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
         this.btnLoading.set(false)
         if (res.status === true) {
           Swal.fire(SweetAlertOptions(res?.message, true))
-          this.subs.add = timer(5000).subscribe(() => window.location.reload())
+          this.dialog.closeAll()
+          this.getEmployeeDetail()
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
@@ -173,7 +173,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
         this.btnLoading.set(false)
         if (res.status === true) {
           Swal.fire(SweetAlertOptions(res?.message, true))
-          this.subs.add = timer(5000).subscribe(() => window.location.reload())
+          this.dialog.closeAll()
+          this.getEmployeeDetail()
         } else {
           Swal.fire(SweetAlertOptions(res?.message))
         }
@@ -203,9 +204,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
           this.btnLoading.set(false)
           if (res.status === true) {
             Swal.fire(SweetAlertOptions(res?.message, true))
-            this.subs.add = timer(5000).subscribe(() =>
-              window.location.reload()
-            )
+            this.dialog.closeAll()
+            this.getEmployeeDetail()
           } else {
             Swal.fire(SweetAlertOptions(res?.message))
           }
@@ -222,8 +222,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   async downloadPdf() {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.injectedData.companyRin,
-      businessRin: this.injectedData.businessRin,
+      companyId: this.injectedData.companyId.toString(),
+      businessId: this.injectedData.businessId.toString(),
     } as DownloadEmployeePdfInterface
 
     try {

@@ -213,8 +213,10 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   async downloadPdf() {
     this.btnLoading.set(true)
     const payload = {
-      companyRin: this.injectedData.companyRin,
-      businessRin: this.injectedData.businessRin,
+      companyId: this.injectedData.companyId.toString(),
+      businessId: this.injectedData.businessId.toString(),
+      // taxMonth: "",
+      // taxYear: 0,
     } as DownloadEmployeePdfInterface
 
     try {
