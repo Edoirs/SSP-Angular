@@ -85,7 +85,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   updateId: any
   companyId: any
 
-  pageSize = signal(15)
+  pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
 

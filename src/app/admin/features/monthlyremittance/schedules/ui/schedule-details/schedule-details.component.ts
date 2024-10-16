@@ -28,6 +28,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {Router} from "@angular/router"
+import {NgxUiLoaderService} from "ngx-ui-loader"
 
 @Component({
   selector: "app-schedule-details",
@@ -44,6 +45,8 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   private readonly scheduleService = inject(ScheduleService)
   private readonly router = inject(Router)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  private readonly ngxService = inject(NgxUiLoaderService)
+
   btnLoading = signal(false)
 
   schedulesData = signal<ScheduleDetailResInterface[] | null>(null)
@@ -221,13 +224,18 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
 
   async downloadPdf() {
     this.btnLoading.set(true)
+    this.ngxService.start()
+
     const payload = {
       companyId: this.injectedData.companyId.toString(),
       businessId: this.injectedData.businessId.toString(),
+      taxMonth: this.injectedData.taxMonth,
+      taxYear: this.injectedData.taxYear,
     } as DownloadEmployeePdfInterface
 
     try {
       this.btnLoading.set(false)
+      this.ngxService.stop()
       const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
         payload
       )
@@ -235,6 +243,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     } catch (err: any) {
       // console.log({err})
       this.btnLoading.set(false)
+      this.ngxService.stop()
       Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }
   }

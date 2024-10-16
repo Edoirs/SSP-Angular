@@ -2,7 +2,7 @@
   <section class="nav nav-pills nav-sidebar nav-menu">
 
     @for (menu of menuList; track $index) {
-      <app-menu-item [data]="menu" />
+      <app-menu-item [data]="menu" [menuIndex]="$index"/>
     }
 
 

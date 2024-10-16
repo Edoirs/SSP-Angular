@@ -32,6 +32,11 @@ button:disabled {
   cursor: not-allowed;
 }
 
+table{
+  table-layout: auto;
+  overflow: auto;
+}
+
 mat-paginator button,
 mat-paginator button:disabled,
 mat-paginator button:hover {

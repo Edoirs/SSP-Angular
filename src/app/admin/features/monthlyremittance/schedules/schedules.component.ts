@@ -85,7 +85,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   companyId: any
 
   businessesData = signal<ScheduleResInterface[] | null>(null)
-  pageSize = signal(15)
+  pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
 
@@ -103,7 +103,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     private router: Router,
     private datepipe: DatePipe,
     private utilityService: UtilityService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -111,8 +111,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
     this.initialiseForms()
-    this.getZipcodes()
-    this.getStateLocalGovts()
+    // this.getZipcodes()
+    // this.getStateLocalGovts()
     // console.log("token: ", localStorage.getItem("access_token"))
     var userRole = localStorage.getItem("role_id")
     this.corporateId = localStorage.getItem("corporate_id")
@@ -781,7 +781,9 @@ export class SchedulesComponent implements OnInit, OnDestroy {
               this.dataLoading.set(false)
               if (res.status === true) {
                 this.businessesData.set(res.data?.businesses)
-                this.totalLength.set(res?.data?.totalCount || res?.data?.businesses?.length)
+                this.totalLength.set(
+                  res?.data?.totalCount || res?.data?.businesses?.length
+                )
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)

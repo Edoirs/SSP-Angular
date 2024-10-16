@@ -1,6 +1,6 @@
 <section class="paye-nav">
   @if (data().children?.length) {
-  <a class="paye-nav-item" (click)="toggleMenu()">
+  <a class="paye-nav-item" (click)="toggleMenu(menuIndex())">
     <div class="paye-nav-item-text">
       @if (data().faIcon) { @if (!data().faIconType) {
       <i class="nav-icon fas" [ngClass]="data().faIcon"></i>

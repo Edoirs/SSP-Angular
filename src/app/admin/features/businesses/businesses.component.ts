@@ -28,7 +28,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(15)
+  pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
 

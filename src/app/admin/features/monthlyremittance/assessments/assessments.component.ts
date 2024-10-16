@@ -24,6 +24,7 @@ import {AssessmentResInterface} from "./data-access/assessment.model"
 import {MatDialog} from "@angular/material/dialog"
 import {ViewAssesmentComponent} from "./ui/view-assessment/view-assessment.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {DownloadEmployeePdfInterface} from "../employeeschedule/data-access/employee-schedule.model"
 
 @Component({
   selector: "app-assessments",
@@ -79,7 +80,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   companyId: any
 
   assementsData = signal<AssessmentResInterface[] | null>(null)
-  pageSize = signal(15)
+  pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
   dataLoading = signal(false)
@@ -211,7 +212,6 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   viewBusinessAssessments(modal: any, selectedBusiness: any) {
     this.showModal(modal)
     this.businessId = selectedBusiness.id
-    this.getAssessments(this.businessId)
   }
 
   getSingleBusiness(businessId: any) {
@@ -298,29 +298,27 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.dialog.open(ViewAssesmentComponent, MaterialDialogConfig({data}))
   }
 
-  getAssessments(businessId: any) {
-    // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "assessments-list"
+  async downloadPdf(data: AssessmentResInterface) {
+    this.ngxService.start()
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
+    const payload = {
+      companyId: this.tokenService.getLoginResData.companyId.toString(),
+      // businessId,
+      taxMonth: data.taxMonth,
+      taxYear: data.taxYear,
+    } as DownloadEmployeePdfInterface
 
-    let corporateId = localStorage.getItem("corporate_id")
-
-    const obj = {
-      corporate_id: corporateId,
-      business_id: businessId,
+    try {
+      this.ngxService.stop()
+      const pdf = await this.assessmentService.downloadEmployeePdfMonthly(
+        payload
+      )
+      window.open(pdf)
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }
-    this.assessmentsData = ""
-    this.httpClient
-      .post<any>(this.apiUrl, obj, {headers: reqHeader})
-      .subscribe((data) => {
-        //console.log("assessmentsData: ", data)
-        this.assessmentsData = data.data == null ? [] : data.data
-        // this.ngxService.stop();
-      })
   }
 
   viewAssessment(modal: any, selectedAssessment: any) {

@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   ElementRef,
   inject,
   input,
@@ -10,6 +11,7 @@ import {
 import {MenuItemInterface} from "./data-access/menu-item.model"
 import {NgClass, NgStyle} from "@angular/common"
 import {RouterLink, RouterLinkActive} from "@angular/router"
+import {MenuItemService} from "../menu.service"
 
 @Component({
   selector: "app-menu-item",
@@ -20,13 +22,33 @@ import {RouterLink, RouterLinkActive} from "@angular/router"
 })
 export class MenuItemComponent {
   private readonly renderer = inject(Renderer2)
+  private readonly menuItemService = inject(MenuItemService)
   readonly data = input.required<MenuItemInterface>()
+  readonly menuIndex = input.required<number>()
   menuIcon = viewChild<ElementRef<HTMLElement>>("menuIcon")
   subMenu = viewChild<ElementRef<HTMLElement>>("subMenu")
   openMenu = signal(false)
 
-  toggleMenu() {
-    this.openMenu.set(!this.openMenu())
+  constructor() {
+    effect(
+      () => {
+        if (this.menuItemService.activeIndex()) {
+          this.openMenu.set(
+            this.menuIndex() === this.menuItemService.activeIndex()
+          )
+          if (this.openMenu()) {
+            this.openMenu()
+          } else {
+            this.closeSubMenu()
+          }
+        }
+      },
+      {allowSignalWrites: true}
+    )
+  }
+
+  toggleMenu(index: number) {
+    this.menuItemService.updateActiveIndex = index
   }
 
   openSubMenu() {
@@ -36,5 +58,16 @@ export class MenuItemComponent {
       "transform",
       "rotate(90deg)"
     )
+  }
+
+  closeSubMenu() {
+    if (this.subMenu()?.nativeElement) {
+      this.renderer.setStyle(this.subMenu()?.nativeElement, "display", "none")
+      this.renderer.setStyle(
+        this.menuIcon()?.nativeElement,
+        "transform",
+        "rotate(0deg)"
+      )
+    }
   }
 }

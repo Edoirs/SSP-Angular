@@ -124,6 +124,6 @@ export interface GetScheduleByDateInterface {
 export interface DownloadEmployeePdfInterface {
   businessId: string
   companyId: string
-  taxMonth: string
-  taxYear: number
+  taxMonth?: string
+  taxYear?: number
 }

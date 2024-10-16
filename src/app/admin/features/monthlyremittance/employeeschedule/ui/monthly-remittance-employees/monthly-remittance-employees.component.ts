@@ -33,6 +33,7 @@ import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {NgxUiLoaderService} from "ngx-ui-loader"
 
 @Component({
   selector: "app-monthly-remittance-employees",
@@ -55,6 +56,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
+  private readonly ngxService = inject(NgxUiLoaderService)
 
   employeeDetails = signal<EmployeeDetailResInterface[] | null>(null)
   anyEmployeeActive = computed(
@@ -212,14 +214,14 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
 
   async downloadPdf() {
     this.btnLoading.set(true)
+    this.ngxService.start()
     const payload = {
       companyId: this.injectedData.companyId.toString(),
       businessId: this.injectedData.businessId.toString(),
-      // taxMonth: "",
-      // taxYear: 0,
     } as DownloadEmployeePdfInterface
 
     try {
+      this.ngxService.stop()
       this.btnLoading.set(false)
       const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
         payload
@@ -227,6 +229,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
       window.open(pdf, "_blank")
     } catch (err: any) {
       // console.log({err})
+      this.ngxService.stop()
       this.btnLoading.set(false)
       Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }

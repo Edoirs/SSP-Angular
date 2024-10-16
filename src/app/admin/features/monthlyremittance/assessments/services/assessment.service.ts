@@ -4,6 +4,9 @@ import {environment} from "@environment/environment"
 import {TokenService} from "@shared/services/token.service"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import {AssessmentResInterface} from "../data-access/assessment.model"
+import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
+
+import axios from "axios"
 
 @Injectable({providedIn: "root"})
 export class AssessmentService {
@@ -22,5 +25,20 @@ export class AssessmentService {
       `${environment.AUTHAPIURL}PhaseII/GetAllAssessments`,
       {params}
     )
+  }
+
+  async downloadEmployeePdfMonthly(payload: DownloadEmployeePdfInterface) {
+    const response = await axios.post(
+      `${environment.AUTHAPIURL}PhaseII/DownLoadExcelMonthly`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
   }
 }
