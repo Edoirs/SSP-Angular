@@ -35,3 +35,21 @@ export interface UserRegisterStepOneInterface {
   companyRin: string
   screenDet: "LOGIN" | any
 }
+
+export interface RegisterStepOneResInterface {
+  0: {
+    taxPayerId: number
+    taxPayerTypeId: number
+    taxPayerTypeName: string
+    taxPayerName: string
+    taxPayerRin: string
+    mobileNumber: string
+    contactAddress: string
+    emailAddress?: string
+    tin?: string
+    taxOffice: string
+    companyListId: number
+    dateCreated?: string
+    apiId: number
+  }
+}

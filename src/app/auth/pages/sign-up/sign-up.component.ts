@@ -285,12 +285,14 @@ export class SignUpComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadCompanyDetailsData(company: any) {
-    // console.log("company: ", company)
-    let phoneNumber = `0${company[0].mobileNumber1}`
+  loadCompanyDetailsData(companyData: any) {
+    const company = companyData as AuthModels.RegisterStepOneResInterface
+    let phoneNumber = `0${company[0].mobileNumber}`
     this.createUserForm.controls["phoneNumber"].setValue(phoneNumber)
     this.createUserForm.controls["address"].setValue(company[0].contactAddress)
-    this.createUserForm.controls["companyName"].setValue(company[0].companyName)
+    this.createUserForm.controls["companyName"].setValue(
+      company[0].taxPayerName
+    )
 
     //Disable fields
     this.disbableFormFields()
