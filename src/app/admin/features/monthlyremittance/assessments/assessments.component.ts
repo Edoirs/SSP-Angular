@@ -279,19 +279,12 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}Business/getallBussinessbycompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      //console.log("BusinessData: ", data)
+
+      this.businessesData = data.data
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        //console.log("BusinessData: ", data)
-
-        this.businessesData = data.data
-        this.ngxService.stop()
-      })
   }
 
   openDetailView(data: AssessmentResInterface) {
