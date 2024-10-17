@@ -33,7 +33,7 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(15)
+  pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -97,7 +97,8 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
             next: (res) => {
               this.dataLoading.set(false)
               if (res.status === true) {
-                this.businesses.set(res.data)
+                this.businesses.set(res?.data?.result)
+                this.pageSize.set(res?.data?.totalCount || 0)
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)

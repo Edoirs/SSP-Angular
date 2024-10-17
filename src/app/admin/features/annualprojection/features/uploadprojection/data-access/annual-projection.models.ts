@@ -1,5 +1,5 @@
 export interface UploadProjectioResInterface {
-  records: UploadProjectionInterface[]
+  result: UploadProjectionInterface[]
   totalCount: number
 }
 

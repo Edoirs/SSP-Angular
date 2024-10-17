@@ -180,21 +180,11 @@ export class ApprovedprojectionComponent implements OnInit {
   getBusinesses() {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
-    // this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${this.companyId}`;
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
+      this.businessesData = res?.data?.result
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("BusinessData: ", data);
-
-        this.businessesData = data.data
-        this.ngxService.stop()
-      })
   }
 
   getApprovedProjections(businessId: any, year: any) {

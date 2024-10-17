@@ -202,23 +202,13 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   getBusinesses() {
-    const obj = {}
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallformh3bycompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
+      this.businessesData = res?.data?.result
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("BusinessData: ", data)
-
-        this.businessesData = data
-        this.ngxService.stop()
-      })
   }
 
   getSingleBusiness(businessId: any) {

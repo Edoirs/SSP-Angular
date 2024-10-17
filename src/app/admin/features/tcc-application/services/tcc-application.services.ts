@@ -2,7 +2,7 @@ import {HttpClient, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
-import {UploadProjectionInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
+import {UploadProjectioResInterface} from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import * as TccModels from "../data-access/tcc.model"
 
 @Injectable({providedIn: "any"})
@@ -22,7 +22,7 @@ export class TccService {
         ...(search && {businessName: search}),
       },
     })
-    return this.httpClient.get<ServerResInterface<UploadProjectionInterface[]>>(
+    return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
       `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${companyId}`,
       {params}
     )

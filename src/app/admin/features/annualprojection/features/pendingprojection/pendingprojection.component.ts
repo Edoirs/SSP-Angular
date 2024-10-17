@@ -183,9 +183,7 @@ export class PendingprojectionComponent implements OnInit {
 
 
     this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      // console.log("BusinessData: ", data);
-
-      this.businessesData = res.data
+      this.businessesData = res?.data?.result
       this.ngxService.stop()
     })
   }

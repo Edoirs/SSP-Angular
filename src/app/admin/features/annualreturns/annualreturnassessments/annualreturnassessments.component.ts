@@ -357,19 +357,12 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
+      // console.log("BusinessData: ", res)
+
+      this.businessesData = res.data.result
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("BusinessData: ", data)
-
-        this.businessesData = data.data
-        this.ngxService.stop()
-      })
   }
 
   getSingleBusiness(businessId: any) {
