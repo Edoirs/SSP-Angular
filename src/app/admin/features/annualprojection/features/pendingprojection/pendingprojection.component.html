@@ -33,13 +33,13 @@
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.businessRIN }}</td>
-                    <td>{{ mydata.businessName | titlecase }}</td>
-                    <td>{{ mydata.taxPayerName ? mydata.taxPayerName : 'N/A' | titlecase }}</td>
-                    <td>{{ mydata.projectionYear ? mydata.projectionYear : 'N/A' }}</td>
+                    <td>{{ mydata?.businessRIN }}</td>
+                    <td>{{ mydata?.businessName | titlecase }}</td>
+                    <td>{{ mydata?.companyName | titlecase }}</td>
+                    <td>{{ mydata?.taxYear || 'N/A' }}</td>
                     <td>{{ 'Forwarded To EIRS' }}</td>
-                    <td>{{ mydata.dateForwarded }}</td>
-                    <td>{{ mydata.noOfEmployees ? mydata.noOfEmployees : 'N/A' }}</td>
+                    <td>{{ mydata?.dateForwarded }}</td>
+                    <td>{{ mydata?.noOfEmployees || 'N/A' }}</td>
 
                     <td title="View"><button class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessProjection(projectiondetailsmodal, mydata)"><i
@@ -71,28 +71,28 @@
                 <tbody>
                   <tr *ngFor="let mydata of apisingledata; index as i">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ mydata.annual_projection_id }}</td>
-                    <td>{{ mydata.projection_year }}</td>
-                    <td>{{ mydata.business_id }}</td>
-                    <td>{{ mydata.business_name }}</td>
+                    <td>{{ mydata?.annual_projection_id }}</td>
+                    <td>{{ mydata?.projection_year }}</td>
+                    <td>{{ mydata?.business_id }}</td>
+                    <td>{{ mydata?.business_name }}</td>
                     <td>
                       <p
                         [ngClass]="{
-                          'text-danger': mydata.forwarded_to == 0,
-                          'text-primary': mydata.forwarded_to == 1,
-                          'text-success': mydata.forwarded_to == 2
+                          'text-danger': mydata?.forwarded_to == 0,
+                          'text-primary': mydata?.forwarded_to == 1,
+                          'text-success': mydata?.forwarded_to == 2
                         }"
                       >
                         {{
-                          mydata.forwarded_to == 2
+                          mydata?.forwarded_to == 2
                             ? "Forwarded to Manager"
-                            : mydata.forwarded_to == 1
+                            : mydata?.forwarded_to == 1
                             ? "Forwarded to Editor"
                             : "Not forwarded"
                         }}
                       </p>
                     </td>
-                    <td>{{ mydata.date_forwarded | date: "dd MMM yyyy" }}</td>
+                    <td>{{ mydata?.date_forwarded | date: "dd MMM yyyy" }}</td>
                     <td title="View">
                       <button
                         class="btn btn-sm btn-outline-success"
@@ -152,20 +152,20 @@
           <tbody>
             <tr *ngFor="let mydata of annualReturnsData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ mydata.rin }}</td>
+              <td>{{ mydata?.rin }}</td>
               <td>
-                {{ mydata.firstname + " " + mydata.surname | titlecase }}
+                {{ mydata?.firstname + " " + mydata?.surname | titlecase }}
               </td>
-              <!-- <td>{{ mydata.designation == "NULL" ? "N/A" : mydata.designation | titlecase }}</td> -->
-              <td>{{ mydata.basic | number }}</td>
-              <td>{{ mydata.rent | number }}</td>
-              <td>{{ mydata.transport | number }}</td>
-              <td>{{ mydata.otherIncome | number }}</td>
-              <td>{{ mydata.total | number }}</td>
-              <td>{{ mydata.pension | number }}</td>
-              <td>{{ mydata.nhf | number }}</td>
-              <td>{{ mydata.nhis | number }}</td>
-              <td>{{ mydata.numberOfMonths | number }}</td>
+              <!-- <td>{{ mydata?.designation == "NULL" ? "N/A" : mydata?.designation | titlecase }}</td> -->
+              <td>{{ mydata?.basic | number }}</td>
+              <td>{{ mydata?.rent | number }}</td>
+              <td>{{ mydata?.transport | number }}</td>
+              <td>{{ mydata?.otherIncome | number }}</td>
+              <td>{{ mydata?.total | number }}</td>
+              <td>{{ mydata?.pension | number }}</td>
+              <td>{{ mydata?.nhf | number }}</td>
+              <td>{{ mydata?.nhis | number }}</td>
+              <td>{{ mydata?.numberOfMonths | number }}</td>
             </tr>
           </tbody>
         </table>
