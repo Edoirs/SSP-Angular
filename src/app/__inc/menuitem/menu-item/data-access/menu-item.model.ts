@@ -59,6 +59,31 @@ export const MenuListRecord: MenuItemInterface[] = [
   },
   {
     // 3
+    name: "Form H3 (Projections)",
+    faIcon: "fa-chart-bar",
+    children: [
+      {
+        name: "Upload Form H3",
+        url: ["admin", "upload-projection"],
+        faIcon: "fa-circle",
+        faIconType: "outline",
+      },
+      {
+        name: "Filed Form H3",
+        url: ["admin", "pending-projection"],
+        faIcon: "fa-circle",
+        faIconType: "outline",
+      },
+      {
+        name: "Projections",
+        url: ["admin", "approved-projection"],
+        faIcon: "fa-circle",
+        faIconType: "outline",
+      },
+    ],
+  },
+  {
+    // 4
     name: "Form H1 (Annual Return)",
     faIcon: "fa-exchange-alt",
     children: [
@@ -83,31 +108,6 @@ export const MenuListRecord: MenuItemInterface[] = [
       {
         name: "Objections",
         url: ["admin", "reassessment-appeals"],
-        faIcon: "fa-circle",
-        faIconType: "outline",
-      },
-    ],
-  },
-  {
-    // 4
-    name: "Form H3 (Projections)",
-    faIcon: "fa-chart-bar",
-    children: [
-      {
-        name: "Upload Form H3",
-        url: ["admin", "upload-projection"],
-        faIcon: "fa-circle",
-        faIconType: "outline",
-      },
-      {
-        name: "Filed Form H3",
-        url: ["admin", "pending-projection"],
-        faIcon: "fa-circle",
-        faIconType: "outline",
-      },
-      {
-        name: "Projections",
-        url: ["admin", "approved-projection"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },

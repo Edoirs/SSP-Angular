@@ -244,12 +244,6 @@ export class UploadprojectionComponent implements OnInit {
     }
     // tslint:disable-next-line: max-line-length
     // In Angular 2+, it is very important to leave the Content-Type empty. If you set the 'Content-Type' to 'multipart/form-data' the upload will not work !
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }
 
     const formData = new FormData()
     formData.append("File", this.myForm.get("myfile")?.value)
@@ -259,53 +253,51 @@ export class UploadprojectionComponent implements OnInit {
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/UploadFormH3`
 
     this.ngxService.start()
-    this.httpClient
-      .post<any>(this.apiUrl, formData, config)
-      .subscribe((res) => {
-        // console.log(res)
-        // Clear form Value Without any Error
-        this.myForm.reset()
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null)
-        })
-
-        if (res.status == true) {
-          this.ngxService.stop()
-          this.modalService.dismissAll()
-          this.reload()
-          this.isResponse = 1
-          this.isMessage = res.message
-          this.filePath = null
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: this.isMessage,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
-        } else {
-          this.file = null
-          this.filePath = null
-
-          this.myForm.get("myfile")?.setValue(null)
-          this.myForm = this.formBuilder.group({
-            myfile: ["", Validators.required],
-          })
-          this.ngxService.stop()
-          this.reload()
-          Swal.fire({
-            icon: "error",
-            title: "Validation not passed",
-            // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-            text: res.message,
-            showConfirmButton: true,
-            timer: 25000,
-            timerProgressBar: true,
-          })
-        }
+    this.httpClient.post<any>(this.apiUrl, formData).subscribe((res) => {
+      // console.log(res)
+      // Clear form Value Without any Error
+      this.myForm.reset()
+      Object.keys(this.myForm.controls).forEach((key) => {
+        this.myForm.get(key)?.setErrors(null)
       })
+
+      if (res.status == true) {
+        this.ngxService.stop()
+        this.modalService.dismissAll()
+        this.reload()
+        this.isResponse = 1
+        this.isMessage = res.message
+        this.filePath = null
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: this.isMessage,
+          showConfirmButton: true,
+          timer: 500000,
+          timerProgressBar: true,
+        })
+      } else {
+        this.file = null
+        this.filePath = null
+
+        this.myForm.get("myfile")?.setValue(null)
+        this.myForm = this.formBuilder.group({
+          myfile: ["", Validators.required],
+        })
+        this.ngxService.stop()
+        this.reload()
+        Swal.fire({
+          icon: "error",
+          title: "Validation not passed",
+          // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
+          text: res.message,
+          showConfirmButton: true,
+          timer: 25000,
+          timerProgressBar: true,
+        })
+      }
+    })
   }
 
   deleteBusiness(data: any) {
@@ -427,51 +419,45 @@ export class UploadprojectionComponent implements OnInit {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/FileFormH3`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.post<any>(this.apiUrl, jsonData).subscribe((data) => {
+      // console.log("scheduleApiResponseData: ", data)
+      if (data.status === true) {
+        // Rest form fithout errors
+        this.fileFormH3Form.reset()
+        Object.keys(this.fileFormH3Form.controls).forEach((key) => {
+          this.fileFormH3Form.get(key)?.setErrors(null)
+        })
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true,
+        })
+
+        this.ngxService.stop()
+        this.modalService.dismissAll()
+        this.router.navigate(["/admin", "pending-projection"])
+        // this.getAnnualReturns(this.businessId, this.companyId);
+      } else {
+        this.ngxService.stop()
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            data.response != null && data.response[0] != undefined
+              ? data.response[0].message
+              : data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        })
+      }
     })
-
-    this.httpClient
-      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("scheduleApiResponseData: ", data)
-        if (data.status === true) {
-          // Rest form fithout errors
-          this.fileFormH3Form.reset()
-          Object.keys(this.fileFormH3Form.controls).forEach((key) => {
-            this.fileFormH3Form.get(key)?.setErrors(null)
-          })
-
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
-
-          this.ngxService.stop()
-          this.modalService.dismissAll()
-          // this.getAnnualReturns(this.businessId, this.companyId);
-        } else {
-          this.ngxService.stop()
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text:
-              data.response != null && data.response[0] != undefined
-                ? data.response[0].message
-                : data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-        }
-      })
   }
 
   editAnnualReturn(modal: any, selectedAnnualReturn: any) {

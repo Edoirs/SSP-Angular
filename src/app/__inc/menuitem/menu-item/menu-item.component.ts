@@ -29,12 +29,15 @@ export class MenuItemComponent {
   subMenu = viewChild<ElementRef<HTMLElement>>("subMenu")
   openMenu = signal(false)
 
+  selected = signal(false)
+
   constructor() {
     effect(
       () => {
         if (this.menuItemService.activeIndex()) {
           this.openMenu.set(
-            this.menuIndex() === this.menuItemService.activeIndex()
+            this.menuIndex() === this.menuItemService.activeIndex() &&
+              this.menuItemService.selected()
           )
           if (this.openMenu()) {
             this.openMenu()
@@ -48,7 +51,7 @@ export class MenuItemComponent {
   }
 
   toggleMenu(index: number) {
-    this.menuItemService.updateActiveIndex = index
+    this.menuItemService.updateActiveIndex(index)
   }
 
   openSubMenu() {

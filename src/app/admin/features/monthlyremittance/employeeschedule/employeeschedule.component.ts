@@ -1,15 +1,8 @@
-import {NgxUiLoaderService} from "ngx-ui-loader"
 import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
-import {HttpClient} from "@angular/common/http"
-import {FormBuilder, FormGroup} from "@angular/forms"
 import {Title} from "@angular/platform-browser"
 import {ActivatedRoute, Router} from "@angular/router"
-import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap"
-import {SessionService} from "src/app/session.service"
-import {UtilityService} from "src/app/utility.service"
 import Swal from "sweetalert2"
 import {MatDialog} from "@angular/material/dialog"
-import {CreateScheduleComponent} from "./ui/create-schedule/create-schedule.component"
 import {SubscriptionHandler} from "src/app/shared/utils/subscription-handler.utils"
 import {EmployeeScheduleService} from "./services/employee-schedule.service"
 import {EmployeeScheduleResInterface} from "./data-access/employee-schedule.model"
@@ -18,6 +11,7 @@ import {MonthlyRemittanceEmployeesComponent} from "./ui/monthly-remittance-emplo
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {TokenService} from "@shared/services/token.service"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {EmployeeStateService} from "./services/employee-state.service"
 
 @Component({
   selector: "app-employeeschedule",
@@ -26,56 +20,14 @@ import {MaterialDialogConfig} from "@shared/utils/material.utils"
 })
 export class EmployeescheduleComponent implements OnInit, OnDestroy {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  private readonly employeeStateService = inject(EmployeeStateService)
   public readonly tokenService = inject(TokenService)
   private readonly dialog = inject(MatDialog)
-  editEmployeeForm!: FormGroup
-  addEmployeeForm!: FormGroup
-  submitted: boolean = false
-  apiUrl!: string
-  employeesData: any
-  showAddNewEmployee: boolean = false
-  modalOptions!: NgbModalOptions
-  closeResult!: string
-  dtOptions: any = {}
-  showListOfEmployees: boolean = true
-  corporateName!: string
-  selectedEmployee: any
-  forwardScheduleForm!: FormGroup
-  showCreateSchedule: boolean = false
-  showEditEmployee: boolean = false
-  showDeleteEmployee: boolean = false
-  showSaveEmployee: boolean = false
-  apidataEmpty: boolean = false
-  title = "PAYE - Employees Report"
-  zipCodes: any
-  userRole: any
-  disableEmployeeControl: any
-  grossIncomeIncorrect!: boolean
-  stateLocalGovts: any
-  validateCacTin!: boolean
-  yearIncorrect!: boolean
-  isScheduleYearValid!: boolean
-  uploadForm!: FormGroup
-  files: any
-  file: any
-  isResponse = 0
-  isError = 0
-  isMessage = ""
-  roleID: any
-  sample_file: any
-  filePath: any
-  columnError: string[] = []
-  error: any
-  alert: any
-  selectedBusiness: any
-  editorRole!: boolean
-  businessesData: any
-  businessId: any
+  private readonly titleService = inject(Title)
+  private readonly router = inject(Router)
+  private readonly route = inject(ActivatedRoute)
 
-  isEdit: boolean = false
-  isDisabled: boolean = false
-  updateId: any
-  companyId: any
+  title = "PAYE - Employees Report"
 
   pageSize = signal(10)
   totalLength = signal(500)
@@ -91,24 +43,14 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
   subs = new SubscriptionHandler()
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private titleService: Title,
-    private httpClient: HttpClient,
-    private router: Router,
-    private route: ActivatedRoute,
-    // private component: DashboardComponent,
-    private sess: SessionService,
-    private utilityService: UtilityService,
-    private modalService: NgbModal,
-    private ngxService: NgxUiLoaderService
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
-    // this.sess.isCorporate();
     this.titleService.setTitle(this.title)
 
     this.listenToRoute()
+
+    this.reloadTable()
   }
 
   ngOnDestroy(): void {
@@ -157,8 +99,31 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     })
   }
 
-  openCreateScheduleModal() {
-    this.dialog.open(CreateScheduleComponent, MaterialDialogConfig())
+  reloadTable() {
+    this.subs.add = this.employeeStateService.generalState.subscribe((e) => {
+      this.subs.add = this.employeeScheduleService
+        .getEmployees(this.pageIndex(), this.pageSize())
+        .subscribe({
+          next: (res) => {
+            this.dataLoading.set(false)
+            if (res.status) {
+              this.employeesList.set(res.data)
+              this.totalLength.set(
+                res?.data?.totalCount || res?.data?.businesses?.length
+              )
+            } else {
+              this.dataLoading.set(false)
+              this.dataMessage.set(res?.message)
+              Swal.fire(SweetAlertOptions(res?.message))
+            }
+          },
+          error: (err) => {
+            this.dataLoading.set(false)
+            this.dataMessage.set(err?.message || err?.error?.message)
+            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          },
+        })
+    })
   }
 
   openEmployeeDetails(data: any) {
@@ -166,33 +131,5 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       MonthlyRemittanceEmployeesComponent,
       MaterialDialogConfig(data)
     )
-  }
-
-  calculateGrossIncome(event: any) {
-    this.grossIncomeIncorrect = this.utilityService.calculateGrossIncome(
-      this.addEmployeeForm
-    )
-  }
-
-  calculateTotalIncome(event: any) {
-    this.utilityService.calculateTotalIncome(this.addEmployeeForm)
-  }
-
-  validateScheduleYear(selectedForm: any) {
-    let year = Number(selectedForm.get("scheduleYear").value)
-    this.toggleScheduleYear(year)
-  }
-
-  changeScheduleYearStatus() {
-    let year = Number(this.forwardScheduleForm.get("scheduleYear")!.value)
-    this.toggleScheduleYear(year)
-  }
-
-  toggleScheduleYear(year: any) {
-    if (year < 2010) {
-      this.isScheduleYearValid = false
-    } else {
-      this.isScheduleYearValid = true
-    }
   }
 }

@@ -2,6 +2,7 @@ export interface AssessmentResInterface {
   companyRin?: string
   companyName?: string
   businessRin: string
+  businessId: string
   businessName: string
   dateGenerated: string
   taxMonth: string

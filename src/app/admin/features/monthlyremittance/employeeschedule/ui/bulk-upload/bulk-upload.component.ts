@@ -28,6 +28,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {timer} from "rxjs"
 import {BulkUploadNoticeComponent} from "../../../../../../shared/components/bulk-upload-notice.component"
 import {NgxUiLoaderService} from "ngx-ui-loader"
+import {EmployeeStateService} from "../../services/employee-state.service"
 
 @Component({
   selector: "app-bulk-upload",
@@ -49,6 +50,7 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
   private readonly utilityService = inject(UtilityService)
+  private readonly employeeStateService = inject(EmployeeStateService)
   private ngxService = inject(NgxUiLoaderService)
 
   file = signal<File | null>(null)
@@ -69,12 +71,6 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.clear()
-  }
-
-  reloadWindow() {
-    return timer(3000).subscribe(() => {
-      window.location.reload()
-    })
   }
 
   onFileChange(event: any) {
@@ -124,13 +120,13 @@ export class BulkUploadComponent implements OnInit, OnDestroy {
               this.ngxService.stop()
               this.file.set(null)
               this.uploadForm.reset()
-              this.subs.add = this.reloadWindow()
+              this.employeeStateService.reloadParent()
               if (res.message === "0 Employees created; 0 updated.") {
                 Swal.fire(
                   SweetAlertOptions("Confirm the file content and try again")
                 )
               } else {
-                Swal.fire(SweetAlertOptions(res?.message, true))
+                Swal.fire(SweetAlertOptions(res?.message, true, 500000))
                 this.dialog.closeAll()
               }
             } else {

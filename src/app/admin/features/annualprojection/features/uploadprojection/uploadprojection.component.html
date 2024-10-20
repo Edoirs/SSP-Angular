@@ -95,7 +95,7 @@
             <label class="custom-file-label" for="customFile">{{filePath == null ? 'Choose file(xlsx or xls)' : filePath}}</label>
           </div>
 
-          <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid" class="text-danger">
+          <div *ngIf="submitted && myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid" class="text-danger">
             <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
           </div>
         </div>
@@ -110,7 +110,7 @@
     </form>
 
     <div class="login-remeber">
-      <a href="{{sample_file}}" target="_blank">
+      <a href="{{sample_file}}">
         Download employee template here</a>
     </div>
   </div>

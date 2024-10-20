@@ -437,19 +437,12 @@ export class AnnualreturnschedulesComponent implements OnInit {
     this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
+      // console.log("schedulesData: ", res);
+
+      this.schedulesData = res?.data?.result
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("schedulesData: ", data);
-
-        this.schedulesData = data.data
-        this.ngxService.stop()
-      })
   }
 
   getSingleSchedule(scheduleId: any) {

@@ -296,7 +296,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
 
     const payload = {
       companyId: this.tokenService.getLoginResData.companyId.toString(),
-      // businessId,
+      businessId: data.businessId,
       taxMonth: data.taxMonth,
       taxYear: data.taxYear,
     } as DownloadEmployeePdfInterface
