@@ -31,6 +31,7 @@ export interface TaxOfficeResInterface {
 
 export interface UserRegisterStepOneInterface {
   companyName: string
+  companyAddress: string
   phoneNumber: string
   companyRin: string
   screenDet: "LOGIN" | any

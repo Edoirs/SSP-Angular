@@ -178,20 +178,20 @@
                   </div>
                 </form>
   
-                <div class="login-remeber text-center mb-2">
-                  <a (click)="requestNewOtp()" style="margin-left: 7px; cursor: pointer;color:#0D47A1;">Request new
+                <div class="login-remeber text-center mb-2 login-icon">
+                  <a (click)="requestNewOtp()" style="margin-left: 7px;">Request new
                     OTP</a>
-                  <a (click)="backToLogin()" style="margin-left: 20px; color: #0D47A1; cursor: pointer;">Back to Login</a>
+                  <a (click)="backToLogin()" style="margin-left: 20px;">Back to Login</a>
                 </div>
               </div>
   
               <div class="me-3 d-flex justify-content-between">
                 <a class="a-login" [routerLink]="['/signUp']">
-                  <p class="text-left" style="color: #4c489d;">Create Account</p>
+                  <p class="text-left login-icon">Create Account</p>
                 </a>
 
                 <a class="a-login" [routerLink]="['/forgotpassword']">
-                  <p class="text-right" style="color: #4c489d;">Forgot your password?</p>
+                  <p class="text-right login-icon">Forgot your password?</p>
                 </a>
               </div>
 

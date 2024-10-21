@@ -9549,7 +9549,7 @@ ul.tabbing li a {
 .login__icon {
   position: absolute;
   top: 30px;
-  color: #7875b5;
+  color: #08028a;
 }
 
 .login__input {
@@ -9560,7 +9560,7 @@ ul.tabbing li a {
   padding: 10px !important;
   padding-left: 24px !important;
   font-weight: 700 !important;
-  width: 75% !important;
+  width: 75%;
   transition: 0.2s !important;
 }
 .login-select:active,

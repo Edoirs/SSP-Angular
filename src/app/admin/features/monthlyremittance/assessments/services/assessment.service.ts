@@ -29,7 +29,7 @@ export class AssessmentService {
 
   async downloadEmployeePdfMonthly(payload: DownloadEmployeePdfInterface) {
     const response = await axios.post(
-      `${environment.AUTHAPIURL}PhaseII/DownLoadExcelMonthly`,
+      `${environment.AUTHAPIURL}PhaseII/DownLoadPDFMonthly`,
       payload,
       {
         headers: {

@@ -14,7 +14,6 @@ import {
 } from "@shared/utils/sweet-alert.utils"
 import {AuthUtilsService} from "../../services/auth-utils.service"
 import * as AuthModels from "../../data-access/auth.models"
-import {ServerResInterface} from "@shared/types/server-response.model"
 import {timer} from "rxjs"
 
 @Component({
@@ -191,22 +190,41 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmitCreateUser(formAllData: any) {
+  onSubmitCreateUser() {
     this.submitted = true
 
-    if (this.createUserForm.invalid) {
-      return
-    }
+    if (this.createUserForm.invalid) return
 
     let requestObj = {
-      // userType: formAllData.taxTypeId,
-      // companyName: formAllData.companyName,
-      // contactAddress: formAllData.address,
-      companyRin: this.companyRIN,
-      phoneNumber: formAllData.phoneNumber,
+      isAdmin: this.taxTypeId?.value !== "admin" ? false : true,
+      companyRin: this.createUserForm.value.RIN,
+      phoneNumber: this.phoneNumber?.value,
     }
 
-    this.postCreateAccountStepTwo(requestObj)
+    this.ngxService.start()
+
+    this.subs.add = this.http
+      .post<any>(
+        `${environment.AUTHAPIURL}Login/CreateAccountStepTwo`,
+        requestObj
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.ngxService.stop()
+
+          if (data.status == true) {
+            Swal.fire(SweetAlertInfoOption(data.message))
+
+            this.showCreateUserForm.set(false)
+          } else {
+            Swal.fire(SweetAlertOptions(data.message))
+          }
+        },
+        error: (err) => {
+          this.ngxService.stop()
+          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        },
+      })
   }
 
   toggleFieldTextType() {
@@ -241,7 +259,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     const searchKeyword = event.target.value
     this.companyRIN = searchKeyword
 
-    let request = {
+    const request = {
       companyRin: searchKeyword,
     }
 
@@ -302,8 +320,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.createUserForm.patchValue({
       companyName: company.companyName,
       ...(company?.phoneNumber && {
-        phoneNumber: `0${company?.phoneNumber}`,
+        phoneNumber: `${company?.phoneNumber}`,
       }),
+      address: company?.companyAddress,
     })
 
     this.companyName?.disable()
@@ -319,47 +338,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
     for (let key in this.createUserForm.controls) {
       !enableFields.includes(key) && this.createUserForm.controls[key].disable()
     }
-  }
-
-  postCreateAccountStepTwo(jsonData: any) {
-    this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Login/CreateAccountStepTwo"
-
-    const myheaders = new HttpHeaders({
-      "Content-Type": "application/json",
-    })
-
-    const options = {headers: myheaders}
-
-    this.http
-      .post<any>(this.apiUrl, jsonData, options)
-      .subscribe((data: any) => {
-        // console.log("CreateAccountStepTwo: ", data)
-
-        if (data.status == true) {
-          this.ngxService.stop()
-          Swal.fire({
-            icon: "info",
-            title: "OTP sent successfully",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-
-          this.showCreateUserForm.set(false)
-          // this.showEnterOtpForm = true
-          // this.router.navigate(['/admin', 'dashboard']);
-        } else {
-          this.ngxService.stop()
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-          })
-        }
-      })
   }
 
   postCreateAccountStepThree(jsonData: any) {

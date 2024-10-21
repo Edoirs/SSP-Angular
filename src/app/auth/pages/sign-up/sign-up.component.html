@@ -23,7 +23,7 @@
                 @if (showCreateUserForm()) {
                   @if (taxTypeId?.value !== 'admin') {
                     <form autocomplete="off" [formGroup]="createUserForm"
-                    (ngSubmit)="onSubmitCreateUser(createUserForm.value)" style="width: 420px; padding: 30px;">
+                    (submit)="onSubmitCreateUser()" style="width: 420px; padding: 30px;">
                     <div class="messages"></div>
                     <div class="login__field input-group">
                       <select class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
@@ -38,14 +38,10 @@
   
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-hashtag"></i>
-                      <input type="text" id="RIN" name="RIN" placeholder="Enter RIN" class="login__input border-end-0"
+                      <input type="text" id="RIN" name="RIN" placeholder="Enter RIN" class="login__input border-end-0 w-100"
                         formControlName="RIN" (keyup)="getCompanyDetails($event)"
                         [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['RIN'].errors }" />
-                      <div class="input-group-append">
-                        <div class="input-group-text border border-0 bg-transparent">
-                          <span class="fas fa-envelope login__icon"></span>
-                        </div>
-                      </div>
+                      
                       <div *ngIf="submitted && createUserForm.controls['RIN'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['RIN'].errors['required']">
@@ -57,13 +53,9 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-building"></i>
                       <input type="text" id="companyName" name="companyName" placeholder="Enter Company Name"
-                        class="login__input border-end-0" formControlName="companyName"
+                        class="login__input border-end-0 w-100" formControlName="companyName"
                         [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['companyName'].errors }" />
-                      <div class="input-group-append">
-                        <div class="input-group-text border border-0 bg-transparent">
-                          <span class="fas fa-envelope login__icon"></span>
-                        </div>
-                      </div>
+                      
                       <div *ngIf="submitted && createUserForm.controls['companyName'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['companyName'].errors['required']">
@@ -75,13 +67,9 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-location-arrow"></i>
                       <input type="text" id="address" name="address" placeholder="Enter Address"
-                        class="login__input border-end-0" formControlName="address"
+                        class="login__input border-end-0 w-100" formControlName="address"
                         [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['address'].errors }" />
-                      <div class="input-group-append">
-                        <div class="input-group-text border border-0 bg-transparent">
-                          <span class="fas fa-envelope login__icon"></span>
-                        </div>
-                      </div>
+                      
                       <div *ngIf="submitted && createUserForm.controls['address'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['address'].errors['required']">
@@ -93,13 +81,9 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-volume-control-phone"></i>
                       <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number"
-                        class="login__input border-end-0" formControlName="phoneNumber" minlength="11" maxlength="11"
+                        class="login__input border-end-0 w-100" formControlName="phoneNumber" minlength="11" maxlength="11"
                         [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['phoneNumber'].errors }" />
-                      <div class="input-group-append">
-                        <div class="input-group-text border border-0 bg-transparent">
-                          <span class="fas fa-envelope login__icon"></span>
-                        </div>
-                      </div>
+                      
                       <div *ngIf="submitted && createUserForm.controls['phoneNumber'].errors"
                         class="form-text text-danger">
                         <div *ngIf="createUserForm.controls['phoneNumber'].errors['required']">
@@ -386,7 +370,8 @@
 
               <div class="me-3 ">
                 <a class="a-login" [routerLink]="['/login']">
-                  <p class="text-right text-muted">Back to Login</p>
+                  <p class="text-right login-icon">Back to Login</p>
+                  
                 </a>
               </div>
             </div>

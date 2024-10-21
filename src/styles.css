@@ -51,3 +51,7 @@ mat-paginator button:hover {
   font-size: 14px;
   color: red;
 }
+
+.login-icon{
+  color: #0700a1;
+}
