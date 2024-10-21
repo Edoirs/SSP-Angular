@@ -305,8 +305,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   loadCompanyDetailsData(companyData: any) {
     const company = companyData as AuthModels.RegisterStepOneResInterface
-    let phoneNumber = `0${company[0].mobileNumber}`
-    this.createUserForm.controls["phoneNumber"].setValue(phoneNumber)
     this.createUserForm.controls["address"].setValue(company[0].contactAddress)
     this.createUserForm.controls["companyName"].setValue(
       company[0].taxPayerName
@@ -319,21 +317,22 @@ export class SignUpComponent implements OnInit, OnDestroy {
   loadCompanyOtpDetailData(company: AuthModels.UserRegisterStepOneInterface) {
     this.createUserForm.patchValue({
       companyName: company.companyName,
-      ...(company?.phoneNumber && {
-        phoneNumber: `${company?.phoneNumber}`,
-      }),
+      // ...(company?.phoneNumber &&
+      //   {
+      //     phoneNumber: `${company?.phoneNumber}`,
+      //   }),
       address: company?.companyAddress,
     })
 
     this.companyName?.disable()
 
-    if (company?.phoneNumber) {
-      this.phoneNumber?.disable()
-    }
+    // if (company?.phoneNumber) {
+    //   this.phoneNumber?.disable()
+    // }
   }
 
   disbableFormFields(): void {
-    const enableFields: string[] = ["phoneNumber", "address", "companyName"]
+    const enableFields: string[] = ["address", "companyName"]
 
     for (let key in this.createUserForm.controls) {
       !enableFields.includes(key) && this.createUserForm.controls[key].disable()
