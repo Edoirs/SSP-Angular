@@ -19,6 +19,7 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MarkFormH3EmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-uploadprojection",
@@ -27,6 +28,7 @@ import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeesc
 })
 export class UploadprojectionComponent implements OnInit {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  readonly tokenService = inject(TokenService)
   myForm!: FormGroup
   submitted: boolean = false
   files: any

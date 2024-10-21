@@ -25,6 +25,10 @@
               <thead>
                 <tr>
                   <th>S/N</th>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <th>Company Name</th>
+                    <th>Company Id</th>
+                  }
                   <th>Business RIN</th>
                   <th>Business Name</th>
                   <th>Business Address</th>
@@ -37,10 +41,14 @@
               <tbody>
                 <tr *ngFor="let mydata of businessesData; index as i">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ mydata.businessRIN }}</td>
-                  <td>{{ mydata.businessName | titlecase }}</td>
-                  <td>{{ mydata.businessAddress ? mydata.businessAddress : 'N/A' }}</td>
-                  <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <td>{{ mydata?.companyName || 'N/A' }}</td>
+                    <td>{{ mydata?.companyID }}</td>
+                  }
+                  <td>{{ mydata?.businessRIN }}</td>
+                  <td>{{ mydata?.businessName | titlecase }}</td>
+                  <td>{{ mydata?.businessAddress || 'N/A' }}</td>
+                  <td>{{ mydata?.noOfEmployees || "N/A" }}</td>
 
                   <td title="View">
                     <button class="btn btn-sm btn-outline-success"
@@ -231,21 +239,21 @@
         <tbody>
           <tr *ngFor="let mydata of annualReturnsData(); index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ mydata.rin }}</td>
+            <td>{{ mydata?.rin }}</td>
             <td>
-              {{ mydata.firstname == null ? "N/A" : mydata.firstname | titlecase }}
+              {{ mydata?.firstname == null ? "N/A" : mydata?.firstname | titlecase }}
             </td>
             <td>
-              {{ mydata.surname == null ? "N/A" : mydata.surname | titlecase }}
+              {{ mydata?.surname == null ? "N/A" : mydata?.surname | titlecase }}
             </td>
 
-            <td>{{ mydata.designation == undefined ? "N/A" : mydata.designation | titlecase }}</td>
-            <td>{{ mydata.nationality == null ? "N/A" : mydata.nationality | titlecase }}</td>
+            <td>{{ mydata?.designation == undefined ? "N/A" : mydata?.designation | titlecase }}</td>
+            <td>{{ mydata?.nationality == null ? "N/A" : mydata?.nationality | titlecase }}</td>
 
-            <td>{{ mydata.rent + mydata.transport + mydata.basic + mydata.otherIncome | number }}</td>
-            <td>{{ mydata.annualtaxpaid  == null ? "N/A" : mydata.annualtaxpaid | number }}</td>
-            <td>{{ mydata.numberOfMonths  == null ? "N/A" : mydata.numberOfMonths | number }}</td>
-            <!-- <td>{{ mydata.lifeassurance | number }}</td> -->
+            <td>{{ mydata?.rent + mydata?.transport + mydata?.basic + mydata?.otherIncome | number }}</td>
+            <td>{{ mydata?.annualtaxpaid  == null ? "N/A" : mydata?.annualtaxpaid | number }}</td>
+            <td>{{ mydata?.numberOfMonths  == null ? "N/A" : mydata?.numberOfMonths | number }}</td>
+            <!-- <td>{{ mydata?.lifeassurance | number }}</td> -->
 
             <td title="Edit">
               <button class="btn btn-sm btn-outline-success" (click)="editAnnualReturn(annualReturnDetailsModal, mydata)">

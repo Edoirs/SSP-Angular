@@ -8,7 +8,7 @@ export interface UploadProjectionInterface {
   businessName: string
   businessRIN: string
   businessAddress: string
-  companyRin: string
+  companyID: string
   companyName: string
   forwardedTO: string
   dueDate: string

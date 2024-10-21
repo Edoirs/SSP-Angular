@@ -21,6 +21,10 @@
             <thead>
               <tr>
                 <th>S/N</th>
+                @if(tokenService.getLoginResData.isAdminUser){
+                  <th>Company Name</th>
+                  <th>Company Id</th>
+                }
                 <th>Business RIN</th>
                 <th>Business Name</th>
                 <th>Taxpayer RIN</th>
@@ -36,6 +40,10 @@
             <tbody>
               <tr *ngFor="let mydata of schedulesData; index as i">
                 <td>{{ i + 1 }}</td>
+                @if(tokenService.getLoginResData.isAdminUser){
+                  <td>{{ mydata?.companyName || 'N/A' }}</td>
+                  <td>{{ mydata?.companyID }}</td>
+                }
                 <td>{{ mydata.businessRIN }}</td>
                 <td>{{ mydata.businessName | titlecase }}</td>
                 <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>

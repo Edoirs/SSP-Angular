@@ -45,8 +45,8 @@
                 <tr>
                   <th>S/N</th>
                   @if(tokenService.getLoginResData.isAdminUser){
-                    <th>Company RIN</th>
                     <th>Company Name</th>
+                    <th>Company Id</th>
                   }
                   <th>Business RIN</th>
                   <th>Business Name</th>
@@ -73,8 +73,8 @@
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   @if(tokenService.getLoginResData.isAdminUser){
-                    <td>{{ business?.companyRin }}</td>
                     <td>{{ business?.companyName }}</td>
+                    <td>{{ business?.companyID }}</td>
                   }
                   <td>{{ business?.businessRIN }}</td>
                   <td>{{ business?.businessName }}</td>

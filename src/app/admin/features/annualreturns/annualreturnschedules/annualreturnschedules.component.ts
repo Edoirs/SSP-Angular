@@ -19,6 +19,7 @@ import {MatDialog} from "@angular/material/dialog"
 import {DtImageOne, DtImageTwo} from "./utils/annual-return-schedules.utils"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import {AnnualScheduleReInterface} from "./data-access/annual-return-schedule.model"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-annualreturnschedules",
@@ -27,6 +28,7 @@ import {AnnualScheduleReInterface} from "./data-access/annual-return-schedule.mo
 })
 export class AnnualreturnschedulesComponent implements OnInit {
   private readonly dialog = inject(MatDialog)
+  readonly tokenService = inject(TokenService)
   dtOptions: any = {}
   dtSmOptions: any = {}
   modalOptions!: NgbModalOptions
@@ -499,9 +501,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
       (result) => {
         this.closeResult = `Closed with: ${result}`
       },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
-        }
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
+      }
     )
   }
 
@@ -755,9 +757,9 @@ export class AnnualreturnschedulesComponent implements OnInit {
       (result: any) => {
         this.closeResult = `Closed with: ${result}`
       },
-        (reason: any) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
-        }
+      (reason: any) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
+      }
     )
   }
 

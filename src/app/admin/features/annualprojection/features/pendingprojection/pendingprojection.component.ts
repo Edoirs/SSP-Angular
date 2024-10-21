@@ -1,75 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from "@angular/core"
 // import { DashboardComponent } from "../../dashboard/dashboard.component";
-import { HttpClient } from "@angular/common/http";
-import { HttpHeaders } from "@angular/common/http";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import {HttpClient} from "@angular/common/http"
+import {HttpHeaders} from "@angular/common/http"
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {ActivatedRoute, Router} from "@angular/router"
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModalOptions,
-} from "@ng-bootstrap/ng-bootstrap";
+} from "@ng-bootstrap/ng-bootstrap"
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
-import { SessionService } from "src/app/session.service";
-import { environment } from "src/environments/environment";
-import Swal from "sweetalert2";
-import { Title } from "@angular/platform-browser";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-
+import {SessionService} from "src/app/session.service"
+import {environment} from "src/environments/environment"
+import Swal from "sweetalert2"
+import {Title} from "@angular/platform-browser"
+import {NgxUiLoaderService} from "ngx-ui-loader"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
-  selector: 'app-pendingprojection',
-  templateUrl: './pendingprojection.component.html',
-  styleUrls: ['./pendingprojection.component.css']
+  selector: "app-pendingprojection",
+  templateUrl: "./pendingprojection.component.html",
+  styleUrls: ["./pendingprojection.component.css"],
 })
 export class PendingprojectionComponent implements OnInit {
-  forwardProjectionForm!: FormGroup;
-  selectedProjection: any;
-  updateProjectionForm!: FormGroup;
-  dtOptions: any = {};
-  roleID: any;
-  projectionData: any;
-  myForm!: FormGroup;
-  submitted: boolean = false;
-  managerRole = false;
-  files: any;
-  file: any;
-  apidata: any;
-  forwardedTo: any;
-  singleCorporate = [] as any;
-  apiUrl!: string;
-  corporateId = localStorage.getItem("corporate_id");
-  modalOptions!: NgbModalOptions;
-  closeResult!: string;
-  editorRole: boolean = false;
-  apidataEmpty: boolean = false;
-  disable: boolean = false;
-  isForwardedToEditor: boolean = false;
-  annualProjectionId: any;
-  comments = [] as any;
-  comment: any;
-  commentDate: any;
-  com: any;
-  apisingledata: any;
-  isForwarded!: boolean;
-  title = "PAYE - Pending Projections Report";
-  businessesData: any;
-  selectedBusiness: any;
-  businessId: any;
-  companyId: any;
-  annualReturnsData: any;
-  editEmployeeModalRef: any;
-  RIN: any;
-  NIN: any;
-  JTBTIN: any;
-  homeAddress: any;
-  phoneNumber: any;
-  totalMonthsPaid: any;
-  CRA: any;
-  annualReturnForm: any;
-  disableEmployeeControl: any;
-  fileFormH3Form: any;
-  taxpayerID: any;
+  readonly tokenService = inject(TokenService)
+  forwardProjectionForm!: FormGroup
+  selectedProjection: any
+  updateProjectionForm!: FormGroup
+  dtOptions: any = {}
+  roleID: any
+  projectionData: any
+  myForm!: FormGroup
+  submitted: boolean = false
+  managerRole = false
+  files: any
+  file: any
+  apidata: any
+  forwardedTo: any
+  singleCorporate = [] as any
+  apiUrl!: string
+  corporateId = localStorage.getItem("corporate_id")
+  modalOptions!: NgbModalOptions
+  closeResult!: string
+  editorRole: boolean = false
+  apidataEmpty: boolean = false
+  disable: boolean = false
+  isForwardedToEditor: boolean = false
+  annualProjectionId: any
+  comments = [] as any
+  comment: any
+  commentDate: any
+  com: any
+  apisingledata: any
+  isForwarded!: boolean
+  title = "PAYE - Pending Projections Report"
+  businessesData: any
+  selectedBusiness: any
+  businessId: any
+  companyId: any
+  annualReturnsData: any
+  editEmployeeModalRef: any
+  RIN: any
+  NIN: any
+  JTBTIN: any
+  homeAddress: any
+  phoneNumber: any
+  totalMonthsPaid: any
+  CRA: any
+  annualReturnForm: any
+  disableEmployeeControl: any
+  fileFormH3Form: any
+  taxpayerID: any
 
   constructor(
     private httpClient: HttpClient,
@@ -82,7 +83,7 @@ export class PendingprojectionComponent implements OnInit {
     private sess: SessionService,
     // private spinnerService: Ng4LoadingSpinnerService
     private ngxService: NgxUiLoaderService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // this.sess.isCorporate();
@@ -172,15 +173,12 @@ export class PendingprojectionComponent implements OnInit {
     }
   }
 
-  initialiseForm() {
-    
-  }
+  initialiseForm() {}
 
   getBusinesses() {
-    const obj = {};
-    this.ngxService.start();
+    const obj = {}
+    this.ngxService.start()
     this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
-
 
     this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
       this.businessesData = res?.data?.result
@@ -189,29 +187,31 @@ export class PendingprojectionComponent implements OnInit {
   }
 
   viewBusinessProjection(modal: any, data: any) {
-    this.businessId = data.businessID;
+    this.businessId = data.businessID
     // this.companyId = data.company_id;
-    this.getAnnualReturns(this.businessId, this.companyId);
-    this.showModal(modal);
+    this.getAnnualReturns(this.businessId, this.companyId)
+    this.showModal(modal)
   }
 
   getAnnualReturns(businessId: any, companyId: any) {
-    this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`;
+    this.ngxService.start()
+    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-      // console.log("annualReturnsData: ", data);
-      this.annualReturnsData = data == null ? [] : data
-      if (data?.length > 0) {
-        this.apidataEmpty = true
-      }
-      this.ngxService.stop()
-    });
+    this.httpClient
+      .get<any>(this.apiUrl, {headers: reqHeader})
+      .subscribe((data) => {
+        // console.log("annualReturnsData: ", data);
+        this.annualReturnsData = data == null ? [] : data
+        if (data?.length > 0) {
+          this.apidataEmpty = true
+        }
+        this.ngxService.stop()
+      })
   }
 
   editAnnualReturn(modal: any, selectedAnnualReturn: any) {
@@ -379,13 +379,13 @@ export class PendingprojectionComponent implements OnInit {
   }
 
   postUpdateAnnualReturn(jsonData: any) {
-    this.ngxService.start();
-    this.apiUrl = `${environment.AUTHAPIURL}FormH/update-TaxpayerH1`;
+    this.ngxService.start()
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/update-TaxpayerH1`
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
       .put<any>(this.apiUrl, jsonData, {headers: reqHeader})
@@ -424,9 +424,9 @@ export class PendingprojectionComponent implements OnInit {
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.apiUrl = `${environment.AUTHAPIURL}FormH/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}/bytaxpayerId/${taxpayerId}`;
+    this.apiUrl = `${environment.AUTHAPIURL}FormH/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}/bytaxpayerId/${taxpayerId}`
 
     Swal.fire({
       title: "Are you sure?",
@@ -462,10 +462,8 @@ export class PendingprojectionComponent implements OnInit {
             }
           })
       }
-    });
+    })
   }
-
-
 
   calculateGrossIncome(event: any) {
     // // console.log("test: ", this.editEmployeeForm.get('lifeAssurance').value);
@@ -480,38 +478,37 @@ export class PendingprojectionComponent implements OnInit {
     // }
   }
   calculateTotalIncome(event: any) {
-
-  //   if (this.annualReturnForm.valid) {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.annualReturnForm
-  //     );
-  //   } else {
-  //     this.utilityService.calculateTotalIncome(
-  //       this.addEmployeeForm
-  //     );
-  //   }
+    //   if (this.annualReturnForm.valid) {
+    //     this.utilityService.calculateTotalIncome(
+    //       this.annualReturnForm
+    //     );
+    //   } else {
+    //     this.utilityService.calculateTotalIncome(
+    //       this.addEmployeeForm
+    //     );
+    //   }
   }
-  
+
   getUnapprovedProjectionList(year: any, annualPID: any) {
     this.forwardProjectionForm = this.formBuilder.group({
       year: [this.selectedProjection.projection_year, Validators.required],
       comment: ["", Validators.required],
-    });
-    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedList";
+    })
+    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedList"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     const obj = {
       projection_year: year,
       annual_projection_id: annualPID,
       // corporate_id: this.corporateId,
-    };
+    }
     // this.ngxService.start();
     this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
         // console.log(data);
         if (data.status == false) {
@@ -558,25 +555,25 @@ export class PendingprojectionComponent implements OnInit {
         }
 
         // this.ngxService.stop();
-      });
+      })
   }
 
   getUnapprovedProjectionRecord() {
-    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedRecord";
+    this.apiUrl = environment.AUTHAPIURL + "projections/unApprovedRecord"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     const obj = {
       corporate_id: this.corporateId,
       // business_id: businessId,
-    };
+    }
 
     // this.ngxService.start();
     this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .post<any>(this.apiUrl, obj, {headers: reqHeader})
       .subscribe((data) => {
         // console.log(data);
         if (data.status == true) {
@@ -592,28 +589,28 @@ export class PendingprojectionComponent implements OnInit {
         }
 
         // this.ngxService.stop();
-      });
+      })
   }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
+      return "by pressing ESC"
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
+      return "by clicking on a backdrop"
     } else {
-      return `with: ${reason}`;
+      return `with: ${reason}`
     }
   }
 
   forwardProjection(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(
       (result) => {
-        this.closeResult = `Closed with: ${result}`;
+        this.closeResult = `Closed with: ${result}`
       },
       (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
-    );
+    )
   }
 
   onSubmitProjection(formAllData: any) {
@@ -638,24 +635,24 @@ export class PendingprojectionComponent implements OnInit {
 
   postForwardProjection(jsonData: any) {
     // this.ngxService.start();
-    this.apiUrl = environment.AUTHAPIURL + "projections/forward";
+    this.apiUrl = environment.AUTHAPIURL + "projections/forward"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
         // console.log("ApiResponseData: ", data);
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.forwardProjectionForm.reset();
+          this.forwardProjectionForm.reset()
           Object.keys(this.forwardProjectionForm.controls).forEach((key) => {
-            this.forwardProjectionForm.get(key)?.setErrors(null);
-          });
+            this.forwardProjectionForm.get(key)?.setErrors(null)
+          })
 
           // this.ngxService.stop();
           // this.reload();
@@ -665,32 +662,32 @@ export class PendingprojectionComponent implements OnInit {
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
 
-          this.modalService.dismissAll();
-          this.getUnapprovedProjectionRecord();
+          this.modalService.dismissAll()
+          this.getUnapprovedProjectionRecord()
         } else {
-          this.reload();
+          this.reload()
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
-      });
+      })
   }
 
   showModal(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(
       (result) => {
-        this.closeResult = `Closed with: ${result}`;
+        this.closeResult = `Closed with: ${result}`
       },
       (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
-    );
+    )
   }
 
   viewProjection(modal: any, selectedProjection: any) {
@@ -719,50 +716,52 @@ export class PendingprojectionComponent implements OnInit {
   getSingleProjection(obj: any) {
     // this.ngxService.start();
     this.apiUrl =
-      environment.AUTHAPIURL + "projections?corporate_id=" + this.corporateId;
+      environment.AUTHAPIURL + "projections?corporate_id=" + this.corporateId
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .get<any>(this.apiUrl, { headers: reqHeader })
+      .get<any>(this.apiUrl, {headers: reqHeader})
       .subscribe((data) => {
         // console.log("singleProjectionData: ", data);
         this.projectionData = data.data
         // console.log(this.projectionData);
         this.selectedProjection = data.data
         // this.ngxService.stop();
-      });
+      })
   }
 
   approveProjection(modal: any) {
     this.modalService.open(modal, this.modalOptions).result.then(
       (result) => {
-        this.closeResult = `Closed with: ${result}`;
+        this.closeResult = `Closed with: ${result}`
       },
       (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
-    );
+    )
   }
 
   postApproveProjection() {
-    this.apiUrl = environment.AUTHAPIURL + "projections/approve";
+    this.apiUrl = environment.AUTHAPIURL + "projections/approve"
 
     const obj = {
       projection_year: this.selectedProjection.projection_year,
       business_id: this.businessId,
       corporate_id: this.corporateId,
-    };
+    }
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
-    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe((data) => {
+    this.httpClient
+      .post<any>(this.apiUrl, obj, {headers: reqHeader})
+      .subscribe((data) => {
         // console.log("ApiResponseData: ", data);
         if (data.status === true) {
           Swal.fire({
@@ -771,21 +770,20 @@ export class PendingprojectionComponent implements OnInit {
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
 
-          this.modalService.dismissAll();
-          this.getUnapprovedProjectionRecord();
-        } 
-        else {
+          this.modalService.dismissAll()
+          this.getUnapprovedProjectionRecord()
+        } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
-      });
+      })
   }
 
   onRevertProjection(formAllData: any) {
@@ -807,24 +805,24 @@ export class PendingprojectionComponent implements OnInit {
   }
 
   postRevertProjection(jsonData: any) {
-    this.apiUrl = environment.AUTHAPIURL + "projections/forward";
+    this.apiUrl = environment.AUTHAPIURL + "projections/forward"
 
     const reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-    });
+    })
 
     this.httpClient
-      .post<any>(this.apiUrl, jsonData, { headers: reqHeader })
+      .post<any>(this.apiUrl, jsonData, {headers: reqHeader})
       .subscribe((data) => {
         // console.log("ApiResponseData: ", data);
 
         if (data.status === true) {
           // Rest form fithout errors
-          this.forwardProjectionForm.reset();
+          this.forwardProjectionForm.reset()
           Object.keys(this.forwardProjectionForm.controls).forEach((key) => {
-            this.forwardProjectionForm.get(key)?.setErrors(null);
-          });
+            this.forwardProjectionForm.get(key)?.setErrors(null)
+          })
 
           Swal.fire({
             icon: "success",
@@ -832,10 +830,10 @@ export class PendingprojectionComponent implements OnInit {
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
 
-          this.modalService.dismissAll();
-          this.getUnapprovedProjectionRecord();
+          this.modalService.dismissAll()
+          this.getUnapprovedProjectionRecord()
         } else {
           Swal.fire({
             icon: "error",
@@ -843,22 +841,21 @@ export class PendingprojectionComponent implements OnInit {
             text: data.message,
             showConfirmButton: true,
             timer: 5000,
-          });
+          })
         }
-      });
+      })
   }
 
   generateAssessment(modal: any) {
     // this.businessId = data.businessID;
     // this.loadSelectedBusinessData(data);
     // this.getAnnualReturns(this.businessId, this.companyId);
-    this.showModal(modal);
+    this.showModal(modal)
   }
 
   reload() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(["./"], { relativeTo: this.route });
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false
+    this.router.onSameUrlNavigation = "reload"
+    this.router.navigate(["./"], {relativeTo: this.route})
   }
-
 }

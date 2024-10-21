@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core"
+import {Component, inject, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {ActivatedRoute, Router} from "@angular/router"
@@ -15,6 +15,7 @@ import Swal from "sweetalert2"
 import {Title} from "@angular/platform-browser"
 import {UtilityService} from "src/app/utility.service"
 import {NgxUiLoaderService} from "ngx-ui-loader"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-annualreturnemployeesupload",
@@ -22,6 +23,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
   styleUrls: ["./annualreturnemployeesupload.component.css"],
 })
 export class AnnualreturnemployeesuploadComponent implements OnInit {
+  readonly tokenService = inject(TokenService)
   submitted: boolean = false
   apiUrl!: string
   isResponse!: number

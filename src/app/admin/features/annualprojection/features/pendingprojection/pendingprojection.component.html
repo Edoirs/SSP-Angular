@@ -20,9 +20,13 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <th>Company Name</th>
+                      <th>Company Id</th>
+                    }
                     <th>Business RIN</th>
                     <th>Business Name</th>
-                    <th>Company Name</th>
+                    <!-- <th>Company Name</th> -->
                     <th>Projection Year</th>
                     <th>Forwarded To</th>
                     <th>Date Forwarded</th>
@@ -33,9 +37,13 @@
                 <tbody>
                   <tr *ngFor="let mydata of businessesData; index as i">
                     <td>{{ i + 1 }}</td>
+                    @if(tokenService.getLoginResData.isAdminUser){
+                      <td>{{ mydata?.companyName || 'N/A' }}</td>
+                      <td>{{ mydata?.companyID }}</td>
+                    }
                     <td>{{ mydata?.businessRIN }}</td>
                     <td>{{ mydata?.businessName | titlecase }}</td>
-                    <td>{{ mydata?.companyName | titlecase }}</td>
+                    <!-- <td>{{ mydata?.companyName | titlecase }}</td> -->
                     <td>{{ mydata?.taxYear || 'N/A' }}</td>
                     <td>{{ 'Forwarded To EIRS' }}</td>
                     <td>{{ mydata?.dateForwarded }}</td>
