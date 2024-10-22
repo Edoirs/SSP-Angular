@@ -213,7 +213,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     }
   }
 
-  async downloadPdf() {
+  async downloadExcel() {
     this.btnLoading.set(true)
     this.ngxService.start()
     const payload = {
@@ -224,9 +224,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
-        payload
-      )
+      const pdf =
+        await this.employeeScheduleService.downloadEmployeeExcelMonthly(payload)
       window.open(pdf, "_blank")
     } catch (err: any) {
       // console.log({err})

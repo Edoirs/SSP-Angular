@@ -129,4 +129,21 @@ export class EmployeeScheduleService {
     let fileURL = URL.createObjectURL(response?.data)
     return fileURL
   }
+
+  async downloadEmployeeExcelMonthly(
+    payload: EmployeeModel.DownloadEmployeePdfInterface
+  ) {
+    const response = await axios.post(
+      `${environment.AUTHAPIURL}PhaseII/DownLoadExcelMonthly`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
+  }
 }
