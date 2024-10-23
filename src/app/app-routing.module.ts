@@ -31,7 +31,10 @@ const routes: Routes = [
 
   {
     path: "admin",
-    loadChildren: () => import("./admin/admin.routes"),
+    loadChildren: () =>
+      import("./admin/features/paye-routes.module").then(
+        (m) => m.PayeRoutingModule
+      ),
     canActivate: [AuthGuard],
   },
 ]

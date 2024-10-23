@@ -17,39 +17,75 @@ import {SchedulesComponent} from "./monthlyremittance/schedules/schedules.compon
 import {AdduserComponent} from "./users/adduser/adduser.component"
 import {DisplayuserComponent} from "./users/displayuser/displayuser.component"
 import {EditComponent} from "./users/edit/edit.component"
+import {PayeComponent} from "./paye.component"
+
+import {NgxUiLoaderModule} from "ngx-ui-loader"
+import {IncModule} from "src/app/__inc/inc.module"
 
 const routes: Routes = [
-  {path: "", redirectTo: "dashboard", pathMatch: "full"},
-  {path: "dashboard", component: DashboardComponent},
-  {path: "assessments", component: AssessmentsComponent},
-  {path: "deleted-employees", component: DeletedemployeesComponent},
-  {path: "employee-schedule", component: EmployeescheduleComponent},
-  {path: "schedules", component: SchedulesComponent},
-
   {
-    path: "annual-return-employees-upload",
-    component: AnnualreturnemployeesuploadComponent,
-  },
-  {
-    path: "annual-return-assessments",
-    component: AnnualreturnassessmentsComponent,
-  },
-  {path: "annual-return-schedules", component: AnnualreturnschedulesComponent},
-  {path: "annual-returns", component: AnnualreturnsComponent},
-  {path: "reassessment-appeals", component: ReassessmentappealsComponent},
-  {path: "reassessments", component: ReassessmentsComponent},
+    path: "",
+    component: PayeComponent,
+    children: [
+      {path: "", redirectTo: "dashboard", pathMatch: "full"},
+      {path: "dashboard", component: DashboardComponent},
+      {path: "assessments", component: AssessmentsComponent},
+      {path: "deleted-employees", component: DeletedemployeesComponent},
+      {path: "employee-schedule", component: EmployeescheduleComponent},
+      {path: "schedules", component: SchedulesComponent},
 
-  {path: "approved-projection", component: ApprovedprojectionComponent},
-  {path: "pending-projection", component: PendingprojectionComponent},
-  {path: "upload-projection", component: UploadprojectionComponent},
+      {
+        path: "annual-return-employees-upload",
+        component: AnnualreturnemployeesuploadComponent,
+      },
+      {
+        path: "annual-return-assessments",
+        component: AnnualreturnassessmentsComponent,
+      },
+      {
+        path: "annual-return-schedules",
+        component: AnnualreturnschedulesComponent,
+      },
+      {path: "annual-returns", component: AnnualreturnsComponent},
+      {path: "reassessment-appeals", component: ReassessmentappealsComponent},
+      {path: "reassessments", component: ReassessmentsComponent},
 
-  {path: "add-user", component: AdduserComponent},
-  {path: "edit-user", component: EditComponent},
-  {path: "display-user", component: DisplayuserComponent},
+      {path: "approved-projection", component: ApprovedprojectionComponent},
+      {path: "pending-projection", component: PendingprojectionComponent},
+      {path: "upload-projection", component: UploadprojectionComponent},
+
+      {path: "add-user", component: AdduserComponent},
+      {path: "edit-user", component: EditComponent},
+      {path: "display-user", component: DisplayuserComponent},
+
+      {
+        path: "businesses",
+        loadComponent: () =>
+          import("./businesses/businesses.component").then(
+            (c) => c.BusinessesComponent
+          ),
+      },
+      {
+        path: "pending-application",
+        loadComponent: () =>
+          import(
+            "./tcc-application/features/pending-application/pending-application.component"
+          ).then((c) => c.TccPendingApplicationComponent),
+      },
+      {
+        path: "submitted-application",
+        loadComponent: () =>
+          import(
+            "./tcc-application/features/submitted-application/submitted-application.component"
+          ).then((c) => c.TccSubmittedApplicationComponent),
+      },
+    ],
+  },
 ]
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  declarations: [PayeComponent],
+  imports: [RouterModule.forChild(routes), NgxUiLoaderModule, IncModule],
   exports: [RouterModule],
 })
 export class PayeRoutingModule {}

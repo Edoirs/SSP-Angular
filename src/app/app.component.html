@@ -1,13 +1,6 @@
-
-<app-main-header *ngIf="showHead"></app-main-header>
-<app-main-sidebar *ngIf="showHead"></app-main-sidebar>
-<app-control-sidebar *ngIf="showHead"></app-control-sidebar>
-<ngx-ui-loader  fgsColor="white"  pbColor="grey"></ngx-ui-loader>
-  <main>
-    <router-outlet ></router-outlet>
-  </main>
-  <button *ngIf="isShow" (click)="gotoTop()" id="scroll" class="default-bg " style="display: inline;"> <span class="fa fa-angle-up "></span> </button>
-<app-main-footer *ngIf="showHead"></app-main-footer>
+<ngx-ui-loader fgsColor="white" pbColor="grey" />
+<router-outlet ></router-outlet>
+<button *ngIf="isShow" (click)="gotoTop()" id="scroll" class="default-bg " style="display: inline;"> <span class="fa fa-angle-up "></span> </button>
 
 
 

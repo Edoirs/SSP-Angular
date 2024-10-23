@@ -39,13 +39,7 @@
             </div>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" *ngIf="roleID != 7" [routerLink]="['/logout']" data-toggle="modal" data-target="#logoutModal">
-            <div class="d-flex align-items-center">
-              <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400 mr-2"></i>
-              <span>Logout</span>
-            </div>
-          </a>
-          <a class="dropdown-item" *ngIf="roleID == 7" [routerLink]="['/selflogout']" data-toggle="modal" data-target="#logoutModal">
+          <a class="dropdown-item" [routerLink]="['/logout']" data-toggle="modal" data-target="#logoutModal">
             <div class="d-flex align-items-center">
               <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400 mr-2"></i>
               <span>Logout</span>

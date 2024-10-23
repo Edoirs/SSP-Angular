@@ -4,14 +4,6 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {DatePipe, HashLocationStrategy, LocationStrategy} from "@angular/common"
 import {AppRoutingModule} from "./app-routing.module"
 import {AppComponent} from "./app.component"
-import {ContentWrapperComponent} from "./__inc/content-wrapper/content-wrapper.component"
-import {ControlSidebarComponent} from "./__inc/control-sidebar/control-sidebar.component"
-import {MainFooterComponent} from "./__inc/main-footer/main-footer.component"
-import {MainHeaderComponent} from "./__inc/main-header/main-header.component"
-import {MainSidebarComponent} from "./__inc/main-sidebar/main-sidebar.component"
-import {WebfooterComponent} from "./__inc/webfooter/webfooter.component"
-import {WebheaderComponent} from "./__inc/webheader/webheader.component"
-import {WhatsupchatComponent} from "./__inc/whatsupchat/whatsupchat.component"
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import {MatDialogModule} from "@angular/material/dialog"
 import {NgxUiLoaderModule} from "ngx-ui-loader"
@@ -28,7 +20,6 @@ import {NgxPaginationModule} from "ngx-pagination"
 import {NgChartsModule} from "ng2-charts"
 import {LogoutComponent} from "./auth/pages/logout/logout.component"
 import {DashboardComponent} from "./admin/features/dashboard/dashboard.component"
-import {MenuComponent} from "./__inc/menuitem/menu/menu.component"
 import {ResetpasswordComponent} from "./auth/pages/resetpassword/resetpassword.component"
 import {ForgotpasswordComponent} from "./auth/pages/forgotpassword/forgotpassword.component"
 import {AboutusComponent} from "./webpages/aboutus/aboutus.component"
@@ -59,27 +50,18 @@ import {MatPaginatorModule} from "@angular/material/paginator"
 import {NgToggleModule} from "ng-toggle-button"
 import {loggingInterceptor} from "@shared/interceptor/logging.interceptor"
 import {ExportAsModule} from "ngx-export-as"
-import {MenuItemComponent} from "./__inc/menuitem/menu-item/menu-item.component"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 import {ComingSoonComponent} from "@shared/components/coming-soon.component"
 import {BulkUploadNoticeComponent} from "@shared/components/bulk-upload-notice.component"
+import {IncModule} from "./__inc/inc.module"
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContentWrapperComponent,
-    ControlSidebarComponent,
-    MainFooterComponent,
-    MainHeaderComponent,
-    MainSidebarComponent,
-    WebfooterComponent,
-    WebheaderComponent,
-    WhatsupchatComponent,
     HomeComponent,
     LoginComponent,
     LogoutComponent,
     DashboardComponent,
-    MenuComponent,
     ResetpasswordComponent,
     ForgotpasswordComponent,
     AboutusComponent,
@@ -110,9 +92,9 @@ import {BulkUploadNoticeComponent} from "@shared/components/bulk-upload-notice.c
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MenuItemComponent,
     ComingSoonComponent,
     BulkUploadNoticeComponent,
+    IncModule,
     NgxUiLoaderModule,
     FormsModule,
     DataTablesModule,
