@@ -16,42 +16,42 @@ export const MenuListRecord: MenuItemInterface[] = [
   {
     // 0
     name: "Dashboard",
-    url: ["/admin", "dashboard"],
+    url: ["dashboard"],
     faIcon: "fa-tachometer-alt",
   },
   {
     // 1
     name: "Businesses",
-    url: ["/admin", "businesses"],
+    url: ["businesses"],
     faIcon: "fa-building",
   },
   {
     // 2
     name: "Monthly Remittance",
-    url: ["/admin", "schedules"],
+    url: ["schedules"],
     faIcon: "fa-file-invoice",
     children: [
       {
         name: "Employees",
-        url: ["admin", "employee-schedule"],
+        url: ["employee-schedule"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       // {
       //   name: "Deleted Employees",
-      //   url: ["admin", "deleted-employees"],
+      //   url: ["deleted-employees"],
       //   faIcon: "fa-circle",
       //   faIconType: "outline",
       // },
       {
         name: "Schedules",
-        url: ["admin", "schedules"],
+        url: ["schedules"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Assessments",
-        url: ["admin", "assessments"],
+        url: ["assessments"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
@@ -64,19 +64,19 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "Upload Form H3",
-        url: ["admin", "upload-projection"],
+        url: ["upload-projection"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Filed Form H3",
-        url: ["admin", "pending-projection"],
+        url: ["pending-projection"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Projections",
-        url: ["admin", "approved-projection"],
+        url: ["approved-projection"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
@@ -89,25 +89,25 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "Form H1 Filling & Uploads",
-        url: ["admin", "annual-return-employees-upload"],
+        url: ["annual-return-employees-upload"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Form h1 Schedules",
-        url: ["admin", "annual-return-schedules"],
+        url: ["annual-return-schedules"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Re-assessed",
-        url: ["admin", "annual-return-assessments"],
+        url: ["annual-return-assessments"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
       {
         name: "Objections",
-        url: ["admin", "reassessment-appeals"],
+        url: ["reassessment-appeals"],
         faIcon: "fa-circle",
         faIconType: "outline",
       },
@@ -120,12 +120,12 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "Pending Application",
-        url: ["admin", "pending-application"],
+        url: ["pending-application"],
         faIcon: "fa-folder-open",
       },
       {
         name: "Submitted Application",
-        url: ["admin", "submitted-application"],
+        url: ["submitted-application"],
         faIcon: "fa-folder",
       },
     ],
@@ -137,7 +137,7 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "Transaction History",
-        url: ["admin", "reports"],
+        url: ["reports"],
         faIcon: "fa-chart-bar",
       },
     ],
