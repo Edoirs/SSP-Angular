@@ -8,10 +8,14 @@ import {Component} from "@angular/core"
     <app-control-sidebar />
     <ngx-ui-loader fgsColor="white" pbColor="grey" />
     <main>
-      hello
       <router-outlet></router-outlet>
     </main>
     <app-main-footer />
+  `,
+  styles: `
+  main{
+    padding: 0 0 60px 24px;
+  }
   `,
 })
 export class PayeComponent {}

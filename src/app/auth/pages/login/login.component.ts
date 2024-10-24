@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 
@@ -7,12 +7,17 @@ import Swal from "sweetalert2"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TokenService} from "@shared/services/token.service"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {
+  SweetAlertInfoOption,
+  SweetAlertOptions,
+} from "@shared/utils/sweet-alert.utils"
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   private readonly tokenService = inject(TokenService)
   submitted = false
   apiUrl: any
@@ -30,6 +35,8 @@ export class LoginComponent {
   password: any
   companyId: any
 
+  subs = new SubscriptionHandler()
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -40,6 +47,10 @@ export class LoginComponent {
   ngOnInit(): void {
     this.initialiseForms()
     this.initialiseOtpForm()
+  }
+
+  ngOnDestroy(): void {
+    this.subs.clear()
   }
 
   initialiseForms() {
@@ -143,59 +154,42 @@ export class LoginComponent {
     this.ngxService.start()
     this.apiUrl = environment.AUTHAPIURL + "Login/SignIn"
 
-    this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
-      // console.log("SignInResponse: ", data)
-      this.ngxService.stop()
+    this.subs.add = this.http.post<any>(this.apiUrl, requestObj).subscribe({
+      next: (data: any) => {
+        this.ngxService.stop()
 
-      if (data != null) {
-        this.defaultPwd =
-          data.hasDefaultPassword == undefined ? false : data.hasDefaultPassword
-      }
+        if (data != null) {
+          this.defaultPwd =
+            data.hasDefaultPassword == undefined
+              ? false
+              : data.hasDefaultPassword
+        }
 
-      if (this.defaultPwd) {
-        Swal.fire({
-          icon: "info",
-          title: "Info",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
+        if (this.defaultPwd) {
+          Swal.fire(SweetAlertInfoOption(data.message))
 
-        this.router.navigate(["/resetpassword"])
-      }
+          this.router.navigate(["/resetpassword"])
+        }
 
-      if (data.status == true) {
-        this.tokenService.saveLoginResData(data.data)
-        let loginData = data.data
-        localStorage.setItem("access_token", loginData?.token)
-        localStorage.setItem("email", loginData?.email)
-        localStorage.setItem("companyName", loginData?.name)
-        localStorage.setItem("companyId", loginData?.companyId)
-        localStorage.setItem("companyRIN", loginData?.comanyRin)
-        this.companyId = formAllData.companyId
-        // this.goToOtp();
-        this.router.navigate(["/admin", "dashboard"])
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
-      }
-      // else if (data.status != true && this.defaultPwd != false) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Oops...",
-      //     text: data.message,
-      //     showConfirmButton: true,
-      //     timer: 5000,
-      //     timerProgressBar: true,
-      //   });
-      // }
+        if (data.status == true) {
+          this.tokenService.saveLoginResData(data.data)
+          let loginData = data.data
+          localStorage.setItem("access_token", loginData?.token)
+          localStorage.setItem("email", loginData?.email)
+          localStorage.setItem("companyName", loginData?.name)
+          localStorage.setItem("companyId", loginData?.companyId)
+          localStorage.setItem("companyRIN", loginData?.comanyRin)
+          this.companyId = formAllData.companyId
+          // this.goToOtp();
+          this.router.navigate(["/admin", "dashboard"])
+        } else {
+          Swal.fire(SweetAlertOptions(data.message))
+        }
+      },
+      error: (err) => {
+        this.ngxService.stop()
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+      },
     })
   }
 
@@ -234,7 +228,7 @@ export class LoginComponent {
         // console.log("ValidateOTPAccountResponse: ", data)
         this.status = data.status
         if (this.status == true) {
-           // console.log("user: ", data)
+          // console.log("user: ", data)
           // localStorage.setItem('admin_email', data.response.user.email);
           // localStorage.setItem('admin_id', data.response.user.id);
           // localStorage.setItem('admin_access_token', data.response.access_token);

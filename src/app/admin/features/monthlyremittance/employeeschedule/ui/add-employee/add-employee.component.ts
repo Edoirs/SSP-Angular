@@ -30,6 +30,7 @@ import {
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {combineLatest, of, Subject} from "rxjs"
+import {EmployeeStateService} from "../../services/employee-state.service"
 
 @Component({
   selector: "app-add-employee",
@@ -45,6 +46,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   private readonly injectedData =
     inject<BusinessesResInterface>(MAT_DIALOG_DATA)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  private readonly employeeStateService = inject(EmployeeStateService)
   private readonly utilityService = inject(UtilityService)
 
   loading = signal(false)
@@ -330,6 +332,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
             this.loading.set(false)
             if (res.status) {
               Swal.fire(SweetAlertOptions(res?.message, true))
+              this.employeeStateService.reloadParent()
               this.dialog.closeAll()
             } else {
               Swal.fire(SweetAlertOptions(res?.message))

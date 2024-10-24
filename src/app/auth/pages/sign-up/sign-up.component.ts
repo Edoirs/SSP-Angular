@@ -52,10 +52,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
   })
 
   adminSignUpOtpForm = new FormGroup({
-    isAdmin: new FormControl(true, {validators: [Validators.required]}),
     newPassword: new FormControl("", {validators: [Validators.required]}),
     confirmPassword: new FormControl("", {validators: [Validators.required]}),
-    companyRin_Phone: new FormControl("", {validators: [Validators.required]}),
     otp: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
@@ -142,6 +140,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onAdminSubmit() {
+    this.ngxService.start()
     if (this.adminSignUpForm.valid)
       this.subs.add = this.authService
         .adminSignUp(
@@ -149,8 +148,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (res) => {
+            this.ngxService.stop()
             if (res.status == true) {
-              this.ngxService.stop()
               this.showCreateUserForm.set(false)
               this.authUtilsService.saveAuthOtp("admin", 0)
             } else {
@@ -166,17 +165,18 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   onAdminOtpSubmit() {
     if (this.adminSignUpOtpForm.valid) {
+      this.ngxService.start()
       const payload = {
         isAdmin: true,
         newPassword: this.adminSignUpOtpForm.value.newPassword,
-        companyRin_Phone: this.adminSignUpOtpForm.value.companyRin_Phone,
+        companyRin_Phone: this.adminSignUpForm.value.phoneNumber,
         otp: this.adminSignUpOtpForm.value.otp,
       } as AuthModels.AdminChangePasswordInterface
 
       this.subs.add = this.authService.adminChangePassword(payload).subscribe({
         next: (res) => {
+          this.ngxService.stop()
           if (res.status == true) {
-            this.ngxService.stop()
             this.router.navigate(["/login"])
           } else {
             Swal.fire(SweetAlertOptions(res.message))

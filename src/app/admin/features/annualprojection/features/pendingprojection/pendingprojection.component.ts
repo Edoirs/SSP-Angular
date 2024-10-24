@@ -80,7 +80,7 @@ export class PendingprojectionComponent implements OnInit {
     // private component: DashboardComponent,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private sess: SessionService,
+    // private sess: SessionService,
     // private spinnerService: Ng4LoadingSpinnerService
     private ngxService: NgxUiLoaderService
   ) {}
