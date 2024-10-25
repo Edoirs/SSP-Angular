@@ -127,6 +127,9 @@
                         <div *ngIf="adminSignUpForm.controls['userName'].errors['required']">
                           Username is required
                         </div>
+                        <div *ngIf="adminSignUpForm.controls['userName'].errors['email']">
+                          Input a valid email address.
+                        </div>
                       </div>
                     </div>
   

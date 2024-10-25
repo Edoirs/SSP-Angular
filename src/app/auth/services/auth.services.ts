@@ -4,37 +4,27 @@ import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import * as AuthModels from "../data-access/auth.models"
 import {Observable, of, switchMap, tap} from "rxjs"
-import {data} from "jquery"
+
+import {AdminStepOneResInterface} from "../data-access/auth.models"
 
 @Injectable({providedIn: "root"})
 export class AuthService {
   taxOffices?: AuthModels.TaxOfficeResInterface[]
   private readonly httpClient = inject(HttpClient)
 
-  adminSignUp(payload: AuthModels.AdminSignupInterface) {
-    return this.httpClient
-      .post<ServerResInterface<any>>(
-        `${environment.AUTHAPIURL}PhaseII/AdminSignUp`,
-        payload
-      )
-      .pipe(
-        switchMap((res) => {
-          const user = {
-            isAdmin: true,
-            companyRin: payload.userName,
-            phoneNumber: payload.phoneNumber,
-          } as AuthModels.AdminInitChangePasswordInterface
-
-          if (res.status) return this.adminInitChangePassword(user)
-          return of(res)
-        })
-      )
+  adminSignUp(
+    payload: AuthModels.AdminSignupInterface
+  ): Observable<ServerResInterface<AdminStepOneResInterface>> {
+    return this.httpClient.post<ServerResInterface<AdminStepOneResInterface>>(
+      `${environment.AUTHAPIURL}PhaseII/AdminSignUp`,
+      payload
+    )
   }
 
   adminInitChangePassword(
     payload: AuthModels.AdminInitChangePasswordInterface
   ) {
-    return this.httpClient.post<ServerResInterface<any>>(
+    return this.httpClient.post<ServerResInterface<number>>(
       `${environment.AUTHAPIURL}PhaseII/InitiateChangePassword`,
       payload
     )

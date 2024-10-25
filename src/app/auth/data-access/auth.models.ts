@@ -5,13 +5,11 @@ export interface LSAuthCredsInterface {
 
 export interface AdminSignupInterface {
   userName: string
-  phoneNumber: string
 }
 
 export interface AdminInitChangePasswordInterface {
   isAdmin: boolean
   companyRin: string
-  phoneNumber: string
 }
 
 export interface AdminChangePasswordInterface {
@@ -27,7 +25,6 @@ export interface TaxOfficeResInterface {
   zoneId: number
   zoneName: string
 }
-
 
 export interface UserRegisterStepOneInterface {
   companyName: string
@@ -53,4 +50,9 @@ export interface RegisterStepOneResInterface {
     dateCreated?: string
     apiId: number
   }
+}
+
+export interface AdminStepOneResInterface {
+  screenDet: "LOGIN" | "OTP"
+  phoneNumber?: string
 }

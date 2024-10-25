@@ -14,7 +14,7 @@ import {
 } from "@shared/utils/sweet-alert.utils"
 import {AuthUtilsService} from "../../services/auth-utils.service"
 import * as AuthModels from "../../data-access/auth.models"
-import {timer} from "rxjs"
+import {debounceTime, distinctUntilChanged, timer} from "rxjs"
 
 @Component({
   selector: "app-sign-up",
@@ -48,7 +48,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   adminSignUpForm = new FormGroup({
     phoneNumber: new FormControl("", {validators: [Validators.required]}),
-    userName: new FormControl("", {validators: [Validators.required]}),
+    userName: new FormControl("", {
+      validators: [Validators.required, Validators.email],
+    }),
   })
 
   adminSignUpOtpForm = new FormGroup({
@@ -67,11 +69,55 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.initialiseForms()
     this.initialiseForgotForms()
     this.getTaxOffices()
+    this.submitAdminEmail()
   }
 
   ngOnDestroy(): void {
     this.subs.clear()
     this.authUtilsService.deleteAuthUser()
+  }
+
+  get adminFormEmail() {
+    return this.adminSignUpForm.get("userName")
+  }
+
+  submitAdminEmail() {
+    this.subs.add = this.adminFormEmail!.valueChanges.pipe(
+      debounceTime(600),
+      distinctUntilChanged()
+    ).subscribe((value) => {
+      // check if email
+      if (value?.match("^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
+        this.ngxService.start()
+        this.subs.add = this.authService
+          .adminSignUp({userName: value})
+          .subscribe({
+            next: (res) => {
+              this.ngxService.stop()
+
+              // check if admin exist
+              if (!res.data && !res.status) {
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+
+              // check status and handle flow
+              if (res.data?.screenDet === "LOGIN") {
+                Swal.fire(SweetAlertInfoOption(res?.message))
+                this.router.navigate(["/login"])
+              } else {
+                this.adminSignUpForm.patchValue({
+                  phoneNumber: res.data?.phoneNumber,
+                })
+                this.adminSignUpForm.get("phoneNumber")?.disable()
+              }
+            },
+            error: (err) => {
+              this.ngxService.stop()
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+            },
+          })
+      }
+    })
   }
 
   initialiseForms() {
@@ -140,18 +186,22 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onAdminSubmit() {
-    this.ngxService.start()
-    if (this.adminSignUpForm.valid)
+    if (this.adminSignUpForm.valid) {
+      this.ngxService.start()
+
+      const payload = {
+        isAdmin: true,
+        companyRin: this.adminFormEmail?.value,
+      } as AuthModels.AdminInitChangePasswordInterface
+
       this.subs.add = this.authService
-        .adminSignUp(
-          this.adminSignUpForm.value as AuthModels.AdminSignupInterface
-        )
+        .adminInitChangePassword(payload)
         .subscribe({
           next: (res) => {
             this.ngxService.stop()
             if (res.status == true) {
               this.showCreateUserForm.set(false)
-              this.authUtilsService.saveAuthOtp("admin", 0)
+              this.authUtilsService.saveAuthOtp("admin", res.data || 0)
             } else {
               Swal.fire(SweetAlertOptions(res.message))
             }
@@ -161,6 +211,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
             Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
           },
         })
+    }
   }
 
   onAdminOtpSubmit() {
@@ -169,7 +220,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       const payload = {
         isAdmin: true,
         newPassword: this.adminSignUpOtpForm.value.newPassword,
-        companyRin_Phone: this.adminSignUpForm.value.phoneNumber,
+        companyRin_Phone: this.adminSignUpForm.get("phoneNumber")?.value,
         otp: this.adminSignUpOtpForm.value.otp,
       } as AuthModels.AdminChangePasswordInterface
 
@@ -177,6 +228,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         next: (res) => {
           this.ngxService.stop()
           if (res.status == true) {
+            Swal.fire(SweetAlertOptions(res.message, true))
             this.router.navigate(["/login"])
           } else {
             Swal.fire(SweetAlertOptions(res.message))
