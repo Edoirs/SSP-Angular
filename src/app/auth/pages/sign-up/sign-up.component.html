@@ -120,7 +120,7 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-building"></i>
                       <input type="text" id="userName" name="userName" placeholder="Enter Email Address"
-                        class="login__input border-end-0" formControlName="userName"
+                        class="login__input border-end-0 w-100" formControlName="userName"
                         [ngClass]="{ 'is-invalid': submitted && adminSignUpForm.controls['userName'].errors }" />
                       <div *ngIf="submitted && adminSignUpForm.controls['userName'].errors"
                         class="form-text text-danger">
@@ -136,7 +136,7 @@
                     <div class="login__field input-group">
                       <i class="login__icon fa fa-volume-control-phone"></i>
                       <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number"
-                        class="login__input border-end-0" formControlName="phoneNumber" minlength="11" maxlength="11"
+                        class="login__input border-end-0 w-100" formControlName="phoneNumber" minlength="11" maxlength="11"
                         [ngClass]="{ 'is-invalid': submitted && createUserForm.controls['phoneNumber'].errors }" />
                       <div *ngIf="submitted && createUserForm.controls['phoneNumber'].errors"
                         class="form-text text-danger">
