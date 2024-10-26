@@ -94,7 +94,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         pageSize: event.pageSize,
-        pageIndex: event.pageIndex === 0 ? 1 : event.pageIndex,
+        pageIndex: event.pageIndex,
       },
     })
   }

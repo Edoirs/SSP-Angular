@@ -237,8 +237,8 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
     this.subs.add = this.route.queryParams.subscribe((params) => {
       this.dataLoading.set(true)
       if (Object.keys(params)) {
-        if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
-        if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        if (params["pageIndex"]) this.pageIndex.set(+params["pageIndex"])
+        if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
         this.subs.add = this.assessmentService
           .getAssessments(this.pageIndex(), this.pageSize())
           .subscribe({
@@ -269,7 +269,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         pageSize: event.pageSize,
-        pageIndex: event.pageIndex === 0 ? 1 : event.pageIndex,
+        pageIndex: event.pageIndex,
       },
     })
   }

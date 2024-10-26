@@ -72,8 +72,8 @@ export class BusinessesComponent implements OnInit, OnDestroy {
     this.subs.add = this.route.queryParams.subscribe((params) => {
       this.dataLoading.set(true)
       if (Object.keys(params)) {
-        if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
-        if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        if (params["pageIndex"]) this.pageIndex.set(+params["pageIndex"])
+        if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
         if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.businessService
           .getBusinesses(this.pageIndex(), this.pageSize(), this.queryString())
@@ -125,7 +125,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         pageSize: event.pageSize,
-        pageIndex: event.pageIndex === 0 ? 1 : event.pageIndex,
+        pageIndex: event.pageIndex,
       },
       queryParamsHandling: "replace",
     })
