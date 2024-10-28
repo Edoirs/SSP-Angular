@@ -32,7 +32,7 @@ body {
  
 }
 .main-content-login{
-   background-image: url("../../../assets/image/main-slider/banner.jpg");
+   background-image: url("https://nsirs.nownowpay.com.ng/edo-self/assets/image/main-slider/banner.jpg");
 }
 html {
   -ms-text-size-adjust: 100%;
@@ -9260,13 +9260,13 @@ table.specimen-table-font th {
   font-size: 40px;
 }
 #home {
-  background-image: url("../../assets/image/main-slider/banner.jpg");
+  background-image: url("https://nsirs.nownowpay.com.ng/edo-self/assets/image/main-slider/banner.jpg");
 }
 #aboutus {
-  background-image: url("../../assets/image/main-slider/banner4.jpg");
+  background-image: url("/assets/image/main-slider/banner4.jpg");
 }
 #faqs {
-  background-image: url("../../assets/image/main-slider/banner2.jpg");
+  background-image: url("/assets/image/main-slider/banner2.jpg");
 }
 /* #contactus {
   position: relative;
