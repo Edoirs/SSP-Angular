@@ -28,15 +28,15 @@
                   <div class="login__field input-group">
                     <select #userType class="form-select form-select-lg login-select" aria-label="Large select example" style="border: 1px solid #d4d3e8; border-radius: 26px; padding: 16px 20px;font-weight: 700;font-size: 14px;  text-transform: uppercase;
                     color: #4c489d; box-shadow: 0px 2px 2px #5c5696; transition: 0.2s;" name="taxTypeId" formControlName="taxTypeId">
-                      <option value="" selected disabled>Select Tax Payer Type</option>
-                      <option value="Individual">Individual</option>
+                      <option value="" selected disabled>Select User Type</option>
+                      <!-- <option value="Individual">Individual</option> -->
                       <option value="Company">Company</option>
                       <option value="Admin">Admin</option>
                     </select>
                     <div *ngIf="submitted &amp;&amp; loginForm.controls['taxTypeId'].errors"
                       class="form-text text-danger">
                       <div *ngIf="loginForm.controls['taxTypeId'].errors['required']">
-                        Tax Payer Type is required
+                        User Type is required
                       </div>
                     </div>
                   </div>

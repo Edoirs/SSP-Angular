@@ -179,6 +179,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
     return this.createUserForm.get("companyName")
   }
 
+  get companyAddress() {
+    return this.createUserForm.get("address")
+  }
+
   getTaxOffices() {
     this.subs.add = this.authService.getTaxOffices().subscribe((res) => {
       this.taxOffices.set(res.data)
@@ -326,7 +330,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (res.status == true) {
           Swal.fire(SweetAlertInfoOption(res?.message))
-          this.loadCompanyDetailsData(res.data)
+          this.loadCompanyDetailsData(res.data as any)
 
           this.ngxService.stop()
           // this.router.navigate(['/admin', 'dashboard']);
@@ -355,12 +359,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadCompanyDetailsData(companyData: any) {
+  loadCompanyDetailsData(companyData: AuthModels.RegisterStepOneResInterface) {
     const company = companyData as AuthModels.RegisterStepOneResInterface
-    this.createUserForm.controls["address"].setValue(company[0].contactAddress)
-    this.createUserForm.controls["companyName"].setValue(
-      company[0].taxPayerName
-    )
+    this.createUserForm.patchValue({
+      companyName: company[0].taxPayerName,
+      address: company[0].contactAddress,
+      phoneNumber: `0${company[0].mobileNumber}`,
+    })
 
     //Disable fields
     this.disbableFormFields()
@@ -369,26 +374,19 @@ export class SignUpComponent implements OnInit, OnDestroy {
   loadCompanyOtpDetailData(company: AuthModels.UserRegisterStepOneInterface) {
     this.createUserForm.patchValue({
       companyName: company.companyName,
-      // ...(company?.phoneNumber &&
-      //   {
-      //     phoneNumber: `${company?.phoneNumber}`,
-      //   }),
       address: company?.companyAddress,
     })
 
     this.companyName?.disable()
-
-    // if (company?.phoneNumber) {
-    //   this.phoneNumber?.disable()
-    // }
+    this.companyAddress?.disable()
   }
 
   disbableFormFields(): void {
     const enableFields: string[] = ["address", "companyName"]
 
-    for (let key in this.createUserForm.controls) {
-      !enableFields.includes(key) && this.createUserForm.controls[key].disable()
-    }
+    enableFields.forEach((key) => {
+      this.createUserForm?.get(key)?.disable()
+    })
   }
 
   postCreateAccountStepThree(jsonData: any) {
