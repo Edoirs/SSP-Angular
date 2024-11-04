@@ -375,6 +375,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.createUserForm.patchValue({
       companyName: company.companyName,
       address: company?.companyAddress,
+      phoneNumber: company?.phoneNumber,
     })
 
     this.companyName?.disable()

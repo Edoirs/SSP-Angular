@@ -8,7 +8,7 @@ import {Component} from "@angular/core"
       <h4>Notes:</h4>
       <ol>
         <li>
-          <div>Mobile No and NIN are compulsory</div>
+          <div>Employees mobile number and NIN are compulsory.</div>
         </li>
         <li>
           <div>
