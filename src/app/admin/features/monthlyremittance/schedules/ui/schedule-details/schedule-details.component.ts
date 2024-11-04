@@ -29,6 +29,7 @@ import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeesc
 import {DownloadEmployeePdfInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {Router} from "@angular/router"
 import {NgxUiLoaderService} from "ngx-ui-loader"
+import {TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-schedule-details",
@@ -45,6 +46,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
   private readonly scheduleService = inject(ScheduleService)
   private readonly router = inject(Router)
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  public readonly tokenService = inject(TokenService)
   private readonly ngxService = inject(NgxUiLoaderService)
 
   btnLoading = signal(false)
