@@ -1,8 +1,6 @@
 import {Component, inject, OnDestroy, OnInit} from "@angular/core"
-import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 
-import {environment} from "../../../../environments/environment"
 import Swal from "sweetalert2"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
@@ -12,6 +10,7 @@ import {
   SweetAlertInfoOption,
   SweetAlertOptions,
 } from "@shared/utils/sweet-alert.utils"
+import {LoginService} from "./service/login.service"
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -19,6 +18,7 @@ import {
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private readonly tokenService = inject(TokenService)
+  private readonly loginService = inject(LoginService)
   submitted = false
   apiUrl: any
   loginForm!: FormGroup
@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   subs = new SubscriptionHandler()
 
   constructor(
-    private http: HttpClient,
     private router: Router,
     private formBuilder: FormBuilder,
     private ngxService: NgxUiLoaderService
@@ -99,39 +98,41 @@ export class LoginComponent implements OnInit, OnDestroy {
       return
     }
 
-    var requestObj = {
+    let requestObj = {
       email: formAllData.emailAddress,
     }
 
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "auth/send-otp"
-    this.http.post<any>(this.apiUrl, requestObj).subscribe((data: any) => {
-      this.ngxService.stop()
-      if (data.status == true) {
-        this.showOtpForm = true
-        this.submitted = false
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "The OTP has been sent to mail successfully!",
-          showConfirmButton: true,
-          timer: 100000,
-          timerProgressBar: true,
-        })
-      } else {
-        this.showLoginForm = true
-        this.showOtpForm = false
+    this.subs.add = this.loginService
+      .sendOtp(requestObj)
+      .subscribe((data: any) => {
+        this.ngxService.stop()
+        if (data.status == true) {
+          this.showOtpForm = true
+          this.submitted = false
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "The OTP has been sent to mail successfully!",
+            showConfirmButton: true,
+            timer: 100000,
+            timerProgressBar: true,
+          })
+        } else {
+          this.showLoginForm = true
+          this.showOtpForm = false
 
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data.response != null ? data.response[0].message : data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
-      }
-    })
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              data.response != null ? data.response[0].message : data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
+        }
+      })
   }
 
   onSubmit(formAllData: any) {
@@ -152,9 +153,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Login/SignIn"
-
-    this.subs.add = this.http.post<any>(this.apiUrl, requestObj).subscribe({
+    this.subs.add = this.loginService.signIn(requestObj).subscribe({
       next: (data: any) => {
         this.ngxService.stop()
 
@@ -213,26 +212,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   userLogin(jsonData: any) {
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Login/ValidateOTPAccount"
-
-    const myheaders = new HttpHeaders({
-      "Content-Type": "application/json",
-      // 'token': this.md5
-    })
-
-    const options = {headers: myheaders}
-
-    this.http
-      .post<any>(this.apiUrl, jsonData, options)
+    this.subs.add = this.loginService
+      .validateOTPAccount(jsonData)
       .subscribe((data: any) => {
-        // console.log("ValidateOTPAccountResponse: ", data)
         this.status = data.status
         if (this.status == true) {
-          // console.log("user: ", data)
-          // localStorage.setItem('admin_email', data.response.user.email);
-          // localStorage.setItem('admin_id', data.response.user.id);
-          // localStorage.setItem('admin_access_token', data.response.access_token);
-
           this.initialiseOtpForm()
           this.ngxService.stop()
           this.router.navigate(["/admin", "dashboard"])
@@ -257,38 +241,37 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.password,
     }
 
-    this.apiUrl = environment.AUTHAPIURL + "Login/ResendOTPAccount"
+    this.subs.add = this.loginService
+      .resendOTPAccount(otpObjData)
+      .subscribe((data: any) => {
+        this.ngxService.stop()
 
-    this.http.post<any>(this.apiUrl, otpObjData).subscribe((data: any) => {
-      // console.log("ResendOTPAccountResponse: ", data)
-      this.ngxService.stop()
+        if (data.status == true) {
+          this.showLoginForm = false
+          this.showOtpForm = true
 
-      if (data.status == true) {
-        this.showLoginForm = false
-        this.showOtpForm = true
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "The OTP has been sent to mail successfully!",
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
+        } else {
+          this.showLoginForm = true
+          this.showOtpForm = false
 
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "The OTP has been sent to mail successfully!",
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
-      } else {
-        this.showLoginForm = true
-        this.showOtpForm = false
-
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
-      }
-    })
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
+        }
+      })
   }
 
   goToOtp() {

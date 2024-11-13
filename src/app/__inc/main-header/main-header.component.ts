@@ -47,7 +47,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           return Swal.fire(SweetAlertOptions(res?.message))
         },
         error: (err) => {
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
   }

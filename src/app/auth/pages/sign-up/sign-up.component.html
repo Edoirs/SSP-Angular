@@ -21,7 +21,7 @@
               <div class="form_box type_one remove-pt">
 
                 @if (showCreateUserForm()) {
-                  @if (taxTypeId?.value !== 'admin') {
+                  @if (taxTypeId?.value === '2' || !taxTypeId?.value) {
                     <form autocomplete="off" [formGroup]="createUserForm"
                     (submit)="onSubmitCreateUser()" style="width: 420px; padding: 30px;">
                     <div class="messages"></div>
@@ -33,6 +33,7 @@
                         <!-- <option value="1">Individual</option> -->
                         <option value="2">Company</option>
                         <option value="admin">Admin</option>
+                        <option value="super_admin">Super Admin</option>
                       </select>
                     </div>
   
@@ -114,6 +115,7 @@
                         <!-- <option value="1">Individual</option> -->
                         <option value="2">Company</option>
                         <option value="admin">Admin</option>
+                        <option value="super_admin">Super Admin</option>
                       </select>
                     </div>
   

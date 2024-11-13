@@ -131,7 +131,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.employeeLoading.set(false)
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
   }
@@ -174,7 +174,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.loading.set(false)
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
   }

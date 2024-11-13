@@ -691,7 +691,7 @@ export class UploadprojectionComponent implements OnInit {
           },
           error: (err) => {
             this.btnLoading.set(false)
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }
@@ -717,7 +717,7 @@ export class UploadprojectionComponent implements OnInit {
             if (res.status) Swal.fire(SweetAlertOptions(res?.message, true))
           },
           error: (err) => {
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }

@@ -245,7 +245,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
           Swal.fire(SweetAlertOptions(res?.message))
         },
         error: (err) => {
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
   }
@@ -257,7 +257,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Swal.fire(SweetAlertOptions(res?.message))
       },
       error: (err) => {
-        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }
@@ -341,7 +341,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
           error: (err) => {
             this.loading.set(false)
 
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
   }

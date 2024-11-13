@@ -103,8 +103,8 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.dataLoading.set(false)
-          this.dataMessage.set(err?.message || err?.error?.message)
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          this.dataMessage.set(err?.error?.message || err?.message)
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
   }
@@ -179,7 +179,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.btnLoading.set(false)
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }
@@ -207,7 +207,7 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
             if (res.status) Swal.fire(SweetAlertOptions(res?.message, true))
           },
           error: (err) => {
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }

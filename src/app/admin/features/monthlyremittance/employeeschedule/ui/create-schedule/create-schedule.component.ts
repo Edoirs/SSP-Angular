@@ -110,7 +110,7 @@ export class CreateScheduleComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.loading.set(false)
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }

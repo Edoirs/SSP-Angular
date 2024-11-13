@@ -212,7 +212,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.ngxService.stop()
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     }
@@ -240,7 +240,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.ngxService.stop()
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
     }
@@ -278,7 +278,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.ngxService.stop()
-          Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
   }
@@ -354,7 +354,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.ngxService.stop()
-        Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }

@@ -81,8 +81,8 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
               this.dataLoading.set(false)
-              this.dataMessage.set(err?.message || err?.error?.message)
-              Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+              this.dataMessage.set(err?.error?.message || err?.message)
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
             },
           })
       }
@@ -119,8 +119,8 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.dataLoading.set(false)
-            this.dataMessage.set(err?.message || err?.error?.message)
-            Swal.fire(SweetAlertOptions(err?.message || err?.error?.message))
+            this.dataMessage.set(err?.error?.message || err?.message)
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
           },
         })
     })

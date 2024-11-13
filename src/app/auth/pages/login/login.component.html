@@ -32,6 +32,7 @@
                       <!-- <option value="Individual">Individual</option> -->
                       <option value="Company">Company</option>
                       <option value="Admin">Admin</option>
+                      <option value="Super Admin">Super Admin</option>
                     </select>
                     <div *ngIf="submitted &amp;&amp; loginForm.controls['taxTypeId'].errors"
                       class="form-text text-danger">
@@ -44,7 +45,7 @@
                   <div class="login__field input-group">
                     <i class="login__icon fa fa-user"></i>
 
-                    @if (userType.value !== 'Admin') {
+                    @if (userType.value === 'Company') {
                       <input type="text" id="rinPhoneNumber" name="rinPhoneNumber" placeholder="RIN / Phone Number" maxlength="11"
                       class="login__input border-end-0" formControlName="rinPhoneNumber" 
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls['rinPhoneNumber'].errors }" />
