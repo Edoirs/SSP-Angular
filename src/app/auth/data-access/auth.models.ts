@@ -4,6 +4,7 @@ export interface LSAuthCredsInterface {
 }
 
 export interface AdminSignupInterface {
+  userRole: "admin" | "super admin"
   userName: string
 }
 

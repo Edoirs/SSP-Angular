@@ -1,8 +1,6 @@
 import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
-import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 //import { SessionService } from '../../session.service';
-import {environment} from "../../../../environments/environment"
 import Swal from "sweetalert2"
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
@@ -24,7 +22,6 @@ import {debounceTime, distinctUntilChanged, timer} from "rxjs"
 export class SignUpComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService)
   public readonly authUtilsService = inject(AuthUtilsService)
-  private readonly http = inject(HttpClient)
   private readonly router = inject(Router)
   private readonly formBuilder = inject(FormBuilder)
   private readonly ngxService = inject(NgxUiLoaderService)
@@ -86,11 +83,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
       debounceTime(600),
       distinctUntilChanged()
     ).subscribe((value) => {
+      const emailRegex = "^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
       // check if email
-      if (value?.match("^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
+      if (value?.match(emailRegex)) {
         this.ngxService.start()
         this.subs.add = this.authService
-          .adminSignUp({userName: value})
+          .adminSignUp({userName: value, userRole: this.taxTypeId?.value})
           .subscribe({
             next: (res) => {
               this.ngxService.stop()
@@ -225,7 +223,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         isAdmin: true,
         newPassword: this.adminSignUpOtpForm.value.newPassword,
         companyRin_Phone: this.adminSignUpForm.get("phoneNumber")?.value,
-        otp: this.adminSignUpOtpForm.value.otp,
+        otp: parseInt(this.adminSignUpOtpForm.value?.otp as unknown as string),
       } as AuthModels.AdminChangePasswordInterface
 
       this.subs.add = this.authService.adminChangePassword(payload).subscribe({
@@ -259,11 +257,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
     this.ngxService.start()
 
-    this.subs.add = this.http
-      .post<any>(
-        `${environment.AUTHAPIURL}Login/CreateAccountStepTwo`,
-        requestObj
-      )
+    this.subs.add = this.authService
+      .createAccountStepTwo(requestObj)
       .subscribe({
         next: (data: any) => {
           this.ngxService.stop()
@@ -392,16 +387,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   postCreateAccountStepThree(jsonData: any) {
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Login/CreateAccountStepThree"
 
-    const myheaders = new HttpHeaders({
-      "Content-Type": "application/json",
-    })
-
-    const options = {headers: myheaders}
-
-    this.http
-      .post<any>(this.apiUrl, jsonData, options)
+    this.subs.add = this.authService
+      .createAccountStepThree(jsonData)
       .subscribe((data: any) => {
         // console.log("CreateAccountStepThree: ", data)
 

@@ -65,4 +65,18 @@ export class AuthService {
       ServerResInterface<AuthModels.UserRegisterStepOneInterface>
     >(`${environment.AUTHAPIURL}Login/CreateAccountStepOne`, payload)
   }
+
+  createAccountStepTwo(payload: any) {
+    return this.httpClient.post(
+      `${environment.AUTHAPIURL}Login/CreateAccountStepTwo`,
+      payload
+    )
+  }
+
+  createAccountStepThree(payload: any) {
+    return this.httpClient.post(
+      `${environment.AUTHAPIURL}Login/CreateAccountStepThree`,
+      payload
+    )
+  }
 }
