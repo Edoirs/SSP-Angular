@@ -144,6 +144,23 @@ export const MenuListRecord: MenuItemInterface[] = [
   },
   {
     // 7
+    name: "Admin",
+    faIcon: "fa-user",
+    children: [
+      {
+        name: "System Settings",
+        url: ["reports"],
+        faIcon: "fa fa-cog",
+      },
+      {
+        name: "Manage Users",
+        url: ["reports"],
+        faIcon: "fa fa-users",
+      },
+    ],
+  },
+  {
+    // 8
     name: "Logout",
     url: ["/logout"],
     faIcon: "fa-sign-out-alt",

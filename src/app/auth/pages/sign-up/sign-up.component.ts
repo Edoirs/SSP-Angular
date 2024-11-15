@@ -85,10 +85,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
     ).subscribe((value) => {
       const emailRegex = "^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
       // check if email
-      if (value?.match(emailRegex)) {
+      if (value?.trim()?.match(emailRegex)) {
         this.ngxService.start()
         this.subs.add = this.authService
-          .adminSignUp({userName: value, userRole: this.taxTypeId?.value})
+          .adminSignUp({
+            userName: value?.trim(),
+            userRole: this.taxTypeId?.value,
+          })
           .subscribe({
             next: (res) => {
               this.ngxService.stop()
@@ -104,6 +107,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
                 this.router.navigate(["/login"])
               } else {
                 this.adminSignUpForm.patchValue({
+                  userName: value?.trim(),
                   phoneNumber: res.data?.phoneNumber,
                 })
                 this.adminSignUpForm.get("phoneNumber")?.disable()
