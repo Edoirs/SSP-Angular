@@ -17,7 +17,10 @@ import {Component} from "@angular/core"
               <li>Basic salary</li>
               <li>Transport allowance</li>
               <li>Rent/Housing allowance</li>
-              <li>Other allowance</li>
+              <li>
+                Other allowance (sum of all income excluding basic,rent, and
+                transport)
+              </li>
             </ol>
           </div>
         </li>
