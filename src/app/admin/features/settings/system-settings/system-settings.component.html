@@ -16,6 +16,16 @@
           <div class="card-body">
             <div class="overflow-auto">
               <section class="table-header">
+                <div class="table-header-search">
+                    <input
+                      class="form-control"
+                      #searchTable
+                      type="search"
+                      placeholder="search business name"
+                      [value]="queryString()"
+                      (keyup)="queryTable(searchTable)"
+                      (search)="queryTable(searchTable)" />
+                  </div>
               </section>
   
               <table

@@ -14,9 +14,13 @@ import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 export class SystemSettingsComponent {
   public readonly tokenService = inject(TokenService)
 
+  queryString = signal("")
+
   pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
+
+  queryTable(domInput: HTMLInputElement) {}
 
   handlePageEvent(event: PageEvent) {}
 }
