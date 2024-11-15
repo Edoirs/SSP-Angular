@@ -27,6 +27,7 @@
       "@shared-utils/*": ["src/app/shared/utils/*"],
       "@shared-guards/*": ["src/app/shared/guards/*"],
       "@admin-pages/*": ["src/app/admin/features/*"],
+      "@admin-folder/*": ["src/app/admin/*"],
       "@environment/*": ["src/environments/*"]
     }
   },

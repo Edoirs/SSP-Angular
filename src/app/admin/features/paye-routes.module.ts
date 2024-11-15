@@ -79,6 +79,10 @@ const routes: Routes = [
             "./tcc-application/features/submitted-application/submitted-application.component"
           ).then((c) => c.TccSubmittedApplicationComponent),
       },
+      {
+        path: "settings",
+        loadChildren: () => import("@admin-pages/settings/settings.route"),
+      },
     ],
   },
 ]

@@ -1,3 +1,6 @@
+import {AdminRoutes} from "@admin-folder/admin.routes"
+import {SettingsRoute} from "@admin-pages/settings/settings.route"
+
 export interface MenuItemInterface {
   name: string
   url?: string | string[]
@@ -11,7 +14,6 @@ export interface MenuItemInterface {
   }[]
 }
 
-
 export const MenuListRecord: MenuItemInterface[] = [
   {
     // 0
@@ -22,7 +24,7 @@ export const MenuListRecord: MenuItemInterface[] = [
   {
     // 1
     name: "Businesses",
-    url: ["businesses"],
+    url: [AdminRoutes.businesses],
     faIcon: "fa-building",
   },
   {
@@ -120,12 +122,12 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "Pending Application",
-        url: ["pending-application"],
+        url: [AdminRoutes.pendingApplication],
         faIcon: "fa-folder-open",
       },
       {
         name: "Submitted Application",
-        url: ["submitted-application"],
+        url: [AdminRoutes.submittedApplication],
         faIcon: "fa-folder",
       },
     ],
@@ -149,12 +151,12 @@ export const MenuListRecord: MenuItemInterface[] = [
     children: [
       {
         name: "System Settings",
-        url: ["reports"],
+        url: ["settings", SettingsRoute.systemSettings],
         faIcon: "fa fa-cog",
       },
       {
         name: "Manage Users",
-        url: ["reports"],
+        url: ["settings", SettingsRoute.manageUsers],
         faIcon: "fa fa-users",
       },
     ],
