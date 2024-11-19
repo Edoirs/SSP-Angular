@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header"></div>
+    <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31">
+        <!-- <flash-messages></flash-messages> -->
+        <!-- SELECT2 EXAMPLE -->
+        <div class="card card-secondary">
+          <div class="card-header custome">
+            <h3 class="card-title">List of Businesses</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div class="overflow-auto">
+              <section class="table-header">
+              </section>
+  
+              <table
+                class="table table-bordered table-condensed"
+                width="100%">
+                <thead>
+                  <tr>
+                    <th>Table Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pull Data from RDM (Corperate)</td>
+
+                        <td>
+                          <app-action-btn (buttonEvent)="syncCorperate()"/>
+                        </td>
+                      </tr>
+
+                    <tr>
+                        <td>Pull Data from RDM (Rules)</td>
+
+                        <td>
+                          <app-action-btn (buttonEvent)="syncRules()"/>
+                        </td>
+                      </tr>
+
+                    <tr>
+                        <td>Pull Data from RDM (Items)</td>
+
+                        <td>
+                          <app-action-btn (buttonEvent)="syncItems()"/>
+                        </td>
+                      </tr>
+
+                    <tr>
+                        <td>Pull Data from RDM (Assets)</td>
+
+                        <td>
+                          <app-action-btn (buttonEvent)="syncAssets()"/>
+                        </td>
+                      </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
