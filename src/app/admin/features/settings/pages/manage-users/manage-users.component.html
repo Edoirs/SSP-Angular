@@ -1,68 +1,92 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header"></div>
-    <!-- /.content-header -->
-  
-    <!-- Main content -->
-    <section class="content" data-select2-id="32">
-      <div class="container-fluid" data-select2-id="31">
-        <!-- <flash-messages></flash-messages> -->
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-secondary">
-          <div class="card-header custome">
-            <h3 class="card-title">List of Businesses</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="overflow-auto">
-              <section class="table-header">
-                <div class="table-header-search">
-                    <input
-                      class="form-control"
-                      #searchTable
-                      type="search"
-                      placeholder="search business name"
-                      [value]="queryString()"
-                      (keyup)="queryTable(searchTable)"
-                      (search)="queryTable(searchTable)" />
-                </div>
-              </section>
-  
-              <table
-                class="table table-bordered table-condensed"
-                width="100%">
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    <th>ID</th>
-                    <th>Table Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>getLoginResData.isAdminUser</td>
-                        <td>business?.businessName</td>
-                        <td>business?.lgaName</td>
-                      </tr>
-                </tbody>
-              </table>
-  
-              <section>
-                <mat-paginator
-                  [length]="totalLength()"
-                  [pageSize]="pageSize()"
-                  [pageIndex]="pageIndex()"
-                  (page)="handlePageEvent($event)"
-                  showFirstLastButtons
-                  aria-label="Select page">
-                </mat-paginator>
-              </section>
-            </div>
+  <!-- Content Header (Page header) -->
+  <div class="content-header"></div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+      <!-- <flash-messages></flash-messages> -->
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">List of Businesses</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="overflow-auto">
+            <section class="table-header">
+              <div class="table-header-search">
+                <input
+                  class="form-control"
+                  #searchTable
+                  type="search"
+                  placeholder="search business name"
+                  [value]="queryString()"
+                  (keyup)="queryTable(searchTable)"
+                  (search)="queryTable(searchTable)" />
+              </div>
+
+              <div>
+                <select class="form-control" (change)="queryUserType($event)">
+                  <option selected>
+                    Select User Type
+                  </option>
+                  <option value="company">Company</option>
+                  <option value="admin">Admin</option>
+                  <option value="super admin">Super Admin</option>
+                </select>
+              </div>
+            </section>
+
+            <table class="table table-bordered table-condensed" width="100%">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>User Name</th>
+                  <th>User Type</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (user of users(); track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ user?.name }}</td>
+                  <td>{{ user?.type }}</td>
+                  <td>{{ user?.status }}</td>
+                  <td>
+                    <ng-toggle
+                      [value]="user?.status?.toLowerCase() === 'active'"
+                      [color]="{
+                        unchecked: '#939da2',
+                        checked: '#00773B'
+                      }"
+                      (change)="switchStatus($event, user?.employeeRin)" />
+                  </td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td colspan="100%"><span>No users found.</span></td>
+                </tr>
+                }
+              </tbody>
+            </table>
+
+            <section>
+              <mat-paginator
+                [length]="totalLength()"
+                [pageSize]="pageSize()"
+                [pageIndex]="pageIndex()"
+                (page)="handlePageEvent($event)"
+                showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator>
+            </section>
           </div>
         </div>
       </div>
-    </section>
-  </div>
-  
+    </div>
+  </section>
+</div>

@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {PageEvent} from "@angular/material/paginator"
 import {TokenService} from "@shared/services/token.service"
 import {SettingsService} from "../../data-access/services/system-settings.services"
@@ -18,7 +18,7 @@ import {ServerResInterface} from "@shared/types/server-response.model"
   templateUrl: "./system-settings.component.html",
   styleUrl: "./system-settings.component.css",
 })
-export class SystemSettingsComponent implements OnInit {
+export class SystemSettingsComponent implements OnDestroy {
   public readonly tokenService = inject(TokenService)
   public readonly settingsService = inject(SettingsService)
   private ngxService = inject(NgxUiLoaderService)
@@ -31,8 +31,8 @@ export class SystemSettingsComponent implements OnInit {
   totalLength = signal(500)
   pageIndex = signal(0)
 
-  ngOnInit(): void {
-    this.settingsService.getUsers()
+  ngOnDestroy(): void {
+    this.subs.clear()
   }
 
   syncCorperate() {

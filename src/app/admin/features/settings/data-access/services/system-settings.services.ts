@@ -7,7 +7,7 @@ import {ServerResInterface} from "@shared/types/server-response.model"
 export class SettingsService {
   private readonly http = inject(HttpClient)
 
-  getUsers(pageNumber?: string, pageSize?: string, searchTerm?: string) {
+  getUsers(pageNumber?: number, pageSize?: number, searchTerm?: string) {
     const params = new HttpParams({
       fromObject: {
         ...(pageNumber && {pageNumber}),
