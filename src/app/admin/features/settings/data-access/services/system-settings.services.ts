@@ -1,6 +1,7 @@
 import {HttpClient, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
+import {ServerResInterface} from "@shared/types/server-response.model"
 
 @Injectable({providedIn: "any"})
 export class SettingsService {
@@ -15,22 +16,33 @@ export class SettingsService {
       },
     })
 
-    return this.http.get(`${environment.AUTHAPIURL}PhaseIII/AllUsers`, {params})
+    return this.http.get<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseIII/AllUsers`,
+      {params}
+    )
   }
 
   syncRules() {
-    return this.http.get(`${environment.AUTHAPIURL}PhaseIII/SyncRules`)
+    return this.http.get<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseIII/SyncRule`
+    )
   }
 
   syncCorporate() {
-    return this.http.get(`${environment.AUTHAPIURL}PhaseIII/SyncCooperate`)
+    return this.http.get<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseIII/SyncCooperate`
+    )
   }
 
   syncItems() {
-    return this.http.get(`${environment.AUTHAPIURL}PhaseIII/SyncItems`)
+    return this.http.get<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseIII/SyncAssessmentItem`
+    )
   }
 
   syncAssets() {
-    return this.http.get(`${environment.AUTHAPIURL}PhaseIII/SyncAssessmentItem`)
+    return this.http.get<ServerResInterface<any>>(
+      `${environment.AUTHAPIURL}PhaseIII/SyncAsset`
+    )
   }
 }

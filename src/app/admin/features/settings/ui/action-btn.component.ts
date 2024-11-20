@@ -7,12 +7,14 @@ import {MatMenuModule} from "@angular/material/menu"
   selector: "app-action-btn",
   template: `
     <div class="action-card">
-      <button type="button" (click)="toggleMenu()">
-        <span>Action</span>
-        <span>
-          <i class="fa fa-angle-down" aria-hidden="true"></i>
-        </span>
-      </button>
+      <section>
+        <button type="button" (click)="toggleMenu()">
+          <span>Action</span>
+          <span>
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+      </section>
 
       <section
         class="action-menu"
