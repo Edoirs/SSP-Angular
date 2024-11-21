@@ -16,7 +16,7 @@ export class SettingsService {
       fromObject: {
         ...(pageNumber && {pageNumber}),
         ...(pageSize && {pageSize}),
-        ...(searchTerm && {searchTerm}),
+        ...(searchTerm?.length && {searchTerm}),
       },
     })
 
