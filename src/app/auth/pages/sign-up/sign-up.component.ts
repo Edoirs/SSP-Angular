@@ -65,8 +65,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
     // this.showCreateUserForm = true
     this.initialiseForms()
     this.initialiseForgotForms()
-    this.getTaxOffices()
     this.submitAdminEmail()
+    // this.getTaxOffices()
   }
 
   ngOnDestroy(): void {
