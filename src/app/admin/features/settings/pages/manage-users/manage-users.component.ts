@@ -63,7 +63,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(+params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
-        if (params["search"]) this.queryString.set(params["search"])
+        if (params["search"]?.length) this.queryString.set(params["search"])
         this.subs.add = this.settingsService
           .getUsers(this.pageIndex(), this.pageSize(), this.queryString())
           .subscribe({
@@ -93,7 +93,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
       this.router.navigate(["."], {
         relativeTo: this.route,
         queryParams: {
-          search: query,
+          ...(query?.length && {search: query}),
           pageSize: 15,
           pageIndex: 1,
         },

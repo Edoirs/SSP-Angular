@@ -22,7 +22,6 @@
                   #searchTable
                   type="search"
                   placeholder="search business name"
-                  [value]="queryString()"
                   (keyup)="queryTable(searchTable)"
                   (search)="queryTable(searchTable)" />
               </div>
@@ -78,7 +77,13 @@
                   </td>
                   <td>
                     <div>
-                      <select class="" (change)="updateRole($event, user)">
+                      <select
+                        class=""
+                        (change)="updateRole($event, user)"
+                        [disabled]="
+                          user?.userTypeName?.toLowerCase() !== 'super admin' ||
+                          user?.userTypeName?.toLowerCase() !== 'admin'
+                        ">
                         <option value="" selected>Update User Role</option>
                         <option value="admin">Admin</option>
                         <option value="super admin">Super Admin</option>
