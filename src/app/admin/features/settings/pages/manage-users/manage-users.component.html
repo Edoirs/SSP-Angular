@@ -27,11 +27,9 @@
                   (search)="queryTable(searchTable)" />
               </div>
 
-              <div>
-                <select class="form-control" (change)="queryUserType($event)">
-                  <option selected>
-                    Select User Type
-                  </option>
+              <div class="select-update">
+                <select class="" (change)="queryUserType($event)">
+                  <option value="" selected>Select User Type</option>
                   <option value="company">Company</option>
                   <option value="admin">Admin</option>
                   <option value="super admin">Super Admin</option>
@@ -42,19 +40,32 @@
             <table class="table table-bordered table-condensed" width="100%">
               <thead>
                 <tr>
-                  <th>S/N</th>
+                  <th>User ID</th>
                   <th>User Name</th>
                   <th>User Type</th>
                   <th>Status</th>
                   <th>Action</th>
+                  <th>Update Type</th>
                 </tr>
               </thead>
               <tbody>
-                @for (user of users(); track $index) {
+                @if(dataLoading()){
                 <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ user?.name }}</td>
-                  <td>{{ user?.type }}</td>
+                  <td colspan="100%">
+                    <ngx-skeleton-loader count="2" />
+                  </td>
+                </tr>
+                } @else if (dataMessage()) {
+                <tr>
+                  <td colspan="100%">
+                    <span>{{ dataMessage() }}</span>
+                  </td>
+                </tr>
+                } @else { @for (user of users(); track $index) {
+                <tr>
+                  <td>{{ user?.userId }}</td>
+                  <td>{{ user?.userName }}</td>
+                  <td>{{ user?.userTypeName }}</td>
                   <td>{{ user?.status }}</td>
                   <td>
                     <ng-toggle
@@ -63,14 +74,23 @@
                         unchecked: '#939da2',
                         checked: '#00773B'
                       }"
-                      (change)="switchStatus($event, user?.employeeRin)" />
+                      (change)="switchStatus($event, user)" />
+                  </td>
+                  <td>
+                    <div>
+                      <select class="" (change)="updateRole($event, user)">
+                        <option value="" selected>Update User Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="super admin">Super Admin</option>
+                      </select>
+                    </div>
                   </td>
                 </tr>
                 } @empty {
                 <tr>
                   <td colspan="100%"><span>No users found.</span></td>
                 </tr>
-                }
+                }}
               </tbody>
             </table>
 

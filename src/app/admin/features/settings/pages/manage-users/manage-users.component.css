@@ -12,3 +12,10 @@ option:first-child {
   align-items: center;
   column-gap: 12px;
 }
+
+.select-update{
+  font-size: 12px;
+  padding: 8px;
+  border: 1px solid #bdbbbb;
+  border-radius: 8px;
+}

@@ -1,4 +1,9 @@
 import {SettingsService} from "@admin-pages/settings/data-access/services/system-settings.services"
+import {
+  AllUsersResInterface,
+  ChangeUserActivityInterface,
+  ChangeUserRoleInterface,
+} from "@admin-pages/settings/data-access/system-settings.model"
 import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {MatFormFieldModule} from "@angular/material/form-field"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
@@ -31,7 +36,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
-  users = signal<any | null>(null)
+  users = signal<AllUsersResInterface[] | null>(null)
 
   dataLoading = signal(false)
   dataMessage = signal("")
@@ -65,8 +70,8 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
             next: (res) => {
               this.dataLoading.set(false)
               if (res.status === true) {
-                this.users.set(res.data)
-                this.totalLength.set(res.data.totalCount)
+                this.users.set(res?.data?.result as AllUsersResInterface[])
+                this.totalLength.set(res?.data?.totalCount)
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)
@@ -121,23 +126,58 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
     })
   }
 
-  switchStatus(event: any, employeeRin?: string) {
+  switchStatus(event: any, user: AllUsersResInterface) {
     const status = event.target.checked as boolean
 
+    const payload: ChangeUserActivityInterface = {
+      userId: user?.userId,
+      userType: user?.userTypeName,
+      status,
+    }
+
     const ask = window.confirm(
-      "Are you sure you want to change this employee's status?"
+      "Are you sure you want to change this user status?"
     )
     if (ask) {
-      // this.subs.add = this.employeeScheduleService
-      //   .markEmployeeInactive(payload)
-      //   .subscribe({
-      //     next: (res) => {
-      //       if (res.status) Swal.fire(SweetAlertOptions(res?.message, true))
-      //     },
-      //     error: (err) => {
-      //       Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
-      //     },
-      //   })
+      this.subs.add = this.settingsService
+        .changeUserActivity(payload)
+        .subscribe({
+          next: (res) => {
+            if (res.status) {
+              Swal.fire(SweetAlertOptions(res?.message, true))
+              this.listenToRoute()
+            }
+          },
+          error: (err) => {
+            Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+          },
+        })
+    }
+  }
+
+  updateRole(event: any, user: AllUsersResInterface) {
+    const userRole = event.target.value as string
+
+    const payload: ChangeUserRoleInterface = {
+      userId: user?.userId,
+      userRole,
+    }
+
+    const ask = window.confirm(
+      "Are you sure you want to change this user's role?"
+    )
+    if (ask) {
+      this.subs.add = this.settingsService.changeAdminRole(payload).subscribe({
+        next: (res) => {
+          if (res.status) {
+            Swal.fire(SweetAlertOptions(res?.message, true))
+            this.listenToRoute()
+          }
+        },
+        error: (err) => {
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+        },
+      })
     }
   }
 }
