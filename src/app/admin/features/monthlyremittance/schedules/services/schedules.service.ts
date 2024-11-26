@@ -31,13 +31,22 @@ export class ScheduleService {
     BusinessId: string,
     CompanyId: string,
     Month: string,
-    TaxYear: string
+    TaxYear: string,
+    PageNumber = 0,
+    PageSize = 10
   ) {
     const params = new HttpParams({
-      fromObject: {BusinessId, CompanyId, Month, TaxYear},
+      fromObject: {
+        BusinessId,
+        CompanyId,
+        Month,
+        TaxYear,
+        PageNumber: PageNumber + 1,
+        PageSize,
+      },
     })
     return this.httpClient.get<
-      ServerResInterface<ScheduleModel.ScheduleDetailResInterface[]>
+      ServerResInterface<ScheduleModel.ScheduleDetailResInterface>
     >(`${environment.AUTHAPIURL}PhaseII/GetAllSchedulesViewWithYear`, {params})
   }
 

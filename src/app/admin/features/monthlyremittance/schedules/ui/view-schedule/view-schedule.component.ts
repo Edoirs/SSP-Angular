@@ -13,7 +13,7 @@ import {
 } from "@angular/material/dialog"
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
-import {ScheduleDetailResInterface} from "../../data-access/schedule.model"
+import {ScheduleDetailResInterfaceItems} from "../../data-access/schedule.model"
 
 @Component({
   selector: "app-view-employee",
@@ -26,7 +26,7 @@ import {ScheduleDetailResInterface} from "../../data-access/schedule.model"
 })
 export class ViewScheduleComponent implements OnInit, OnDestroy {
   public readonly injectedData =
-    inject<ScheduleDetailResInterface>(MAT_DIALOG_DATA)
+    inject<ScheduleDetailResInterfaceItems>(MAT_DIALOG_DATA)
 
   loading = signal(false)
   message = signal("")

@@ -60,6 +60,17 @@
           }
         </tbody>
       </table>
+
+      <section>
+        <mat-paginator
+          [length]="totalLength()"
+          [pageSize]="pageSize()"
+          [pageIndex]="pageIndex()"
+          (page)="handlePageEvent($event)"
+          showFirstLastButtons
+          aria-label="Select page">
+        </mat-paginator>
+      </section>
     </div>
     <!-- <div class="overflow-auto">
 

@@ -2,6 +2,10 @@ export interface SchedulesResInterface {
   businesses: ScheduleResInterface[]
   totalCount: number
 }
+export interface ScheduleDetailResInterface {
+  records: ScheduleDetailResInterfaceItems[]
+  totalRecords: number
+}
 
 export interface ScheduleResInterface {
   id: number
@@ -20,7 +24,7 @@ export interface ScheduleResInterface {
   totalIncome: number
 }
 
-export interface ScheduleDetailResInterface {
+export interface ScheduleDetailResInterfaceItems {
   employeeRin: string
   employeeName: string
   totalIncome: number

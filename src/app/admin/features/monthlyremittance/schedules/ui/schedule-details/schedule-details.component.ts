@@ -17,7 +17,7 @@ import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {ScheduleService} from "../../services/schedules.service"
 import {
-  ScheduleDetailResInterface,
+  ScheduleDetailResInterfaceItems,
   ScheduleResInterface,
   SendRdmInterface,
 } from "../../data-access/schedule.model"
@@ -51,7 +51,11 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
 
   btnLoading = signal(false)
 
-  schedulesData = signal<ScheduleDetailResInterface[] | null>(null)
+  pageSize = signal(10)
+  totalLength = signal(500)
+  pageIndex = signal(0)
+
+  schedulesData = signal<ScheduleDetailResInterfaceItems[] | null>(null)
 
   showSendToRDM = computed(
     () =>
@@ -90,10 +94,13 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
         this.injectedData.businessId,
         this.injectedData.companyId,
         this.injectedData.taxMonth,
-        this.injectedData.taxYear.toString()
+        this.injectedData.taxYear.toString(),
+        pageNumber,
+        pageSize
       )
       .subscribe((res) => {
-        this.schedulesData.set(res.data)
+        this.schedulesData.set(res.data?.records)
+        this.totalLength.set(res.data?.totalRecords)
       })
   }
 
@@ -102,7 +109,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     this.getEmployeeDetail(pageIndex, event.pageSize)
   }
 
-  viewSchedule(data: ScheduleDetailResInterface) {
+  viewSchedule(data: ScheduleDetailResInterfaceItems) {
     this.dialog.open(ViewScheduleComponent, MaterialDialogConfig(data))
   }
 
