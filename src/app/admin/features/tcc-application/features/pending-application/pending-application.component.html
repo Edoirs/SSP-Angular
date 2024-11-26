@@ -23,16 +23,16 @@
                   <button (click)="dowloadExcel()">Excel</button>
                 </div>
               </div>
-              <!-- <div class="table-header-cont-3">
+              <div class="table-header-cont-3">
                 <input
                   class="form-control"
                   #searchTable
                   type="search"
-                  placeholder="search business name"
+                  placeholder="search business rin"
                   [value]="queryString()"
                   (keyup)="queryTable(searchTable)"
                   (search)="queryTable(searchTable)" />
-              </div> -->
+              </div>
             </section>
 
             <table
@@ -93,14 +93,14 @@
             </table>
 
             <section>
-              <!-- <mat-paginator
+              <mat-paginator
                 [length]="totalLength()"
                 [pageSize]="pageSize()"
                 [pageIndex]="pageIndex()"
                 (page)="handlePageEvent($event)"
                 showFirstLastButtons
                 aria-label="Select page">
-              </mat-paginator> -->
+              </mat-paginator>
             </section>
           </div>
         </div>

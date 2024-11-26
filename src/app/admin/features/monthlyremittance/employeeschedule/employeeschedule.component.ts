@@ -12,6 +12,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {TokenService} from "@shared/services/token.service"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {EmployeeStateService} from "./services/employee-state.service"
+import {ThrotlleQuery} from "@shared/utils/shared.utils"
 
 @Component({
   selector: "app-employeeschedule",
@@ -32,6 +33,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   pageSize = signal(10)
   totalLength = signal(500)
   pageIndex = signal(0)
+  queryString = signal("")
 
   employeesList = signal<EmployeeScheduleResInterface | null>(null)
   dataLoading = signal(false)
@@ -57,14 +59,29 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
+  queryTable(domInput: HTMLInputElement) {
+    this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
+      this.router.navigate(["."], {
+        relativeTo: this.route,
+        queryParams: {
+          search: query,
+          pageSize: 15,
+          pageIndex: 1,
+        },
+        queryParamsHandling: "replace",
+      })
+    })
+  }
+
   listenToRoute() {
     this.dataLoading.set(true)
     this.subs.add = this.route.queryParams.subscribe((params) => {
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
+        if (params["search"]) this.queryString.set(params["search"])
         this.employeeScheduleService
-          .getEmployees(this.pageIndex(), this.pageSize())
+          .getEmployees(this.pageIndex(), this.pageSize(), params["search"])
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)

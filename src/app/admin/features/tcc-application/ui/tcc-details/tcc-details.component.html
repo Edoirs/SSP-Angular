@@ -12,16 +12,16 @@
         </button>
       </div>
 
-      <!-- <div class="table-header-cont-2">
+      <div class="table-header-cont-2">
         <input
           class="form-control"
           #searchTable
           type="search"
-          placeholder="search business name"
+          placeholder="search employee rin"
           [value]="queryString()"
           (keyup)="queryTable(searchTable)"
-          (search)="queryTable(searchTable)" />
-      </div> -->
+           />
+      </div>
     </div>
   </div>
 
@@ -101,13 +101,13 @@
       </table>
 
       <section>
-        <!-- <mat-paginator
-          [pageSize]="15"
-          [pageIndex]="1"
+        <mat-paginator
+          [pageSize]="pageSize()"
+          [pageIndex]="pageIndex()"
           (page)="handlePageEvent($event)"
           showFirstLastButtons
           aria-label="Select page">
-        </mat-paginator> -->
+        </mat-paginator>
       </section>
     </div>
   </div>

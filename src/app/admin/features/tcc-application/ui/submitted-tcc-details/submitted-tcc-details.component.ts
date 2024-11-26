@@ -60,7 +60,9 @@ export class TccSubmittedApplicationDetailsComponent
 
   queryString = signal("")
 
+  pageSize = signal(10)
   totalLength = signal(0)
+  pageIndex = signal(1)
 
   subs = new SubscriptionHandler()
 
@@ -72,10 +74,15 @@ export class TccSubmittedApplicationDetailsComponent
     this.subs.clear()
   }
 
-  getTccDetails(pageNumber?: number, pageSize?: number) {
+  getTccDetails(pageNumber?: number, pageSize?: number, employeeRin?: string) {
     this.dataLoading.set(true)
     this.subs.add = this.tccService
-      .getSubmittedTcc(pageNumber, pageSize, this.injectedData.businessID)
+      .getSubmittedTcc(
+        pageNumber,
+        pageSize,
+        this.injectedData.businessID,
+        employeeRin
+      )
       .subscribe({
         next: (res) => {
           this.dataLoading.set(false)
@@ -90,6 +97,7 @@ export class TccSubmittedApplicationDetailsComponent
         error: (err) => {
           this.dataLoading.set(false)
           this.dataMessage.set(err?.error?.message || err?.message)
+          this.resetPagination()
           Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
         },
       })
@@ -107,17 +115,17 @@ export class TccSubmittedApplicationDetailsComponent
     )
   }
 
+  resetPagination() {
+    this.totalLength.set(0)
+    this.pageIndex.set(0)
+  }
+
   queryTable(domInput: HTMLInputElement) {
     this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
-      this.router.navigate(["/admin/submitted-application"], {
-        queryParams: {
-          search: query,
-          pageSize: 15,
-          pageIndex: 1,
-        },
-        fragment: "details",
-        queryParamsHandling: "replace",
-      })
+      this.queryString.set(query)
+      this.pageIndex.set(1)
+      this.pageSize.set(10)
+      this.getTccDetails(1, 10, query)
     })
   }
 }

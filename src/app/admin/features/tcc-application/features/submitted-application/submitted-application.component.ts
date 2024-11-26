@@ -90,14 +90,14 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
             this.pageIndex(),
             this.pageSize(),
             this.tokenService.getLoginResData.companyId.toString(),
-            this.queryString()
+            params["search"]
           )
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)
               if (res.status === true) {
                 this.businesses.set(res?.data?.result)
-                this.pageSize.set(res?.data?.totalCount || 0)
+                this.totalLength.set(res?.data?.totalCount || 0)
               } else {
                 this.dataLoading.set(false)
                 this.dataMessage.set(res?.message)
@@ -107,6 +107,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
             error: (err) => {
               this.dataLoading.set(false)
               this.dataMessage.set(err?.error?.message || err?.message)
+              this.resetPagination()
               Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
             },
           })
@@ -123,6 +124,11 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: "replace",
     })
+  }
+
+  resetPagination() {
+    this.totalLength.set(0)
+    this.pageIndex.set(0)
   }
 
   dowloadCsv() {

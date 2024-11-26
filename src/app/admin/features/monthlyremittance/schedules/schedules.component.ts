@@ -774,7 +774,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
             this.tokenService.getLoginResData.companyId.toString(),
             this.pageIndex(),
             this.pageSize(),
-            this.queryString()
+            params["search"]
           )
           .subscribe({
             next: (res) => {

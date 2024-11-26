@@ -19,7 +19,7 @@ export class TccService {
       fromObject: {
         pageNumber: pageNumber + 1,
         pageSize,
-        ...(search && {businessName: search}),
+        ...(search && {busRin: search}),
       },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(

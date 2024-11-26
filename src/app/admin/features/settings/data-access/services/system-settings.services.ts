@@ -11,12 +11,18 @@ import {
 export class SettingsService {
   private readonly http = inject(HttpClient)
 
-  getUsers(pageNumber?: number, pageSize?: number, searchTerm?: string) {
+  getUsers(
+    pageNumber?: number,
+    pageSize?: number,
+    searchTerm?: string,
+    username?: string
+  ) {
     const params = new HttpParams({
       fromObject: {
         ...(pageNumber && {pageNumber}),
         ...(pageSize && {pageSize}),
-        ...(searchTerm?.length && {searchTerm}),
+        ...(searchTerm && {searchTerm}),
+        ...(username && {username}),
       },
     })
 
