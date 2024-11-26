@@ -8,7 +8,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core"
-import {MenuItemInterface} from "./data-access/menu-item.model"
+import {MenuItemInterface} from "./data-access/menu-item.service"
 import {NgClass, NgStyle} from "@angular/common"
 import {RouterLink, RouterLinkActive} from "@angular/router"
 import {MenuItemService} from "../menu.service"

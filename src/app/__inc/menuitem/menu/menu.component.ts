@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject} from "@angular/core"
 import {
   MenuItemInterface,
-  MenuListRecord,
-} from "../menu-item/data-access/menu-item.model"
+  MenuListService,
+} from "../menu-item/data-access/menu-item.service"
+import {LoginResInterface, TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-menu",
@@ -10,5 +11,7 @@ import {
   styleUrls: ["./menu.component.css"],
 })
 export class MenuComponent {
-  readonly menuList: MenuItemInterface[] = MenuListRecord
+  readonly user: LoginResInterface = inject(TokenService).getLoginResData
+  readonly menuList: MenuItemInterface[] =
+    inject(MenuListService).MenuListRecord
 }

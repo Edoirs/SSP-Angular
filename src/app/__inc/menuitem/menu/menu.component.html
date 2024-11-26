@@ -1,10 +1,11 @@
 <nav class="menu-items">
   <section class="nav nav-pills nav-sidebar nav-menu">
-
-    @for (menu of menuList; track $index) {
-      <app-menu-item [data]="menu" [menuIndex]="$index"/>
+    <!-- Shows the menu item if it's not restricted to admins -->
+    <!-- Ensures the item is shown only if it is an admin menu and the user is an admin. -->
+    @for (menu of menuList; track $index) { 
+      @if (!menu?.isAdmin || (menu?.isAdmin && user.isAdminUser)) {
+          <app-menu-item [data]="menu" [menuIndex]="$index" />
+      } 
     }
-
-
   </section>
 </nav>

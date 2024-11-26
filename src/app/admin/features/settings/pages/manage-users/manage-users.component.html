@@ -81,8 +81,7 @@
                         class=""
                         (change)="updateRole($event, user)"
                         [disabled]="
-                          user?.userTypeName?.toLowerCase() !== 'super admin' ||
-                          user?.userTypeName?.toLowerCase() !== 'admin'
+                          user?.userTypeName?.toLowerCase() === 'company' 
                         ">
                         <option value="" selected>Update User Role</option>
                         <option value="admin">Admin</option>
