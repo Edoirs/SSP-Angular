@@ -44,12 +44,14 @@ export class SystemSettingsComponent implements OnDestroy {
   }
 
   syncRules() {
+    this.ngxService.start()
     this.subs.add = this.settingsService
       .syncRules()
       .subscribe(this.syncHandler())
   }
 
   syncItems() {
+    this.ngxService.start()
     this.subs.add = this.settingsService
       .syncItems()
       .subscribe(this.syncHandler())
