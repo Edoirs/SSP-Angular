@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {ActivatedRoute, Router} from "@angular/router"
@@ -16,14 +16,17 @@ import {Title} from "@angular/platform-browser"
 import {UtilityService} from "src/app/utility.service"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TokenService} from "@shared/services/token.service"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {FormHoneService} from "../data-access/services/form-h1.service"
 
 @Component({
   selector: "app-annualreturnemployeesupload",
   templateUrl: "./annualreturnemployeesupload.component.html",
   styleUrls: ["./annualreturnemployeesupload.component.css"],
 })
-export class AnnualreturnemployeesuploadComponent implements OnInit {
+export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   readonly tokenService = inject(TokenService)
+  private readonly formHoneService = inject(FormHoneService)
   submitted: boolean = false
   apiUrl!: string
   isResponse!: number
@@ -67,6 +70,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
   companyRIN: any
   taxpayerID: any
   assessmentYears: any[] = []
+
+  subs = new SubscriptionHandler()
 
   constructor(
     private formBuilder: FormBuilder,
@@ -168,6 +173,10 @@ export class AnnualreturnemployeesuploadComponent implements OnInit {
         },
       ],
     }
+  }
+
+  ngOnDestroy(): void {
+      this.subs.clear()
   }
 
   initialiseForms() {
