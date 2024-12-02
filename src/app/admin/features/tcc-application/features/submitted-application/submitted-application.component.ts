@@ -16,7 +16,6 @@ import {
 } from "@admin-pages/annualprojection/features/uploadprojection/data-access/annual-projection.models"
 import {MatDialog} from "@angular/material/dialog"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
-import {TccSubmittedApplicationDetailsComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-details/submitted-tcc-details.component"
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {DecimalPipe} from "@angular/common"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
@@ -70,7 +69,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 15,
+          pageSize: 10,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

@@ -17,7 +17,7 @@ export class ScheduleService {
     const params = new HttpParams({
       fromObject: {
         companyId,
-        pageNumber: pageNumber + 1,
+        pageNumber,
         pageSize,
         ...(search && {businessName: search}),
       },

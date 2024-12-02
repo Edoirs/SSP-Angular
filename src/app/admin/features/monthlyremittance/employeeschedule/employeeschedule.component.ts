@@ -32,7 +32,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
   pageSize = signal(10)
   totalLength = signal(500)
-  pageIndex = signal(0)
+  pageIndex = signal(1)
   queryString = signal("")
 
   employeesList = signal<EmployeeScheduleResInterface | null>(null)
@@ -65,7 +65,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 15,
+          pageSize: 10,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

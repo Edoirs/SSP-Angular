@@ -46,7 +46,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
 
   pageSize = signal(10)
   totalLength = signal(500)
-  pageIndex = signal(0)
+  pageIndex = signal(1)
 
   subs = new SubscriptionHandler()
 
@@ -101,7 +101,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           ...(query?.length && {search: query}),
-          pageSize: 15,
+          pageSize: 10,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",
@@ -115,7 +115,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         type: query,
-        pageSize: 15,
+        pageSize: 10,
         pageIndex: 1,
       },
       queryParamsHandling: "replace",

@@ -71,7 +71,7 @@ export class TccPendingApplicationComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 15,
+          pageSize: 10,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

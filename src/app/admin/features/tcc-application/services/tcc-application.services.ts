@@ -10,14 +10,14 @@ export class TccService {
   private readonly httpClient = inject(HttpClient)
 
   getBusinesses(
-    pageNumber = 1,
-    pageSize = 15,
+    pageNumber: number,
+    pageSize: number,
     companyId: string,
     search?: string
   ) {
     const params = new HttpParams({
       fromObject: {
-        pageNumber: pageNumber + 1,
+        pageNumber,
         pageSize,
         ...(search && {busRin: search}),
       },

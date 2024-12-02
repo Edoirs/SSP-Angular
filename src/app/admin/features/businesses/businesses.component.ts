@@ -30,7 +30,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
 
   pageSize = signal(10)
   totalLength = signal(500)
-  pageIndex = signal(0)
+  pageIndex = signal(1)
 
   businesses = signal<BusinessResInterface | null>(null)
   dataLoading = signal(false)
@@ -60,7 +60,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 15,
+          pageSize: 10,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

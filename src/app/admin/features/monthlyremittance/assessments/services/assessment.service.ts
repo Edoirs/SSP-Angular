@@ -13,10 +13,10 @@ export class AssessmentService {
   private readonly httpClient = inject(HttpClient)
   private readonly tokenService = inject(TokenService)
 
-  getAssessments(pageNumber: number, pageSize = 15) {
+  getAssessments(pageNumber: number, pageSize: number) {
     const params = new HttpParams({
       fromObject: {
-        pageNumber: pageNumber + 1,
+        pageNumber,
         pageSize,
         CompanyId: this.tokenService.getLoginResData.companyId,
       },
