@@ -1,206 +1,66 @@
 <!-- Content Wrapper. Contains page content -->
-<div class="parent">
-  <div class="content-wrapper" id="smp-dashboard">
-  <!-- <div class="content-header pt-0 mt-0">
-     <div class="container-fluid">
-     <div class="row mb-2">
-         <div class="col-sm-6">
-          <h1 class="m-0 content-title">Welcome to your Dashboard</h1>
-        </div> 
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
-          </ol>
-        </div> 
+<div class="content-wrapper" id="smp-dashboard">
+  <!-- Main content -->
+  <div class="content">
+
+    <div class="dashboard-container">
+
+      <div class="dashboard-container-box">
+        <section class="box-header">
+          <h4>Monthly Schedule</h4>
+        </section>
+
+        <section class="box-content">
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.employeeSchedule]">Add/Upload employees & forward schedule</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.schedules]">view forward schedules</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.assessments]">view assessments</button>
+        </section>
+
       </div>
+
+      <div class="dashboard-container-box">
+        <section class="box-header">
+          <h4>Form H3</h4>
+        </section>
+
+        <section class="box-content">
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.uploadProjection]">Upload & file form h3</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.pendingProjection]">view filed form h3</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.approvedProjection]">view projections</button>
+        </section>
+
+      </div>
+
+      <div class="dashboard-container-box">
+        <section class="box-header">
+          <h4>Form H1</h4>
+        </section>
+
+        <section class="box-content">
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.annualReturnEmployeesUpload]">Upload & file form h1</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.annualReturnSchedules]">view filed form h1</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.annualReturnAssessments]">view re-assessed</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.reassessmentAppeals]">view objection</button>
+        </section>
+
+      </div>
+
+      <div class="dashboard-container-box">
+        <section class="box-header">
+          <h4>TCC Application</h4>
+        </section>
+
+        <section class="box-content">
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.pendingApplication]">apply for TCC</button>
+          <button type="button" [routerLink]="['/',LandingPaths.admin, AdminPaths.submittedApplication]">check application status</button>
+        </section>
+
+      </div>
+
+
     </div>
-  </div> -->
 
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <!-- Content Row -->
-        <div class="row" id="data-stats">
-          <!-- card -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-water shadow py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="align-items-baseline">
-                    <div class="">
-                      <img src="assets/dist/img/team.png" class="stats-icon float-left" />
-                    </div>
-                    <div class="">
-                      <h3 class="stat-title mx-auto">Total No of Employees</h3>
-                    </div>
-                  </div>
-                  <div class="data-card-top">
-                    <div class="stat-value">{{ dashboardData?.consumers_count || '0' }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- card -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-water shadow py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="align-items-baseline">
-                    <div class="">
-                      <img src="assets/dist/img/invoice.png" class="stats-icon float-left" />
-                    </div>
-                    <div class="">
-                      <h3 class="stat-title mx-auto">
-                        Paid Invoice
-                      </h3>
-                    </div>
-                  </div>
-                  <div class="data-card-top">
-                    <div class="stat-value">{{ dashboardData?.metered_count || '0' }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- card -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-water shadow py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="align-items-baseline">
-                    <div class="">
-                      <img src="assets/dist/img/invoice2.png" class="stats-icon float-left" />
-                    </div>
-                    <div class="">
-                      <h3 class="stat-title mx-auto">
-                        Unpaid Invoice
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div class="data-card-top">
-                    <div class="stat-value">{{ dashboardData?.unmetered_count || '0'}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- card -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-water shadow py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="align-items-baseline">
-                    <div class="">
-                      <img src="assets/dist/img/budget.png" class="stats-icon float-left" />
-                    </div>
-                    <div class="">
-                      <h3 class="stat-title mx-auto">Total No of Business</h3>
-                    </div>
-                  </div>
-
-                  <div class="data-card-top">
-                    <div class="stat-value">{{ dashboardData?.staff_count || '0' }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          
-        </div>
-      </div>
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-header border-0">
-                  <div class="d-flex justify-content-between">
-                    <h3 class="card-title text-white">Total Tax Paid from Inception</h3>
-                    <a href="javascript:void(0);">View Report</a>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="d-flex">
-                    <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">&#8358;24,820.00</span>
-                      <span>Payment Over Time</span>
-                    </p>
-                    <p class="ml-auto d-flex flex-column text-right">
-                      <span class="text-success">
-                        <i class="fas fa-arrow-up"></i> 12.5%
-                      </span>
-                      <span class="text-muted">Since last Month</span>
-                    </p>
-                  </div>
-                  <!-- /.d-flex -->
-                  <div class="position-relative mb-2">
-                    <div class="stats-graph">
-                      <canvas baseChart [data]="barChartData"> </canvas>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <span class="mr-2">
-                      <i class="fas fa-arrow-up text-success"></i> This Month
-                    </span>
-
-                    <span>
-                      <i class="fas fa-arrow-down text-gray"></i> Last Week
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-header border-0">
-                  <div class="d-flex justify-content-between">
-                    <h3 class="card-title text-white">Invoice Reports</h3>
-                    <a href="javascript:void(0);">View Report</a>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="d-flex">
-                    <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">&#8358;2,150.00</span>
-                      <span>Total Paid Invoice</span>
-                    </p>
-                    <p class="ml-auto d-flex flex-column text-right">
-                      <span class="text-success">
-                        <i class="fas fa-arrow-up"></i> 33.1%
-                      </span>
-                      <span class="text-muted">Since last month</span>
-                    </p>
-                  </div>
-                  <!-- /.d-flex -->
-
-                  <div class="position-relative mb-2">
-                    <div class="stats-graph">
-                      <canvas baseChart [data]="salesData" [type]="'line'" [options]="chartOptions">
-                      </canvas>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <select class="form-select form-select-sm" aria-label="Small select example" style="width: 40%;">
-                      <option selected>Select Month</option>
-                      <option value="1">Jan</option>
-                      <option value="2">Feb</option>
-                      <option value="3">Mar</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+
 </div>

@@ -34,7 +34,8 @@ export class SettingsService {
 
   syncRules() {
     return this.http.get<ServerResInterface<any>>(
-      `${environment.AUTHAPIURL}PhaseIII/SyncRule`
+      `${environment.AUTHAPIURL}PhaseIII/SyncAssessmentRule
+`
     )
   }
 

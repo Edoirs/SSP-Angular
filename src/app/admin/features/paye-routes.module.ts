@@ -22,65 +22,113 @@ import {PayeComponent} from "./paye.component"
 import {NgxUiLoaderModule} from "ngx-ui-loader"
 import {IncModule} from "src/app/__inc/inc.module"
 
+export const ADMIN_PATHS = {
+  dashboard: "dashboard",
+  assessments: "assessments",
+  schedules: "schedules",
+  deletedEmployees: "deleted-employees",
+  employeeSchedule: "employee-schedule",
+  annualReturnEmployeesUpload: "annual-return-employees-upload",
+  annualReturnAssessments: "annual-return-assessments",
+  annualReturnSchedules: "annual-return-schedules",
+  annualReturns: "annual-returns",
+  reassessmentAppeals: "reassessment-appeals",
+  reassessments: "reassessments",
+  approvedProjection: "approved-projection",
+  pendingProjection: "pending-projection",
+  uploadProjection: "upload-projection",
+  addUser: "add-user",
+  editUser: "edit-user",
+  displayUser: "display-user",
+  businesses: "businesses",
+  pendingApplication: "pending-application",
+  submittedApplication: "submitted-application",
+  settings: "settings",
+}
+
 const routes: Routes = [
   {
     path: "",
     component: PayeComponent,
     children: [
-      {path: "", redirectTo: "dashboard", pathMatch: "full"},
-      {path: "dashboard", component: DashboardComponent},
-      {path: "assessments", component: AssessmentsComponent},
-      {path: "deleted-employees", component: DeletedemployeesComponent},
-      {path: "employee-schedule", component: EmployeescheduleComponent},
-      {path: "schedules", component: SchedulesComponent},
+      {path: "", redirectTo: ADMIN_PATHS.dashboard, pathMatch: "full"},
+      {
+        path: ADMIN_PATHS.dashboard,
+        loadComponent: () =>
+          import("./dashboard/dashboard.component").then(
+            (c) => c.DashboardComponent
+          ),
+      },
+      {path: ADMIN_PATHS.assessments, component: AssessmentsComponent},
+      {
+        path: ADMIN_PATHS.deletedEmployees,
+        component: DeletedemployeesComponent,
+      },
+      {
+        path: ADMIN_PATHS.employeeSchedule,
+        component: EmployeescheduleComponent,
+      },
+      {path: ADMIN_PATHS.schedules, component: SchedulesComponent},
 
       {
-        path: "annual-return-employees-upload",
+        path: ADMIN_PATHS.annualReturnEmployeesUpload,
         component: AnnualreturnemployeesuploadComponent,
       },
       {
-        path: "annual-return-assessments",
+        path: ADMIN_PATHS.annualReturnAssessments,
         component: AnnualreturnassessmentsComponent,
       },
       {
-        path: "annual-return-schedules",
+        path: ADMIN_PATHS.annualReturnSchedules,
         component: AnnualreturnschedulesComponent,
       },
-      {path: "annual-returns", component: AnnualreturnsComponent},
-      {path: "reassessment-appeals", component: ReassessmentappealsComponent},
-      {path: "reassessments", component: ReassessmentsComponent},
-
-      {path: "approved-projection", component: ApprovedprojectionComponent},
-      {path: "pending-projection", component: PendingprojectionComponent},
-      {path: "upload-projection", component: UploadprojectionComponent},
-
-      {path: "add-user", component: AdduserComponent},
-      {path: "edit-user", component: EditComponent},
-      {path: "display-user", component: DisplayuserComponent},
+      {path: ADMIN_PATHS.annualReturns, component: AnnualreturnsComponent},
+      {
+        path: ADMIN_PATHS.reassessmentAppeals,
+        component: ReassessmentappealsComponent,
+      },
+      {path: ADMIN_PATHS.reassessments, component: ReassessmentsComponent},
 
       {
-        path: "businesses",
+        path: ADMIN_PATHS.approvedProjection,
+        component: ApprovedprojectionComponent,
+      },
+      {
+        path: ADMIN_PATHS.pendingProjection,
+        component: PendingprojectionComponent,
+      },
+      {
+        path: ADMIN_PATHS.uploadProjection,
+        component: UploadprojectionComponent,
+      },
+
+      {path: ADMIN_PATHS.addUser, component: AdduserComponent},
+      {path: ADMIN_PATHS.editUser, component: EditComponent},
+      {path: ADMIN_PATHS.displayUser, component: DisplayuserComponent},
+
+      {
+        path: ADMIN_PATHS.businesses,
         loadComponent: () =>
           import("./businesses/businesses.component").then(
             (c) => c.BusinessesComponent
           ),
       },
       {
-        path: "pending-application",
+        path: ADMIN_PATHS.pendingApplication,
         loadComponent: () =>
           import(
             "./tcc-application/features/pending-application/pending-application.component"
           ).then((c) => c.TccPendingApplicationComponent),
       },
       {
-        path: "submitted-application",
+        path: ADMIN_PATHS.submittedApplication,
         loadComponent: () =>
           import(
             "./tcc-application/features/submitted-application/submitted-application.component"
           ).then((c) => c.TccSubmittedApplicationComponent),
       },
       {
-        path: "settings",
+        path: ADMIN_PATHS.settings,
         loadChildren: () => import("@admin-pages/settings/settings.route"),
       },
     ],
