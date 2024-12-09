@@ -34,7 +34,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   isError!: number
   file: any
   roleID: any
-  sample_file: any
   myForm!: FormGroup
   forwardScheduleForm!: FormGroup
   corporateForm!: FormGroup
@@ -112,9 +111,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.loadAssessmentYears()
     this.initialiseForms()
 
-    this.sample_file =
-      environment.SAMPLE_FILE_URL + "new-annual-return-upload.xlsx"
-
     this.modalOptions = {
       backdrop: true,
       centered: true,
@@ -176,7 +172,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.subs.clear()
+    this.subs.clear()
   }
 
   initialiseForms() {

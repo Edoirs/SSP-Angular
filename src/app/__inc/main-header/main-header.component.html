@@ -2,6 +2,12 @@
   <ul class="navbar-nav ml-auto" id="header-icons">
     <section>
       <h4>{{tokenService.getLoginResData.name}}</h4>
+
+      <div>
+        @if (curRoute() !== '/admin/dashboard') {
+          <button class="dashboard-btn" routerLink="/admin/dashboard">Go to Dashboard</button>
+        }
+      </div>
     </section>
 
     <section>

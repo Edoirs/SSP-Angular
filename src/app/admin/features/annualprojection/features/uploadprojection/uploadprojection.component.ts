@@ -40,7 +40,6 @@ export class UploadprojectionComponent implements OnInit {
   roleID: any
   isMessage = ""
   corporateId = localStorage.getItem("corporate_id")
-  sample_file: any
   filePath: any
   rows: string[] = []
   error: any
@@ -116,8 +115,6 @@ export class UploadprojectionComponent implements OnInit {
 
     this.companyRIN = localStorage.getItem("companyRIN")
     // console.log("companyRIN: ", this.companyRIN)
-
-    this.sample_file = environment.SAMPLE_FILE_URL + "FileProjection-NEW.xlsx"
 
     this.modalOptions = {
       backdrop: true,

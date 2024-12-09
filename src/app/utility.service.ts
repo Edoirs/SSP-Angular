@@ -1,9 +1,7 @@
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Injectable } from '@angular/core';
-import { environment } from "./../environments/environment.prod";
-import { HttpClient } from "@angular/common/http";
-import { exit } from "process";
-import { DecimalPipe } from "@angular/common";
+import {environment} from "./../environments/environment"
+import {HttpClient} from "@angular/common/http"
 
 @Injectable({
   providedIn: 'root'

@@ -9,6 +9,17 @@
         display: flex;
         flex: 1;
         align-items: center;
+        justify-content: space-between;
+
+        .dashboard-btn {
+            background-color: white;
+            font-weight: 600;
+            border: none;
+        }
+        .dashboard-btn:hover{
+            color: green;
+        }
+        
     }
     section:first-child{
         align-self: center;
