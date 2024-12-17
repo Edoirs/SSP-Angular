@@ -353,10 +353,10 @@ export class UploadprojectionComponent implements OnInit {
   loadSelectedBusinessData(selectedBusiness: any) {
     // console.log("selectedProjection: ", selectedBusiness)
     this.corporateForm = this.formBuilder.group({
-      companyName: [this.companyName],
-      companyID: [this.companyRIN],
-      businessName: [selectedBusiness?.businessName],
-      businessID: [selectedBusiness?.businessRIN],
+      companyName: [selectedBusiness?.companyName || ""],
+      companyID: [selectedBusiness?.companyRIN || ""],
+      businessName: [selectedBusiness?.businessName || ""],
+      businessID: [selectedBusiness?.businessRIN || ""],
     })
   }
 
