@@ -68,7 +68,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
         if (params["search"]?.length) this.queryString.set(params["search"])
         this.subs.add = this.settingsService
           .getUsers(
-            this.pageIndex(),
+            this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
             params["type"],
             params["search"]

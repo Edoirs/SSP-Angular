@@ -100,8 +100,8 @@
                 [length]="totalLength()"
                 [pageSize]="pageSize()"
                 [pageIndex]="pageIndex()"
+                [pageSizeOptions]="[10, 25, 50, 100]"
                 (page)="handlePageEvent($event)"
-                showFirstLastButtons
                 aria-label="Select page">
               </mat-paginator>
             </section>

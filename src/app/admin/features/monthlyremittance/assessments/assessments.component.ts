@@ -240,7 +240,10 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
         if (params["pageIndex"]) this.pageIndex.set(+params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
         this.subs.add = this.assessmentService
-          .getAssessments(this.pageIndex(), this.pageSize())
+          .getAssessments(
+            this.pageIndex() === 0 ? 1 : this.pageIndex(),
+            this.pageSize()
+          )
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)

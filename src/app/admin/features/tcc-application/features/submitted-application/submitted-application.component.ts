@@ -86,7 +86,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
         if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.tccService
           .getBusinesses(
-            this.pageIndex(),
+            this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
             this.tokenService.getLoginResData.companyId.toString(),
             params["search"]

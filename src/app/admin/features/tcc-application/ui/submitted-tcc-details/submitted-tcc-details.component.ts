@@ -78,7 +78,7 @@ export class TccSubmittedApplicationDetailsComponent
     this.dataLoading.set(true)
     this.subs.add = this.tccService
       .getSubmittedTcc(
-        pageNumber,
+        pageNumber === 0 ? 1 : pageNumber,
         pageSize,
         this.injectedData.businessID,
         employeeRin

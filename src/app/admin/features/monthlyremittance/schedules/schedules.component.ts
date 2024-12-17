@@ -772,7 +772,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         this.subs.add = this.scheduleService
           .getSchedules(
             this.tokenService.getLoginResData.companyId.toString(),
-            this.pageIndex(),
+            this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
             params["search"]
           )

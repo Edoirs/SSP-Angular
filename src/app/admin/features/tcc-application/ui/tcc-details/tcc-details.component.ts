@@ -82,7 +82,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
   getTccDetails(pageNumber?: number, pageSize?: number, employeeRin?: string) {
     this.subs.add = this.tccService
       .getPendingTcc(
-        pageNumber,
+        pageNumber === 0 ? 1 : pageNumber,
         pageSize,
         this.injectedData.businessID,
         employeeRin

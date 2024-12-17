@@ -76,7 +76,11 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
         if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.businessService
-          .getBusinesses(this.pageIndex(), this.pageSize(), params["search"])
+          .getBusinesses(
+            this.pageIndex() === 0 ? 1 : this.pageIndex(),
+            this.pageSize(),
+            params["search"]
+          )
           .subscribe({
             next: (res) => {
               this.dataLoading.set(false)
@@ -121,13 +125,13 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   }
 
   handlePageEvent(event: PageEvent) {
-    this.router.navigate(["."], {
-      relativeTo: this.route,
-      queryParams: {
-        pageSize: event.pageSize,
-        pageIndex: event.pageIndex,
-      },
-      queryParamsHandling: "replace",
-    })
+      this.router.navigate(["."], {
+        relativeTo: this.route,
+        queryParams: {
+          pageSize: event.pageSize,
+          pageIndex: event.pageIndex,
+        },
+        queryParamsHandling: "replace",
+      })
   }
 }
