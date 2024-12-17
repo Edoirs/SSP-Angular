@@ -17,7 +17,7 @@ export class BusinessService {
       fromObject: {
         pageNumber,
         pageSize,
-        ...(search && {businessName: search}),
+        ...(search && {searchTerm: search}),
       },
     })
     return this.httpClient.get<ServerResInterface<BusinessResInterface>>(
