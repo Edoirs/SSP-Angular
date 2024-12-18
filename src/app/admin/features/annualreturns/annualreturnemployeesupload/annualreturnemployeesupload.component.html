@@ -39,13 +39,12 @@
                   <td>{{ i + 1 }}</td>
                   @if(tokenService.getLoginResData.isAdminUser){
                     <td>{{ mydata?.companyName || 'N/A' }}</td>
-                    <td>{{ mydata?.companyID }}</td>
+                    <td>{{ mydata?.companyRIN }}</td>
                   }
-                  <td>{{ mydata.businessRIN }}</td>
-                  <td>{{ mydata.businessName | titlecase }}</td>
-                  <td>{{ mydata.businessAddress || "N/A" }}</td>
-
-                  <td>{{ mydata.noOfEmployees || "N/A" }}</td>
+                  <td>{{ mydata?.businessRIN }}</td>
+                  <td>{{ mydata?.businessName | titlecase }}</td>
+                  <td>{{ mydata?.businessAddress || "N/A" }}</td>
+                  <td>{{ mydata?.noOfEmployees || "N/A" }}</td>
                   <td title="View">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           uploadEmployees(uploadEmployeesModal, mydata)
