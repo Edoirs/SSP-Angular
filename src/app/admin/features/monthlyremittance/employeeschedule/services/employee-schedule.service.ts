@@ -55,7 +55,7 @@ export class EmployeeScheduleService {
 
   getStateLocalGovts() {
     return this.httpClient.get<
-      ServerResInterface<{lganame: string; lgaid: string}[]>
+      ServerResInterface<{lgaName: string; lgaid: string}[]>
     >(`${environment.AUTHAPIURL}Utility/get-lga`)
   }
 
