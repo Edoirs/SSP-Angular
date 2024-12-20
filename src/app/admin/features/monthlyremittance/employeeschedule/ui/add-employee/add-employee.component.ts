@@ -57,9 +57,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   checkTotal$ = new Subject<boolean>()
 
   grossIncomeIncorrect!: boolean
-  validateCacTin!: boolean
 
-  stateLocalGovts = signal<{lganame: string; lgaid: string}[] | null>(null)
+  stateLocalGovts = signal<{lgaName: string; lgaid: string}[] | null>(null)
   zipCodes = signal<any>(null)
 
   subs = new SubscriptionHandler()
@@ -85,18 +84,15 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         Validators.maxLength(30),
       ],
     }),
-    title: new FormControl("", {validators: [Validators.required]}),
+    title: new FormControl(""),
     email: new FormControl("", {
       validators: [
-        Validators.required,
         Validators.maxLength(45),
         Validators.email,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
       ],
     }),
-    zip_code: new FormControl("", {
-      validators: [Validators.required],
-    }),
+    zip_code: new FormControl(""),
     nationality: new FormControl("Nigerian", {
       validators: [
         Validators.required,
@@ -110,13 +106,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     nhis: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
-    tin: new FormControl("0", {
-      validators: [
-        Validators.pattern(EmployeeUtils.PositiveNumberRegex),
-        Validators.minLength(6),
-        Validators.maxLength(10),
-      ],
-    }),
+    tin: new FormControl("0"),
     pension: new FormControl("0", {
       validators: [Validators.pattern(EmployeeUtils.PositiveNumberRegex)],
     }),
@@ -165,19 +155,14 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     }),
     designation: new FormControl("", {
       validators: [
-        Validators.required,
         Validators.pattern(EmployeeUtils.TextOnlyRegex),
         Validators.maxLength(40),
       ],
     }),
     home_address: new FormControl("", {
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(150),
-      ],
+      validators: [Validators.minLength(3), Validators.maxLength(150)],
     }),
-    lga_code: new FormControl("", {validators: [Validators.required]}),
+    lga_code: new FormControl(""),
   })
 
   constructor() {
@@ -220,10 +205,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
   get LifeAssurance() {
     return this.addEmployeeForm.get("life_assurance")
-  }
-
-  changeTinPhoneNinBvnStatus() {
-    this.validateCacTin = false
   }
 
   calculateTotalIncome(event: any) {

@@ -73,7 +73,6 @@
             <div class="form-group col-md-6">
               <label for="titleId"
                 >Title
-                <sup class="ml-1 font-wegiht-bold text-danger">*</sup>
               </label>
               <select
                 type="text"
@@ -92,9 +91,6 @@
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['title'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['title'].errors['required']">
-                  Title is required
-                </div>
               </div>
             </div>
             <div class="form-group col-md-6">
@@ -357,9 +353,8 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="emailAddress"
-                >Email Address<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                ></label
+                >Email Address
+                </label
               >
               <input
                 type="text"
@@ -421,8 +416,7 @@
                 maxlength="11"
                 class="form-control"
                 placeholder="BVN"
-              
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['bvn'].errors || addEmployeeForm.touched && validateCacTin }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['bvn'].errors }"
               />
               <div
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['bvn'].errors"
@@ -437,12 +431,6 @@
                 <div *ngIf="addEmployeeForm.controls['bvn'].errors['pattern']">
                   BVN must be numeric value only
                 </div>
-              </div>
-              <div
-                *ngIf="addEmployeeForm.touched && validateCacTin"
-                class="text-danger"
-              >
-                <div>JTB-TIN or NIN or BVN Number is required</div>
               </div>
             </div>
 
@@ -470,7 +458,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="jtbtn"
-                >JTB-TIN <span class="note-color">**</span></label
+                >JTB-TIN</label
               >
               <input
                 type="text"
@@ -479,14 +467,12 @@
                 minlength="6"
                 class="form-control"
                 placeholder="Employee JTBTN"
-              
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['tin'].errors || addEmployeeForm.touched && validateCacTin }"
               />
               <div
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['tin'].errors"
                 class="text-danger"
               >
-                <div
+                <!-- <div
                   *ngIf="addEmployeeForm.controls['tin'].errors['minlength']"
                 >
                   Employee JTB-TIN must be at least 6 digit long
@@ -498,13 +484,7 @@
                 </div>
                 <div *ngIf="addEmployeeForm.controls['tin'].errors['pattern']">
                   Employee JTB-TIN must be numeric value only
-                </div>
-              </div>
-              <div
-                *ngIf="addEmployeeForm.touched && validateCacTin"
-                class="text-danger"
-              >
-                <div>JTB-TIN or NIN or BVN Number is required</div>
+                </div> -->
               </div>
             </div>
             <div class="form-group col-md-6">
@@ -534,7 +514,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="nin"
-                >NIN <span class="note-color">**</span>
+                >NIN
                 <!-- <sup class="ml-1 font-wegiht-bold text-danger">*</sup> -->
               </label>
               <input
@@ -545,7 +525,7 @@
                 placeholder="Enter NIN"
                 maxlength="11"
               
-                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nin'].errors || addEmployeeForm.touched && validateCacTin }"
+                [ngClass]="{ 'is-invalid': addEmployeeForm.touched && addEmployeeForm.controls['nin'].errors }"
               />
               <div
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['nin'].errors"
@@ -557,12 +537,6 @@
                 <div *ngIf="addEmployeeForm.controls['nin'].errors!['pattern']">
                   NIN must be numeric value only
                 </div>
-              </div>
-              <div
-                *ngIf="addEmployeeForm.touched && validateCacTin"
-                class="text-danger"
-              >
-                <div>JTB-TIN or NIN or BVN Number is required</div>
               </div>
             </div>
             <div class="form-group col-md-6">
@@ -583,9 +557,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="localGovernmentId"
-                >Local Government<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                >
+                >Local Government
               </label>
               <select
                 name="localGovernmentId"
@@ -600,20 +572,13 @@
                   *ngFor="let stateLocalGovt of stateLocalGovts()"
                   [value]="stateLocalGovt.lgaid"
                 >
-                  {{ stateLocalGovt.lganame }}
+                  {{ stateLocalGovt.lgaName }}
                 </option>
               </select>
               <div
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['lga_code'].errors"
                 class="text-danger"
               >
-                <div
-                  *ngIf="
-                    addEmployeeForm.controls['lga_code'].errors!['required']
-                  "
-                >
-                  Local Government is required
-                </div>
               </div>
             </div>
   
@@ -662,9 +627,8 @@
 
             <div class="form-group col-md-6">
               <label for="designation"
-                >Designation<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                ></label
+                >Designation
+                </label
               >
               <input
                 type="text"
@@ -677,9 +641,6 @@
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['designation'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['designation'].errors['required']">
-                  Designation is required
-                </div>
                 <div *ngIf="addEmployeeForm.controls['designation'].errors['pattern']">
                   Designation must be alphabets only
                 </div>
@@ -721,9 +682,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="zipCode"
-                >Zip Code<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                ></label
+                >Zip Code</label
               >
               <input
               type="number"
@@ -737,20 +696,12 @@
                 *ngIf="addEmployeeForm.touched && addEmployeeForm.controls['zip_code'].errors"
                 class="text-danger"
               >
-                <div *ngIf="addEmployeeForm.controls['zip_code'].errors!['required']">
-                  Zip Code is required
-                </div>
-                <div *ngIf="addEmployeeForm.controls['zip_code'].errors!['minlength']">
-                  Zip Code should be more than 3 numbers above
-                </div>
               </div>
             </div>
 
             <div class="form-group col-md-6">
               <label for="contactAddress"
-                >Home Address<sup class="ml-1 font-wegiht-bold text-danger"
-                  >*</sup
-                ></label
+                >Home Address</label
               >
               <textarea
                 type="text"
