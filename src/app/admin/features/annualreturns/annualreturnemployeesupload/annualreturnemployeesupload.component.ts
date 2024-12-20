@@ -306,25 +306,16 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     if (this.myForm.invalid) {
       return
     }
-    // tslint:disable-next-line: max-line-length
-    // In Angular 2+, it is very important to leave the Content-Type empty. If you set the 'Content-Type' to 'multipart/form-data' the upload will not work !
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }
 
     const formData = new FormData()
     formData.append("File", this.myForm.get("myfile")?.value)
     formData.append("BusinessId", this.businessId)
     formData.append("CompanyId", this.companyId)
 
-    this.apiUrl = environment.AUTHAPIURL
     this.ngxService.start()
 
-    this.httpClient
-      .post<any>(this.apiUrl + "SSP/FormH1/UploadFormH1", formData, config)
+    this.subs.add = this.formHoneService
+      .bulkUploadFormH1(formData)
       .subscribe((res: any) => {
         // console.log(res)
 
@@ -370,7 +361,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
               icon: "error",
               title: "Validation not passed",
               // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: res.message,
+              text: this.errorHandler(res.message),
               showConfirmButton: true,
               timer: 25000,
               timerProgressBar: true,
@@ -862,6 +853,20 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
     )
+  }
+
+  private errorHandler(error: any) {
+    let message = ""
+    if (typeof error == "string") {
+      return error
+    }
+    if (typeof error == "object") {
+      error.forEach((err: {data: string}) => {
+        message += err.data + "<br>"
+      })
+      return message
+    }
+    return error
   }
 
   private getDismissReason(reason: any): string {

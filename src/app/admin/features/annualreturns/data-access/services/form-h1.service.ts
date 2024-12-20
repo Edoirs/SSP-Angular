@@ -20,4 +20,11 @@ export class FormHoneService {
       {params}
     )
   }
+
+  bulkUploadFormH1(formData: FormData) {
+    return this.httpClient.post<any>(
+      `${environment.AUTHAPIURL}SSP/FormH1/UploadFormH1`,
+      formData
+    )
+  }
 }

@@ -770,7 +770,7 @@ export class UploadprojectionComponent implements OnInit {
     let currentYear = new Date().getFullYear()
     this.assessmentYears = []
 
-    for (var i = 2015; i < currentYear; i++) {
+    for (var i = 2015; i <= currentYear; i++) {
       let assessmentYear = {id: i, year: i}
       this.assessmentYears.push(assessmentYear)
     }
