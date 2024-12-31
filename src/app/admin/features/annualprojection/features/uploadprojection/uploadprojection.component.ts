@@ -20,6 +20,7 @@ import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MarkFormH3EmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {EmployeeScheduleService} from "@admin-pages/monthlyremittance/employeeschedule/services/employee-schedule.service"
 import {TokenService} from "@shared/services/token.service"
+import {AnnualProjectionService} from "@admin-pages/annualprojection/data-access/services/annual-projection.service"
 
 @Component({
   selector: "app-uploadprojection",
@@ -28,6 +29,7 @@ import {TokenService} from "@shared/services/token.service"
 })
 export class UploadprojectionComponent implements OnInit {
   private readonly employeeScheduleService = inject(EmployeeScheduleService)
+  private readonly annualProjectionService = inject(AnnualProjectionService)
   readonly tokenService = inject(TokenService)
   myForm!: FormGroup
   submitted: boolean = false
@@ -38,7 +40,6 @@ export class UploadprojectionComponent implements OnInit {
   isResponse = 0
   isError = 0
   roleID: any
-  isMessage = ""
   corporateId = localStorage.getItem("corporate_id")
   filePath: any
   rows: string[] = []
@@ -202,12 +203,13 @@ export class UploadprojectionComponent implements OnInit {
 
   getBusinesses() {
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getallformh3bycompanyId/${this.companyId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      this.businessesData = res?.data?.result
-      this.ngxService.stop()
-    })
+    this.subs.add = this.annualProjectionService
+      .getBusinesses(this.companyId)
+      .subscribe((res) => {
+        this.businessesData = res?.data?.result
+        this.ngxService.stop()
+      })
   }
 
   getSingleBusiness(businessId: any) {
@@ -249,54 +251,55 @@ export class UploadprojectionComponent implements OnInit {
     // formData.append("year", this.myForm.get("year")?.value);
     formData.append("CompanyId", this.companyId)
     formData.append("BusinessId", this.businessId)
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/UploadFormH3`
 
     this.ngxService.start()
-    this.httpClient.post<any>(this.apiUrl, formData).subscribe((res) => {
-      // console.log(res)
-      // Clear form Value Without any Error
-      this.myForm.reset()
-      Object.keys(this.myForm.controls).forEach((key) => {
-        this.myForm.get(key)?.setErrors(null)
+
+    this.subs.add = this.annualProjectionService
+      .bulkUploadAnnualProjection(formData)
+      .subscribe((res) => {
+        // console.log(res)
+        // Clear form Value Without any Error
+        this.myForm.reset()
+        Object.keys(this.myForm.controls).forEach((key) => {
+          this.myForm.get(key)?.setErrors(null)
+        })
+
+        if (res.status == true) {
+          this.ngxService.stop()
+          this.modalService.dismissAll()
+          this.reload()
+          this.isResponse = 1
+          this.filePath = null
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            html: this.errorHandler(res.message),
+            showConfirmButton: true,
+            timer: 500000,
+            timerProgressBar: true,
+          })
+        } else {
+          this.file = null
+          this.filePath = null
+
+          this.myForm.get("myfile")?.setValue(null)
+          this.myForm = this.formBuilder.group({
+            myfile: ["", Validators.required],
+          })
+          this.ngxService.stop()
+          this.reload()
+          Swal.fire({
+            icon: "error",
+            title: "Validation not passed",
+            // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
+            html: this.errorHandler(res.message),
+            showConfirmButton: true,
+            timer: 25000,
+            timerProgressBar: true,
+          })
+        }
       })
-
-      if (res.status == true) {
-        this.ngxService.stop()
-        this.modalService.dismissAll()
-        this.reload()
-        this.isResponse = 1
-        this.isMessage = res.message
-        this.filePath = null
-
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: this.isMessage,
-          showConfirmButton: true,
-          timer: 500000,
-          timerProgressBar: true,
-        })
-      } else {
-        this.file = null
-        this.filePath = null
-
-        this.myForm.get("myfile")?.setValue(null)
-        this.myForm = this.formBuilder.group({
-          myfile: ["", Validators.required],
-        })
-        this.ngxService.stop()
-        this.reload()
-        Swal.fire({
-          icon: "error",
-          title: "Validation not passed",
-          // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-          text: res.message,
-          showConfirmButton: true,
-          timer: 25000,
-          timerProgressBar: true,
-        })
-      }
-    })
   }
 
   deleteBusiness(data: any) {
@@ -831,6 +834,18 @@ export class UploadprojectionComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
     )
+  }
+
+  private errorHandler(error: any) {
+    typeof error
+    let message = ""
+    if (typeof error == "string") {
+      return error
+    }
+    error.forEach((err: {data: string | {message: string}; id: number}) => {
+      message += ((err?.data as any)?.message || err.data) + "<br /> "
+    })
+    return message
   }
 
   private getDismissReason(reason: any): string {

@@ -340,7 +340,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: res.message,
+            text: this.errorHandler(res.message),
             showConfirmButton: true,
             timer: 2000,
             timerProgressBar: true,
@@ -860,13 +860,10 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     if (typeof error == "string") {
       return error
     }
-    if (typeof error == "object") {
-      error.forEach((err: {data: string}) => {
-        message += err.data + "<br>"
-      })
-      return message
-    }
-    return error
+    error.forEach((err: {data: string}) => {
+      message += err.data + "<br>"
+    })
+    return message
   }
 
   private getDismissReason(reason: any): string {

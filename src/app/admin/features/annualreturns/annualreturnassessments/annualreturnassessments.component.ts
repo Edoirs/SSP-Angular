@@ -58,7 +58,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
   files: any
   filePath: string[] = []
 
-  comingSoon = signal(true)
+  comingSoon = signal(false)
 
   constructor(
     private formBuilder: FormBuilder,

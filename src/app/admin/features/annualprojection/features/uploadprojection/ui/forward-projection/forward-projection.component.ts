@@ -19,7 +19,7 @@ import {
 } from "@angular/material/dialog"
 import {CommonModule} from "@angular/common"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
-import {AnnualProjectionService} from "../../../../services/annual-projection.service"
+import {AnnualProjectionService} from "../../../../data-access/services/annual-projection.service"
 import Swal from "sweetalert2"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {UploadprojectionComponent} from "../../uploadprojection.component"
