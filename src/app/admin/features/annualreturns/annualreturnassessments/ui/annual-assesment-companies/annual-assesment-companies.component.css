@@ -1,0 +1,17 @@
+.monthly-remittance{
+    padding: 20px;
+
+    table{
+        table-layout: auto;
+    }
+}
+
+.monthly-remittance-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monthly-remittance-body{
+    margin-top: 20px;
+}

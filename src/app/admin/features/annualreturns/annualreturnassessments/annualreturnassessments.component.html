@@ -1,221 +1,119 @@
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-  
-    </div>
-    <!-- /.content-header -->
-  
-    <!-- Main content -->
-    <section class="content" data-select2-id="32">
-      <div class="container-fluid" data-select2-id="31">
-        <!-- <flash-messages></flash-messages> -->
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-secondary">
-          <div class="card-header custome">
-            <h3 class="card-title">List of Businesses</h3>
-          </div>
+  <!-- Content Header (Page header) -->
+  <div class="content-header"></div>
+  <!-- /.content-header -->
 
-          @if (comingSoon()) {
-            <app-coming-soon />
-          }@else {
-            <div class="card-body">
-
-              <div  class="overflow-auto">
-                <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
-                  <table class="table table-bordered table-condensed" *ngIf="businessesData;" datatable [dtOptions]="dtOptions"
-                    width="100%">
-                    <thead>
-                      <tr>
-                        <th>S/N</th>
-                        <th>Tax Year</th>
-                        @if(tokenService.getLoginResData.isAdminUser){
-                          <th>Company RIN</th>
-                          <th>Company Name</th>
-                        }
-                        <th>Business RIN</th>
-                        <th>Business Name</th>
-                        <th>Employee Count</th>
-                        <th>Sum Assessment</th>
-                        <th>H1 Tax Paid</th>
-                        <th>Under Remittance</th>
-                        <th>Status</th>
-                        <th>Date Filled</th>
-                        <th>Date Reassessed</th>
-                        <th>View</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let mydata of businessesData; index as i">
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ mydata?.taxYear || '2024' }}</td>
-                        @if(tokenService.getLoginResData.isAdminUser){
-                          <td>{{ mydata?.companyRin }}</td>
-                          <td>{{ mydata?.companyName }}</td>
-                        }
-                        <td>{{ mydata?.businessRIN }}</td>
-                        <td>{{ mydata?.businessName | titlecase }}</td>
-                        <td>{{ mydata?.employeeCount || 'N/A' }}</td>
-                        <td>{{ '0.00' }}</td>
-                        <td>{{ mydata?.taxPaid || 'N/A' }}</td>
-                        <td>{{ '0.00' }}</td>
-                        <td>{{ mydata?.status || 'N/A' }}</td>
-                        <td>{{ mydata?.dateFilled || 'N/A' }}</td>
-                        <td>{{ mydata?.Reassessed || 'N/A' }}</td>
-
-                        <td title="View"><button class="btn btn-sm btn-outline-success"
-                            (click)="openViewEmployee(mydata)"><i class="nav-icon fas fa-eye"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-          }
-
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+      <!-- <flash-messages></flash-messages> -->
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">List of Businesses</h3>
         </div>
-  
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-    
-  <ng-template #appealmodal let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Generate Objection</h4>
-    </div>
-  
-    <div class="modal-body">
-      <div class="container">  
-        <form [formGroup]="appealForm" (ngSubmit)="onSubmitAppeal(appealForm.value)">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="invoiceNumber">Invoice Number</label>
-              <input
-                type="text"
-                formControlName="invoiceNumber"
-                class="form-control"
-                [attr.disabled]="true"
-                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors }"
-              />
-              <div
-                *ngIf="submitted &amp;&amp; appealForm.controls['invoiceNumber'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="appealForm.controls['invoiceNumber'].errors['required']">
-                  Invoice Number is required
-                </div>
-              </div>
-            </div>
-  
-            <div class="form-group col-md-6">
-              <label for="date">Date</label>
-              <input
-                type="text"
-                formControlName="date"
-                class="form-control"
-                [attr.disabled]="true"
-                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['date'].errors }"
-              />
-              <div
-                *ngIf="submitted &amp;&amp; appealForm.controls['date'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="appealForm.controls['date'].errors['required']">
-                  Reason is required
-                </div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="messageTitle">Reason for Objection<sup style="font-weight: 800"
-                class="font-wegiht-bold text-danger">*</sup></label>
-              <input
-                type="text"
-                formControlName="messageTitle"
-                class="form-control"
-                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['messageTitle'].errors }"
-              />
-              <div
-                *ngIf="submitted &amp;&amp; appealForm.controls['messageTitle'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="appealForm.controls['messageTitle'].errors['required']">
-                  Reason is required
-                </div>
-              </div>
-            </div>
-  
-            <div class="form-group col-md-6">
-              <label for="fileInput"
-                >Select File to Upload (jpeg, jpg, png)<sup style="font-weight: 800"
-                class="font-wegiht-bold text-danger">*</sup></label
-              >
-              <div class="custom-file">
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="overflow-auto">
+
+            <div class="d-flex justify-content-end">
+              <div class="table-header-cont-3">
                 <input
-                  formControlName="myfile"
-                  multiple
-                  id="myfile"
-                  type="file"
-                  class="custom-file-input"
-                  (change)="onFileChange($event)"
-                  [ngClass]="{
-                    'is-invalid': submitted && appealForm.controls['myfile'].errors
-                  }"
-                  accept=".png,.jpg,.jpeg"
-                />
-                <label class="custom-file-label" for="customFile">{{
-                  filePath == []
-                    ? "Choose file (jpeg, jpg, png)"
-                    : filePath.join(", ")
-                }}</label>
-              </div>
-              <div
-                *ngIf="submitted &amp;&amp; appealForm.controls['myfile'].touched && appealForm.controls['myfile'].invalid"
-                class="text-danger">
-                <div *ngIf="appealForm.controls['myfile'].errors!['required']">File is required.</div>
+                  class="form-control"
+                  #searchTable
+                  type="search"
+                  placeholder="search business name"
+                  [value]="queryString()"
+                  (keyup)="queryTable(searchTable)"
+                  (search)="queryTable(searchTable)" />
               </div>
             </div>
+
+            <table
+              class="table table-bordered table-condensed mt-2"
+              width="100%">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                  <th>Company RIN</th>
+                  <th>Company Name</th>
+                  }
+                  <th>Business RIN</th>
+                  <th>Business Name</th>
+                  <th>Tax Year</th>
+                  <th>No of Employees</th>
+                  <th>Remitted Tax</th>
+                  <th>Computed Tax</th>
+                  <th>Difference</th>
+                  <th>Status</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if(dataLoading()){
+                <tr>
+                  <td colspan="100%">
+                    <ngx-skeleton-loader count="2" />
+                  </td>
+                </tr>
+                } @else if (dataMessage()) {
+                <tr>
+                  <td colspan="100%">
+                    <span>{{ dataMessage() }}</span>
+                  </td>
+                </tr>
+                } @else { @for (employee of employeesList()?.businesses; track
+                $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  @if(tokenService.getLoginResData.isAdminUser){
+                    <td>{{ employee?.companyRin }}</td>
+                    <td>{{ employee?.companyName }}</td>
+                  }
+                  <td>{{ employee?.businessRin }}</td>
+                  <td>{{ employee?.businessName | titlecase }}</td>
+                  <td>
+                    {{ employee?.businessAddress || "N/A" }}
+                  </td>
+                  <td>
+                    {{ employee?.businessLga || "N/A" }}
+                  </td>
+                  <td>{{ employee?.noOfEmployees | number }}</td>
+                  <td title="View">
+                    <button
+                      class="btn btn-sm btn-outline-success"
+                      (click)="''">
+                      <i class="nav-icon fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td colspan="100%">
+                    <span>No businesses available for this record.</span>
+                  </td>
+                </tr>
+                } }
+              </tbody>
+            </table>
+
+            <section>
+              <mat-paginator
+                [length]="totalLength()"
+                [pageSize]="pageSize()"
+                [pageIndex]="pageIndex()"
+                [pageSizeOptions]="[10, 25, 50, 100]"
+                (page)="handlePageEvent($event)"
+                aria-label="Select page">
+              </mat-paginator>
+            </section>
           </div>
-  
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="message">Objection Description<sup style="font-weight: 800"
-                class="font-wegiht-bold text-danger">*</sup></label>
-              <textarea
-                type="text"
-                formControlName="message"
-                class="form-control"
-                rows="4"
-                [ngClass]="{ 'is-invalid': submitted &amp;&amp; appealForm.controls['message'].errors }"
-              ></textarea>
-              <div
-                *ngIf="submitted &amp;&amp; appealForm.controls['message'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="appealForm.controls['message'].errors['required']">
-                  Objection Desription is required
-                </div>
-              </div>
-            </div>          
-          </div>
-  
-          <button type="submit" class="btn btn button-login">
-            <i class="far fa-share-square"></i> Generate Objection
-          </button>
-        </form>
+        </div>
+      
       </div>
     </div>
-  
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-outline-dark button-login"
-        (click)="modal.close('Save click')"
-      >
-        Ok
-      </button>
-    </div>
-  </ng-template>
+
+  </section>
+
+</div>
