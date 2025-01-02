@@ -11,13 +11,17 @@ import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {AnnualAssesmentService} from "../data-access/services/annual-return.service"
 import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {AnnualAssesmentCompaniesComponent} from "./ui/annual-assesment-companies/annual-assesment-companies.component"
+import {MaterialDialogConfig} from "@shared/utils/material.utils"
+import {CommonModule} from "@angular/common"
 
 @Component({
   selector: "app-annualreturnassessments",
   templateUrl: "./annualreturnassessments.component.html",
   styleUrls: ["./annualreturnassessments.component.css"],
   standalone: true,
-  imports: [MatPaginatorModule, NgxSkeletonLoaderModule],
+  imports: [MatPaginatorModule, NgxSkeletonLoaderModule, CommonModule],
+  providers: [],
 })
 export class AnnualreturnassessmentsComponent implements OnInit {
   private readonly router = inject(Router)
@@ -117,7 +121,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
 
   openEmployeeDetails(data: any) {
     this.dialog.open(
-      MonthlyRemittanceEmployeesComponent,
+      AnnualAssesmentCompaniesComponent,
       MaterialDialogConfig(data)
     )
   }
