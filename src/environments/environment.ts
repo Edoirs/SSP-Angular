@@ -10,7 +10,7 @@ export const environment = {
   AUTHAPIURL: "https://ss.eirs.vip/api/",
   SAMPLE_FILE_URL: "https://nsirs.nownowpay.com.ng/NIGER-API/public/files/",
   GOOGLE_RECAPTCHA: false,
-  WHATSAPP_PHONE_NO: 919012017120,
+  WHATSAPP_PHONE_NO: 8130970146,
 }
 
 /*

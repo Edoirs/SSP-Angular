@@ -5,10 +5,10 @@
     </div>
 
     <div class="schedule-buttons">
-      <button [disabled]="showSendToRDM() || !tokenService.getLoginResData.isAdminUser" (click)="sendToRdm()">Send to RDM</button>
+      <button [disabled]="showSendToRDM() || tokenService.getLoginResData.isAdminUser" (click)="sendToRdm()">Send to RDM</button>
       <button [disabled]="showResendToRDM() || !tokenService.getLoginResData.isAdminUser" (click)="reSendToRdm()">Re-Send to RDM</button>
       <button [disabled]="showSendToRDM()" (click)="reviseSubmission()">Revise Submission</button>
-      <button [disabled]="btnLoading() || !tokenService.getLoginResData.isAdminUser" (click)="reAssess()">Re-Assess</button>
+      <button [disabled]="btnLoading() || tokenService.getLoginResData.isAdminUser" (click)="reAssess()">Re-Assess</button>
       <button [disabled]="showDownloadPdf()" (click)="downloadPdf()">Download PDF</button>
     </div>
     <!-- /.card-header -->
