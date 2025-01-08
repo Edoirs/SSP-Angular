@@ -51,7 +51,7 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
 
   btnLoading = signal(false)
 
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(0)
 

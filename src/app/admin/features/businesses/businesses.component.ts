@@ -28,7 +28,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -60,7 +60,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 10,
+          pageSize: 50,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",
@@ -125,13 +125,13 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   }
 
   handlePageEvent(event: PageEvent) {
-      this.router.navigate(["."], {
-        relativeTo: this.route,
-        queryParams: {
-          pageSize: event.pageSize,
-          pageIndex: event.pageIndex,
-        },
-        queryParamsHandling: "replace",
-      })
+    this.router.navigate(["."], {
+      relativeTo: this.route,
+      queryParams: {
+        pageSize: event.pageSize,
+        pageIndex: event.pageIndex,
+      },
+      queryParamsHandling: "replace",
+    })
   }
 }

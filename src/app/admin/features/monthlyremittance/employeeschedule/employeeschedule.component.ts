@@ -30,7 +30,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
   title = "PAYE - Employees Report"
 
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
   queryString = signal("")
@@ -65,7 +65,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 10,
+          pageSize: this.pageSize(),
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

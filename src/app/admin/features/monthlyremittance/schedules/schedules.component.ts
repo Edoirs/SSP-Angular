@@ -85,7 +85,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   companyId: any
 
   businessesData = signal<ScheduleResInterface[] | null>(null)
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -754,7 +754,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 10,
+          pageSize: this.pageSize(),
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

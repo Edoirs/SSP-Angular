@@ -44,7 +44,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   queryString = signal("")
   queryType = signal("")
 
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -101,7 +101,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           ...(query?.length && {search: query}),
-          pageSize: 10,
+          pageSize: this.pageSize(),
           pageIndex: 1,
         },
         queryParamsHandling: "replace",
@@ -115,7 +115,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         type: query,
-        pageSize: 10,
+        pageSize: this.pageSize(),
         pageIndex: 1,
       },
       queryParamsHandling: "replace",

@@ -37,7 +37,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -69,7 +69,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 10,
+          pageSize: this.pageSize(),
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

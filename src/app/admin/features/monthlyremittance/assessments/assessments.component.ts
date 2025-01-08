@@ -80,7 +80,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   companyId: any
 
   assementsData = signal<AssessmentResInterface[] | null>(null)
-  pageSize = signal(10)
+  pageSize = signal(50)
   totalLength = signal(500)
   pageIndex = signal(1)
   dataLoading = signal(false)
