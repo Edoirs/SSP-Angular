@@ -21,10 +21,10 @@ export class AnnualProjectionService {
 
   getBusinesses(companyId: string, pageNumber = 0, pageSize = 10) {
     const params = new HttpParams({
-      // fromObject: {
-      //   pageNumber: pageNumber + 1,
-      //   pageSize,
-      // },
+      fromObject: {
+        pageNumber: pageNumber + 1,
+        pageSize,
+      },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
       `${environment.AUTHAPIURL}FormH3/getallformh3bycompanyId/${companyId}`,

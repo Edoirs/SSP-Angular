@@ -8,15 +8,49 @@ import {ServerResInterface} from "@shared/types/server-response.model"
 export class FormHoneService {
   private readonly httpClient = inject(HttpClient)
 
-  getBusinesses(companyId: string, pageNumber = 0, pageSize = 10) {
+  private mockBusinesses?: UploadProjectioResInterface
+  private mockSchedules?: UploadProjectioResInterface
+
+  getBusinesses(companyId: string, pageNumber: string, pageSize: string) {
     const params = new HttpParams({
       fromObject: {
-        pageNumber: pageNumber + 1,
+        pageNumber,
         pageSize,
       },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
       `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${companyId}`,
+      {params}
+    )
+  }
+
+  getBusinessesByBusinessId(
+    companyId: string,
+    businessId: string,
+    pageNumber: string,
+    pageSize: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+      },
+    })
+    return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
+      `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${companyId}/bybusinessId/${businessId}`,
+      {params}
+    )
+  }
+
+  getAnnualScedules(companyId: string, pageNumber: string, pageSize: string) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+      },
+    })
+    return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
+      `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${companyId}`,
       {params}
     )
   }

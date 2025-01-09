@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {Router} from "@angular/router"
@@ -20,15 +20,18 @@ import {DtImageOne, DtImageTwo} from "./utils/annual-return-schedules.utils"
 import {ServerResInterface} from "@shared/types/server-response.model"
 import {AnnualScheduleReInterface} from "./data-access/annual-return-schedule.model"
 import {TokenService} from "@shared/services/token.service"
+import {FormHoneService} from "../data-access/services/form-h1.service"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 
 @Component({
   selector: "app-annualreturnschedules",
   templateUrl: "./annualreturnschedules.component.html",
   styleUrls: ["./annualreturnschedules.component.css"],
 })
-export class AnnualreturnschedulesComponent implements OnInit {
+export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   readonly tokenService = inject(TokenService)
+  readonly formHoneService = inject(FormHoneService)
   dtOptions: any = {}
   dtSmOptions: any = {}
   modalOptions!: NgbModalOptions
@@ -65,6 +68,8 @@ export class AnnualreturnschedulesComponent implements OnInit {
   companyId: any
   annualReturnsData: any
   apidataEmpty: boolean = false
+
+  subs = new SubscriptionHandler()
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,6 +116,10 @@ export class AnnualreturnschedulesComponent implements OnInit {
     }
 
     this.intialiseTableProperties()
+  }
+
+  ngOnDestroy(): void {
+    this.subs.clear()
   }
 
   intialiseTableProperties() {
@@ -435,16 +444,16 @@ export class AnnualreturnschedulesComponent implements OnInit {
   }
 
   getSchedules() {
-    const obj = {}
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/newgetallformh1bycompanyId/${this.companyId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      // console.log("schedulesData: ", res);
+    this.subs.add = this.formHoneService
+      .getAnnualScedules(this.companyId, "1", "2000000")
+      .subscribe((res) => {
+        // console.log("schedulesData: ", res);
 
-      this.schedulesData = res?.data?.result
-      this.ngxService.stop()
-    })
+        this.schedulesData = res?.data?.result
+        this.ngxService.stop()
+      })
   }
 
   getSingleSchedule(scheduleId: any) {

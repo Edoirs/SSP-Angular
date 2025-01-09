@@ -207,26 +207,27 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   }
 
   getBusinesses() {
-    const obj = {}
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      // console.log("BusinessData: ", res)
+    this.subs.add = this.formHoneService
+      .getBusinesses(this.companyId, "1", "2000000")
+      .subscribe((res) => {
+        // console.log("BusinessData: ", res)
 
-      this.businessesData = res?.data?.result
-      this.ngxService.stop()
-    })
+        this.businessesData = res?.data?.result
+        this.ngxService.stop()
+      })
   }
 
   getSingleBusiness(businessId: any) {
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res: any) => {
-      this.selectedBusiness = res?.response
-      this.ngxService.stop()
-    })
+    this.subs.add = this.formHoneService
+      .getBusinessesByBusinessId(this.companyId, businessId, "1", "2000000")
+      .subscribe((res: any) => {
+        this.selectedBusiness = res?.response
+        this.ngxService.stop()
+      })
   }
 
   uploadEmployees(modal: any, data: any) {

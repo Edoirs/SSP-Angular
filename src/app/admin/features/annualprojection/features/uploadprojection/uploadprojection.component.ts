@@ -205,7 +205,7 @@ export class UploadprojectionComponent implements OnInit {
     this.ngxService.start()
 
     this.subs.add = this.annualProjectionService
-      .getBusinesses(this.companyId, "1", "200000")
+      .getBusinesses(this.companyId)
       .subscribe((res) => {
         this.businessesData = res?.data?.result
         this.ngxService.stop()
