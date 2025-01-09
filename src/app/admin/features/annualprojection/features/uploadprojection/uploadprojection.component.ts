@@ -128,9 +128,9 @@ export class UploadprojectionComponent implements OnInit {
     this.dtOptions = {
       paging: true,
       scrollX: true,
-      pagingType: "full_numbers",
+      pagingType: "simple_numbers",
       responsive: true,
-      pageLength: 10,
+      pageLength: 50,
       lengthChange: true,
       processing: true,
       ordering: false,
@@ -205,7 +205,7 @@ export class UploadprojectionComponent implements OnInit {
     this.ngxService.start()
 
     this.subs.add = this.annualProjectionService
-      .getBusinesses(this.companyId)
+      .getBusinesses(this.companyId, "1", "200000")
       .subscribe((res) => {
         this.businessesData = res?.data?.result
         this.ngxService.stop()

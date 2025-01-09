@@ -126,9 +126,9 @@ export class ReassessmentsComponent implements OnInit {
     this.dtOptions = {
       paging: true,
       // scrollX: true,
-      pagingType: "full_numbers",
+      pagingType: "simple_numbers",
       responsive: true,
-      pageLength: 10,
+      pageLength: 50,
       lengthChange: true,
       processing: true,
       ordering: false,
