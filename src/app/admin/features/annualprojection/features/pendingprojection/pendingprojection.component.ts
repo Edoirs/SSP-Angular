@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 // import { DashboardComponent } from "../../dashboard/dashboard.component";
 import {HttpClient} from "@angular/common/http"
 import {HttpHeaders} from "@angular/common/http"
@@ -16,14 +16,18 @@ import Swal from "sweetalert2"
 import {Title} from "@angular/platform-browser"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TokenService} from "@shared/services/token.service"
+import {AnnualProjectionService} from "@admin-pages/annualprojection/data-access/services/annual-projection.service"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 
 @Component({
   selector: "app-pendingprojection",
   templateUrl: "./pendingprojection.component.html",
   styleUrls: ["./pendingprojection.component.css"],
 })
-export class PendingprojectionComponent implements OnInit {
+export class PendingprojectionComponent implements OnInit, OnDestroy {
   readonly tokenService = inject(TokenService)
+  private readonly annualProjectionService = inject(AnnualProjectionService)
+
   forwardProjectionForm!: FormGroup
   selectedProjection: any
   updateProjectionForm!: FormGroup
@@ -71,6 +75,8 @@ export class PendingprojectionComponent implements OnInit {
   disableEmployeeControl: any
   fileFormH3Form: any
   taxpayerID: any
+
+  subs = new SubscriptionHandler()
 
   constructor(
     private httpClient: HttpClient,
@@ -173,17 +179,21 @@ export class PendingprojectionComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subs.clear()
+  }
+
   initialiseForm() {}
 
   getBusinesses() {
-    const obj = {}
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      this.businessesData = res?.data?.result
-      this.ngxService.stop()
-    })
+    this.subs.add = this.annualProjectionService
+      .getUploads(this.companyId, 1, 2000000)
+      .subscribe((res) => {
+        this.businessesData = res?.data?.result
+        this.ngxService.stop()
+      })
   }
 
   viewBusinessProjection(modal: any, data: any) {

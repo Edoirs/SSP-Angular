@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 // import { DashboardComponent } from "../../dashboard/dashboard.component";
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 // import {ActivatedRoute, Router} from "@angular/router"
@@ -12,13 +12,16 @@ import {
 import {environment} from "src/environments/environment"
 import {Title} from "@angular/platform-browser"
 import {NgxUiLoaderService} from "ngx-ui-loader"
+import {AnnualProjectionService} from "@admin-pages/annualprojection/data-access/services/annual-projection.service"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 
 @Component({
   selector: "app-approvedprojection",
   templateUrl: "./approvedprojection.component.html",
   styleUrls: ["./approvedprojection.component.css"],
 })
-export class ApprovedprojectionComponent implements OnInit {
+export class ApprovedprojectionComponent implements OnInit, OnDestroy {
+  private readonly annualProjectionService = inject(AnnualProjectionService)
   dtOptions: any = {}
   dtSmOptions: any = {}
   roleID: any
@@ -44,6 +47,8 @@ export class ApprovedprojectionComponent implements OnInit {
   assessmentsData: any
   singleAssessmentData: any
   assessmentEmployeesData: any
+
+  subs = new SubscriptionHandler()
 
   comingSoon = signal(true)
 
@@ -177,14 +182,19 @@ export class ApprovedprojectionComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subs.clear()
+  }
+
   getBusinesses() {
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${this.companyId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      this.businessesData = res?.data?.result
-      this.ngxService.stop()
-    })
+    this.subs.add = this.annualProjectionService
+      .getUploads(this.companyId)
+      .subscribe((res) => {
+        this.businessesData = res?.data?.result
+        this.ngxService.stop()
+      })
   }
 
   getApprovedProjections(businessId: any, year: any) {
