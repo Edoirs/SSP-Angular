@@ -21,10 +21,9 @@ export class AssessmentService {
         CompanyId: this.tokenService.getLoginResData.companyId,
       },
     })
-    return this.httpClient.get<ServerResInterface<AssessmentResInterface[]>>(
-      `${environment.AUTHAPIURL}PhaseII/GetAllAssessments`,
-      {params}
-    )
+    return this.httpClient.get<
+      ServerResInterface<{result: AssessmentResInterface[]; totalCount: number}>
+    >(`${environment.AUTHAPIURL}PhaseII/GetAllAssessments`, {params})
   }
 
   async downloadEmployeePdfMonthly(payload: DownloadEmployeePdfInterface) {

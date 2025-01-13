@@ -9,7 +9,7 @@ import {UploadProjectioResInterface} from "../../features/uploadprojection/data-
 export class AnnualProjectionService {
   private readonly httpClient = inject(HttpClient)
 
-  getUploads(CompanyID: string, pageNumber = 1, pageSize = 50) {
+  getUploads(CompanyID: string, pageNumber = 1, pageSize = 100) {
     const params = new HttpParams({
       fromObject: {CompanyID, pageNumber, pageSize},
     })

@@ -28,7 +28,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -60,7 +60,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 50,
+          pageSize: 100,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

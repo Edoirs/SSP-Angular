@@ -85,7 +85,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   companyId: any
 
   businessesData = signal<ScheduleResInterface[] | null>(null)
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
 
@@ -153,7 +153,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
       paging: true,
       pagingType: "simple_numbers",
       responsive: true,
-      pageLength: 50,
+      pageLength: 100,
       lengthChange: true,
       processing: true,
       ordering: false,

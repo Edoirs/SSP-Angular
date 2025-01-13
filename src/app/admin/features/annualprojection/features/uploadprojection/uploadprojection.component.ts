@@ -130,7 +130,7 @@ export class UploadprojectionComponent implements OnInit {
       scrollX: true,
       pagingType: "simple_numbers",
       responsive: true,
-      pageLength: 50,
+      pageLength: 100,
       lengthChange: true,
       processing: true,
       ordering: false,

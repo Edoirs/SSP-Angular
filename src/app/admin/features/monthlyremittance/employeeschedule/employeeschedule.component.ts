@@ -30,7 +30,7 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
 
   title = "PAYE - Employees Report"
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
   queryString = signal("")

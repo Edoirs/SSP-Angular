@@ -62,7 +62,7 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
 
   queryString = signal("")
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(0)
   pageIndex = signal(1)
 
@@ -163,8 +163,8 @@ export class TccApplicationDetailsComponent implements OnInit, OnDestroy {
     this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
       this.queryString.set(query)
       this.pageIndex.set(1)
-      this.pageSize.set(50)
-      this.getTccDetails(1, 50, query)
+      this.pageSize.set(100)
+      this.getTccDetails(1, 100, query)
     })
   }
 

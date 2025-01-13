@@ -154,7 +154,6 @@
                       <label for="contactAddress" class="input-label pull-left ">Contact Address<sup
                           class="ml-1 font-wegiht-bold text-danger">*</sup></label>
                       <div class="inputWithIcon">
-                        <!-- <textarea type="text" placeholder="" rows="4" cols="50"></textarea> -->
                         <textarea formControlName="contactAddress" class="form-control" id="contactAddress" rows="4" [readonly]="isReadOnly" [(ngModel)]="apidata.contact_address"
                          [ngClass]="{ 'is-invalid': submitted &amp;&amp; companyProfileForm.controls['contactAddress'].errors }"></textarea>
                           <div *ngIf="submitted &amp;&amp; companyProfileForm.controls['contactAddress'].errors" class="text-danger">

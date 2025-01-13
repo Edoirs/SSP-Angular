@@ -44,7 +44,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   queryString = signal("")
   queryType = signal("")
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
 

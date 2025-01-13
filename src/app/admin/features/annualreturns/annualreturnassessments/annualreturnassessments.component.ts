@@ -47,7 +47,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
     {monthId: "12", monthName: "December"},
   ]
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
   queryString = signal("")
@@ -68,7 +68,7 @@ export class AnnualreturnassessmentsComponent implements OnInit {
         relativeTo: this.route,
         queryParams: {
           search: query,
-          pageSize: 50,
+          pageSize: 100,
           pageIndex: 1,
         },
         queryParamsHandling: "replace",

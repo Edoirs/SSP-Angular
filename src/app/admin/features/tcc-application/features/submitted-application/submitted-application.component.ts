@@ -37,7 +37,7 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   private exportAsService = inject(ExportAsService)
 
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
 

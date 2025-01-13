@@ -80,7 +80,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
   companyId: any
 
   assementsData = signal<AssessmentResInterface[] | null>(null)
-  pageSize = signal(50)
+  pageSize = signal(100)
   totalLength = signal(500)
   pageIndex = signal(1)
   dataLoading = signal(false)
@@ -150,7 +150,7 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
       search: false,
       pagingType: "simple_numbers",
       responsive: true,
-      pageLength: 50,
+      pageLength: 100,
       lengthChange: true,
       processing: true,
       ordering: false,
@@ -248,8 +248,8 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
             next: (res) => {
               this.dataLoading.set(false)
               if (res.status === true) {
-                this.assementsData.set(res.data)
-                this.totalLength.set(res?.data?.length || 0)
+                this.assementsData.set(res.data?.result)
+                this.totalLength.set(res?.data?.result?.length || 0)
               } else {
                 this.ngxService.stop()
                 this.dataLoading.set(false)
