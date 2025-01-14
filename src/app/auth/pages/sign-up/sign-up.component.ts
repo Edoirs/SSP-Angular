@@ -151,7 +151,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         "",
         [
           Validators.required,
-          Validators.minLength(8),
+          Validators.minLength(6),
           Validators.maxLength(40),
           // Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$')
         ],
@@ -160,7 +160,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         "",
         [
           Validators.required,
-          Validators.minLength(8),
+          Validators.minLength(6),
           Validators.maxLength(40),
           //   Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$')
         ],

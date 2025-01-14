@@ -186,7 +186,7 @@
                             New Password is required
                           </div>
                           <div *ngIf="enterOtpForm.controls['newPassword'].errors['minlength']">
-                            New Password must be min 8 characters.
+                            New Password must be min 6 characters.
                           </div>
                           <div *ngIf="enterOtpForm.controls['newPassword'].errors['maxlength']">
                             New Password must not exceed 40 character.
@@ -213,7 +213,7 @@
                         <div *ngIf="submitted && enterOtpForm.controls['confirmPassword'].errors"
                           class="form-text text-danger">
                           <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['minlength']">
-                            Confirm Password must be min 8 characters.
+                            Confirm Password must be min 6 characters.
                           </div>
                           <div *ngIf="enterOtpForm.controls['confirmPassword'].errors['maxlength']">
                             Confirm Password must not exceed 40 character.
@@ -282,7 +282,7 @@
                           New Password is required
                         </div>
                         <div *ngIf="adminSignUpOtpForm.controls['newPassword'].errors['minlength']">
-                          New Password must be min 8 characters.
+                          New Password must be min 6 characters.
                         </div>
                         <div *ngIf="adminSignUpOtpForm.controls['newPassword'].errors['maxlength']">
                           New Password must not exceed 40 character.
@@ -309,7 +309,7 @@
                       <div *ngIf="submitted && adminSignUpOtpForm.controls['confirmPassword'].errors"
                         class="form-text text-danger">
                         <div *ngIf="adminSignUpOtpForm.controls['confirmPassword'].errors['minlength']">
-                          Confirm Password must be min 8 characters.
+                          Confirm Password must be min 6 characters.
                         </div>
                         <div *ngIf="adminSignUpOtpForm.controls['confirmPassword'].errors['maxlength']">
                           Confirm Password must not exceed 40 character.

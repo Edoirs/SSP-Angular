@@ -99,12 +99,6 @@
                         <div *ngIf="loginForm.controls['password'].errors['required']">
                           Password is required
                         </div>
-                        <div *ngIf="loginForm.controls['password'].errors['minlength']">
-                          Password must be 8 character long.
-                        </div>
-                        <div *ngIf="loginForm.controls['password'].errors['maxlength']">
-                          Password must not exceed 40 character.
-                        </div>
                       </div>
                     </div>
                   </div>

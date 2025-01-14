@@ -63,14 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           // Validators.pattern(/^[0][1-9]\d{9}$|^[1-9]\d{9}$/),
         ],
       ],
-      password: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(40),
-        ],
-      ],
+      password: ["", [Validators.required]],
       // rememberMe: [false, []],
       taxTypeId: ["", Validators.required],
       // captcha: ['', Validators.required],
