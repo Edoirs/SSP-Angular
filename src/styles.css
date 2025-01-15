@@ -65,3 +65,12 @@ mat-paginator button:hover {
 .login-icon{
   color: #0700a1;
 }
+
+/* data tables */
+.dataTables_filter{
+  display: none;
+}
+
+.dt-buttons{
+  margin-bottom: 12px;
+}

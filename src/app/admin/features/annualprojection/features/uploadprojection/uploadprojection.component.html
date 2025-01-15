@@ -19,7 +19,11 @@
         <div class="card-body">
 
           <div class="overflow-auto">
-            <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+            <div class="d-flex justify-content-end">
+              <div class="table-header-cont-3">
+                <app-table-search />
+              </div>
+            </div>
             <table class="table table-bordered table-condensed" *ngIf="businessesData;" datatable
               [dtOptions]="dtOptions" width="100%">
               <thead>

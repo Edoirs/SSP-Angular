@@ -14,13 +14,19 @@ import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 import {AnnualAssesmentCompaniesComponent} from "./ui/annual-assesment-companies/annual-assesment-companies.component"
 import {MaterialDialogConfig} from "@shared/utils/material.utils"
 import {CommonModule} from "@angular/common"
+import {TableSearchComponent} from "@shared/components/table-search/table-search.component"
 
 @Component({
   selector: "app-annualreturnassessments",
   templateUrl: "./annualreturnassessments.component.html",
   styleUrls: ["./annualreturnassessments.component.css"],
   standalone: true,
-  imports: [MatPaginatorModule, NgxSkeletonLoaderModule, CommonModule],
+  imports: [
+    MatPaginatorModule,
+    NgxSkeletonLoaderModule,
+    CommonModule,
+    TableSearchComponent,
+  ],
   providers: [],
 })
 export class AnnualreturnassessmentsComponent implements OnInit {

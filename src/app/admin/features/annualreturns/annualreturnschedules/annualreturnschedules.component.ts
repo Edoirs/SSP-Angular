@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
-import {Router} from "@angular/router"
+import {ActivatedRoute, Router} from "@angular/router"
 import {
   ModalDismissReasons,
   NgbModal,
@@ -22,6 +22,7 @@ import {AnnualScheduleReInterface} from "./data-access/annual-return-schedule.mo
 import {TokenService} from "@shared/services/token.service"
 import {FormHoneService} from "../data-access/services/form-h1.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-annualreturnschedules",
@@ -32,6 +33,8 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog)
   readonly tokenService = inject(TokenService)
   readonly formHoneService = inject(FormHoneService)
+  private readonly route = inject(ActivatedRoute)
+
   dtOptions: any = {}
   dtSmOptions: any = {}
   modalOptions!: NgbModalOptions
@@ -74,10 +77,7 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClient,
-    private router: Router,
     private titleService: Title,
-    private datepipe: DatePipe,
-    private sess: SessionService,
     // private component: DashboardComponent,
     private modalService: NgbModal,
     private ngxService: NgxUiLoaderService
@@ -124,12 +124,12 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
 
   intialiseTableProperties() {
     this.dtOptions = {
-      paging: true,
+      paging: false,
       scrollX: true,
       pagingType: "simple_numbers",
       responsive: true,
       pageLength: 100,
-      lengthChange: true,
+      lengthChange: false,
       processing: true,
       ordering: false,
       info: true,
@@ -441,6 +441,40 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.businessId = data.id
     // this.getSchedules(this.businessId);
     this.showModal(modal)
+  }
+
+  listenToRoute() {
+    this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.ngxService.start()
+      if (Object.keys(params)) {
+        this.subs.add = this.formHoneService
+          .getAnnualScedules(
+            this.companyId,
+            "1",
+            "100",
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"]
+          )
+          .subscribe({
+            next: (res) => {
+              this.ngxService.stop()
+
+              if (res.status === true) {
+                this.businessesData = res?.data?.result
+              } else {
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+            },
+            error: (err) => {
+              this.ngxService.stop()
+
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+            },
+          })
+      }
+    })
   }
 
   getSchedules() {

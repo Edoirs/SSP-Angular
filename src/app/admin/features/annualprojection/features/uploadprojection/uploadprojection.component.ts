@@ -108,7 +108,8 @@ export class UploadprojectionComponent implements OnInit {
     this.initialiseForms()
     this.companyId = localStorage.getItem("companyId")
     // console.log("companyId: ", this.companyId)
-    this.getBusinesses()
+    // this.getBusinesses()
+    this.listenToRoute()
     this.roleID = localStorage.getItem("role_id")
 
     this.companyName = localStorage.getItem("companyName")
@@ -126,7 +127,7 @@ export class UploadprojectionComponent implements OnInit {
     }
 
     this.dtOptions = {
-      paging: true,
+      paging: false,
       scrollX: true,
       pagingType: "simple_numbers",
       responsive: true,
@@ -134,7 +135,7 @@ export class UploadprojectionComponent implements OnInit {
       lengthChange: true,
       processing: true,
       ordering: false,
-      info: true,
+      info: false,
       dom:
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
@@ -198,6 +199,40 @@ export class UploadprojectionComponent implements OnInit {
       companyID: [""],
       businessName: [""],
       businessID: [""],
+    })
+  }
+
+  listenToRoute() {
+    this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.ngxService.start()
+      if (Object.keys(params)) {
+        this.subs.add = this.annualProjectionService
+          .getBusinesses(
+            this.companyId,
+            "1",
+            "100",
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"]
+          )
+          .subscribe({
+            next: (res) => {
+              this.ngxService.stop()
+
+              if (res.status === true) {
+                this.businessesData = res?.data?.result
+              } else {
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+            },
+            error: (err) => {
+              this.ngxService.stop()
+
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+            },
+          })
+      }
     })
   }
 

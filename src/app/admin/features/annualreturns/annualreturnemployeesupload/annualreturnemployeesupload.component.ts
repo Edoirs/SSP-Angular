@@ -18,6 +18,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TokenService} from "@shared/services/token.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {FormHoneService} from "../data-access/services/form-h1.service"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-annualreturnemployeesupload",
@@ -101,7 +102,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.companyRIN = localStorage.getItem("companyRIN")
     // console.log("companyRIN: ", this.companyRIN)
 
-    this.getBusinesses()
+    this.listenToRoute()
     this.roleID = localStorage.getItem("role_id")
 
     // if (this.roleID != 6) {
@@ -120,12 +121,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     }
 
     this.dtOptions = {
-      paging: true,
+      paging: false,
       scrollX: true,
       pagingType: "simple_numbers",
       responsive: true,
       pageLength: 100,
-      lengthChange: true,
+      lengthChange: false,
       processing: true,
       ordering: false,
       info: true,
@@ -203,6 +204,40 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.uploadCorporateForm = this.formBuilder.group({
       businessName: [""],
       companyID: [""],
+    })
+  }
+
+  listenToRoute() {
+    this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.ngxService.start()
+      if (Object.keys(params)) {
+        this.subs.add = this.formHoneService
+          .getBusinesses(
+            this.companyId,
+            "1",
+            "100",
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"]
+          )
+          .subscribe({
+            next: (res) => {
+              this.ngxService.stop()
+
+              if (res.status === true) {
+                this.businessesData = res?.data?.result
+              } else {
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+            },
+            error: (err) => {
+              this.ngxService.stop()
+
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+            },
+          })
+      }
     })
   }
 

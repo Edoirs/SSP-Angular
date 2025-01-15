@@ -11,11 +11,23 @@ export class FormHoneService {
   private mockBusinesses?: UploadProjectioResInterface
   private mockSchedules?: UploadProjectioResInterface
 
-  getBusinesses(companyId: string, pageNumber: string, pageSize: string) {
+  getBusinesses(
+    companyId: string,
+    pageNumber: string,
+    pageSize: string,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string
+  ) {
     const params = new HttpParams({
       fromObject: {
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
       },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
@@ -42,11 +54,23 @@ export class FormHoneService {
     )
   }
 
-  getAnnualScedules(companyId: string, pageNumber: string, pageSize: string) {
+  getAnnualScedules(
+    companyId: string,
+    pageNumber: string,
+    pageSize: string,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string
+  ) {
     const params = new HttpParams({
       fromObject: {
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
       },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(

@@ -9,21 +9,48 @@ import {UploadProjectioResInterface} from "../../features/uploadprojection/data-
 export class AnnualProjectionService {
   private readonly httpClient = inject(HttpClient)
 
-  getUploads(CompanyID: string, pageNumber = 1, pageSize = 100) {
-    const params = new HttpParams({
-      fromObject: {CompanyID, pageNumber, pageSize},
-    })
-    return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
-      `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${CompanyID}`,
-      {params}
-    )
-  }
-
-  getBusinesses(companyId: string, pageNumber: string, pageSize: string) {
+  getUploads(
+    companyId: string,
+    pageNumber: string,
+    pageSize: string,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string
+  ) {
     const params = new HttpParams({
       fromObject: {
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
+      },
+    })
+    return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(
+      `${environment.AUTHAPIURL}FormH3/newgetallformh3bycompanyId/${companyId}`,
+      {params}
+    )
+  }
+
+  getBusinesses(
+    companyId: string,
+    pageNumber: string,
+    pageSize: string,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string
+  ) {
+    const params = new HttpParams({
+      fromObject: {
+        pageNumber,
+        pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
       },
     })
     return this.httpClient.get<ServerResInterface<UploadProjectioResInterface>>(

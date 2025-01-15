@@ -18,6 +18,7 @@ import {NgxUiLoaderService} from "ngx-ui-loader"
 import {TokenService} from "@shared/services/token.service"
 import {AnnualProjectionService} from "@admin-pages/annualprojection/data-access/services/annual-projection.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 @Component({
   selector: "app-pendingprojection",
@@ -99,7 +100,7 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
 
     this.companyId = localStorage.getItem("companyId")
     // console.log("companyId: ", this.companyId);
-    this.getBusinesses()
+    this.listenToRoute()
     // this.getUnapprovedProjectionRecord();
 
     this.modalOptions = {
@@ -185,15 +186,38 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
 
   initialiseForm() {}
 
-  getBusinesses() {
-    this.ngxService.start()
+  listenToRoute() {
+    this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.ngxService.start()
+      if (Object.keys(params)) {
+        this.subs.add = this.annualProjectionService
+          .getUploads(
+            this.companyId,
+            "1",
+            "100",
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"]
+          )
+          .subscribe({
+            next: (res) => {
+              this.ngxService.stop()
 
-    this.subs.add = this.annualProjectionService
-      .getUploads(this.companyId, 1, 100)
-      .subscribe((res) => {
-        this.businessesData = res?.data?.result
-        this.ngxService.stop()
-      })
+              if (res.status === true) {
+                this.businessesData = res?.data?.result
+              } else {
+                Swal.fire(SweetAlertOptions(res?.message))
+              }
+            },
+            error: (err) => {
+              this.ngxService.stop()
+
+              Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+            },
+          })
+      }
+    })
   }
 
   viewBusinessProjection(modal: any, data: any) {

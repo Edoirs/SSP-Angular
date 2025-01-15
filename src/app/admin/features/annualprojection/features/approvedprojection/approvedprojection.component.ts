@@ -190,7 +190,7 @@ export class ApprovedprojectionComponent implements OnInit, OnDestroy {
     this.ngxService.start()
 
     this.subs.add = this.annualProjectionService
-      .getUploads(this.companyId)
+      .getUploads(this.companyId, "1", "100")
       .subscribe((res) => {
         this.businessesData = res?.data?.result
         this.ngxService.stop()
