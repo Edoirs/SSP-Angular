@@ -20,18 +20,18 @@ export class TableSearchComponent {
       companyName: new FormControl(""),
       companyRin: new FormControl(""),
     }),
-    bussinessName: new FormControl(""),
-    bussinessRin: new FormControl(""),
+    businessName: new FormControl(""),
+    busRin: new FormControl(""),
   })
 
   queryTable() {
-    const {bussinessName, bussinessRin, companyName, companyRin} =
+    const {businessName, busRin, companyName, companyRin} =
       this.tableFilterForm.value
     this.router.navigate(["."], {
       relativeTo: this.route,
       queryParams: {
-        ...(bussinessName && {bussinessName}),
-        ...(bussinessRin && {bussinessRin}),
+        ...(businessName && {businessName}),
+        ...(busRin && {busRin}),
         ...(companyName && {companyName}),
         ...(companyRin && {companyRin}),
         pageSize: 100,
