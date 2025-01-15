@@ -1,0 +1,21 @@
+
+.table-header-filters{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .form-group{
+        width: 100%;
+    }
+
+    label{
+        text-transform: capitalize;
+    }
+}
+
+@media (min-width: 567px) {
+    .table-header-filters{
+    flex-direction: row;
+    }
+}

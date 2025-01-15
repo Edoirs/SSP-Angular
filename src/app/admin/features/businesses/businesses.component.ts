@@ -8,17 +8,17 @@ import {MatPaginatorModule, PageEvent} from "@angular/material/paginator"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 
 import Swal from "sweetalert2"
-import {ThrotlleQuery} from "@shared/utils/shared.utils"
 import {TokenService} from "@shared/services/token.service"
 import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
+import {TableSearchComponent} from "@shared/components/table-search/table-search.component"
 
 @Component({
   selector: "app-businesses",
   templateUrl: "./businesses.component.html",
   styleUrl: "./businesses.component.scss",
   standalone: true,
-  imports: [MatPaginatorModule, NgxSkeletonLoaderModule],
+  imports: [MatPaginatorModule, NgxSkeletonLoaderModule, TableSearchComponent],
   providers: [BusinessService],
 })
 export class BusinessesComponent implements OnInit, OnDestroy {
@@ -36,8 +36,6 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   dataLoading = signal(false)
   dataMessage = signal("")
 
-  queryString = signal("")
-
   exportAsCSVConfig: ExportAsConfig = {
     type: "csv",
     elementIdOrContent: "xlsTable",
@@ -54,27 +52,12 @@ export class BusinessesComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
-  queryTable(domInput: HTMLInputElement) {
-    this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
-      this.router.navigate(["."], {
-        relativeTo: this.route,
-        queryParams: {
-          search: query,
-          pageSize: 100,
-          pageIndex: 1,
-        },
-        queryParamsHandling: "replace",
-      })
-    })
-  }
-
   listenToRoute() {
     this.subs.add = this.route.queryParams.subscribe((params) => {
       this.dataLoading.set(true)
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(+params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(+params["pageSize"])
-        if (params["search"]) this.queryString.set(params["search"])
         this.subs.add = this.businessService
           .getBusinesses(
             this.pageIndex() === 0 ? 1 : this.pageIndex(),

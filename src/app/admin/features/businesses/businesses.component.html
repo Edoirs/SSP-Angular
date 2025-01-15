@@ -24,14 +24,7 @@
                 </div>
               </div>
               <div class="table-header-cont-3">
-                <input
-                  class="form-control"
-                  #searchTable
-                  type="search"
-                  placeholder="search business name"
-                  [value]="queryString()"
-                  (keyup)="queryTable(searchTable)"
-                  (search)="queryTable(searchTable)" />
+                <app-table-search />
               </div>
             </section>
 

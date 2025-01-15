@@ -1,0 +1,45 @@
+<form class="table-header-filters" [formGroup]="tableFilterForm" (submit)="queryTable()">
+  @if(tokenService.getLoginResData.isAdminUser){
+    <div class="form-group">
+      <label for="search">company name</label>
+      <input
+      class="form-control"
+      #searchTable
+      type="search"
+      placeholder="company name"
+      formControlName="companyName" />
+    </div>
+
+    <div class="form-group">
+      <label for="search">company RIN</label>
+      <input
+      class="form-control"
+      #searchTable
+      type="search"
+      placeholder="company RIN"
+      formControlName="companyRin" />
+    </div> 
+  }
+
+    <div class="form-group">
+      <label for="search">business name</label>
+      <input
+      class="form-control"
+      #searchTable
+      type="search"
+      placeholder="business name"
+      formControlName="businessName" />
+    </div>
+
+    <div class="form-group">
+      <label for="search">business RIN</label>
+      <input
+      class="form-control"
+      #searchTable
+      type="search"
+      placeholder="business RIN"
+      formControlName="businessRin" />
+    </div>
+
+    <button>Search</button>
+  </form>
