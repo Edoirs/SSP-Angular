@@ -210,7 +210,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.ngxService.start()
 
     this.subs.add = this.formHoneService
-      .getBusinesses(this.companyId, "1", "2000000")
+      .getBusinesses(this.companyId, "1", "100")
       .subscribe((res) => {
         // console.log("BusinessData: ", res)
 
@@ -223,7 +223,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.ngxService.start()
 
     this.subs.add = this.formHoneService
-      .getBusinessesByBusinessId(this.companyId, businessId, "1", "2000000")
+      .getBusinessesByBusinessId(this.companyId, businessId, "1", "100")
       .subscribe((res: any) => {
         this.selectedBusiness = res?.response
         this.ngxService.stop()

@@ -447,7 +447,7 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.ngxService.start()
 
     this.subs.add = this.formHoneService
-      .getAnnualScedules(this.companyId, "1", "2000000")
+      .getAnnualScedules(this.companyId, "1", "100")
       .subscribe((res) => {
         // console.log("schedulesData: ", res);
 
