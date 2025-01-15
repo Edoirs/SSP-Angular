@@ -294,16 +294,11 @@ export class UploadprojectionComponent implements OnInit {
       .subscribe((res) => {
         // console.log(res)
         // Clear form Value Without any Error
-        this.myForm.reset()
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null)
-        })
 
         if (res.status == true) {
           this.ngxService.stop()
+          this.myForm.reset()
           this.modalService.dismissAll()
-          this.reload()
-          this.isResponse = 1
           this.filePath = null
 
           Swal.fire({
@@ -323,7 +318,6 @@ export class UploadprojectionComponent implements OnInit {
             myfile: ["", Validators.required],
           })
           this.ngxService.stop()
-          this.reload()
           Swal.fire({
             icon: "error",
             title: "Validation not passed",

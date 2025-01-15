@@ -34,10 +34,10 @@ export class TableSearchComponent implements OnInit {
     this.router.navigate(["."], {
       relativeTo: this.route,
       queryParams: {
-        ...(businessName && {businessName}),
-        ...(busRin && {busRin}),
-        ...(companyName && {companyName}),
-        ...(companyRin && {companyRin}),
+        ...(businessName && {businessName: businessName.trim()}),
+        ...(busRin && {busRin: busRin.trim()}),
+        ...(companyName && {companyName: companyName.trim()}),
+        ...(companyRin && {companyRin: companyRin.trim()}),
         pageSize: 100,
         pageIndex: 1,
       },
