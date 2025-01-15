@@ -9,7 +9,6 @@ import {AnnualreturnsComponent} from "./annualreturns/annualreturns/annualreturn
 import {AnnualreturnschedulesComponent} from "./annualreturns/annualreturnschedules/annualreturnschedules.component"
 import {ReassessmentappealsComponent} from "./annualreturns/reassessmentappeals/reassessmentappeals.component"
 import {ReassessmentsComponent} from "./annualreturns/reassessments/reassessments.component"
-import {DashboardComponent} from "./dashboard/dashboard.component"
 import {AssessmentsComponent} from "./monthlyremittance/assessments/assessments.component"
 import {DeletedemployeesComponent} from "./monthlyremittance/deletedemployees/deletedemployees.component"
 import {EmployeescheduleComponent} from "./monthlyremittance/employeeschedule/employeeschedule.component"
