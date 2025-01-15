@@ -13,12 +13,20 @@ export class TccService {
     pageNumber: number,
     pageSize: number,
     companyId: string,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string,
     search?: string
   ) {
     const params = new HttpParams({
       fromObject: {
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
         ...(search && {busRin: search}),
       },
     })

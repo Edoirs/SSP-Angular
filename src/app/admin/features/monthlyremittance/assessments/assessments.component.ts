@@ -242,7 +242,11 @@ export class AssessmentsComponent implements OnInit, OnDestroy {
         this.subs.add = this.assessmentService
           .getAssessments(
             this.pageIndex() === 0 ? 1 : this.pageIndex(),
-            this.pageSize()
+            this.pageSize(),
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"]
           )
           .subscribe({
             next: (res) => {

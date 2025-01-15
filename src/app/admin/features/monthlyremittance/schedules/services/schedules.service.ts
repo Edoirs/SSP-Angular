@@ -11,7 +11,11 @@ export class ScheduleService {
   getSchedules(
     companyId: string,
     pageNumber: number,
-    pageSize = 15,
+    pageSize: number,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string,
     search?: string
   ) {
     const params = new HttpParams({
@@ -19,6 +23,10 @@ export class ScheduleService {
         companyId,
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
         ...(search && {businessName: search}),
       },
     })

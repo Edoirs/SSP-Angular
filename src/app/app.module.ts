@@ -54,6 +54,7 @@ import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 import {ComingSoonComponent} from "@shared/components/coming-soon.component"
 import {BulkUploadNoticeComponent} from "@shared/components/bulk-upload-notice.component"
 import {IncModule} from "./__inc/inc.module"
+import {TableSearchComponent} from "@shared/components/table-search/table-search.component"
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import {IncModule} from "./__inc/inc.module"
     ComingSoonComponent,
     BulkUploadNoticeComponent,
     AnnualreturnassessmentsComponent,
+    TableSearchComponent,
     IncModule,
     NgxUiLoaderModule,
     FormsModule,

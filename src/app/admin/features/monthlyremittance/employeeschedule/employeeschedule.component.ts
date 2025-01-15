@@ -59,20 +59,6 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
     this.subs.clear()
   }
 
-  queryTable(domInput: HTMLInputElement) {
-    this.subs.add = ThrotlleQuery(domInput, "keyup").subscribe((query) => {
-      this.router.navigate(["."], {
-        relativeTo: this.route,
-        queryParams: {
-          search: query,
-          pageSize: this.pageSize(),
-          pageIndex: 1,
-        },
-        queryParamsHandling: "replace",
-      })
-    })
-  }
-
   listenToRoute() {
     this.dataLoading.set(true)
     this.subs.add = this.route.queryParams.subscribe((params) => {
@@ -84,6 +70,10 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
           .getEmployees(
             this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"],
             params["search"]
           )
           .subscribe({

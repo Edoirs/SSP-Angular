@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core"
+import {Component, inject, OnInit} from "@angular/core"
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms"
 import {ActivatedRoute, Router} from "@angular/router"
 import {TokenService} from "@shared/services/token.service"
@@ -10,7 +10,7 @@ import {TokenService} from "@shared/services/token.service"
   templateUrl: "./table-search.component.html",
   styleUrl: "./table-search.component.css",
 })
-export class TableSearchComponent {
+export class TableSearchComponent implements OnInit {
   public readonly tokenService = inject(TokenService)
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
@@ -23,6 +23,10 @@ export class TableSearchComponent {
     businessName: new FormControl(""),
     busRin: new FormControl(""),
   })
+
+  ngOnInit(): void {
+    this.clearQuerysOnReload()
+  }
 
   queryTable() {
     const {businessName, busRin, companyName, companyRin} =
@@ -38,6 +42,19 @@ export class TableSearchComponent {
         pageIndex: 1,
       },
       queryParamsHandling: "replace",
+    })
+  }
+
+  clearQuerysOnReload() {
+    this.router.navigate(["."], {
+      relativeTo: this.route,
+      queryParams: {
+        busRin: null,
+        businessName: null,
+        companyRin: null,
+        companyName: null,
+      },
+      queryParamsHandling: "merge",
     })
   }
 }

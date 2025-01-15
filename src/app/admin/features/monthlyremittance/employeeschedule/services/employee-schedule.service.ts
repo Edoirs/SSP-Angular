@@ -12,11 +12,23 @@ export class EmployeeScheduleService {
   private readonly httpClient = inject(HttpClient)
   private readonly tokenService = inject(TokenService)
 
-  getEmployees(pageNumber: number, pageSize: number, searchTerm?: string) {
+  getEmployees(
+    pageNumber: number,
+    pageSize: number,
+    busRin?: string,
+    businessName?: string,
+    companyRin?: string,
+    companyName?: string,
+    searchTerm?: string
+  ) {
     const params = new HttpParams({
       fromObject: {
         pageNumber,
         pageSize,
+        ...(busRin && {busRin}),
+        ...(businessName && {businessName}),
+        ...(companyRin && {companyRin}),
+        ...(companyName && {companyName}),
         ...(searchTerm && {searchTerm}),
       },
     })

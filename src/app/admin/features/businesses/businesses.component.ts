@@ -62,7 +62,11 @@ export class BusinessesComponent implements OnInit, OnDestroy {
           .getBusinesses(
             this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
-            params["search"]
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"],
+            params["search"] && params["search"]
           )
           .subscribe({
             next: (res) => {

@@ -20,13 +20,19 @@ import {ExportAsConfig, ExportAsService} from "ngx-export-as"
 import {DecimalPipe} from "@angular/common"
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader"
 import {TccSubmittedApplicationViewComponent} from "@admin-pages/tcc-application/ui/submitted-tcc-view/submitted-tcc-view.component"
+import {TableSearchComponent} from "@shared/components/table-search/table-search.component"
 
 @Component({
   selector: "app-submitted-application",
   templateUrl: "./submitted-application.component.html",
   styleUrl: "./submitted-application.component.scss",
   standalone: true,
-  imports: [MatPaginatorModule, DecimalPipe, NgxSkeletonLoaderModule],
+  imports: [
+    MatPaginatorModule,
+    DecimalPipe,
+    NgxSkeletonLoaderModule,
+    TableSearchComponent,
+  ],
   providers: [TccService],
 })
 export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
@@ -89,6 +95,10 @@ export class TccSubmittedApplicationComponent implements OnInit, OnDestroy {
             this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),
             this.tokenService.getLoginResData.companyId.toString(),
+            params["busRin"] && params["busRin"],
+            params["businessName"] && params["businessName"],
+            params["companyRin"] && params["companyRin"],
+            params["companyName"] && params["companyName"],
             params["search"]
           )
           .subscribe({
