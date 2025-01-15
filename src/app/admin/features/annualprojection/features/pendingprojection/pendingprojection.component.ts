@@ -189,7 +189,7 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
     this.ngxService.start()
 
     this.subs.add = this.annualProjectionService
-      .getUploads(this.companyId, 1, 2000000)
+      .getUploads(this.companyId, 1, 100)
       .subscribe((res) => {
         this.businessesData = res?.data?.result
         this.ngxService.stop()
