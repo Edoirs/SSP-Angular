@@ -27,7 +27,7 @@
                 <th>S/N</th>
                 @if(tokenService.getLoginResData.isAdminUser){
                   <th>Company Name</th>
-                  <th>Company Id</th>
+                  <th>Company RIN</th>
                 }
                 <th>Business RIN</th>
                 <th>Business Name</th>
@@ -47,7 +47,7 @@
                 <td>{{ i + 1 }}</td>
                 @if(tokenService.getLoginResData.isAdminUser){
                   <td>{{ mydata?.companyName || 'N/A' }}</td>
-                  <td>{{ mydata?.companyId }}</td>
+                  <td>{{ mydata?.companyRin }}</td>
                 }
                 <td>{{ mydata?.businessRIN }}</td>
                 <td>{{ mydata?.businessName | titlecase }}</td>

@@ -40,7 +40,7 @@
             <table class="table table-bordered table-condensed" width="100%">
               <thead>
                 <tr>
-                  <th>User ID</th>
+                  <th>SN</th>
                   <th>User Name</th>
                   <th>User Type</th>
                   <th>Status</th>
@@ -63,7 +63,7 @@
                 </tr>
                 } @else { @for (user of users(); track $index) {
                 <tr>
-                  <td>{{ user?.userId }}</td>
+                  <td>{{ $index + 1 }}</td>
                   <td>{{ user?.userName }}</td>
                   <td>{{ user?.userTypeName }}</td>
                   <td>{{ user?.status }}</td>
