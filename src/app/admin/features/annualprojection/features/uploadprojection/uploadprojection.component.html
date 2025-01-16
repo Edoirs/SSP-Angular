@@ -37,6 +37,7 @@
                   <th>Business Name</th>
                   <th>Business Address</th>
                   <th>No of Employees</th>
+                  <th>Tax Office</th>
                   <th>Upload</th>
                   <!-- <th>Delete</th> -->
                   <th>View</th>
@@ -53,6 +54,7 @@
                   <td>{{ mydata?.businessName | titlecase }}</td>
                   <td>{{ mydata?.businessAddress || 'N/A' }}</td>
                   <td>{{ mydata?.noOfEmployees || "N/A" }}</td>
+                  <td>{{ mydata?.taxOffice || "N/A" }}</td>
 
                   <td title="View">
                     <button class="btn btn-sm btn-outline-success"

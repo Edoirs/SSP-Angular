@@ -36,6 +36,7 @@
                     <th>Forwarded To</th>
                     <th>Date Forwarded</th>
                     <th>No of Employees</th>
+                    <th>Tax Office</th>
                     <th>View</th>
                   </tr>  
                 </thead>
@@ -53,6 +54,7 @@
                     <td>{{ 'Forwarded To EIRS' }}</td>
                     <td>{{ mydata?.dateForwarded }}</td>
                     <td>{{ mydata?.noOfEmployees || 'N/A' }}</td>
+                    <td>{{ mydata?.taxOffice || 'N/A' }}</td>
 
                     <td title="View"><button class="btn btn-sm btn-outline-success"
                         (click)="viewBusinessProjection(projectiondetailsmodal, mydata)"><i

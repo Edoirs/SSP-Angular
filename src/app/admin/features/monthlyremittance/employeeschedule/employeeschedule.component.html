@@ -36,6 +36,7 @@
                   <th>Business Name</th>
                   <th>Address</th>
                   <th>LGA</th>
+                  <th>Tax Office</th>
                   <th>No. of Employees</th>
                   <th>View</th>
                 </tr>
@@ -69,6 +70,7 @@
                   <td>
                     {{ employee?.businessLga || "N/A" }}
                   </td>
+                  <td>{{ employee?.taxOffice || "N/A" }}</td>
                   <td>{{ employee?.noOfEmployees | number }}</td>
                   <td title="View">
                     <button

@@ -60,13 +60,12 @@ export class EmployeescheduleComponent implements OnInit, OnDestroy {
   }
 
   listenToRoute() {
-    this.dataLoading.set(true)
     this.subs.add = this.route.queryParams.subscribe((params) => {
+      this.dataLoading.set(true)
       if (Object.keys(params)) {
         if (params["pageIndex"]) this.pageIndex.set(params["pageIndex"])
         if (params["pageSize"]) this.pageSize.set(params["pageSize"])
-        if (params["search"]) this.queryString.set(params["search"])
-        this.employeeScheduleService
+        this.subs.add = this.employeeScheduleService
           .getEmployees(
             this.pageIndex() === 0 ? 1 : this.pageIndex(),
             this.pageSize(),

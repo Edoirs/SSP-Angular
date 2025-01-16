@@ -38,6 +38,7 @@
                 <th>Date Forwarded</th>
                 <th>Due Date</th>
                 <th>Annual Return Status</th>
+                <th>Tax Office</th>
                 <th>View & Action</th>
               </tr>
             </thead>
@@ -48,15 +49,16 @@
                   <td>{{ mydata?.companyName || 'N/A' }}</td>
                   <td>{{ mydata?.companyId }}</td>
                 }
-                <td>{{ mydata.businessRIN }}</td>
-                <td>{{ mydata.businessName | titlecase }}</td>
-                <td>{{ mydata.companyRin == null ? "N/A" : mydata.companyRin }}</td>
-                <td>{{ mydata.noOfEmployees == null ? "N/A" : mydata.noOfEmployees }}</td>
-                <td>{{ mydata.taxYear }}</td>
-                <td>{{ mydata.forwardedTO }}</td>
-                <td>{{ mydata.dateForwarded | date : "dd MMM yyyy" }}</td>
-                <td>{{ mydata.dueDate }}</td>   
-                <td>{{ mydata.annualReturnStatus == null ? "N/A" : mydata.annualReturnStatus }}</td>
+                <td>{{ mydata?.businessRIN }}</td>
+                <td>{{ mydata?.businessName | titlecase }}</td>
+                <td>{{ mydata?.companyRin || "N/A" }}</td>
+                <td>{{ mydata?.noOfEmployees || "N/A" }}</td>
+                <td>{{ mydata?.taxYear }}</td>
+                <td>{{ mydata?.forwardedTO }}</td>
+                <td>{{ mydata?.dateForwarded | date : "dd MMM yyyy" }}</td>
+                <td>{{ mydata?.dueDate }}</td>   
+                <td>{{ mydata?.annualReturnStatus || "N/A" }}</td>
+                <td>{{ mydata?.taxOffice || "N/A" }}</td>
                 <td style="width: 10%" title="View">
                   <button class="btn btn-sm btn-outline-success" (click)="viewSchedule(mymodal, mydata)">
                     <i class="nav-icon fas fa-eye"></i>
