@@ -76,6 +76,7 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
   disableEmployeeControl: any
   fileFormH3Form: any
   taxpayerID: any
+  taxYear?: string
 
   subs = new SubscriptionHandler()
 
@@ -222,22 +223,27 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
 
   viewBusinessProjection(modal: any, data: any) {
     this.businessId = data?.businessID
-    this.getAnnualReturns(this.businessId, data?.companyId)
+    this.taxYear = data?.taxYear
+    this.getAnnualReturns(
+      this.businessId,
+      data?.companyId,
+      <string>this.taxYear
+    )
     this.showModal(modal)
   }
 
-  getAnnualReturns(businessId: any, companyId: any) {
+  getAnnualReturns(businessId: any, companyId: string, year: string) {
     this.ngxService.start()
 
     this.subs.add = this.httpClient
       .get<any>(
-        `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`
+        `${environment.AUTHAPIURL}FormH3/getallfiledformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}/byyear/${year}`
       )
       .subscribe((data) => {
         // console.log("annualReturnsData: ", data);
         this.ngxService.stop()
-        this.annualReturnsData = data == null ? [] : data
-        if (data?.length > 0) {
+        this.annualReturnsData = data?.data || []
+        if (data?.data?.length > 0) {
           this.apidataEmpty = true
         }
       })
@@ -431,7 +437,11 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
             timer: 5000,
           })
 
-          this.getAnnualReturns(this.businessId, this.companyId)
+          this.getAnnualReturns(
+            this.businessId,
+            this.companyId,
+            <string>this.taxYear
+          )
           this.editEmployeeModalRef.close()
           this.ngxService.stop()
         } else {
@@ -479,7 +489,11 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
                 showConfirmButton: false,
                 timer: 1500,
               })
-              this.getAnnualReturns(this.businessId, this.companyId)
+              this.getAnnualReturns(
+                this.businessId,
+                this.companyId,
+                <string>this.taxYear
+              )
             } else {
               Swal.fire({
                 icon: "error",
