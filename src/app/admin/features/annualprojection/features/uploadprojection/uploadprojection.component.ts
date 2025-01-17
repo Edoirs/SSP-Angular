@@ -395,27 +395,28 @@ export class UploadprojectionComponent implements OnInit {
   getAnnualReturns(businessId: any, companyId: any) {
     this.ngxService.start()
     this.annualReturnsData.set(null)
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${this.companyId}/bybusinessId/${businessId}`
 
-    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
-      // console.log("annualReturnsDataU: ", data)
-      this.annualReturnsData.set(data)
+    this.subs.add = this.httpClient
+      .get<any>(
+        `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${businessId}`
+      )
+      .subscribe((data) => {
+        // console.log("annualReturnsDataU: ", data)
+        this.annualReturnsData.set(data)
 
-      if (data?.length > 0) {
-        this.apidataEmpty = true
-      } else {
-        this.apidataEmpty = false
-      }
+        if (data?.length > 0) {
+          this.apidataEmpty = true
+        } else {
+          this.apidataEmpty = false
+        }
 
-      this.ngxService.stop()
-    })
+        this.ngxService.stop()
+      })
   }
 
   createSchedule(modal: any, data: any) {
-    this.businessId = data.businessID
-    this.companyID = data.companyID
     this.loadSelectedBusinessData(data)
-    this.getAnnualReturns(this.businessId, this.companyId)
+    this.getAnnualReturns(data?.businessID, data?.companyID)
     this.showModal(modal)
   }
 

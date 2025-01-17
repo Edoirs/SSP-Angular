@@ -221,30 +221,25 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
   }
 
   viewBusinessProjection(modal: any, data: any) {
-    this.businessId = data.businessID
-    // this.companyId = data.company_id;
-    this.getAnnualReturns(this.businessId, this.companyId)
+    this.businessId = data?.businessID
+    this.getAnnualReturns(this.businessId, data?.companyId)
     this.showModal(modal)
   }
 
   getAnnualReturns(businessId: any, companyId: any) {
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
+    this.subs.add = this.httpClient
+      .get<any>(
+        `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyId/${companyId}/bybusinessId/${this.businessId}`
+      )
       .subscribe((data) => {
         // console.log("annualReturnsData: ", data);
+        this.ngxService.stop()
         this.annualReturnsData = data == null ? [] : data
         if (data?.length > 0) {
           this.apidataEmpty = true
         }
-        this.ngxService.stop()
       })
   }
 

@@ -88,9 +88,8 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.getAllMonths()
 
     this.companyId = localStorage.getItem("companyId")
-    // console.log("companyId: ", this.companyId)
-    // this.getBusinesses();
-    this.getSchedules()
+
+    this.listenToRoute()
 
     this.initialiseForms()
     // console.log("token: ", localStorage.getItem("access_token"))
@@ -351,20 +350,12 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.selectedScheduleId = selectedSchedule.id
     // this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
 
-    this.getAnnualReturns(selectedSchedule.businessID, selectedSchedule.taxYear)
+    this.getAnnualReturns(
+      selectedSchedule.companyId,
+      selectedSchedule.businessID,
+      selectedSchedule.taxYear
+    )
     this.loadSelectedScheduleData(selectedSchedule)
-
-    // let filedStatus = selectedSchedule.filedStatus.trim();
-    // let status = filedStatus == "1" ? "Filed" : filedStatus == "2" ? "Approved" : "Rejected";
-    // let dateForwarded = this.datepipe.transform(selectedSchedule.datetcreated, "dd MMM yyyy");
-    // let dateDue = this.datepipe.transform(selectedSchedule.dueDate, "dd MMM yyyy");
-
-    // this.scheduleForm = this.formBuilder.group({
-    //   forwardedTo: ["Forwarded to Manager"],
-    //   annualReturnStatus: [status],
-    //   dateForwarded: [dateForwarded],
-    //   dueDate: [dateDue],
-    // });
   }
 
   loadSelectedScheduleData(selectedSchedule: any) {
@@ -384,31 +375,16 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
       dateForwarded: [selectedSchedule.dateForwarded],
       dueDate: [selectedSchedule.dueDate],
     })
-
-    // this.scheduleEmployeesData =
-    //   selectedSchedule.annual_return_schedule_records;
-    // if (forwardedTo === "Forwarded to Manager") {
-    //   this.forwardedToManager = true;
-    // } else if (forwardedTo === "Forwarded to Editor") {
-    //   this.forwardedToEditor = true;
-    // }
   }
 
   getBusinesses() {
-    const obj = {}
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallformh3WithcompanyId/${this.companyId}`
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
+    this.subs.add = this.httpClient
+      .get<any>(
+        `${environment.AUTHAPIURL}SSP/FormH1/getallformh3WithcompanyId/${this.companyId}`
+      )
       .subscribe((data) => {
-        // console.log("BusinessData: ", data);
-
         this.businessesData = data
         this.ngxService.stop()
       })
@@ -445,8 +421,8 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
 
   listenToRoute() {
     this.subs.add = this.route.queryParams.subscribe((params) => {
-      this.ngxService.start()
       if (Object.keys(params)) {
+        this.ngxService.start()
         this.subs.add = this.formHoneService
           .getAnnualScedules(
             this.companyId,
@@ -462,7 +438,7 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
               this.ngxService.stop()
 
               if (res.status === true) {
-                this.businessesData = res?.data?.result
+                this.schedulesData = res?.data?.result
               } else {
                 Swal.fire(SweetAlertOptions(res?.message))
               }
@@ -511,20 +487,13 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
       })
   }
 
-  getAnnualReturns(businessId: any, year: any) {
+  getAnnualReturns(companyId: string, businessId: string, year: any) {
     this.ngxService.start()
 
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}/byyear/${year}`
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
-
-    this.httpClient
-      .get<ServerResInterface<AnnualScheduleReInterface[]>>(this.apiUrl, {
-        headers: reqHeader,
-      })
+    this.subs.add = this.httpClient
+      .get<ServerResInterface<AnnualScheduleReInterface[]>>(
+        `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1bycompanyId/${companyId}/bybusinessId/${businessId}/byyear/${year}`
+      )
       .subscribe((res) => {
         // console.log("annualReturnsData: ", data);
         this.annualReturnsData = res.data || []

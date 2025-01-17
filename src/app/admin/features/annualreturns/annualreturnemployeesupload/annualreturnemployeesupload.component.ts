@@ -279,9 +279,9 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   }
 
   createSchedule(modal: any, data: any) {
-    this.businessId = data.businessID
+    this.businessId = data?.businessID
     this.loadSelectedBusinessData(data)
-    this.getAnnualReturns(this.businessId, this.companyId)
+    this.getAnnualReturns(this.businessId, data?.companyID)
     this.showModal(modal)
   }
 
@@ -486,17 +486,11 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
 
   getAnnualReturns(businessId: any, companyId: any) {
     this.ngxService.start()
-    this.annualReturnsData = ""
-    this.apiUrl = `${environment.AUTHAPIURL}SSP/FormH1/getalluplaodedformh1bycompanyId/${this.companyId}/bybusinessId/${businessId}`
-    // this.apiUrl = `${environment.AUTHAPIURL}FormH/get-uploadedH1bybusinessId/${businessId}/bycompanyId/${this.companyId}`;
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
+    this.subs.add = this.httpClient
+      .get<any>(
+        `${environment.AUTHAPIURL}SSP/FormH1/getalluplaodedformh1bycompanyId/${companyId}/bybusinessId/${businessId}`
+      )
       .subscribe((data) => {
         // console.log("annualReturnsData: ", data)
         this.annualReturnsData = data
