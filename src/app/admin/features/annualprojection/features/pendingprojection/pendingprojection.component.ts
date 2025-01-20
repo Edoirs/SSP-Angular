@@ -242,7 +242,7 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         // console.log("annualReturnsData: ", data);
         this.ngxService.stop()
-        this.annualReturnsData = data?.data || []
+        this.annualReturnsData = data || []
         if (data?.data?.length > 0) {
           this.apidataEmpty = true
         }

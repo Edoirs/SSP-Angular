@@ -249,27 +249,22 @@ export class UploadprojectionComponent implements OnInit {
 
   getSingleBusiness(businessId: any) {
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "Business/GetbyId/" + businessId
 
-    const config = {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }
+    this.subs.add = this.httpClient
+      .get<any>(` ${environment.AUTHAPIURL}Business/GetbyId/${businessId}`)
+      .subscribe((data) => {
+        // console.log("singleBusinessData: ", data)
 
-    this.httpClient.get<any>(this.apiUrl, config).subscribe((data) => {
-      // console.log("singleBusinessData: ", data)
-
-      this.selectedBusiness = data.response
-      this.ngxService.stop()
-    })
+        this.selectedBusiness = data.response
+        this.ngxService.stop()
+      })
   }
 
   viewBusinessProjection(modal: any, data: any) {
-    this.businessId = data.businessID
+    this.businessId = data?.businessID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(this.businessId, this.companyId)
+
     this.showModal(modal)
   }
 
@@ -338,13 +333,6 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   deleteEmployeesRecords() {
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-    })
-
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}`
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -355,8 +343,10 @@ export class UploadprojectionComponent implements OnInit {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.value) {
-        this.httpClient
-          .delete<any>(this.apiUrl, {headers: reqHeader})
+        this.subs.add = this.httpClient
+          .delete<any>(
+            `${environment.AUTHAPIURL}FormH3/delete-TaxpayerH3bybusinessId/${this.businessId}/bycompanyId/${this.companyId}`
+          )
           .subscribe((data) => {
             // console.log(data)
             if (data.status == true) {
@@ -415,15 +405,13 @@ export class UploadprojectionComponent implements OnInit {
   }
 
   createSchedule(modal: any, data: any) {
+    this.businessId = data?.businessID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(data?.businessID, data?.companyID)
     this.showModal(modal)
   }
 
   fileFormH3(modal: any) {
-    // this.businessId = data.businessID;
-    // this.loadSelectedBusinessData(data);
-    // this.getAnnualReturns(this.businessId, this.companyId);
     this.showModal(modal)
   }
 
@@ -449,47 +437,30 @@ export class UploadprojectionComponent implements OnInit {
 
   postFileFormH3(jsonData: any) {
     this.ngxService.start()
-    this.apiUrl = `${environment.AUTHAPIURL}FormH3/FileFormH3`
 
-    this.httpClient.post<any>(this.apiUrl, jsonData).subscribe((data) => {
-      // console.log("scheduleApiResponseData: ", data)
-      if (data.status === true) {
-        // Rest form fithout errors
-        this.fileFormH3Form.reset()
-        Object.keys(this.fileFormH3Form.controls).forEach((key) => {
-          this.fileFormH3Form.get(key)?.setErrors(null)
-        })
+    this.subs.add = this.httpClient
+      .post<any>(`${environment.AUTHAPIURL}FormH3/FileFormH3`, jsonData)
+      .subscribe({
+        next: (data) => {
+          this.ngxService.stop()
 
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text:
-            data.response != null && data.response[0] != undefined
-              ? data.response[0].message
-              : data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
+          if (data.status === true) {
+            // Rest form fithout errors
+            this.fileFormH3Form.reset()
 
-        this.ngxService.stop()
-        this.modalService.dismissAll()
-        this.router.navigate(["/admin", "pending-projection"])
-        // this.getAnnualReturns(this.businessId, this.companyId);
-      } else {
-        this.ngxService.stop()
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text:
-            data.response != null && data.response[0] != undefined
-              ? data.response[0].message
-              : data.message,
-          showConfirmButton: true,
-          timer: 5000,
-        })
-      }
-    })
+            Swal.fire(SweetAlertOptions(data?.message, true))
+
+            this.modalService.dismissAll()
+            this.router.navigate(["/admin", "pending-projection"])
+          } else {
+            Swal.fire(SweetAlertOptions(data?.message))
+          }
+        },
+        error: (err) => {
+          Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
+          this.ngxService.stop()
+        },
+      })
   }
 
   editAnnualReturn(modal: any, selectedAnnualReturn: any) {
