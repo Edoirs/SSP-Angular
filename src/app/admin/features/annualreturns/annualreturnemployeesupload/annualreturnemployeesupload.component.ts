@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {ActivatedRoute, Router} from "@angular/router"
@@ -52,7 +52,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   modalOptions!: NgbModalOptions
   closeResult!: string
   businessId: any
-  companyId: any
+  companyId = ""
   apidataEmpty: boolean = false
   annualReturnsData: any
   editEmployeeModalRef: any
@@ -70,6 +70,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   companyRIN: any
   taxpayerID: any
   assessmentYears: any[] = []
+
+  btnLoading = signal(false)
 
   subs = new SubscriptionHandler()
 
@@ -93,7 +95,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.title)
     // this.component.checkIfEditorExist();
 
-    this.companyId = localStorage.getItem("companyId")
+    this.companyId = this.tokenService.getLoginResData?.companyId.toString()
     // console.log("companyId: ", this.companyId)
 
     this.companyName = localStorage.getItem("companyName")
@@ -241,6 +243,25 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     })
   }
 
+  async downloadExcelView() {
+    this.btnLoading.set(true)
+    this.ngxService.start()
+    try {
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      const pdf = await this.formHoneService.downloadFormH3View(
+        this.companyId,
+        this.businessId
+      )
+      window.open(pdf, "_blank")
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
+  }
+
   getBusinesses() {
     this.ngxService.start()
 
@@ -280,6 +301,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
 
   createSchedule(modal: any, data: any) {
     this.businessId = data?.businessID
+    this.companyId = data?.companyID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(this.businessId, data?.companyID)
     this.showModal(modal)

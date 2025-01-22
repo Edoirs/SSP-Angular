@@ -103,9 +103,9 @@
             </label>
             <input type="text" formControlName="businessName" class="form-control" id="businessName"
               placeholder="Business Name" [attr.readonly]="true"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors }" />
+              [ngClass]="{ 'is-invalid': submitted && uploadCorporateForm.controls['businessName'].errors }" />
 
-            <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessName'].errors" class="text-danger">
+            <div *ngIf="submitted && uploadCorporateForm.controls['businessName'].errors" class="text-danger">
             </div>
           </div>
 
@@ -114,8 +114,8 @@
             </label>
             <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.readonly]="true"
               placeholder="Business RIN"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors }" />
-            <div *ngIf="submitted &amp;&amp; uploadCorporateForm.controls['businessID'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && uploadCorporateForm.controls['businessID'].errors }" />
+            <div *ngIf="submitted && uploadCorporateForm.controls['businessID'].errors" class="text-danger">
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@
                   }}</label>
               </div>
   
-              <div *ngIf="submitted &amp;&amp; myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid"
+              <div *ngIf="submitted && myForm.controls['myfile'].touched && myForm.controls['myfile'].invalid"
                 class="text-danger">
                 <div *ngIf="myForm.controls['myfile'].errors!['required']">File is required.</div>
               </div>
@@ -189,14 +189,14 @@
           <div class="form-group col-md-6">
             <label for="scheduleYear">Schedule Year</label>
             <select name="scheduleYear" formControlName="scheduleYear" id="scheduleYear" class="form-control" 
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors }">
+              [ngClass]="{ 'is-invalid': submitted && forwardScheduleForm.controls['scheduleYear'].errors }">
                 <option value="" disabled>Select Schedule Year</option>
                 <option *ngFor="let assessmentYear of assessmentYears" [value]="assessmentYear.id">
                   {{ assessmentYear.year }}
                 </option>
               </select>
 
-            <div *ngIf="submitted &amp;&amp; forwardScheduleForm.controls['scheduleYear'].errors"
+            <div *ngIf="submitted && forwardScheduleForm.controls['scheduleYear'].errors"
               class="text-danger">
               <div *ngIf="forwardScheduleForm.controls['scheduleYear'].errors['required']">
                 Schedule Year is required
@@ -237,9 +237,9 @@
             </label>
             <input type="text" formControlName="businessName" class="form-control" id="businessName"
               placeholder="Business Name" [attr.readonly]="true"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessName'].errors }" />
+              [ngClass]="{ 'is-invalid': submitted && corporateForm.controls['businessName'].errors }" />
 
-            <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessName'].errors" class="text-danger">
+            <div *ngIf="submitted && corporateForm.controls['businessName'].errors" class="text-danger">
             </div>
           </div>
 
@@ -248,8 +248,8 @@
             </label>
             <input type="text" formControlName="businessID" class="form-control" id="businessID" [attr.readonly]="true"
               placeholder="Business RIN"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['businessID'].errors }" />
-            <div *ngIf="submitted &amp;&amp; corporateForm.controls['businessID'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && corporateForm.controls['businessID'].errors }" />
+            <div *ngIf="submitted && corporateForm.controls['businessID'].errors" class="text-danger">
             </div>
           </div>
 
@@ -258,9 +258,9 @@
             </label>
             <input type="text" formControlName="companyName" class="form-control" id="companyName"
               placeholder="Company Name" [attr.readonly]="true"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyName'].errors }" />
+              [ngClass]="{ 'is-invalid': submitted && corporateForm.controls['companyName'].errors }" />
 
-            <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyName'].errors" class="text-danger">
+            <div *ngIf="submitted && corporateForm.controls['companyName'].errors" class="text-danger">
             </div>
           </div>
 
@@ -269,15 +269,19 @@
             </label>
             <input type="text" formControlName="companyID" class="form-control" id="companyID" placeholder="Company RIN"
               [attr.readonly]="true"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; corporateForm.controls['companyID'].errors }" />
-            <div *ngIf="submitted &amp;&amp; corporateForm.controls['companyID'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && corporateForm.controls['companyID'].errors }" />
+            <div *ngIf="submitted && corporateForm.controls['companyID'].errors" class="text-danger">
 
             </div>
           </div>
         </div>
       </form>
 
-      <div>
+      <div class="view-table">
+        <div class="table-header-exports">
+          <button (click)="downloadExcelView()">Excel</button>
+        </div>
+        
         <table class="table table-bordered table-condensed" *ngIf="annualReturnsData" datatable [dtOptions]="dtOptions"
         width="100%">
         <thead>
@@ -362,8 +366,8 @@
           <div class="form-group col-md-6">
             <label for="taxPayerID">Taxpayer RIN</label>
             <input type="text" formControlName="taxPayerID" class="form-control" [attr.disabled]="true"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['taxPayerID'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['taxPayerID'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['taxPayerID'].errors" class="text-danger">
               <!-- <div *ngIf="annualReturnForm.controls.taxPayerID.errors['required']">First Name is required</div> -->
             </div>
           </div>
@@ -374,8 +378,8 @@
             </label>
             <input type="text" formControlName="basicIncome" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="Basic Income"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['basicIncome'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['basicIncome'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['basicIncome'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['basicIncome'].errors['required']">
                 Basic Income required
               </div>
@@ -393,8 +397,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="firstName" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['firstName'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['firstName'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['firstName'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['firstName'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['firstName'].errors['required']">
                 First Name is required
               </div>
@@ -411,8 +415,8 @@
             <label for="rent">Rent</label>
             <input type="text" formControlName="rent" class="form-control" placeholder="Rent"
               (keyup)="calculateAnnualGross($event)"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['rent'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['rent'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['rent'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['rent'].errors" class="text-danger">
               <!-- <div *ngIf="annualReturnForm.controls.rent.errors['required']">
                     Rent required
                   </div> -->
@@ -428,8 +432,8 @@
           <div class="form-group col-md-6">
             <label for="middleName">Middle Name</label>
             <input type="text" formControlName="middleName" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['middleName'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['middleName'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['middleName'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['middleName'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['middleName'].errors['required']">
                 Middle Name is required
               </div>
@@ -447,8 +451,8 @@
             </label>
             <input type="text" formControlName="transport" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="transport"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['transport'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['transport'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['transport'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['transport'].errors" class="text-danger">
               <!-- <div *ngIf="annualReturnForm.controls.transport.errors['required']">
                     Transport required
                   </div> -->
@@ -466,8 +470,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="surname" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['surname'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['surname'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['surname'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['surname'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['surname'].errors['required']">
                 Surname is required
               </div>
@@ -484,8 +488,8 @@
             </label>
             <input type="text" formControlName="otherIncome" class="form-control" (keyup)="calculateAnnualGross($event)"
               placeholder="Other Income"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['otherIncome'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['otherIncome'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['otherIncome'].errors" class="text-danger">
               <!-- <div *ngIf="annualReturnForm.controls['transport'].otherIncome.errors['required']">
                       otherIncome required
                     </div> -->
@@ -502,8 +506,8 @@
             <label for="NHF">National Housing Fund (NHF)</label>
             <input type="text" formControlName="NHF" class="form-control" (keyup)="calculateGrossIncome($event)"
               placeholder="National Housing Fund" [attr.disabled]="disableEmployeeControl"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['NHF'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['NHF'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['NHF'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['NHF'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['NHF'].errors['pattern']">
                 National Housing Fund must be Number with only two digits
                 allowed after the decimal
@@ -514,8 +518,8 @@
             <label for="NHIS">National Health Insurance Scheme (NHIS)</label>
             <input type="text" formControlName="NHIS" class="form-control" (keyup)="calculateGrossIncome($event)"
               placeholder="National Health Insurance Scheme" [attr.disabled]="disableEmployeeControl"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['NHIS'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['NHIS'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['NHIS'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['NHIS'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['NHIS'].errors['pattern']">
                 National Health Insurance Scheme must be Number with only two
                 digits allowed after the decimal
@@ -529,8 +533,8 @@
             <label for="pension">Pension<sup class="ml-1 font-wegiht-bold text-danger"></sup></label>
             <input type="text" formControlName="pension" class="form-control" placeholder="Pension"
               [attr.disabled]="disableEmployeeControl" (keyup)="calculateGrossIncome($event)"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['pension'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['pension'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['pension'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['pension'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['pension'].errors['required']">
                 Pension is required
               </div>
@@ -544,8 +548,8 @@
             <label for="lifeAssurance">Life Assurance</label>
             <input type="text" formControlName="lifeAssurance" class="form-control" placeholder="Life Assurance"
               (keyup)="calculateGrossIncome($event)" [attr.disabled]="disableEmployeeControl"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['lifeAssurance'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['lifeAssurance'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['lifeAssurance'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['lifeAssurance'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['lifeAssurance'].errors['pattern']">
                 Life Assurance must be numbers with only two digits allowed
                 after the decimal
@@ -559,8 +563,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="monthlyIncome" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['monthlyIncome'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['monthlyIncome'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['monthlyIncome'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['monthlyIncome'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['monthlyIncome'].errors['required']">
                 Monthly Income is required
               </div>
@@ -575,8 +579,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="annualGrossIncome" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['annualGrossIncome'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['annualGrossIncome'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['annualGrossIncome'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['annualGrossIncome'].errors" class="text-danger">
               <div *ngIf="
                     annualReturnForm.controls['annualGrossIncome'].errors['required']
                   ">
@@ -597,8 +601,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="annualTaxPaid" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['annualTaxPaid'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['annualTaxPaid'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['annualTaxPaid'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['annualTaxPaid'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['annualTaxPaid'].errors['required']">
                 Annual Tax Paid is required
               </div>
@@ -613,8 +617,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="months" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['months'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['months'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['months'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['months'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['months'].errors['required']">
                 Months is required
               </div>
@@ -634,8 +638,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="designation" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['designation'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['designation'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['designation'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['designation'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['designation'].errors['required']">
                 Designation is required
               </div>
@@ -647,8 +651,8 @@
               <sup style="font-weight: 800" class="ml-1 font-wegiht-bold text-danger">*</sup>
             </label>
             <input type="text" formControlName="nationality" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; annualReturnForm.controls['nationality'].errors }" />
-            <div *ngIf="submitted &amp;&amp; annualReturnForm.controls['nationality'].errors" class="text-danger">
+              [ngClass]="{ 'is-invalid': submitted && annualReturnForm.controls['nationality'].errors }" />
+            <div *ngIf="submitted && annualReturnForm.controls['nationality'].errors" class="text-danger">
               <div *ngIf="annualReturnForm.controls['nationality'].errors['required']">
                 Nationality is required
               </div>

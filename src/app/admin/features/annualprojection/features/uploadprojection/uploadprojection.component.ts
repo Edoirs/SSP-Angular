@@ -140,39 +140,7 @@ export class UploadprojectionComponent implements OnInit {
         "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      buttons: [
-        {
-          extend: "csv",
-          className: "btn btn-outline-dark export-btn",
-          text: '<i class="fas fa-file-csv"> CSV</i>',
-          exportOptions: {columns: [0, 1, 2, 3, 4, 5]},
-        },
-        {
-          extend: "excel",
-          className: "btn btn-outline-dark export-btn",
-          text: '<i class="fas fa-file-excel"> Excel</i>',
-          exportOptions: {columns: [0, 1, 2, 3, 4, 5]},
-        },
-
-        {
-          extend: "pdfHtml5",
-          className: "btn btn-outline-dark export-btn",
-          text: '<i class="fas fa-file-pdf"> PDF</i>',
-          orientation: "portrait",
-          pageSize: "LEGAL",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5],
-          },
-
-          customize: function (doc: any) {
-            doc.content.splice(1, 0, {
-              margin: [0, 0, 0, 10],
-              alignment: "left",
-              image: DtImage,
-            })
-          },
-        },
-      ],
+      buttons: false,
     }
   }
 
@@ -404,8 +372,46 @@ export class UploadprojectionComponent implements OnInit {
       })
   }
 
+  async downloadExcel() {
+    this.btnLoading.set(true)
+    this.ngxService.start()
+    try {
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      const pdf = await this.annualProjectionService.downloadFormH3(
+        this.companyId
+      )
+      window.open(pdf, "_blank")
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
+  }
+
+  async downloadExcelView() {
+    this.btnLoading.set(true)
+    this.ngxService.start()
+    try {
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      const pdf = await this.annualProjectionService.downloadFormH3View(
+        this.companyId,
+        this.businessId
+      )
+      window.open(pdf, "_blank")
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
+  }
+
   createSchedule(modal: any, data: any) {
     this.businessId = data?.businessID
+    this.companyId = data?.companyID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(data?.businessID, data?.companyID)
     this.showModal(modal)

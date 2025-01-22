@@ -2,11 +2,15 @@ import {UploadProjectioResInterface} from "@admin-pages/annualprojection/feature
 import {HttpClient, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
+import {TokenService} from "@shared/services/token.service"
 import {ServerResInterface} from "@shared/types/server-response.model"
+
+import axios from "axios"
 
 @Injectable({providedIn: "root"})
 export class FormHoneService {
   private readonly httpClient = inject(HttpClient)
+  private readonly tokenService = inject(TokenService)
 
   private mockBusinesses?: UploadProjectioResInterface
   private mockSchedules?: UploadProjectioResInterface
@@ -84,5 +88,33 @@ export class FormHoneService {
       `${environment.AUTHAPIURL}SSP/FormH1/UploadFormH1`,
       formData
     )
+  }
+
+  async downloadFormH3(companyId: string) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}SSP/FormH3/getallformh3bycompanyIdExcel/${companyId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
+  }
+
+  async downloadFormH3View(companyId: string, businessId: string) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}SSP/FormH1/getalluplaodedformh1ExcelbycompanyId/${companyId}/bybusinessId/${businessId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
   }
 }

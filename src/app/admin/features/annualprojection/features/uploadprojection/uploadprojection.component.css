@@ -8,3 +8,7 @@
 td{
     border-bottom: 1px solid;
 }
+
+::ng-deep .dt-buttons{
+    display: none !important;
+}

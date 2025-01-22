@@ -10,7 +10,6 @@ import {
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap"
 // import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
-import {SessionService} from "src/app/session.service"
 import {environment} from "src/environments/environment"
 import Swal from "sweetalert2"
 import {Title} from "@angular/platform-browser"

@@ -2,12 +2,16 @@ import {HttpClient, HttpParams} from "@angular/common/http"
 import {inject, Injectable} from "@angular/core"
 import {environment} from "@environment/environment"
 import {ServerResInterface} from "@shared/types/server-response.model"
-import {MarkEmployeeInterface} from "../../../monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 import {UploadProjectioResInterface} from "../../features/uploadprojection/data-access/annual-projection.models"
+
+import axios from "axios"
+import {TokenService} from "@shared/services/token.service"
+import {MarkEmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
 
 @Injectable({providedIn: "root"})
 export class AnnualProjectionService {
   private readonly httpClient = inject(HttpClient)
+  private readonly tokenService = inject(TokenService)
 
   getUploads(
     companyId: string,
@@ -71,6 +75,34 @@ export class AnnualProjectionService {
       `${environment.AUTHAPIURL}PhaseII/Mark-FileFormH3-Inactive`,
       payload
     )
+  }
+
+  async downloadFormH3(companyId: string) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}FormH3/getallformh3bycompanyIdExcel/${companyId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
+  }
+
+  async downloadFormH3View(companyId: string, businessId: string) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}FormH3/getalluplaodedformh3bycompanyIdExcel/${companyId}/bybusinessId/${businessId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+    let fileURL = URL.createObjectURL(response?.data)
+    return fileURL
   }
 
   bulkUploadAnnualProjection(formData: FormData) {
