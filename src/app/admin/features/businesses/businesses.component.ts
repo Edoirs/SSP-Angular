@@ -95,9 +95,18 @@ export class BusinessesComponent implements OnInit, OnDestroy {
 
     try {
       this.dataLoading.set(false)
-      const pdf = await this.businessService.downloadBusinessExcel()
-      // console.log(pdf)
-      window.open(pdf, "_blank", "download")
+      const {fileURL, filename} =
+        await this.businessService.downloadBusinessExcel()
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.dataLoading.set(false)

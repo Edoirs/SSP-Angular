@@ -87,8 +87,23 @@ export class AnnualProjectionService {
         responseType: "blob",
       }
     )
-    let fileURL = URL.createObjectURL(response?.data)
-    return fileURL
+    // Extract the filename from the Content-Disposition header
+    const contentDisposition = response.headers["content-disposition"]
+    let filename = "default_filename.xlsx" // Fallback filename
+
+    if (contentDisposition && contentDisposition.includes("filename=")) {
+      // Extract the filename from the header
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      const matches = filenameRegex.exec(contentDisposition)
+      if (matches) {
+        filename = matches[1].replace(/['"]/g, "") // Remove quotes
+      }
+    }
+
+    // Create a URL for the downloaded file
+    const fileURL = URL.createObjectURL(response.data)
+
+    return {fileURL, filename}
   }
 
   async downloadFormH3View(companyId: string, businessId: string) {
@@ -97,12 +112,29 @@ export class AnnualProjectionService {
       {
         headers: {
           Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         },
         responseType: "blob",
       }
     )
-    let fileURL = URL.createObjectURL(response?.data)
-    return fileURL
+    // Extract the filename from the Content-Disposition header
+    const contentDisposition = response.headers["content-disposition"]
+    let filename = "default_filename.xlsx" // Fallback filename
+
+    if (contentDisposition && contentDisposition.includes("filename=")) {
+      // Extract the filename from the header
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      const matches = filenameRegex.exec(contentDisposition)
+      if (matches) {
+        filename = matches[1].replace(/['"]/g, "") // Remove quotes
+      }
+    }
+
+    // Create a URL for the downloaded file
+    const fileURL = URL.createObjectURL(response.data)
+
+    return {fileURL, filename}
   }
 
   bulkUploadAnnualProjection(formData: FormData) {

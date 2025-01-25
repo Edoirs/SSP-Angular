@@ -249,11 +249,20 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const pdf = await this.formHoneService.downloadFormH3View(
+      const {fileURL, filename} = await this.formHoneService.downloadFormH3View(
         this.companyId,
         this.businessId
       )
-      window.open(pdf, "_blank")
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.ngxService.stop()

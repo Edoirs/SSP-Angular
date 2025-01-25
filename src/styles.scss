@@ -83,6 +83,12 @@ mat-paginator button:hover {
   button{
     border: 1px solid #1f1e1e;
     color: #1f1e1e;
+
+    &:hover{
+      color: #fff;
+      font-weight: 600;
+      border-color: #fff;
+    }
   }
 }
 

@@ -245,10 +245,18 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
     try {
       this.btnLoading.set(false)
       this.ngxService.stop()
-      const pdf = await this.employeeScheduleService.downloadEmployeePdfMonthly(
-        payload
-      )
-      window.open(pdf, "_blank")
+      const {fileURL, filename} =
+        await this.employeeScheduleService.downloadEmployeePdfMonthly(payload)
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.btnLoading.set(false)

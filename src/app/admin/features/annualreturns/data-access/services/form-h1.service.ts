@@ -100,8 +100,23 @@ export class FormHoneService {
         responseType: "blob",
       }
     )
-    let fileURL = URL.createObjectURL(response?.data)
-    return fileURL
+    // Extract the filename from the Content-Disposition header
+    const contentDisposition = response.headers["content-disposition"]
+    let filename = "default_filename.xlsx" // Fallback filename
+
+    if (contentDisposition && contentDisposition.includes("filename=")) {
+      // Extract the filename from the header
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      const matches = filenameRegex.exec(contentDisposition)
+      if (matches) {
+        filename = matches[1].replace(/['"]/g, "") // Remove quotes
+      }
+    }
+
+    // Create a URL for the downloaded file
+    const fileURL = URL.createObjectURL(response.data)
+
+    return {fileURL, filename}
   }
 
   async downloadFormH3View(companyId: string, businessId: string) {
@@ -114,7 +129,22 @@ export class FormHoneService {
         responseType: "blob",
       }
     )
-    let fileURL = URL.createObjectURL(response?.data)
-    return fileURL
+   // Extract the filename from the Content-Disposition header
+   const contentDisposition = response.headers["content-disposition"]
+   let filename = "default_filename.xlsx" // Fallback filename
+
+   if (contentDisposition && contentDisposition.includes("filename=")) {
+     // Extract the filename from the header
+     const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+     const matches = filenameRegex.exec(contentDisposition)
+     if (matches) {
+       filename = matches[1].replace(/['"]/g, "") // Remove quotes
+     }
+   }
+
+   // Create a URL for the downloaded file
+   const fileURL = URL.createObjectURL(response.data)
+
+   return {fileURL, filename}
   }
 }

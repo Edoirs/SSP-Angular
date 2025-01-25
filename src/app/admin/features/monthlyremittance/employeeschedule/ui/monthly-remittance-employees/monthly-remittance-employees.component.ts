@@ -224,9 +224,18 @@ export class MonthlyRemittanceEmployeesComponent implements OnInit, OnDestroy {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const pdf =
+      const {fileURL, filename} =
         await this.employeeScheduleService.downloadEmployeeExcelMonthly(payload)
-      window.open(pdf, "_blank")
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.ngxService.stop()

@@ -83,6 +83,7 @@ export class UploadprojectionComponent implements OnInit {
   )
 
   btnLoading = signal(false)
+  downloadLink = signal("")
 
   subs = new SubscriptionHandler()
 
@@ -378,10 +379,19 @@ export class UploadprojectionComponent implements OnInit {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const pdf = await this.annualProjectionService.downloadFormH3(
+      const {fileURL, filename} = await this.annualProjectionService.downloadFormH3(
         this.companyId
       )
-      window.open(pdf, "_blank")
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.ngxService.stop()
@@ -396,11 +406,21 @@ export class UploadprojectionComponent implements OnInit {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const pdf = await this.annualProjectionService.downloadFormH3View(
-        this.companyId,
-        this.businessId
-      )
-      window.open(pdf, "_blank")
+      const {fileURL, filename} =
+        await this.annualProjectionService.downloadFormH3View(
+          this.companyId,
+          this.businessId
+        )
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
     } catch (err: any) {
       // console.log({err})
       this.ngxService.stop()
