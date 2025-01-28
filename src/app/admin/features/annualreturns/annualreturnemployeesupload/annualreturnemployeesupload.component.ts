@@ -296,7 +296,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   }
 
   uploadEmployees(modal: any, data: any) {
-    this.businessId = data.businessID
+    this.businessId = data?.businessID
+    this.companyId = data?.companyID
     this.loadUploadCorporateForm(data)
     this.showModal(modal)
   }
@@ -304,7 +305,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   loadUploadCorporateForm(selectedBusiness: any) {
     this.uploadCorporateForm = this.formBuilder.group({
       businessName: [selectedBusiness?.businessName],
-      businessID: [selectedBusiness?.businessRIN],
+      businessID: [selectedBusiness?.businessID],
     })
   }
 
@@ -381,65 +382,42 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
 
     this.ngxService.start()
 
-    this.subs.add = this.formHoneService
-      .bulkUploadFormH1(formData)
-      .subscribe((res: any) => {
-        // console.log(res)
-
-        // Clear form Value Without any Error
+    this.subs.add = this.formHoneService.bulkUploadFormH1(formData).subscribe({
+      next: (res: any) => {
         this.myForm.reset()
-        Object.keys(this.myForm.controls).forEach((key) => {
-          this.myForm.get(key)?.setErrors(null)
-        })
+        this.ngxService.stop()
 
         if (res.status == true) {
-          this.ngxService.stop()
           this.modalService.dismissAll()
           this.getBusinesses()
 
-          this.myForm.reset()
-          Object.keys(this.myForm.controls).forEach((key) => {
-            this.myForm.get(key)?.setErrors(null)
-          })
-
-          this.initialiseForms()
-
+          Swal.fire(SweetAlertOptions(this.errorHandler(res.message), true))
+        } else {
           Swal.fire({
-            icon: "success",
-            title: "Success",
+            icon: "error",
+            title: "Validation not passed",
             text: this.errorHandler(res.message),
             showConfirmButton: true,
-            timer: 2000,
+            timer: 25000,
             timerProgressBar: true,
           })
-        } else {
-          // this.file = null;
-          // this.filePath = null;
-
-          this.myForm.get("myfile")?.setValue(null)
-          this.myForm = this.formBuilder.group({
-            myfile: ["", Validators.required],
-          })
-
-          this.ngxService.stop()
-          if (res.response == null) {
-            this.reload()
-            Swal.fire({
-              icon: "error",
-              title: "Validation not passed",
-              // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-              text: this.errorHandler(res.message),
-              showConfirmButton: true,
-              timer: 25000,
-              timerProgressBar: true,
-            })
-          }
         }
 
         this.file = null
         this.filePath = null
         this.submitted = false
-      })
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Validation not passed",
+          text: this.errorHandler(err?.error?.message || err?.message),
+          showConfirmButton: true,
+          timer: 25000,
+          timerProgressBar: true,
+        })
+      },
+    })
   }
 
   onSubmitSchedule(formAllData: any) {
