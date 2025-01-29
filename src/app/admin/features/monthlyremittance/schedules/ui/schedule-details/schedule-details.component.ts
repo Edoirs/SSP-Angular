@@ -264,4 +264,35 @@ export class ScheduleDetailsComponent implements OnInit, OnDestroy {
       Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
     }
   }
+
+  async downloadSchedulesExcelView() {
+    this.btnLoading.set(true)
+    this.ngxService.start()
+    try {
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      const {fileURL, filename} =
+        await this.employeeScheduleService.downloadAllSchedulesExcelView(
+          this.injectedData.companyId.toString(),
+          this.injectedData.businessId.toString(),
+          this.injectedData.taxYear.toString(),
+          this.injectedData.taxMonth
+        )
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
+  }
 }

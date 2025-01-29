@@ -1,16 +1,14 @@
-import {Component, inject, OnDestroy, OnInit} from "@angular/core"
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
-import {ActivatedRoute, Router} from "@angular/router"
+import {ActivatedRoute} from "@angular/router"
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap"
-import {SessionService} from "src/app/session.service"
 import {environment} from "src/environments/environment"
 import Swal from "sweetalert2"
-import {DatePipe} from "@angular/common"
 import {Title} from "@angular/platform-browser"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {ViewReturnScheduleComponent} from "./ui/view-return-schedule/view-return-schedule.component"
@@ -71,6 +69,14 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
   companyId: any
   annualReturnsData: any
   apidataEmpty: boolean = false
+
+  commonDetails = {
+    companyId: "",
+    businessId: "",
+    year: "",
+  }
+
+  btnLoading = signal(false)
 
   subs = new SubscriptionHandler()
 
@@ -350,6 +356,12 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.selectedScheduleId = selectedSchedule.id
     // this.assessmentGenerated = selectedSchedule.annual_return_assessment_status;
 
+    this.commonDetails = {
+      companyId: selectedSchedule.companyId,
+      businessId: selectedSchedule.businessID,
+      year: selectedSchedule.taxYear,
+    }
+
     this.getAnnualReturns(
       selectedSchedule.companyId,
       selectedSchedule.businessID,
@@ -471,20 +483,13 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
     this.apiUrl =
       environment.AUTHAPIURL + "annual-return-schedules/" + scheduleId
 
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
+    this.httpClient.get<any>(this.apiUrl).subscribe((data) => {
+      // console.log("singleScheduleData: ", data);
+      this.selectedSchedule = data.response
+      this.isFiled = this.selectedSchedule.annual_return_assessment_status
+      this.loadSelectedScheduleData(this.selectedSchedule)
+      this.ngxService.stop()
     })
-
-    this.httpClient
-      .get<any>(this.apiUrl, {headers: reqHeader})
-      .subscribe((data) => {
-        // console.log("singleScheduleData: ", data);
-        this.selectedSchedule = data.response
-        this.isFiled = this.selectedSchedule.annual_return_assessment_status
-        this.loadSelectedScheduleData(this.selectedSchedule)
-        this.ngxService.stop()
-      })
   }
 
   getAnnualReturns(companyId: string, businessId: string, year: any) {
@@ -502,6 +507,36 @@ export class AnnualreturnschedulesComponent implements OnInit, OnDestroy {
         }
         this.ngxService.stop()
       })
+  }
+
+  async downloadFiledExcelView() {
+    this.btnLoading.set(true)
+    this.ngxService.start()
+    try {
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      const {fileURL, filename} =
+        await this.formHoneService.downloadFilledFormHoneExcelView(
+          this.commonDetails.companyId,
+          this.commonDetails.businessId,
+          this.commonDetails.year
+        )
+      // Create an anchor element
+      const link = document.createElement("a")
+      link.href = fileURL
+      link.download = filename // Set the filename for the download
+
+      // Trigger the download
+      link.click()
+
+      // Clean up the URL object
+      URL.revokeObjectURL(fileURL)
+    } catch (err: any) {
+      // console.log({err})
+      this.ngxService.stop()
+      this.btnLoading.set(false)
+      Swal.fire(SweetAlertOptions(err?.error?.error?.message || err?.message))
+    }
   }
 
   forwardSchedule(modal: any) {

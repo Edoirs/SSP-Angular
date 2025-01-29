@@ -1,3 +1,7 @@
 table td{
     border: 1px solid #00000021;
 }
+
+::ng-deep .filed-h3 .dt-buttons{
+    display: none !important;
+}

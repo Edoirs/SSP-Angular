@@ -174,7 +174,7 @@
   </div>
 
   <div class="modal-body">
-    <div class="container">
+    <div class="container filed-h1">
       <div class="form-row">
         <div class="col-md-12">
         </div>
@@ -229,6 +229,10 @@
           </div>
         </div>
       </form>
+
+      <div class="table-header-exports">
+        <button (click)="downloadFiledExcelView()">Excel</button>
+      </div>
 
       <div>
         <table class="table table-bordered table-condensed" *ngIf="annualReturnsData" datatable [dtOptions]="dtOptions"

@@ -139,7 +139,10 @@
     </div>
 
     <div class="modal-body">
-      <div class="container">
+      <div class="container filed-h3">
+        <div class="table-header-exports">
+          <button (click)="downloadFiledExcelView()">Excel</button>
+        </div>
         <table
           class="table table-bordered table-condensed"
           *ngIf="annualReturnsData"

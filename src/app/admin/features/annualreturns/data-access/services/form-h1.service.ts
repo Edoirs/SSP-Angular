@@ -147,4 +147,33 @@ export class FormHoneService {
 
    return {fileURL, filename}
   }
+
+  async downloadFilledFormHoneExcelView(companyId: string, businessId: string, year: string) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}SSP/FormH1/getallfiledformh1ExcelbycompanyId/${companyId}/bybusinessId/${businessId}/byyear/${year}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+        },
+        responseType: "blob",
+      }
+    )
+   // Extract the filename from the Content-Disposition header
+   const contentDisposition = response.headers["content-disposition"]
+   let filename = "default_filename.xlsx" // Fallback filename
+
+   if (contentDisposition && contentDisposition.includes("filename=")) {
+     // Extract the filename from the header
+     const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+     const matches = filenameRegex.exec(contentDisposition)
+     if (matches) {
+       filename = matches[1].replace(/['"]/g, "") // Remove quotes
+     }
+   }
+
+   // Create a URL for the downloaded file
+   const fileURL = URL.createObjectURL(response.data)
+
+   return {fileURL, filename}
+  }
 }

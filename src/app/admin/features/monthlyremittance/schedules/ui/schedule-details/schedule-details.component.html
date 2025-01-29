@@ -10,6 +10,7 @@
       <button [disabled]="showSendToRDM()" (click)="reviseSubmission()">Revise Submission</button>
       <button [disabled]="btnLoading() || tokenService.getLoginResData.isAdminUser" (click)="reAssess()">Re-Assess</button>
       <button [disabled]="showDownloadPdf()" (click)="downloadPdf()">Download PDF</button>
+      <button [disabled]="" (click)="downloadSchedulesExcelView()">Excel</button>
     </div>
     <!-- /.card-header -->
     <!-- /.card-body -->

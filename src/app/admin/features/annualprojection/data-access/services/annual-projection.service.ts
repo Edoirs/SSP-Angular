@@ -137,6 +137,41 @@ export class AnnualProjectionService {
     return {fileURL, filename}
   }
 
+  async downloadFiledFormH3View(
+    companyId: string,
+    businessId: string,
+    year: string
+  ) {
+    const response = await axios.get(
+      `${environment.AUTHAPIURL}FormH3/getallfiledformh3ExcelbycompanyId/${companyId}/bybusinessId/${businessId}/byyear/${year}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.tokenService.getAccessToken}`,
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        },
+        responseType: "blob",
+      }
+    )
+    // Extract the filename from the Content-Disposition header
+    const contentDisposition = response.headers["content-disposition"]
+    let filename = "default_filename.xlsx" // Fallback filename
+
+    if (contentDisposition && contentDisposition.includes("filename=")) {
+      // Extract the filename from the header
+      const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+      const matches = filenameRegex.exec(contentDisposition)
+      if (matches) {
+        filename = matches[1].replace(/['"]/g, "") // Remove quotes
+      }
+    }
+
+    // Create a URL for the downloaded file
+    const fileURL = URL.createObjectURL(response.data)
+
+    return {fileURL, filename}
+  }
+
   bulkUploadAnnualProjection(formData: FormData) {
     return this.httpClient.post<any>(
       `${environment.AUTHAPIURL}FormH3/UploadFormH3`,

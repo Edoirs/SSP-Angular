@@ -53,6 +53,10 @@ mat-paginator button:hover {
   background-color: transparent;
 }
 
+.modal-body{
+  overflow-x: auto;
+}
+
 .main-sidebar{
   z-index: 10;
 }
