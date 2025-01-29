@@ -1,0 +1,5 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <app-add-user-form [isRegisterSent]="hasRegistered()" (adminSignUpEvent)="onAdminSubmit($event)" (otpSignUpEvent)="onAdminOtpSubmit($event)" />
+  </div>
+</div>

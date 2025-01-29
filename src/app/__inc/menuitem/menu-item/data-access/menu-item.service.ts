@@ -159,6 +159,11 @@ export class MenuListService {
           faIcon: "fa fa-cog",
         },
         {
+          name: "Add User",
+          url: ["settings", SettingsRoute.addUsers],
+          faIcon: "fa fa-user",
+        },
+        {
           name: "Manage Users",
           url: ["settings", SettingsRoute.manageUsers],
           faIcon: "fa fa-users",

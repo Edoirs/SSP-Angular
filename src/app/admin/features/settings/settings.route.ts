@@ -2,6 +2,7 @@ import {Routes} from "@angular/router"
 
 export const SettingsRoute = {
   manageUsers: "manage-users",
+  addUsers: "add-user",
   systemSettings: "system-settings",
 }
 
@@ -11,6 +12,13 @@ export default [
     loadComponent: () =>
       import("./pages/manage-users/manage-users.component").then(
         (c) => c.ManageUsersComponent
+      ),
+  },
+  {
+    path: SettingsRoute.addUsers,
+    loadComponent: () =>
+      import("./pages/add-user/add-user.component").then(
+        (c) => c.AddUserComponent
       ),
   },
   {
