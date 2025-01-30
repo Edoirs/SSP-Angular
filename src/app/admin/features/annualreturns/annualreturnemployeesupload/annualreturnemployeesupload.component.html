@@ -51,20 +51,20 @@
                   <td>{{ mydata?.businessAddress || "N/A" }}</td>
                   <td>{{ mydata?.noOfEmployees || "N/A" }}</td>
                   <td>{{ mydata?.taxOffice || "N/A" }}</td>
-                  <td title="View">
+                  <td title="upload">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           uploadEmployees(uploadEmployeesModal, mydata)
                         ">
                       <i class="nav-icon fas fa-upload"></i>
                     </button>
                   </td>
-                  <td title="View">
+                  <td title="delete">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           deleteBusiness(mydata)">
                       <i class="nav-icon far fa-trash-alt"></i>
                     </button>
                   </td>
-                  <td title="View">
+                  <td title="view">
                     <button class="btn btn-sm btn-outline-success" (click)="
                           createSchedule(annualReturnModal, mydata)">
                       <i class="nav-icon fas fa-eye"></i>

@@ -19,6 +19,7 @@ import {TokenService} from "@shared/services/token.service"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {FormHoneService} from "../data-access/services/form-h1.service"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
+import {ErrorHandlerHelper} from "@admin-pages/annualprojection/features/uploadprojection/utils/upload-project.utils"
 
 @Component({
   selector: "app-annualreturnemployeesupload",
@@ -318,7 +319,8 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
   }
 
   deleteBusiness(data: any) {
-    this.businessId = data.businessID
+    this.businessId = data?.businessID
+    this.companyId = data?.companyID
     this.deleteEmployeesRecords()
     // this.showModal(modal);
   }
@@ -391,12 +393,12 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
           this.modalService.dismissAll()
           this.getBusinesses()
 
-          Swal.fire(SweetAlertOptions(this.errorHandler(res.message), true))
+          Swal.fire(SweetAlertOptions(ErrorHandlerHelper(res.message), true))
         } else {
           Swal.fire({
             icon: "error",
             title: "Validation not passed",
-            text: this.errorHandler(res.message),
+            text: ErrorHandlerHelper(res.message),
             showConfirmButton: true,
             timer: 25000,
             timerProgressBar: true,
@@ -411,7 +413,7 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
         Swal.fire({
           icon: "error",
           title: "Validation not passed",
-          text: this.errorHandler(err?.error?.message || err?.message),
+          text: ErrorHandlerHelper(err?.error?.message || err?.message),
           showConfirmButton: true,
           timer: 25000,
           timerProgressBar: true,
@@ -892,17 +894,6 @@ export class AnnualreturnemployeesuploadComponent implements OnInit, OnDestroy {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
     )
-  }
-
-  private errorHandler(error: any) {
-    let message = ""
-    if (typeof error == "string") {
-      return error
-    }
-    error.forEach((err: {data: string}) => {
-      message += err.data + "<br>"
-    })
-    return message
   }
 
   private getDismissReason(reason: any): string {

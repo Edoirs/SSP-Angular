@@ -14,7 +14,7 @@ import {UtilityService} from "src/app/utility.service"
 import {environment} from "src/environments/environment"
 import Swal from "sweetalert2"
 import {NgxUiLoaderService} from "ngx-ui-loader"
-import {DtImage} from "./utils/upload-project.utils"
+import {DtImage, ErrorHandlerHelper} from "./utils/upload-project.utils"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 import {MarkFormH3EmployeeInterface} from "@admin-pages/monthlyremittance/employeeschedule/data-access/employee-schedule.model"
@@ -231,6 +231,7 @@ export class UploadprojectionComponent implements OnInit {
 
   viewBusinessProjection(modal: any, data: any) {
     this.businessId = data?.businessID
+    this.companyId = data?.companyID
     this.loadSelectedBusinessData(data)
     this.getAnnualReturns(this.businessId, this.companyId)
 
@@ -268,7 +269,7 @@ export class UploadprojectionComponent implements OnInit {
           Swal.fire({
             icon: "success",
             title: "Success",
-            html: this.errorHandler(res.message),
+            html: ErrorHandlerHelper(res.message),
             showConfirmButton: true,
             timer: 500000,
             timerProgressBar: true,
@@ -286,7 +287,7 @@ export class UploadprojectionComponent implements OnInit {
             icon: "error",
             title: "Validation not passed",
             // html: '<div class="text-left ml-3 ">' + this.columnError.join('<br />') + '</div>' ,
-            html: this.errorHandler(res.message),
+            html: ErrorHandlerHelper(res.message),
             showConfirmButton: true,
             timer: 25000,
             timerProgressBar: true,
@@ -379,9 +380,8 @@ export class UploadprojectionComponent implements OnInit {
     try {
       this.ngxService.stop()
       this.btnLoading.set(false)
-      const {fileURL, filename} = await this.annualProjectionService.downloadFormH3(
-        this.companyId
-      )
+      const {fileURL, filename} =
+        await this.annualProjectionService.downloadFormH3(this.companyId)
       // Create an anchor element
       const link = document.createElement("a")
       link.href = fileURL
@@ -861,18 +861,6 @@ export class UploadprojectionComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
       }
     )
-  }
-
-  private errorHandler(error: any) {
-    typeof error
-    let message = ""
-    if (typeof error == "string") {
-      return error
-    }
-    error.forEach((err: {data: string | {message: string}; id: number}) => {
-      message += ((err?.data as any)?.message || err.data) + "<br /> "
-    })
-    return message
   }
 
   private getDismissReason(reason: any): string {

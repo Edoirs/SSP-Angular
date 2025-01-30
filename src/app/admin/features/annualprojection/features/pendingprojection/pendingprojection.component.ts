@@ -222,6 +222,7 @@ export class PendingprojectionComponent implements OnInit, OnDestroy {
 
   viewBusinessProjection(modal: any, data: any) {
     this.businessId = data?.businessID
+    this.companyId = data?.companyId
     this.taxYear = data?.taxYear
     this.getAnnualReturns(
       this.businessId,
