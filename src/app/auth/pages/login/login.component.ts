@@ -11,6 +11,7 @@ import {
   SweetAlertOptions,
 } from "@shared/utils/sweet-alert.utils"
 import {LoginService} from "./service/login.service"
+import {LANDING_PATHS} from "src/app/app-routing.module"
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -164,6 +165,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
 
         if (data.status == true) {
+          if (data?.isFirstTimer)
+            this.router.navigate(["/", LANDING_PATHS.resetPassword])
           this.tokenService.saveLoginResData(data.data)
           let loginData = data.data
           localStorage.setItem("access_token", loginData?.token)
