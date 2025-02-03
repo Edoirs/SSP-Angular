@@ -30,6 +30,13 @@ export class AuthService {
     )
   }
 
+  adminCreateUser(payload: AuthModels.AdminCreateUserInterface) {
+    return this.httpClient.post<ServerResInterface<number>>(
+      `${environment.AUTHAPIURL}PhaseII/AdminSignUpFromDashboard`,
+      payload
+    )
+  }
+
   adminChangePassword(payload: AuthModels.AdminChangePasswordInterface) {
     return this.httpClient.put<ServerResInterface<any>>(
       `${environment.AUTHAPIURL}PhaseII/ChangePassword`,

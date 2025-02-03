@@ -12,6 +12,10 @@ export interface AdminInitChangePasswordInterface {
   isAdmin: boolean
   companyRin: string
 }
+export interface AdminCreateUserInterface {
+  email: string
+  phone: string
+}
 
 export interface AdminChangePasswordInterface {
   isAdmin: boolean
