@@ -2,6 +2,25 @@
     <form autocomplete="off" [formGroup]="adminSignUpForm"
     (submit)="onAdminSubmit()" style="width: 420px; padding: 30px;">
 
+    <div class="">
+      <select class="form-select login-select" formControlName="userRole">
+        <option value="">Select Role</option>
+        <option value="admin">Admin</option>
+        <option value="super admin">Super Admin</option>
+        <option value="assessment officer">Assessment Officer</option>
+      </select>
+        @if (adminRole?.touched && adminRole?.errors) {
+            <div
+              class="form-text text-danger">
+              @if (adminRole?.hasError('required')) {
+                  <div>
+                    User role is required
+                  </div>
+              }
+            </div>
+        }
+    </div>
+
     <div class="login__field input-group">
       <i class="login__icon fa fa-building"></i>
       <input #emailField type="text" id="email" name="email" placeholder="Enter Email Address"
@@ -29,9 +48,9 @@
     </div>
     }
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 mt-4">
       <button class="button" type="submit" id="mycaptcha">
-        Add Super Admin
+        Create User
       </button>
     </div>
     </form>

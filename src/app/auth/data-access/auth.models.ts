@@ -14,7 +14,7 @@ export interface AdminInitChangePasswordInterface {
 }
 export interface AdminCreateUserInterface {
   email: string
-  phone: string
+  userRole: string
 }
 
 export interface AdminChangePasswordInterface {
