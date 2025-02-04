@@ -36,6 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   password: any
   companyId: any
 
+  redirectTimer?: any
+
   subs = new SubscriptionHandler()
 
   constructor(
@@ -51,6 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.clear()
+    clearTimeout(this.redirectTimer)
   }
 
   initialiseForms() {
@@ -164,9 +167,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate(["/resetpassword"])
         }
 
+        if (data?.data?.isFirstTimer) {
+          this.redirectTimer = setTimeout(() => {
+            this.router.navigate([LANDING_PATHS.resetPassword])
+            Swal.fire(SweetAlertOptions(data.message, true))
+          }, 3000)
+
+          return
+        }
+
         if (data.status == true) {
-          if (data?.isFirstTimer)
-            this.router.navigate(["/", LANDING_PATHS.resetPassword])
           this.tokenService.saveLoginResData(data.data)
           let loginData = data.data
           localStorage.setItem("access_token", loginData?.token)
@@ -211,8 +221,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subs.add = this.loginService
       .validateOTPAccount(jsonData)
       .subscribe((data: any) => {
-        this.status = data.status
-        if (this.status == true) {
+        if (data.status == true) {
           this.initialiseOtpForm()
           this.ngxService.stop()
           this.router.navigate(["/admin", "dashboard"])

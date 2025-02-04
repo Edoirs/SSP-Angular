@@ -274,6 +274,8 @@ export class UploadprojectionComponent implements OnInit {
             timer: 500000,
             timerProgressBar: true,
           })
+
+          this.getBusinesses()
         } else {
           this.file = null
           this.filePath = null

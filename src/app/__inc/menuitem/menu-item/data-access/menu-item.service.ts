@@ -14,6 +14,7 @@ export interface MenuItemInterface {
     faIconType?: "solid" | "outline"
   }[]
   isAdmin?: boolean
+  isSuperAdmin?: boolean
 }
 
 @Injectable({providedIn: "root"})
@@ -170,6 +171,7 @@ export class MenuListService {
         },
       ],
       isAdmin: true,
+      isSuperAdmin: true,
     },
     {
       // 8

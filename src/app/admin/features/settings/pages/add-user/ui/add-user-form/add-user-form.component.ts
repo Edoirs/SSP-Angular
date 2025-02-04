@@ -56,6 +56,7 @@ export class AddUserFormComponent implements OnInit, OnDestroy {
     effect(() => {
       if (this.isRegisterSent()) {
         this.adminSignUpForm.reset()
+        this.adminRole?.setValue("")
       }
     })
   }

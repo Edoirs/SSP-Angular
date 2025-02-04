@@ -33,7 +33,7 @@ export class AddUserComponent implements OnDestroy {
         this.ngxService.stop()
         if (res.status == true) {
           this.hasRegistered.set(true)
-          Swal.fire(SweetAlertOptions(res.message))
+          Swal.fire(SweetAlertOptions(res.message, true))
         } else {
           Swal.fire(SweetAlertOptions(res.message))
         }
