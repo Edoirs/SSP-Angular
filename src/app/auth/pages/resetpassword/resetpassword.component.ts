@@ -1,16 +1,18 @@
-import {Component} from "@angular/core"
+import {Component, OnDestroy} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 import {environment} from "../../../../environments/environment"
 import Swal from "sweetalert2"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
+import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
+import {error} from "jquery"
 @Component({
   selector: "app-resetpassword",
   templateUrl: "./resetpassword.component.html",
   styleUrls: ["./resetpassword.component.css"],
 })
-export class ResetpasswordComponent {
+export class ResetpasswordComponent implements OnDestroy {
   resetPasswordForm!: FormGroup
   submitted = false
   apiUrl: any
@@ -20,6 +22,8 @@ export class ResetpasswordComponent {
   showForgotPasswordForm: boolean = false
 
   fieldTextType3!: boolean
+
+  subs = new SubscriptionHandler()
 
   constructor(
     private http: HttpClient,
@@ -33,15 +37,15 @@ export class ResetpasswordComponent {
     this.initialiseForms()
   }
 
+  ngOnDestroy(): void {
+    this.subs.clear()
+  }
+
   initialiseForms() {
     this.resetPasswordForm = this.formBuilder.group({
       emailAddress: [
         "",
-        [
-          Validators.required,
-          Validators.maxLength(45),
-          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
-        ],
+        [Validators.required, Validators.maxLength(45), Validators.email],
       ],
       defaultPassword: ["", [Validators.required]],
       newPassword: [
@@ -58,7 +62,6 @@ export class ResetpasswordComponent {
       enterOtp: [
         "",
         [
-          Validators.required,
           Validators.maxLength(6),
           Validators.minLength(6),
           Validators.pattern(/^[0-9]*$/),
@@ -92,32 +95,45 @@ export class ResetpasswordComponent {
     this.ngxService.start()
     this.apiUrl = environment.AUTHAPIURL + "auth/reset-default-password"
 
-    this.http.post<any>(this.apiUrl, requestObj).subscribe((data) => {
-      this.ngxService.stop()
-      if (data.status == true) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
-        if (data.response != null) {
+    this.http.post<any>(this.apiUrl, requestObj).subscribe({
+      next: (data) => {
+        this.ngxService.stop()
+        if (data.status == true) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
+          if (data.response != null) {
+          }
+          setTimeout(() => {
+            this.router.navigate(["/login"])
+          }, 1000)
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+            timerProgressBar: true,
+          })
         }
-        setTimeout(() => {
-          this.router.navigate(["/login"])
-        }, 1000)
-      } else {
+      },
+      error: (err) => {
+        this.ngxService.stop()
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: data.message,
+          text: err?.error?.message || err?.message,
           showConfirmButton: true,
           timer: 5000,
           timerProgressBar: true,
         })
-      }
+      },
     })
   }
 }

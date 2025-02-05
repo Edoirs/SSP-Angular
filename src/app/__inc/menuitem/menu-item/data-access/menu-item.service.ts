@@ -12,6 +12,8 @@ export interface MenuItemInterface {
     url?: string | string[]
     faIcon?: string
     faIconType?: "solid" | "outline"
+    isAdmin?: boolean
+    isSuperAdmin?: boolean
   }[]
   isAdmin?: boolean
   isSuperAdmin?: boolean
@@ -163,6 +165,7 @@ export class MenuListService {
           name: "Add User",
           url: ["settings", SettingsRoute.addUsers],
           faIcon: "fa fa-user",
+          isSuperAdmin: true,
         },
         {
           name: "Manage Users",
@@ -171,7 +174,7 @@ export class MenuListService {
         },
       ],
       isAdmin: true,
-      isSuperAdmin: true,
+      isSuperAdmin: false,
     },
     {
       // 8
