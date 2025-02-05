@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core"
+import {Component, inject, OnDestroy} from "@angular/core"
 import {HttpClient, HttpHeaders} from "@angular/common/http"
 import {Router} from "@angular/router"
 import {environment} from "../../../../environments/environment"
@@ -7,59 +7,58 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {NgxUiLoaderService} from "ngx-ui-loader"
 import {SubscriptionHandler} from "@shared/utils/subscription-handler.utils"
 import {error} from "jquery"
+import {AdminChangePasswordInterface} from "../../data-access/auth.models"
+import {AuthService} from "../../services/auth.services"
+import {SweetAlertOptions} from "@shared/utils/sweet-alert.utils"
 @Component({
   selector: "app-resetpassword",
   templateUrl: "./resetpassword.component.html",
   styleUrls: ["./resetpassword.component.css"],
 })
 export class ResetpasswordComponent implements OnDestroy {
+  private readonly authService = inject(AuthService)
   resetPasswordForm!: FormGroup
   submitted = false
   apiUrl: any
-  emailAddress: any
   fieldTextType!: boolean
   fieldTextType2!: boolean
-  showForgotPasswordForm: boolean = false
 
   fieldTextType3!: boolean
+
+  timeOut?: any
 
   subs = new SubscriptionHandler()
 
   constructor(
-    private http: HttpClient,
     private router: Router,
     private formBuilder: FormBuilder,
     private ngxService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
-    this.emailAddress = localStorage.getItem("niswasec_username")
     this.initialiseForms()
   }
 
   ngOnDestroy(): void {
     this.subs.clear()
+    clearTimeout(this.timeOut)
   }
 
   initialiseForms() {
     this.resetPasswordForm = this.formBuilder.group({
-      emailAddress: [
+      email: [
         "",
         [Validators.required, Validators.maxLength(45), Validators.email],
       ],
-      defaultPassword: ["", [Validators.required]],
       newPassword: [
         "",
         [
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(40),
-          // Validators.pattern(
-          //   "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
-          // ),
         ],
       ],
-      enterOtp: [
+      otp: [
         "",
         [
           Validators.maxLength(6),
@@ -80,59 +79,35 @@ export class ResetpasswordComponent implements OnDestroy {
   toggleFieldTextType3() {
     this.fieldTextType3 = !this.fieldTextType3
   }
-  onSubmitResetPassword(formAllData: any) {
+  onSubmitResetPassword() {
     this.submitted = true
 
     if (this.resetPasswordForm.invalid) {
       return
     }
-    var requestObj = {
-      email: this.emailAddress,
-      default_password: formAllData.defaultPassword,
-      password: formAllData.newPassword,
-      otp: formAllData.enterOtp,
+    let payload: AdminChangePasswordInterface = {
+      companyRin_Phone: this.resetPasswordForm?.value?.email,
+      newPassword: this.resetPasswordForm?.value?.newPassword,
+      isAdmin: true,
+      otp: this.resetPasswordForm?.value?.otp,
     }
     this.ngxService.start()
-    this.apiUrl = environment.AUTHAPIURL + "auth/reset-default-password"
-
-    this.http.post<any>(this.apiUrl, requestObj).subscribe({
+    this.apiUrl = 1
+    this.subs.add = this.authService.adminChangePassword(payload).subscribe({
       next: (data) => {
         this.ngxService.stop()
         if (data.status == true) {
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
-          if (data.response != null) {
-          }
-          setTimeout(() => {
+          Swal.fire(SweetAlertOptions(data?.message, true))
+          this.timeOut = setTimeout(() => {
             this.router.navigate(["/login"])
-          }, 1000)
+          }, 3000)
         } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: data.message,
-            showConfirmButton: true,
-            timer: 5000,
-            timerProgressBar: true,
-          })
+          Swal.fire(SweetAlertOptions(data?.message))
         }
       },
       error: (err) => {
         this.ngxService.stop()
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: err?.error?.message || err?.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true,
-        })
+        Swal.fire(SweetAlertOptions(err?.error?.message || err?.message))
       },
     })
   }
