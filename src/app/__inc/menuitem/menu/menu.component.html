@@ -1,11 +1,9 @@
 <nav class="menu-items">
   <section class="nav nav-pills nav-sidebar nav-menu">
-    <!-- Shows the menu item if it's not restricted to admins -->
-    <!-- Ensures the item is shown only if it is an admin menu and the user is an admin. -->
     @for (menu of menuList; track $index) { 
-      @if (!menu?.isAdmin || (menu?.isAdmin && user.isAdminUser) || (menu?.isSuperAdmin && user.isSuperAdmin)) {
-          <app-menu-item [data]="menu" [menuIndex]="$index" />
-      } 
-    }
+      @if((!user.isSuperAdmin && !menu.isSuperAdmin) || user.isSuperAdmin){
+            <app-menu-item [data]="menu" [menuIndex]="$index" />
+      }
+    }  
   </section>
 </nav>

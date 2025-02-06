@@ -12,6 +12,7 @@ import {MenuItemInterface} from "./data-access/menu-item.service"
 import {NgClass, NgStyle} from "@angular/common"
 import {RouterLink, RouterLinkActive} from "@angular/router"
 import {MenuItemService} from "../menu.service"
+import {LoginResInterface, TokenService} from "@shared/services/token.service"
 
 @Component({
   selector: "app-menu-item",
@@ -23,6 +24,7 @@ import {MenuItemService} from "../menu.service"
 export class MenuItemComponent {
   private readonly renderer = inject(Renderer2)
   private readonly menuItemService = inject(MenuItemService)
+  readonly user: LoginResInterface = inject(TokenService).getLoginResData
   readonly data = input.required<MenuItemInterface>()
   readonly menuIndex = input.required<number>()
   menuIcon = viewChild<ElementRef<HTMLElement>>("menuIcon")

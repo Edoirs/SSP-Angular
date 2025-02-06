@@ -1,57 +1,58 @@
-<section class="paye-nav">
-  @if (data().children?.length) {
-  <a class="paye-nav-item" (click)="toggleMenu(menuIndex())">
-    <div class="paye-nav-item-text">
-      @if (data().faIcon) { @if (!data().faIconType) {
-      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
-      } @else {
-      <i class="nav-icon far" [ngClass]="data().faIcon"></i>
-      } }
-      <p>
-        {{ data().name }}
-      </p>
-    </div>
-    <div class="paye-nav-item-icon">
-      <i
-        #menuIcon
-        id="arrow-indicator"
-        class="fas fa-angle-left right"
-        [ngStyle]="{
-          transform: openMenu() ? 'rotate(270deg)' : 'rotate(0)'
-        }"></i>
-    </div>
-  </a>
-  }@else {
-  <a [routerLink]="data().url" [routerLinkActive]="['active']">
-    <div class="paye-nav-item-text">
-      @if (data().faIcon) { @if (!data().faIconType) {
-      <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
-      } @else {
-      <i class="nav-icon far" [ngClass]="data().faIcon"></i>
-      } }
-      <p>
-        {{ data().name }}
-      </p>
-    </div>
-  </a>
-  }
-</section>
-
+<!-- display if menu isn't for admin, or if menu and logged in user is admin and menu is not for super admin, or if menu is for super admin and user is super admin -->
+  <section class="paye-nav">
+    @if (data().children?.length) {
+    <a class="paye-nav-item" (click)="toggleMenu(menuIndex())">
+      <div class="paye-nav-item-text">
+        @if (data().faIcon) { @if (!data().faIconType) {
+        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+        } @else {
+        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+        } }
+        <p>
+          {{ data().name }}
+        </p>
+      </div>
+      <div class="paye-nav-item-icon">
+        <i
+          #menuIcon
+          id="arrow-indicator"
+          class="fas fa-angle-left right"
+          [ngStyle]="{
+            transform: openMenu() ? 'rotate(270deg)' : 'rotate(0)'
+          }"></i>
+      </div>
+    </a>
+    }@else {
+    <a [routerLink]="data().url" [routerLinkActive]="['active']">
+      <div class="paye-nav-item-text">
+        @if (data().faIcon) { @if (!data().faIconType) {
+        <i class="nav-icon fas" [ngClass]="data().faIcon"></i>
+        } @else {
+        <i class="nav-icon far" [ngClass]="data().faIcon"></i>
+        } }
+        <p>
+          {{ data().name }}
+        </p>
+      </div>
+    </a>
+    }
+  </section>
 @if (openMenu()) {
-<section #subMenu class="paye-nav-child">
-  @for (menu of data().children; track $index) {
-  <a [routerLink]="menu.url" [routerLinkActive]="['active']">
-    <div class="paye-nav-item-text">
-      @if (data().faIconType === 'solid') {
-      <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
-      } @else {
-      <i class="nav-icon far" [ngClass]="menu.faIcon"></i>
+
+  <section #subMenu class="paye-nav-child">
+    @for (menu of data().children; track $index) {
+      @if((!user.isSuperAdmin && !menu.isSuperAdmin) || user.isSuperAdmin){
+            <a [routerLink]="menu.url" [routerLinkActive]="['active']">
+              <div class="paye-nav-item-text">
+                @if (menu.faIconType === 'solid') {
+                <i class="nav-icon fas" [ngClass]="menu.faIcon"></i>
+                } @else {
+                <i class="nav-icon far" [ngClass]="menu.faIcon"></i>
+                }
+                <p>{{ menu.name }}</p>
+              </div>
+            </a>
       }
-      <p>
-        {{ menu.name }}
-      </p>
-    </div>
-  </a>
-  }
-</section>
-}
+    }
+  </section>
+} 
